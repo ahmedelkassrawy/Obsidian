@@ -1,0 +1,226 @@
+**Text to Speech (TTS)** services are responsible for converting text into natural-sounding speech audio. They receive text input from LLMs and other sources, then generate audio output that users can hear through their connected devices.
+
+#### Frame processing Flow
+**TTS generates speech through two primary mechanisms:**
+
+1. **Streamed LLM tokens** via `LLMTextFrame`s:
+    - TTS aggregates streaming tokens into complete sentences
+    - Sentences are sent to TTS service for audio generation
+    - Audio bytes stream back and play immediately
+    - End-to-end latency often under 200ms
+2. **Direct speech requests** via `TTSSpeakFrame`s:
+    - Bypasses LLM and context aggregators
+    - Immediate audio generation for specific text
+    - Useful for system messages or prompts
+
+**Frame output:**
+- `TTSAudioRawFrame`s: Raw audio data for playback
+- `TTSTextFrame`s: Text that was actually spoken (for context updates)
+- `TTSStartedFrame`/`TTSStoppedFrame`: Speech boundary markers
+
+#### Services Categories
+**WebSocket-Based Services (Recommended):**
+- **Cartesia**: Ultra-low latency with word timestamps
+- **ElevenLabs**: High-quality voices with emotion control
+- **Rime**: Ultra-realistic voices with advanced features
+
+**HTTP-Based Services:**
+- **OpenAI TTS**: High-quality synthesis with multiple voices
+- **Azure Speech**: Enterprise-grade with extensive language support
+- **Google Text-to-Speech**: Reliable with WaveNet voices
+
+**Advanced Features:**
+- **Word timestamps**: Enable word-level accuracy for context and subtitles
+- **Voice cloning**: Custom voice creation from samples
+- **Emotion control**: Dynamic emotional expression
+- **SSML support**: Fine-grained pronunciation control
+
+>[!tip]
+>WebSocket services typically provide the lowest latency, while HTTP services may have intermittent higher latency due to their request/response nature.
+
+
+TTS Config
+```python
+from pipecat.services.cartesia.tts import CartesiaTTSService
+from pipecat.transcriptions.language import Language
+
+tts = CartesiaTTSService(
+    api_key=os.getenv("CARTESIA_API_KEY"),
+    voice_id="voice-id-here",
+    model="sonic-2",              # TTS model to use
+    params=CartesiaTTSService.InputParams(
+        language=Language.EN,     # Speech language
+        speed="normal",           # Speech rate control
+    ),
+    # Word timestamps automatically enabled for precise context updates
+)
+```
+
+**Word timestamps:** Services like Cartesia, ElevenLabs, and Rime provide word-level timestamps that enable precise context updates during interruptions and better synchronization with other pipeline components. 
+- For example, if an interruption occurs while the bot is speaking, the word timestamps allow you to accurately capture which words were spoken up to that point, enabling better context management and user experience.
+- Additionally, transcription events streamed from server to client can be done in sync with the audio output, allowing for real-time subtitles or captions.
+### Pipeline-Level Audio Configuration
+Set consistent audio settings across your entire pipeline:
+
+```python 
+task = PipelineTask(
+    pipeline,
+    params=PipelineParams(
+        audio_in_sample_rate=16000,   # Input audio quality
+        audio_out_sample_rate=24000,  # Output audio quality (TTS)
+    ),
+)
+```
+
+>[!tip]
+>Set the `audio_out_sample_rate` to match your TTS service’s requirements for optimal quality. This is preferred to setting the sample_rate directly in the TTS service as the PipelineParam ensures that all output sample_rates match.
+
+#### Text Processing and Filtering
+##### Skipping Text Aggregations
+To skip certain text aggregations (e.g., code snippets or URLs) and keep them from being spoken, use a custom text aggregator like [`PatternPairAggregator`](https://docs.pipecat.ai/server/utilities/text/pattern-pair-aggregator) within an [`LLMTextProcessor`](https://docs.pipecat.ai/server/utilities/frame/llm-text-processor), and configure it to identify and handle specific patterns in the text stream. With this, you can then pass any aggregated types you want to skip (like “code”) to the TTS service’s `skip_aggregator_types` parameter.
+```python
+# Create pattern aggregator
+pattern_aggregator = PatternPairAggregator()
+
+# Add pattern for JSON data
+pattern_aggregator.add_pattern(
+    type="code",
+    start_pattern="<code>",
+    end_pattern="</code>",
+    action=MatchAction.AGGREGATE
+)
+
+# Set the aggregator on an LLMTextProcessor
+llm_text_processor = LLMTextProcessor(text_aggregator=pattern_aggregator)
+
+# Initialize TTS service, and don't speak JSON data
+tts = CartesiaTTSService(
+    api_key=os.getenv("CARTESIA_API_KEY"),
+    skip_aggregator_types=["code"], # The strings here should match the types defined in the PatternPairAggregator
+)
+
+# add the llm_text_processor to your pipeline after the llm and before the tts
+# llm -> llm_text_processor -> tts
+```
+
+#### Text Transforms
+- For TTS-specific text preprocessing, you can provide custom text transforms that modify text in a just-in-time manner before sending the text off to the TTS service. 
+- This is useful for handling special text segments that need to be altered for better pronunciation or clarity, such as spelling out phone numbers, removing URLs, or expanding abbreviations. 
+- These text transforms can be mapped to a specific text aggregation type, like with `skip_aggregator_types`, or applied globally to all text using `'*'` as the type.
+- Text transforms are registered directly on the TTS service instance via the `add_text_transformer()` method or during initialization using the `text_transforms` parameter.
+
+```python
+# Create pattern aggregator
+pattern_aggregator = PatternPairAggregator()
+
+# Add patterns for different parts of an explanation
+pattern_aggregator.add_pattern(
+    type="phone_number",
+    start_pattern="<pnum>",
+    end_pattern="</pnum>",
+    action=MatchAction.AGGREGATE
+)
+
+# Set the aggregator on an LLMTextProcessor
+llm_text_processor = LLMTextProcessor(text_aggregator=pattern_aggregator)
+
+# Text-to-Speech service
+tts = CartesiaTTSService(
+    api_key=os.getenv("CARTESIA_API_KEY"),
+)
+
+# Text transformers for TTS
+# This will insert Cartesia's spell tags around the provided text.
+async def spell_out_text(text: str, type: str) -> str:
+    # CartesiaTTSService provides a helper for this along with other common transforms
+    return CartesiaTTSService.SPELL(text)
+
+async def replace_acronyms(text: str, type: str) -> str:
+    # Replace "SEC" with "Southeastern Conference"
+    return text.replace(" SEC ", " Southeastern Conference ")
+
+# Setup the text transformers in TTS to spell out phone numbers and replace
+# acronyms. The string below matches the type defined in the PatternPairAggregator
+# above so that whenever those segments are encountered, this transform
+# is applied
+tts.add_text_transformer(spell_out_text, "phone_number")
+tts.add_text_transformer(replace_acronyms, "*")  # Apply to all text
+
+# add the llm_text_processor to your pipeline after the llm and before the tts
+#   llm -> llm_text_processor -> tts
+```
+
+##   Skipping TTS Output
+- Sometimes you want text from the LLM to flow through the pipeline—updating the conversation context, reaching observers, or being processed by custom frame processors—without being spoken by the TTS service. 
+- Pipecat provides a `skip_tts` attribute on text and response frames for this purpose.
+- When `skip_tts` is `True` on a frame, the TTS service passes it through without generating audio, but the text still reaches downstream processors like the assistant context aggregator.
+
+### Configuring All LLM Output
+Use `LLMConfigureOutputFrame` to tell the LLM service to mark **all** subsequent output frames (`LLMTextFrame`, `LLMFullResponseStartFrame`, `LLMFullResponseEndFrame`) with `skip_tts`:
+
+```python
+from pipecat.frames.frames import LLMConfigureOutputFrame
+
+# Tell the LLM to skip TTS for all output
+await task.queue_frame(LLMConfigureOutputFrame(skip_tts=True))
+
+# ... LLM responses will not be spoken ...
+
+# Re-enable TTS
+await task.queue_frame(LLMConfigureOutputFrame(skip_tts=False))
+```
+
+This is useful when you want to toggle TTS on or off for an entire stretch of conversation, such as switching between voice and text input modes.
+
+###   Setting skip_tts on Individual Frames
+For more granular control, set `skip_tts=True` directly on individual text frames. This is useful when building custom frame processors that selectively silence certain parts of the LLM output:
+
+```python
+from pipecat.frames.frames import LLMTextFrame
+
+# In a custom frame processor
+frame = LLMTextFrame(text)
+frame.skip_tts = True
+await self.push_frame(frame)
+```
+
+### Common Use Cases
+**Encoding structured output from the LLM.** 
+You can instruct the LLM to include markers or metadata in its response that should be processed by pipeline logic but not spoken. For example, Pipecat’s [turn completion detection](https://docs.pipecat.ai/server/utilities/turn-management/filter-incomplete-turns) uses this approach — the LLM outputs completion markers (`✓`, `○`, `◐`) that are pushed with `skip_tts=True` so they update the context but aren’t spoken.
+
+**Switching between voice and text input.** 
+When a client sends text input instead of speech, you may want the bot to respond with text only. The client SDKs support this via `sendText()` with `audio_response: false`, which uses `LLMConfigureOutputFrame` internally to temporarily disable TTS for that response.
+
+**Testing without audio.** When building test pipelines, you can use `LLMConfigureOutputFrame(skip_tts=True)` to bypass audio generation entirely while still exercising the rest of the pipeline.
+
+## Advanced TTS Features
+#### Direct Speech Commands
+Use `TTSSpeakFrame` for immediate speech synthesis:
+
+```python
+from pipecat.frames.frames import TTSSpeakFrame
+
+# Make bot speak directly
+await tts.queue_frame(TTSSpeakFrame("Hello, how can I help you?"))
+```
+
+### Dynamic Settings Updates
+Update TTS settings during conversation:
+
+```python
+from pipecat.frames.frames import TTSUpdateSettingsFrame
+
+# Change voice speed during conversation
+await task.queue_frames([
+    TTSUpdateSettingsFrame({"speed": "fast"}),
+    TTSSpeakFrame("I'm speaking faster now!")
+])
+```
+
+## Key Takeaways
+- **Pipeline placement matters** - TTS must come after LLM, before transport output
+- **Service types differ** - WebSocket services provide lower latency than HTTP
+- **Text processing affects quality** - use aggregation and filters for better results
+- **Word timestamps enable precision** - better interruption handling and context accuracy
+- **Configuration impacts performance** - balance quality, latency, and bandwidth needs
+- **Services are modular** - easily swap providers without changing pipeline code

@@ -1,0 +1,1 @@
+a word is anagram of the other if sorted
