@@ -39,7 +39,11 @@ created: 2026-07-11
   - [[#7 — Execution & Retry Loop|7 — Execution & Retry Loop]]
   - [[#8 — Post Process (Parallel)|8 — Post Process (Parallel)]]
   - [[#9 — Document & Persist|9 — Document & Persist]]
-  - [[#10 — Background Evaluation|10 — Background Evaluation]]
+  - [[#10a — Production SQL Quality (LLM-as-Judge)|10a — Production SQL Quality]]
+  - [[#10b — LangSmith Observability (8 dimensions)|10b — LangSmith Observability]]
+  - [[#10c — System Operational Metrics|10c — Operational Metrics]]
+  - [[#10d — BIRD Text-to-SQL Benchmark|10d — BIRD Benchmark]]
+  - [[#10e — Data Quality (Import)|10e — Data Quality]]
 - [[#File Tree|File Tree]]
 - [[#Gotchas & Design Notes|Gotchas & Design Notes]]
 
@@ -148,7 +152,7 @@ flowchart LR
 2. **Filter Schema** — `filter_schema_context()` uses an LLM to prune to relevant tables — but skips entirely if the schema has ≤10 tables (`context_filtering.py:13`).
 
 > [!warning] Dead Code
-> `fetch_schema_context` ignores its `schema_service` parameter (`schema_tools.py:6`). The `SchemaService` class exists and has an async implementation but is entirely dead code — never called by the graph.
+> `fetch_schema_context` ignores its `schema_service` parameter (`schema_tools.py:6`). The `SchemaService` class exists and has an async implementation but is entirely **dead code** — never called by the graph.
 
 ---
 
@@ -277,25 +281,168 @@ flowchart LR
 
 ---
 
-### 10 — Background Evaluation
+### 10 — Evaluation Metrics
 
-After `graph.invoke()` returns, `AgentGraph.run()` (`graph.py:1016`) spawns a **daemon thread** that evaluates via `evaluate_sql()`:
+DataPilot uses a multi-layered evaluation system spanning **production LLM-as-Judge scoring**, **observability (LangSmith)**, **operational monitoring**, **offline benchmarks**, and **data-quality checks**. Metrics are computed at multiple touchpoints: automatically after every user query, on-demand via API, and through standalone CLI scripts.
 
-| Check | Method |
-|-------|--------|
-| SQL Syntax | Regex-based keyword validation (no actual parsing) |
-| SQL Correctness | LLM-as-judge — scores correctness/completeness/efficiency |
-| Schema Relevance | LLM judges table/column usage |
+```mermaid
+flowchart LR
+    subgraph Production
+        A["User Query"] --> B["evaluate_sql()<br/>(LLM-as-Judge)"]
+        B --> C["post_evaluation_to_langsmith()<br/>(8 feedback keys)"]
+        A --> D["HistoryService.save_query()<br/>(operational metrics)"]
+    end
+    
+    subgraph Offline
+        E["run_bird_eval.py<br/>AgentGraph pipeline"] --> F["execution_match()<br/>(result comparison)"]
+        G["eval_lightweight.py<br/>Direct LLM call"] --> H["execution_match_hybrid()<br/>(normalized + exec)"]
+    end
+    
+    subgraph Import
+        I["CSV Import"] --> J["DataQualityReport<br/>(nulls, duplicates)"]
+    end
+```
 
-> [!info] Scoring Formula
-> `overall = correctness × 0.4 + completeness × 0.25 + efficiency × 0.15 + schema × 0.1 + syntax × 0.1`
+---
 
-If `LANGCHAIN_API_KEY` is set, 8 feedback keys are posted to LangSmith.
+#### 10a — Production SQL Quality (LLM-as-Judge)
 
-> [!failure] Fire-and-Forget
-> - The daemon thread logs failures at `WARNING` level only.
-> - There is no way to tell from the API response whether evaluation ran.
-> - If `LANGCHAIN_API_KEY` is unset, import fails silently and evaluation is skipped entirely.
+**Defined in:** `app/services/evaluation_service.py:163` — `evaluate_sql()`
+**When:** Automatically after every query graph completes (`graph.py:1016`) or on-demand via `POST /api/evaluate`
+
+The function runs **two parallel LLM calls** (via `ThreadPoolExecutor`) against the question, generated SQL, and first 5 result rows. If no LLM is available (unconfigured/error), syntax-passing queries receive a 0.5 default on correctness/completeness/efficiency.
+
+| Metric | Type | Range | Method |
+|--------|------|-------|--------|
+| **syntax_valid** | Boolean (rule-based) | `true`/`false` | Regex forbids DDL/DML keywords; checks starts with `SELECT`/`WITH`/`EXPLAIN`, has `FROM`, balanced parens |
+| **correctness** | Float (LLM-as-Judge) | 0.0 – 1.0 | `SQL_CORRECTNESS_PROMPT` — LLM judges if SQL correctly answers the question against results |
+| **completeness** | Float (LLM-as-Judge) | 0.0 – 1.0 | Same LLM call — whether all aspects of question are covered |
+| **efficiency** | Float (LLM-as-Judge) | 0.0 – 1.0 | Same LLM call — whether SQL is reasonably efficient |
+| **schema_score** | Float (LLM-as-Judge) | 0.0 – 1.0 | `SCHEMA_RELEVANCE_PROMPT` — separate LLM call for table/column usage |
+| **overall** | Float (weighted composite) | 0.0 – 1.0 | Weighted formula: `correctness × 0.4 + completeness × 0.25 + efficiency × 0.15 + schema_score × 0.1 + syntax_valid × 0.1` |
+
+> [!tip] No formal pass/fail threshold
+> The LLM prompts score 0.0–1.0 but define no explicit pass/fail threshold. The eval runner uses `score > 0.5` as a de facto cutoff (`run_bird_eval.py:149`).
+
+---
+
+#### 10b — LangSmith Observability (8 dimensions)
+
+**Defined in:** `app/services/evaluation_service.py:240` — `post_evaluation_to_langsmith()`
+**When:** After every query, if `LANGCHAIN_API_KEY` is set AND `thread_id` is a valid UUID
+
+The same `evaluate_sql()` scores plus operational data are posted as individual feedback keys:
+
+| LangSmith Key | Score Logic |
+|---------------|-------------|
+| `sql_syntax_valid` | 1.0 / 0.0 |
+| `overall_quality` | Composite `overall` score (0.0 – 1.0) |
+| `correctness` | LLM correctness score |
+| `completeness` | LLM completeness score |
+| `latency` | `min(latency / 30.0, 1.0)` — 30s normalizing baseline |
+| `has_visualization` | 1.0 if visualization was generated |
+| `results_count` | `min(count / 1000, 1.0)` — 1000-row normalizing baseline |
+| `insight_count` | `min(count / 5, 1.0)` — 5-insight normalizing baseline |
+
+> [!failure] Silent Skip
+> If `LANGCHAIN_API_KEY` is unset, the `langsmith` import at module top-level fails silently (`_LANGSMITH_AVAILABLE = False`). No error is raised.
+
+---
+
+#### 10c — System Operational Metrics
+
+**Defined in:** `app/services/history_service.py:107`/`130` — `get_stats()` / `get_metrics()`
+**Exposed via:** `GET /api/system/stats` and `GET /api/system/metrics`
+**When:** Every query writes a row to the `query_history` SQLite table
+
+These track overall system health and are displayed on the frontend Dashboard and Evaluation pages:
+
+| Metric | Calculation | Endpoint |
+|--------|-------------|----------|
+| **total_queries** | `COUNT(*)` from query_history | Both |
+| **success_count** | `COUNT(*)` WHERE `status = 'SUCCESS'` | Both |
+| **success_rate** | `(success_count / total_queries) × 100` | Both |
+| **avg_latency** | `AVG(latency)` across all queries | Both |
+| **total_sources** | count of registered data sources (from routes.py) | Both |
+| **total_visualizations** | `COUNT(*)` WHERE `has_visualization = 1` | `/system/metrics` |
+| **visualization_rate** | `(viz_count / total_queries) × 100` | `/system/metrics` |
+| **trends** | Last 14 days: daily total/success/viz — `GROUP BY date(executed_at)` | `/system/metrics` |
+| **visualization_breakdown** | Per `chart_type` (bar, line, pie, scatter, area, table) — `COUNT(*) GROUP BY chart_type` | `/system/metrics` |
+
+Frontend display (`Evaluation.jsx`):
+- **SQL Accuracy Index** → `success_rate` (%)
+- **Latency Consistency** → `avg_latency` (seconds)
+- **Instruction Following** → number of connected data sources
+- Client-side **Rating (1-5 stars)** computed per metric from success rate, latency thresholds, source count, history depth
+
+---
+
+#### 10d — BIRD-Style Text-to-SQL Benchmark (Offline)
+
+Two independent runners exist. Both use the same evaluation dataset (BIRD-style questions on `sales_db`, `employees_db`, `inventory_db`, plus Arabic variants) and the same **execution-match** comparison.
+
+**Execution match** (`run_bird_eval.py:47`, `eval_lightweight.py:70`):
+1. Strip `LIMIT` clauses from both generated and expected SQL
+2. Execute both against the same SQLite database
+3. Normalize rows (`sorted(tuple(str(v) for v in row))`)
+4. Return `True` if result sets are equal, `False` otherwise
+
+**Lightweight runner** also supports a **hybrid match** (`eval_lightweight.py:114`):
+1. **Level 1** — Normalized SQL string equality (fast pre-check): lowercase, strip whitespace, collapse punctuation spacing
+2. **Level 2** — Full execution match (fallback if Level 1 fails)
+
+| Runner | File | Pipeline | Last Recorded Accuracy |
+|--------|------|----------|------------------------|
+| **Full Graph** | `scripts/run_bird_eval.py` | Full `AgentGraph` (router → schema → memory → SQL gen → execution → post-process) | 4.17% (1/24 — most queries hit API rate limits) |
+| **Lightweight** | `scripts/eval_lightweight.py` | Direct LLM call with `SQL_GENERATION_PROMPT` — no agent graph overhead | **86.67%** (26/30 passed) |
+
+Per-difficulty breakdown (lightweight runner):
+
+| Difficulty | Pass Rate |
+|------------|-----------|
+| Easy | Highest |
+| Medium | Moderate |
+| Hard | Lowest (Arabic variants consistently fail — 4/4 failures) |
+
+Latency target: average **5.5s** per query (lightweight).
+
+> [!warning] Arabic SQL consistently underperforms
+> All 4 Arabic-language questions failed in the last lightweight eval run, suggesting the prompt-level Arabic handling (rule 22 of `SQL_GENERATION_PROMPT`) is insufficient for Arabic questions with complex schema joins or filtering.
+
+---
+
+#### 10e — Data Quality Metrics (Import Pipeline)
+
+**Defined in:** `app/services/import_providers/__init__.py:45` — `DataQualityReport` dataclass
+**Implemented in:** `app/services/import_providers/csv_provider.py:133`
+**When:** Computed during CSV file preview and import
+
+| Metric | Type | Calculation |
+|--------|------|-------------|
+| **total_rows** | Integer | `len(df)` |
+| **total_columns** | Integer | `len(df.columns)` |
+| **missing_values** | Dict[col → count] | Per-column `df[col].isna().sum()` |
+| **duplicate_rows** | Integer | `df.duplicated().sum()` |
+| **has_nulls** | Boolean | `len(missing_values) > 0` |
+| **has_duplicates** | Boolean | `duplicate_rows > 0` |
+
+Stored in the `datasets` table as `quality_report_json` and exposed via `GET /api/datasets/{id}`.
+
+---
+
+#### Supplementary Safety & Retrieval Metrics
+
+| Metric | Where | What It Does |
+|--------|-------|--------------|
+| **Forbidden Keyword Block** | `graph.py:454` `_validate_sql_keywords()` | Blocks `INSERT`/`UPDATE`/`DELETE`/`DROP`/`ALTER`/`TRUNCATE`/`GRANT`/`REVOKE`/`EXEC`. Returns error message if found. Read-only intent blocks DML; write intents only block destructive DDL. |
+| **Scenario Memory Similarity** | `scenario_memory.py:27` | Cosine similarity of hash-based token embeddings (512-dim). FAISS search with threshold ≥ **0.45**. Matched score is injected into AgentState as `scenario_similarity`. |
+| **LLM Query Validation** | `prompts.py:226` `VALIDATION_PROMPT` | Binary VALID/INVALID classification via LLM. Used during graph recovery loops to decide whether to re-execute or fail. |
+
+---
+
+#### No Formal Tests for Scoring Functions
+
+There are **no unit tests** that verify `evaluate_sql()` returns correct scores for known inputs. The integration test suite (`final_test/test_integrations.py`) tests that the `POST /api/evaluate` endpoint returns `success: true`, but does not validate score values. The LLM-as-Judge metrics (correctness, completeness, efficiency) have **no ground-truth dataset** for calibration.
 
 ---
 
@@ -324,12 +471,16 @@ backend/app/
 │   └── providers/                 # Groq, OpenRouter, Gemini, Azure, LiteLLM, Mock
 ├── models/
 │   └── schemas.py                 # Pydantic models
-└── services/
-    ├── db_service.py              # get_engine, get_source_schema, execute_query
-    ├── data_source_service.py     # Data source CRUD, Fernet-encrypted passwords
-    ├── visualization_service.py   # Auto-detect chart type, Plotly spec generation
-    ├── evaluation_service.py      # evaluate_sql, post_evaluation_to_langsmith
-    └── history_service.py         # Query history logging
+├── services/
+│   ├── db_service.py              # get_engine, get_source_schema, execute_query
+│   ├── data_source_service.py     # Data source CRUD, Fernet-encrypted passwords
+│   ├── visualization_service.py   # Auto-detect chart type, Plotly spec generation
+│   ├── evaluation_service.py      # evaluate_sql, post_evaluation_to_langsmith
+│   └── history_service.py         # Query history logging
+
+backend/scripts/
+├── run_bird_eval.py             # Full AgentGraph BIRD benchmark runner
+└── eval_lightweight.py          # Lightweight direct-LLM BIRD benchmark runner
 ```
 
 ---
@@ -350,12 +501,16 @@ backend/app/
 
 5. **Evaluation is fire-and-forget.** There is no way to tell from the API response whether evaluation ran. If `LANGCHAIN_API_KEY` is unset, import fails silently and evaluation is skipped. The daemon thread logs failures at `WARNING` level.
 
+6. **No formal unit tests for scoring.** The `evaluate_sql()` function has no ground-truth test cases. The LLM-as-Judge metrics (correctness, completeness, efficiency) are never validated against known-correct answers.
+
+7. **Arabic SQL consistently fails.** All 4 Arabic questions in the BIRD benchmark fail execution match, suggesting the prompt-level Arabic handling is insufficient.
+
 > [!bug] Code Quality
 
-6. **`approval_store.py`** (Redis-backed TTL store) is **dead code** — never referenced by any graph node or route handler.
+8. **`approval_store.py`** (Redis-backed TTL store) is **dead code** — never referenced by any graph node or route handler.
 
-7. **No token budget management.** For databases with hundreds of tables, the full unfiltered schema dump can exceed context windows. The context filter skips schemas ≤10 tables, but the filter LLM call itself must still handle the full schema text.
+9. **No token budget management.** For databases with hundreds of tables, the full unfiltered schema dump can exceed context windows. The context filter skips schemas ≤10 tables, but the filter LLM call itself must still handle the full schema text.
 
 > [!question] Design Decisions
 
-8. **Arabic question handling** relies entirely on one prompt rule (rule 22 in `SQL_GENERATION_PROMPT`). It contains a 4-step procedure with 15 Arabic→English keyword mappings. No Arabic-specific preprocessing, transliteration, or separate model.
+10. **Arabic question handling** relies entirely on one prompt rule (rule 22 in `SQL_GENERATION_PROMPT`). It contains a 4-step procedure with 15 Arabic→English keyword mappings. No Arabic-specific preprocessing, transliteration, or separate model.

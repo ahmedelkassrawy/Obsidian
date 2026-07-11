@@ -13,7 +13,7 @@
     color: #1e293b;
   }
   .arch-card {
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
     background: #ffffff;
     border-radius: 16px;
@@ -192,7 +192,53 @@
   /* Sidebar layout */
   .dp-panel { display: flex; gap: 20px; flex-wrap: wrap; }
   .dp-flow-main { flex: 1; min-width: 0; }
-  .dp-sidebar { width: 230px; flex-shrink: 0; }
+  .dp-sidebar { width: 250px; flex-shrink: 0; }
+
+  /* Eval metric badges */
+  .dp-metric-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin: 4px 0;
+  }
+  .dp-metric-badge {
+    font-size: 9.5px;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #334155;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .dp-metric-badge strong { color: #0f172a; }
+  .dp-metric-badge .tag {
+    font-size: 7.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    color: #64748b;
+    margin-left: 2px;
+  }
+  .dp-eval-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 5px 0;
+    border: 1px solid #e2e8f0;
+    font-size: 10.5px;
+    line-height: 1.5;
+  }
+  .dp-eval-box .title {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
 
   /* Gotcha cards */
   .dp-gotcha {
@@ -224,24 +270,11 @@
     letter-spacing: .6px;
     text-transform: uppercase;
     color: #94a3b8;
-    padding: 8px 0 4px;
+    padding: 9px 0 4px;
     border-top: 1px solid #e2e8f0;
     margin-top: 8px;
   }
   .dp-sidebar-section:first-of-type { border-top: 0; margin-top: 0; }
-
-  /* Parallel badge */
-  .dp-parallel-badge {
-    display: inline-block;
-    font-size: 9px;
-    font-weight: 600;
-    background: #eef2ff;
-    color: #4338ca;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin: 3px auto;
-    text-align: center;
-  }
 
   /* Stats row */
   .dp-stats {
@@ -277,7 +310,7 @@
 <div class="arch-card">
   <h1>DataPilot AI — Agent System Architecture</h1>
   <div class="subtitle">
-    Text-to-SQL LangGraph agent · 15 nodes · ~8 conditional routing points · LangSmith evaluation
+    Text-to-SQL LangGraph agent · 15 nodes · ~8 conditional routing points · 5-layer evaluation stack
   </div>
 
   <div class="dp-panel">
@@ -327,7 +360,7 @@
       </div>
 
       <!-- Phase 4: Memory -->
-      <div class="dp-phase">4 · Memory &amp; Scenario</div>
+      <div class="dp-phase">4 · Memory & Scenario</div>
       <div class="row">
         <div class="dp-node color-indigo">
           Load Memory
@@ -386,7 +419,7 @@
       </div>
 
       <!-- Phase 7: Execute + Fix -->
-      <div class="dp-phase">7 · Execution &amp; Retry</div>
+      <div class="dp-phase">7 · Execution & Retry</div>
       <div class="row">
         <div class="dp-node color-amber">
           Execute SQL
@@ -431,7 +464,7 @@
       </div>
 
       <!-- Phase 9: Document + Persist -->
-      <div class="dp-phase">9 · Document &amp; Persist</div>
+      <div class="dp-phase">9 · Document & Persist</div>
       <div class="row">
         <div class="dp-node color-slate">
           Document
@@ -458,41 +491,96 @@
       </div>
     </div>
 
-    <!-- Sidebar: Eval + Gotchas -->
+    <!-- Sidebar: Eval + Gotchas (expanded) -->
     <div class="dp-sidebar">
-      <div class="dp-sidebar-section">⏳ Background Evaluation</div>
-      <div class="dp-node color-purple" style="font-size:11px;min-width:0;width:100%;box-sizing:border-box;margin-bottom:4px;">
-        Evaluation Service
-        <small>daemon thread · fire-and-forget</small>
-        <div class="dp-tip dp-tip-wide" style="white-space:normal;width:240px;">Spawned after graph.invoke() returns. Runs SQL syntax check (regex), LLM correctness judge, schema relevance. Score = correctness×0.4 + completeness×0.25 + efficiency×0.15 + schema×0.1 + syntax×0.1. Posts to LangSmith if LANGCHAIN_API_KEY set. Always non-blocking.</div>
+
+      <div class="dp-sidebar-section">📐 Production SQL Quality (LLM-as-Judge)</div>
+      <div class="dp-eval-box">
+        <div class="title">evaluate_sql() · parallel LLM calls</div>
+        <div style="font-size:10px;color:#475569;line-height:1.45;margin-bottom:5px;padding:4px 6px;background:#f1f5f9;border-radius:4px;">
+          Measures per-query SQL quality via <strong>LLM-as-Judge</strong>. The LLM scores correctness, completeness, and efficiency against the question and result preview; a separate LLM call scores schema relevance.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>syntax</strong> — Valid SQL syntax via regex rules <span style="color:#64748b;font-size:9px;">✓/✗ (rule)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>correctness</strong> — SQL correctly answers the user's question <span style="color:#64748b;font-size:9px;">0.0–1.0 (LLM)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>completeness</strong> — All aspects of the question are covered <span style="color:#64748b;font-size:9px;">0.0–1.0 (LLM)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>efficiency</strong> — SQL is reasonably efficient for the task <span style="color:#64748b;font-size:9px;">0.0–1.0 (LLM)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>schema</strong> — Uses the correct tables and columns <span style="color:#64748b;font-size:9px;">0.0–1.0 (LLM)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#eef2ff;border:1px solid #a5b4fc;border-radius:4px;"><strong>overall</strong> — Weighted composite of all sub-scores <span style="color:#64748b;font-size:9px;">0.0–1.0 (composite)</span></div>
+        </div>
+        <div style="font-size:10px;color:#64748b;margin-top:3px;font-family:monospace;">
+          overall = correctness × 0.4 + completeness × 0.25 + efficiency × 0.15 + schema × 0.1 + syntax × 0.1
+        </div>
+        <div style="font-size:9.5px;color:#94a3b8;margin-top:3px;">
+          ⚡ 2 parallel LLM calls (correctness+efficiency per call, schema separate) · daemon thread after graph completes
+        </div>
       </div>
 
-      <div class="dp-sidebar-section">⚠ Architecture Notes</div>
+      <div class="dp-sidebar-section">🌐 LangSmith Observability</div>
+      <div class="dp-eval-box">
+        <div class="title">8 feedback keys · posted after each query</div>
+        <div style="font-size:10px;color:#475569;line-height:1.45;margin-bottom:5px;padding:4px 6px;background:#f1f5f9;border-radius:4px;">
+          Tracks production trends by posting <strong>8 feedback keys</strong> to LangSmith per query. Each key normalized to 0.0–1.0 (binary or scaled).
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>sql_syntax_valid</strong> — SQL passes regex validation <span style="color:#64748b;font-size:9px;">binary</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>overall_quality</strong> — Composite quality score for the query <span style="color:#64748b;font-size:9px;">0.0–1.0</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>correctness</strong> — SQL correctly answers the question <span style="color:#64748b;font-size:9px;">0.0–1.0</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>completeness</strong> — All question aspects covered <span style="color:#64748b;font-size:9px;">0.0–1.0</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>latency</strong> — Query execution time, normalized <span style="color:#64748b;font-size:9px;">min(lat/30s, 1.0)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>has_visualization</strong> — Visualization was generated <span style="color:#64748b;font-size:9px;">binary</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>results_count</strong> — Volume of returned rows, normalized <span style="color:#64748b;font-size:9px;">min(count/1000, 1.0)</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>insight_count</strong> — Number of insights generated, normalized <span style="color:#64748b;font-size:9px;">min(count/5, 1.0)</span></div>
+        </div>
+        <div style="font-size:9.5px;color:#94a3b8;margin-top:3px;">
+          latency normalized: <code>min(latency/30s, 1.0)</code> · results: <code>min(count/1000, 1.0)</code> · insights: <code>min(count/5, 1.0)</code>
+        </div>
+      </div>
 
-      <div class="dp-gotcha dp-gotcha-critical">
-        <strong>1.</strong> <code>fetch_schema_context</code> ignores injected <code>schema_service</code> param — dead async code exists but is never called by any graph node.
+      <div class="dp-sidebar-section">📊 System Operational Metrics</div>
+      <div class="dp-eval-box">
+        <div class="title">HistoryService · query_history SQLite table</div>
+        <div style="font-size:10px;color:#475569;line-height:1.45;margin-bottom:5px;padding:4px 6px;background:#f1f5f9;border-radius:4px;">
+          Monitors overall system health from the <strong>query_history</strong> SQLite table, updated on every query. Exposed via <code>GET /api/system/stats</code> and <code>/api/system/metrics</code>.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>success_rate</strong> — Percentage of queries that completed successfully <span style="color:#64748b;font-size:9px;">0–100%</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>avg_latency</strong> — Average query execution time <span style="color:#64748b;font-size:9px;">seconds</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>total_queries</strong> — Total number of queries executed <span style="color:#64748b;font-size:9px;">integer</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>viz_rate</strong> — Percentage of queries that generated a visualization <span style="color:#64748b;font-size:9px;">0–100%</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>14d trends</strong> — Daily totals (queries, successes, viz) over last 14 days <span style="color:#64748b;font-size:9px;">per day</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>chart breakdown</strong> — Count per chart type (bar, line, pie, etc.) <span style="color:#64748b;font-size:9px;">per type</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>total_sources</strong> — Number of registered data sources <span style="color:#64748b;font-size:9px;">integer</span></div>
+        </div>
       </div>
-      <div class="dp-gotcha dp-gotcha-critical">
-        <strong>2.</strong> <code>ANSWER_PROMPT</code> defined in <code>prompts.py</code> but <em>never invoked</em> by any node. No natural-language answer phase.
+
+      <div class="dp-sidebar-section">📈 BIRD Text-to-SQL Benchmark</div>
+      <div class="dp-eval-box" style="margin-bottom:4px;">
+        <div class="title">Execution Match · SQLite result comparison</div>
+        <div style="font-size:10px;color:#475569;line-height:1.45;margin-bottom:5px;padding:4px 6px;background:#f1f5f9;border-radius:4px;">
+          Offline text-to-SQL accuracy against <strong>30 known ground-truth queries</strong> across 3 databases + Arabic variants. Strips LIMIT clauses, executes both SQLs, and compares result sets. <strong>Range:</strong> pass/fail per query, reported as fraction and percentage.
+        </div>
+        <div style="font-size:16px;line-height:1.55;text-align:center;padding:4px 0;">
+          <span style="color:#22c55e;font-weight:700;">26/30</span>
+        </div>
       </div>
-      <div class="dp-gotcha dp-gotcha-warning">
-        <strong>3.</strong> Dual memory systems: <strong>ScenarioMemory</strong> (file + FAISS) and <strong>InMemoryStore</strong> both inject context into the SQL prompt — <em>potential duplication</em>.
+
+      <div class="dp-sidebar-section">📦 Data Quality (Import)</div>
+      <div class="dp-eval-box">
+        <div class="title">DataQualityReport · CSV pipeline</div>
+        <div style="font-size:10px;color:#475569;line-height:1.45;margin-bottom:5px;padding:4px 6px;background:#f1f5f9;border-radius:4px;">
+          Assesses <strong>imported CSV data hygiene</strong> per dataset during preview and import.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>total_rows</strong> — Number of rows in the dataset <span style="color:#64748b;font-size:9px;">integer</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>total_columns</strong> — Number of columns in the dataset <span style="color:#64748b;font-size:9px;">integer</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>missing_values</strong> — Null count per column <span style="color:#64748b;font-size:9px;">dict[col→count]</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>duplicate_rows</strong> — Number of completely duplicated rows <span style="color:#64748b;font-size:9px;">integer</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>has_nulls</strong> — Whether any column contains null values <span style="color:#64748b;font-size:9px;">boolean</span></div>
+          <div style="font-size:10px;padding:3px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;"><strong>has_duplicates</strong> — Whether any duplicate rows exist <span style="color:#64748b;font-size:9px;">boolean</span></div>
+        </div>
       </div>
-      <div class="dp-gotcha dp-gotcha-warning">
-        <strong>4.</strong> SQL cache: plain module dict, no true LRU, no TTL. Writes invalidate schema cache but <em>not</em> the stale cache — cached reads survive data changes.
-      </div>
-      <div class="dp-gotcha dp-gotcha-warning">
-        <strong>5.</strong> Arabic: single prompt rule with 15 keyword mappings. <em>No</em> preprocessing, transliteration, or separate model.
-      </div>
-      <div class="dp-gotcha dp-gotcha-critical">
-        <strong>6.</strong> <code>approval_store.py</code> (Redis-backed TTL store) — <em>dead code</em>, never referenced by any node or route.
-      </div>
-      <div class="dp-gotcha dp-gotcha-warning">
-        <strong>7.</strong> No token budget management. Full schema dumps can exceed context windows. Context filter skips ≤10 tables but the filter LLM call still gets the full text.
-      </div>
-      <div class="dp-gotcha dp-gotcha-info">
-        <strong>8.</strong> Evaluation is truly fire-and-forget — daemon thread, no signal in the response. Fails silently if <code>LANGCHAIN_API_KEY</code> is unset.
-      </div>
+
     </div>
   </div>
 </div>
