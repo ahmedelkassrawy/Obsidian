@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataPilot AI — Agent System Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #f1f5f9;
+    padding: 24px;
+    color: #1e293b;
+  }
+  .arch-card {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    padding: 32px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -.3px;
+    margin-bottom: 4px;
+    color: #0f172a;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* Flow layout */
+  .dp-phase {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: center;
+    padding: 8px 0 4px;
+    margin-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    position: relative;
+  }
+  .dp-phase:first-of-type { border-top: none; margin-top: 0; }
+  .dp-phase::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .dp-phase:first-of-type::before { display: none; }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 4px 0;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .row-label {
+    width: 90px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+    text-align: right;
+    padding-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Nodes */
+  .dp-node {
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: default;
+    position: relative;
+    transition: all .2s ease;
+    border: 2px solid transparent;
+    min-width: 110px;
+    text-align: center;
+    line-height: 1.35;
+  }
+  .dp-node:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+  .dp-node small {
+    font-weight: 400;
+    font-size: 10px;
+    opacity: .8;
+    display: block;
+    margin-top: 2px;
+  }
+  .dp-node-sm {
+    font-size: 11px;
+    padding: 6px 12px;
+    min-width: 80px;
+  }
+
+  .dp-arrow { color: #94a3b8; font-size: 18px; flex-shrink: 0; margin: 0 2px; }
+  .dp-arrow-down { color: #94a3b8; font-size: 14px; display: block; text-align: center; margin: 0; line-height: 1; }
+  .dp-retry-dash { font-size: 11px; color: #94a3b8; text-align: center; margin: 2px 0; }
+
+  /* Color classes */
+  .color-blue { background: #eff6ff; border-color: #93c5fd; color: #1e3a5f; }
+  .color-indigo { background: #eef2ff; border-color: #a5b4fc; color: #1e1b4b; }
+  .color-teal { background: #f0fdfa; border-color: #5eead4; color: #134e4a; }
+  .color-amber { background: #fffbeb; border-color: #fcd34d; color: #78350f; }
+  .color-green { background: #f0fdf4; border-color: #86efac; color: #14532d; }
+  .color-slate { background: #f8fafc; border-color: #cbd5e1; color: #334155; }
+  .color-red { background: #fef2f2; border-color: #fca5a5; color: #7f1d1d; }
+  .color-purple { background: #faf5ff; border-color: #c4b5fd; color: #3b0764; }
+  .color-rose { background: #fff1f2; border-color: #fda4af; color: #881337; }
+
+  /* Branch containers */
+  .dp-branch {
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 4px 8px;
+    background: rgba(0,0,0,.015);
+  }
+  .dp-branch-label {
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 4px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+
+  /* Tooltip */
+  .dp-tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 20;
+    line-height: 1.45;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  }
+  .dp-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1e293b;
+  }
+  .dp-node:hover .dp-tip { display: block; }
+  .dp-tip-wide { white-space: normal; width: 260px; }
+
+  /* Parallel nodes */
+  .dp-parallel {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .dp-parallel .dp-node {
+    flex: 1;
+    min-width: 120px;
+    max-width: 220px;
+  }
+
+  .dp-inline-icon { margin-right: 4px; }
+
+  /* Sidebar layout */
+  .dp-panel { display: flex; gap: 20px; flex-wrap: wrap; }
+  .dp-flow-main { flex: 1; min-width: 0; }
+  .dp-sidebar { width: 230px; flex-shrink: 0; }
+
+  /* Gotcha cards */
+  .dp-gotcha {
+    font-size: 10.5px;
+    color: #475569;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 7px 10px;
+    margin: 4px 0;
+    border-left: 3px solid #cbd5e1;
+    line-height: 1.45;
+    transition: background .15s;
+  }
+  .dp-gotcha:hover { background: #f1f5f9; }
+  .dp-gotcha strong { color: #334155; }
+  .dp-gotcha-critical { border-left-color: #f87171; }
+  .dp-gotcha-warning { border-left-color: #fbbf24; }
+  .dp-gotcha-info { border-left-color: #60a5fa; }
+  .dp-gotcha code {
+    font-size: 10px;
+    background: #e2e8f0;
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  .dp-sidebar-section {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    padding: 8px 0 4px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 8px;
+  }
+  .dp-sidebar-section:first-of-type { border-top: 0; margin-top: 0; }
+
+  /* Parallel badge */
+  .dp-parallel-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 3px auto;
+    text-align: center;
+  }
+
+  /* Stats row */
+  .dp-stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 6px 0;
+    flex-wrap: wrap;
+  }
+  .dp-stat {
+    font-size: 11px;
+    color: #64748b;
+    background: #f8fafc;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+  }
+  .dp-stat strong { color: #334155; }
+
+  @media (max-width: 680px) {
+    body { padding: 12px; }
+    .arch-card { padding: 16px; }
+    .dp-sidebar { width: 100%; }
+    .row-label { width: 60px; font-size: 10px; }
+    .dp-node { font-size: 12px; padding: 6px 10px; min-width: 70px; }
+    .dp-parallel .dp-node { min-width: 80px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="arch-card">
+  <h1>DataPilot AI — Agent System Architecture</h1>
+  <div class="subtitle">
+    Text-to-SQL LangGraph agent · 15 nodes · ~8 conditional routing points · LangSmith evaluation
+  </div>
+
+  <div class="dp-panel">
+    <!-- Main Flow -->
+    <div class="dp-flow-main">
+
+      <!-- Phase 1: Entry -->
+      <div class="dp-phase">1 · Entry</div>
+      <div class="row">
+        <div class="dp-node color-blue">
+          POST /api/query
+          <small>validates + warms connection</small>
+          <div class="dp-tip">Validates question and source_id. Warms connection string via data_source_service. Generates a thread_id.</div>
+        </div>
+        <span class="dp-arrow">→</span>
+        <div class="dp-node color-blue">
+          AgentGraph.run()
+          <small>invoke StateGraph</small>
+          <div class="dp-tip">Entry point. Constructs StateGraph(AgentState) with 18 fields. Exposes run() and resume(). Records query history in finally block.</div>
+        </div>
+      </div>
+
+      <!-- Phase 2: Router -->
+      <div class="dp-phase">2 · Router</div>
+      <div class="row">
+        <div class="dp-node color-indigo" style="min-width:180px;">
+          Intent Router
+          <small>INQUIRE · ADD · UPDATE · DELETE</small>
+          <div class="dp-tip">Regex fast-path first, then LLM fallback with INTENT_ROUTER_PROMPT (20 max_tokens). Defaults to INQUIRE on failure.</div>
+        </div>
+      </div>
+
+      <!-- Phase 3: Schema -->
+      <div class="dp-phase">3 · Schema Intelligence</div>
+      <div class="row">
+        <div class="dp-node color-indigo">
+          Fetch Schema
+          <small>SQLAlchemy Inspector</small>
+          <div class="dp-tip">Ignores injected schema_service param. Filters Oracle system tables and MSSQL replication tables. Cached in _SCHEMA_CACHE.</div>
+        </div>
+        <span class="dp-arrow">→</span>
+        <div class="dp-node color-indigo">
+          Filter Schema
+          <small>LLM prune (≥10 tables)</small>
+          <div class="dp-tip">LLM prunes to relevant tables for the query. Skips entirely if schema has ≤10 tables (context_filtering.py:13).</div>
+        </div>
+      </div>
+
+      <!-- Phase 4: Memory -->
+      <div class="dp-phase">4 · Memory &amp; Scenario</div>
+      <div class="row">
+        <div class="dp-node color-indigo">
+          Load Memory
+          <small>LangGraph InMemoryStore</small>
+          <div class="dp-tip">Queries up to 3 past query memories for this source_id from LangGraph's InMemoryStore.</div>
+        </div>
+        <span class="dp-arrow">→</span>
+        <div class="dp-node color-indigo" style="min-width:160px;">
+          Scenario Lookup
+          <small>FAISS similarity ≥ 0.45</small>
+          <div class="dp-tip dp-tip-wide">Searches file-backed FAISS index over scenarios.md. Hash-based embedding (token → bucket mod 512, L2-normalized). Injects 10 most recent entries regardless of match.</div>
+        </div>
+      </div>
+
+      <!-- Phase 5: SQL Gen -->
+      <div class="dp-phase">5 · SQL Generation</div>
+      <div class="dp-branch">
+        <div class="dp-branch-label">READ INTENTS</div>
+        <div class="row">
+          <div class="dp-node color-teal dp-node-sm">
+            Scenario Matched?
+            <div class="dp-tip dp-tip-wide">If FAISS match ≥ 0.45, pre-populates state.sql with the past solution, skipping generation entirely.</div>
+          </div>
+          <span class="dp-arrow">→</span>
+          <div class="dp-node color-teal">
+            Generate SQL (SELECT)
+            <small>28 rules · sanitize output</small>
+            <div class="dp-tip dp-tip-wide">SQL_GENERATION_PROMPT with 28 rules covering DISTINCT, ORDER BY, aggregations, Arabic questions, fuzzy table matching. System: "raw SQL only, no markdown, no backticks". Sanitized via _sanitize_sql().</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-branch">
+        <div class="dp-branch-label">WRITE INTENTS</div>
+        <div class="row">
+          <div class="dp-node color-teal">
+            Generate Mod SQL
+            <small>ADD · UPDATE · DELETE</small>
+            <div class="dp-tip dp-tip-wide">Uses intent-specific prompts: SQL_ADD_PROMPT, SQL_UPDATE_PROMPT, SQL_DELETE_PROMPT. Checks for mock output after generation.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 6: Approval -->
+      <div class="dp-phase">6 · Approval (Write Intents)</div>
+      <div class="row">
+        <div class="dp-node color-amber" style="min-width:180px;">
+          Approval Node
+          <small>interrupt() via checkpointer</small>
+          <div class="dp-tip dp-tip-wide">Only reached for write intents. CLI mode prompts stdin. API flow calls interrupt() — pauses graph execution. Route POST /query/approval resumes via Command(resume=approved).</div>
+        </div>
+      </div>
+      <div class="row" style="gap:6px;">
+        <div class="dp-node color-green dp-node-sm">✅ Approved → Execute SQL</div>
+        <span style="color:#94a3b8;font-size:13px;">·</span>
+        <div class="dp-node color-rose dp-node-sm">❌ Denied → End</div>
+      </div>
+
+      <!-- Phase 7: Execute + Fix -->
+      <div class="dp-phase">7 · Execution &amp; Retry</div>
+      <div class="row">
+        <div class="dp-node color-amber">
+          Execute SQL
+          <small>validate · cache · run</small>
+          <div class="dp-tip dp-tip-wide">Validates forbidden keywords (DDL always blocked, DML blocked for INQUIRE). Checks _STALE_CACHE for reads. DBService.run_query() fetches up to 1000 rows. On write success, invalidates schema cache.</div>
+        </div>
+        <span class="dp-arrow">↔</span>
+        <div class="dp-node color-red">
+          Fix SQL
+          <small>retry ≤ 3 attempts</small>
+          <div class="dp-tip dp-tip-wide">On failure + retry_count < 3: constructs SQL_FIX_PROMPT with error message, asks LLM to rewrite SQL, re-executes. Alternates with sql_execution_node for attempts 2+.</div>
+        </div>
+      </div>
+      <div class="dp-retry-dash">⤴ retry loop: fix_sql_node ↔ sql_execution_node</div>
+      <div class="row" style="gap:6px;margin-top:2px;">
+        <div class="dp-node color-green dp-node-sm">✅ Success → Post Process</div>
+        <span style="color:#94a3b8;font-size:13px;">·</span>
+        <div class="dp-node color-red dp-node-sm">❌ Fail ≥ 3 → Scenario Failure → Lesson → Doc</div>
+      </div>
+
+      <!-- Phase 8: Post Process -->
+      <div class="dp-phase">8 · Post Process (Parallel)</div>
+      <div class="dp-parallel">
+        <div class="dp-node color-green">
+          <strong>Visualization</strong>
+          <small>auto-detect chart → Plotly JSON</small>
+          <div class="dp-tip dp-tip-wide">Runs generate_visualization() which auto-detects chart type from query results and returns a full Plotly JSON spec.</div>
+        </div>
+        <div class="dp-node color-green">
+          <strong>Insights</strong>
+          <small>bilingual [{ar}, {en}]</small>
+          <div class="dp-tip dp-tip-wide">Sends first 20 rows (5 columns) to LLM via INSIGHT_PROMPT. Returns array of {ar, en} objects. Falls back gracefully on empty results or parse failure.</div>
+        </div>
+        <div class="dp-node color-green">
+          <strong>Suggestions</strong>
+          <small>3 follow-up questions</small>
+          <div class="dp-tip dp-tip-wide">Sends question + SQL + schema + 3-row preview to LLM via SUGGESTION_PROMPT. Returns exactly 3 suggestions. Skipped for ≤1 result row.</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin:4px 0;">
+        <span class="dp-parallel-badge">⚡ ThreadPoolExecutor(max_workers=3) — runs concurrently</span>
+      </div>
+
+      <!-- Phase 9: Document + Persist -->
+      <div class="dp-phase">9 · Document &amp; Persist</div>
+      <div class="row">
+        <div class="dp-node color-slate">
+          Document
+          <small>QueryDocument model</small>
+          <div class="dp-tip dp-tip-wide">Constructs QueryDocument Pydantic model: question, sql, results, results_count, visualization, insights, suggestions, executed_at. Logged at INFO level.</div>
+        </div>
+        <span class="dp-arrow">→</span>
+        <div class="dp-node color-slate">
+          Persist Memory
+          <small>InMemoryStore · query history</small>
+          <div class="dp-tip">Saves query summary to LangGraph's InMemoryStore under namespace (source_id, "query_history").</div>
+        </div>
+        <span class="dp-arrow">→</span>
+        <div class="dp-node color-green dp-node-sm">✔ Response Returned</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="dp-stats">
+        <span class="dp-stat"><strong>15</strong> graph nodes</span>
+        <span class="dp-stat"><strong>~8</strong> conditional routes</span>
+        <span class="dp-stat"><strong>18</strong> AgentState fields</span>
+        <span class="dp-stat"><strong>3</strong> max retries</span>
+        <span class="dp-stat"><strong>3</strong> parallel workers</span>
+      </div>
+    </div>
+
+    <!-- Sidebar: Eval + Gotchas -->
+    <div class="dp-sidebar">
+      <div class="dp-sidebar-section">⏳ Background Evaluation</div>
+      <div class="dp-node color-purple" style="font-size:11px;min-width:0;width:100%;box-sizing:border-box;margin-bottom:4px;">
+        Evaluation Service
+        <small>daemon thread · fire-and-forget</small>
+        <div class="dp-tip dp-tip-wide" style="white-space:normal;width:240px;">Spawned after graph.invoke() returns. Runs SQL syntax check (regex), LLM correctness judge, schema relevance. Score = correctness×0.4 + completeness×0.25 + efficiency×0.15 + schema×0.1 + syntax×0.1. Posts to LangSmith if LANGCHAIN_API_KEY set. Always non-blocking.</div>
+      </div>
+
+      <div class="dp-sidebar-section">⚠ Architecture Notes</div>
+
+      <div class="dp-gotcha dp-gotcha-critical">
+        <strong>1.</strong> <code>fetch_schema_context</code> ignores injected <code>schema_service</code> param — dead async code exists but is never called by any graph node.
+      </div>
+      <div class="dp-gotcha dp-gotcha-critical">
+        <strong>2.</strong> <code>ANSWER_PROMPT</code> defined in <code>prompts.py</code> but <em>never invoked</em> by any node. No natural-language answer phase.
+      </div>
+      <div class="dp-gotcha dp-gotcha-warning">
+        <strong>3.</strong> Dual memory systems: <strong>ScenarioMemory</strong> (file + FAISS) and <strong>InMemoryStore</strong> both inject context into the SQL prompt — <em>potential duplication</em>.
+      </div>
+      <div class="dp-gotcha dp-gotcha-warning">
+        <strong>4.</strong> SQL cache: plain module dict, no true LRU, no TTL. Writes invalidate schema cache but <em>not</em> the stale cache — cached reads survive data changes.
+      </div>
+      <div class="dp-gotcha dp-gotcha-warning">
+        <strong>5.</strong> Arabic: single prompt rule with 15 keyword mappings. <em>No</em> preprocessing, transliteration, or separate model.
+      </div>
+      <div class="dp-gotcha dp-gotcha-critical">
+        <strong>6.</strong> <code>approval_store.py</code> (Redis-backed TTL store) — <em>dead code</em>, never referenced by any node or route.
+      </div>
+      <div class="dp-gotcha dp-gotcha-warning">
+        <strong>7.</strong> No token budget management. Full schema dumps can exceed context windows. Context filter skips ≤10 tables but the filter LLM call still gets the full text.
+      </div>
+      <div class="dp-gotcha dp-gotcha-info">
+        <strong>8.</strong> Evaluation is truly fire-and-forget — daemon thread, no signal in the response. Fails silently if <code>LANGCHAIN_API_KEY</code> is unset.
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
