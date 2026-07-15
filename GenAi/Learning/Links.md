@@ -33,3 +33,4 @@ https://www.linkedin.com/feed/update/urn:li:activity:7468219777061351424/
 https://www.linkedin.com/in/meguebli-yosra/
 
 [(1) Ahmed on X: "كلام مممتاز جدا جدا جدا عن LLM الفديو دا المفروض يتذاكر كل يوم مرتين او حاجه" / X](https://x.com/ahmedsbytes/status/2055222513974596086)
+[(1) عمر on X: "أنا بحاول ما أتكلمش عند الناس علشان ما يتفهمش كلامي غلط، بس شايف للأسف إن developers شطار جدًا ودماغهم حلوة، ومجرورين ورا إغراءات ال AI tools إنهم بقوا يقدروا يعملوا SaaS بسرعة جدًا وب quality كويسة، وبيطلعوا أفكار حلوة بس الفكرة كلها سؤال منطقي: لو ال SaaS بقى سهل جدًا إنه" / X](https://x.com/omarlebda/status/2007969288402178141)
