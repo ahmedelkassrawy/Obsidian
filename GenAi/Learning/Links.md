@@ -32,3 +32,4 @@ https://www.linkedin.com/feed/update/urn:li:activity:7468767459798347777/
 https://www.linkedin.com/feed/update/urn:li:activity:7468219777061351424/
 https://www.linkedin.com/in/meguebli-yosra/
 
+[(1) Ahmed on X: "كلام مممتاز جدا جدا جدا عن LLM الفديو دا المفروض يتذاكر كل يوم مرتين او حاجه" / X](https://x.com/ahmedsbytes/status/2055222513974596086)
