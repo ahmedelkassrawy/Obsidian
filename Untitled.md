@@ -28,5 +28,30 @@ int main()
     cout<<arr[1]<<endl;
     cout<<arr[2]<<endl;
 }
+```
 
+---
+Intersection 
+```c++
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    long long l1,r1;
+    long long l2,r2;
+    cin>> l1 >> r1 >> l2 >> r2;
+
+    
+    long long l = max(l1,l2);
+    long long r = min(r1,r2);
+
+    if(l <= r) cout<<l<<" "<<r<<endl;
+    else cout<<-1<<endl;
+
+    return 0;
+}
 ```
