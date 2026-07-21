@@ -55,3 +55,29 @@ int main()
     return 0;
 }
 ```
+
+To get the numbers and reverse or digits
+```c++
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    int original = n;
+    int reversed = 0;
+
+    while (n)
+    {
+        reversed = reversed * 10 + n % 10;
+        n /= 10;
+    }
+
+    cout << reversed << "\n";
+    cout << (original == reversed ? "YES" : "NO") << "\n";
+
+    return 0;
+}
+```
