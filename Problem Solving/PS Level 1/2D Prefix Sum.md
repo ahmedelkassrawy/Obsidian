@@ -82,27 +82,23 @@ for (int i = 1; i <= n; i++)
 
 Note there is no separate `a[][]` array — you can read straight into the prefix if you don't need the original grid.
 
-### Alternative: row‑wise prefix first
+### Alternative: row‑wise then column‑wise
 
-You can also build row‑wise 1D prefixes first, then (optionally) collapse columns — useful when a problem only needs horizontal ranges per row:
+Build 1D prefix per row, then add the column prefix on top:
 
 ```C++
 int v[n + 1][m + 1], p[n + 1][m + 1] = {};
 
 for (int i = 1; i <= n; i++)
     for (int j = 1; j <= m; j++)
-        p[i][j] = v[i][j] + p[i][j - 1];       // prefix of row i only
+        p[i][j] = v[i][j] + p[i][j - 1];
+
+for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++)
+        p[i][j] += p[i - 1][j];
 ```
 
-Now `p[i][j]` = sum of `v[i][1..j]`. To get the full 2D prefix, add a second pass that goes column‑wise:
-
-```C++
-for (int j = 1; j <= m; j++)
-    for (int i = 1; i <= n; i++)
-        p[i][j] += p[i - 1][j];                 // now p is the full 2D prefix
-```
-
-The inclusion‑exclusion formula on line 31 does both passes in one, but the two‑pass approach is easier to reason about when debugging.
+The inclusion‑exclusion formula on line 31 does both in one pass, but the two‑pass approach is easier to reason about when debugging.
 
 ## Querying a rectangle — inclusion / exclusion again
 
