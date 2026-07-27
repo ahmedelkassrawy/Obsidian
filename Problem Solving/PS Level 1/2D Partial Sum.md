@@ -17,10 +17,10 @@ In 1D you turned a tap on at `l` and off at `r+1` — 2 cells.
 In 2D, "turn on at a corner" leaks into the whole quadrant below-right of it, so you need **4 cells** to carve out exactly one rectangle:
 
 ```C++
-d[r1  ][c1  ] += v;     // turn ON  the whole quadrant from (r1,c1) down-right
-d[r1  ][c2+1] -= v;     // cancel everything to the RIGHT of the rectangle
-d[r2+1][c1  ] -= v;     // cancel everything BELOW the rectangle
-d[r2+1][c2+1] += v;     // that bottom-right corner got cancelled TWICE -> add it back
+d[r1][c1] += v;  // turn ON  the whole quadrant from (r1,c1) down-right
+d[r1][c2+1] -= v;  // cancel everything to the RIGHT of the rectangle
+d[r2+1][c1] -= v;   // cancel everything BELOW the rectangle
+d[r2+1][c2+1] += v; // that bottom-right corner got cancelled TWICE -> add it back
 ```
 
 It is the **same inclusion–exclusion as [[2D Prefix Sum]]**, just applied to the update instead of the query. Same four terms, same signs (`+ - - +`).
