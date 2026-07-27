@@ -1,9 +1,6 @@
 # Two Pointers
 
 Related: [[Sliding window Tips]] (the same-direction family) · [[Binary Search.2]] · [[Prefix Sum]]
-
-> **What was missing in this vault:** you already had the *same-direction* form (documented as sliding window). This note covers the family properly, and especially the **opposite-direction** form — `l` at the front, `r` at the back, walking towards each other — which had no note anywhere.
-
 ## The three families
 
 | Family | Movement | Prerequisite | Typical use |
