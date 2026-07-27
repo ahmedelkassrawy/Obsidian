@@ -1,6 +1,19 @@
 # 2D Prefix Sum
 
-Related: [[Prefix Sum]] (1D) · [[2D Partial Sum]] (the inverse operation)
+Related: [[2D Partial Sum]] (the inverse operation)
+
+## 1D prefix sum (refresher)
+
+Given an array `a[1..n]`, `p[i] = a[1] + a[2] + ... + a[i]` (sum of first i elements).
+
+```C++
+for (int i = 1; i <= n; i++)
+    p[i] = p[i - 1] + a[i];
+```
+
+Subarray sum `a[l..r]` = `p[r] - p[l - 1]` in O(1).
+
+2D prefix sum is the same idea extended to two dimensions — build once, query any rectangle in O(1).
 
 ## The problem it solves
 
@@ -68,6 +81,28 @@ for (int i = 1; i <= n; i++)
 ```
 
 Note there is no separate `a[][]` array — you can read straight into the prefix if you don't need the original grid.
+
+### Alternative: row‑wise prefix first
+
+You can also build row‑wise 1D prefixes first, then (optionally) collapse columns — useful when a problem only needs horizontal ranges per row:
+
+```C++
+int v[n + 1][m + 1], p[n + 1][m + 1] = {};
+
+for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m; j++)
+        p[i][j] = v[i][j] + p[i][j - 1];       // prefix of row i only
+```
+
+Now `p[i][j]` = sum of `v[i][1..j]`. To get the full 2D prefix, add a second pass that goes column‑wise:
+
+```C++
+for (int j = 1; j <= m; j++)
+    for (int i = 1; i <= n; i++)
+        p[i][j] += p[i - 1][j];                 // now p is the full 2D prefix
+```
+
+The inclusion‑exclusion formula on line 31 does both passes in one, but the two‑pass approach is easier to reason about when debugging.
 
 ## Querying a rectangle — inclusion / exclusion again
 
