@@ -63,22 +63,39 @@ Trace on `target = 13`:
 This is the shape that shows up more often in contests than "find one pair":
 
 ```C++
-sort(a.begin(), a.end());
+int n,target;
+cin>>n>>target;
 
-int l = 0, r = n - 1;
-long long cnt = 0;
-while (l < r)
+vector<int> v(n);
+for(int i = 0; i < n; i++)
 {
-    if (a[l] + a[r] <= X)
-    {
-        cnt += (r - l); //a[l] pairs with EVERY element from l+1..r, all are <= a[r]
-        l++;
-    }
-    else r--;
+	cin>>v[i];
 }
+
+sort(v.begin(), v.end());
+
+int l = 0;
+int r = n - 1;
+long long cnt = 0;
+
+while(l < r)
+{
+	if(v[l] + v[r] <= target)
+	{
+		cnt += (r - l);
+		l++;
+	}
+	else
+	{
+		r--;
+	}
+}
+
+cout<<cnt<<"\n";
+return 0;
 ```
 
-The `cnt += (r - l)` line is the one to understand, not memorise: if `a[l] + a[r]` already fits, then `a[l]` plus *anything between them* fits too, because the array is sorted. You count `r - l` pairs in one step instead of a loop.
+When v[l] + v[r] <= target, it means v[l] plus any element at positions l+1 through r (all ≤ v[r]) also sums to ≤ target. So we count all (r - l) pairs with the current v[l] at once, then move l inward — we're done with that smallest element.
 
 ### Palindrome check
 
