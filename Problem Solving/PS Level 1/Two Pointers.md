@@ -71,7 +71,7 @@ while (l < r)
 {
     if (a[l] + a[r] <= X)
     {
-        cnt += (r - l);   // a[l] pairs with EVERY element from l+1..r, all are <= a[r]
+        cnt += (r - l); //a[l] pairs with EVERY element from l+1..r, all are <= a[r]
         l++;
     }
     else r--;
