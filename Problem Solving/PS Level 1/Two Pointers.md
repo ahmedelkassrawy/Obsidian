@@ -121,25 +121,61 @@ while (l < r)
 The standard escalation: an O(n³) problem becomes O(n²).
 
 ```C++
-sort(a.begin(), a.end());
-for (int i = 0; i < n - 2; i++)
+vector<int> nums(n);
+
+for(int i = 0; i < n; i++)
 {
-    if (i > 0 && a[i] == a[i-1]) continue;      // skip duplicate first element
-    int l = i + 1, r = n - 1;
-    while (l < r)
-    {
-        long long sum = (long long)a[i] + a[l] + a[r];
-        if (sum == 0)
-        {
-            // record triple (a[i], a[l], a[r])
-            while (l < r && a[l] == a[l+1]) l++;   // skip duplicates
-            while (l < r && a[r] == a[r-1]) r--;
-            l++; r--;
-        }
-        else if (sum < 0) l++;
-        else              r--;
-    }
+	cin>>nums[i];
 }
+
+sort(nums.begin(), nums.end());
+
+for(int i = 0; i < n - 2; i++) //we say minus 2 because we have two pointers already
+{
+	if(i > 0 && nums[i] == nums[i - 1])
+	{
+		continue;
+	}
+	if(nums[i] > 0) //that means that the numbers at the left and right will be positive as well, so we can break the loop
+	{
+		break;
+	}
+
+	int l = i + 1;
+	int r = nums.size() - 1;
+
+	while(l < r)
+	{
+		long long sum = nums[i] + nums[l] + nums[r];
+
+		if(sum == 0)
+		{
+			cout<<nums[i]<<" "<<nums[l]<<" "<<nums[r]<<"\n";
+
+			while(l < r && nums[l] == nums[l + 1])
+			{
+				l++;
+			}
+
+			while(l < r && nums[r] == nums[r - 1])
+			{
+				r--;
+			}
+			
+			l++;
+			r--;
+		}
+		else if(sum < 0)
+		{
+			l++;
+		}
+		else
+		{
+			r--;
+		}
+	}
+
+	return 0;
 ```
 
 **Fix one element, two-point the rest** is a pattern you should recognise instantly.
