@@ -28,3 +28,5 @@ Agents are different from traditional software:
 - Small prompt changes cause dramatic behavior shifts and different tool calls
 
 To accommodate all these differences, agents need systematic evaluation, not just "happy path" testing. **Which means assessing the agent's entire decision-making process - including the final response and the path it took to get the response (trajectory)!**
+
+See [[Agent Evaluation]] for the full framework — metrics, harness requirements, and the golden rule (evaluate the whole cognitive system, not just the model).

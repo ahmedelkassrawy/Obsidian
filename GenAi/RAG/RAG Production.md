@@ -136,3 +136,51 @@ Install observability → **measure** where time is actually spent.
 Never optimize based on intuition alone.
 
 ---
+
+## 5. The Semantic Gap — Why Most RAG Problems Are Retrieval Problems
+
+> *"If your RAG depends solely on Vector Search... then you have a Retrieval Problem, not a Model Problem."*
+
+The **Semantic Gap** is the disconnect between how a user phrases a query and how the source document expresses the same intent. Example:
+
+- User: *"The product turned out to be damaged"*
+- Document: *"Refund and Replacement Policy"* or *"Return Eligibility"*
+
+An embedding model may fail to connect the two even though they share the same intent. The fix is **not** a better LLM — it's a better **retrieval pipeline**.
+
+### Multi-stage Retrieval Architecture
+
+In production, the retrieval pipeline typically looks like this:
+
+```
+User Query
+    ↓
+Query Reformulation      ← HyDE / Query Expansion
+    ↓
+Hybrid Retrieval          ← Vector Search + BM25
+    ↓
+Metadata Filtering       ← Intent tags, business categories, entity linking
+    ↓
+Cross-Encoder Re-ranking  ← Replace cosine similarity with a cross-encoder
+    ↓
+Context Compression      ← Extract relevant spans, reduce noise
+    ↓
+LLM Generation           ← The LLM is the last step, not the first
+```
+
+Each stage addresses a specific failure mode:
+
+| Stage | Technique | What It Solves |
+|---|---|---|
+| Query Reformulation | HyDE / Query Expansion | Vague or terse queries that don't match document wording |
+| Hybrid Retrieval | Vector Search + BM25 | Semantic misses (BM25 catches exact keyword matches, vectors catch meaning) |
+| Metadata Filtering | Intent tags, categories, entity linking | Raw text ambiguity — structured context narrows the search space |
+| Cross-Encoder Re-ranking | Cross-encoder scores on top-50 docs | Cosine similarity is a weak relevance signal; cross-encoders are far more precise |
+| Graph-aware Retrieval | Knowledge Graphs + Graph Traversal | Multi-step relationships vector search can't express |
+| Context Compression | Extract relevant spans | Too many noisy documents dilute LLM performance |
+
+### The Key Insight
+
+> "The LLM is the last step in the pipeline, not the first. Most RAG problems aren't solved by changing the model, but by improving retrieval quality and context engineering."
+
+If you had budget to improve only one component in a RAG system, the most leveraged choice is usually the **retrieval pipeline** (multi-stage architecture) — not the embedding model, not the re-ranker, and not the chunking strategy — because it governs what reaches the LLM in the first place.
