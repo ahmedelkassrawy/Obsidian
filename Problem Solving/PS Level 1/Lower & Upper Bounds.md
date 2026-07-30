@@ -81,4 +81,4 @@ long long count = right - left; // 3 elements
 
 This will include all elements `x` where `l <= x <= r`.
 
-[[Binary Search.2]][[Binary Search]]
+[[Problem Solving/PS Level 1/Binary Search]][[DSA/Binary Search]]

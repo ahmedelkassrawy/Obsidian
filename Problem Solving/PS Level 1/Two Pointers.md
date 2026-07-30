@@ -1,6 +1,6 @@
 # Two Pointers
 
-Related: [[Sliding window Tips]] (the same-direction family) · [[Binary Search.2]] · [[Prefix Sum]]
+Related: [[Sliding window Tips]] (the same-direction family) · [[Problem Solving/PS Level 1/Binary Search]] · [[Prefix Sum]]
 ## The three families
 
 | Family | Movement | Prerequisite | Typical use |
