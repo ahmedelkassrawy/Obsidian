@@ -110,26 +110,30 @@ Sieve of Eratosthenes. Two outputs in one pass:
 Any prime marks all of its multiples as non-prime; the first prime to touch a number records itself as that number's smallest prime factor.
 
 ```C++
-// fills is_prime[] and divide[] (smallest prime factor) up to n
-void sieve(int n, vector<bool> &is_prime, vector<int> &divide)
+void sieve(int n , vector<bool> &is_prime, vector<int> &divide)
 {
     is_prime.assign(n + 1, true);
     divide.assign(n + 1, 0);
 
-    // 0 and 1 are not prime -> set manually
     is_prime[0] = is_prime[1] = false;
 
-    for (int i = 2; i <= n; i++) // 0 and 1 already handled
+    for(int i = 2; i <= n; i++)
     {
-        if (is_prime[i]) // still true => i is prime
-        {
-            divide[i] = i; // a prime's smallest prime factor is itself
+        divide[i] = i;
+    }
 
-            for (int j = 2 * i; j <= n; j += i) // the multiples of i
+    for(int i = 2; i * i <= n; i++)
+    {
+        if(is_prime[i])
+        {
+            for(int j = i * i; j <= n; j += i)
             {
                 is_prime[j] = false;
-                if (divide[j] == 0)   // first prime to reach j
-                    divide[j] = i;    // record smallest prime factor
+                
+                if(divide[j] == j)
+                {
+                    divide[j] = i;
+                }
             }
         }
     }
