@@ -7,6 +7,7 @@ using namespace std;
 vector<int> divisor(int n)
 {
     vector<int> ret;
+    
     for(int i = 0; i * i <= n; i++)
     {
         if(n % i == 0) //this means i is a divisor
