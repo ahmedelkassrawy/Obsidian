@@ -9,28 +9,28 @@ Core building blocks: finding divisors, prime factorization (three flavors), and
 Trick: divisors come in **pairs**. If `i` divides `n`, then `n / i` divides it too — so we only loop up to `√n` and grab both sides of each pair.
 
 ```C++
-#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
-
-vector<int> divisors(int n)
+vector<int> prime(int n) 
 {
     vector<int> ret;
 
-    // start at 1 (NOT 0 -> n % 0 is division by zero)
-    for (int i = 1; i * i <= n; i++)
+    // Step 1: Check every number up to the square root of n
+    for (int i = 2; i * i <= n; i++) 
     {
-        if (n % i == 0) // i is a divisor
+        // Step 2: Keep dividing n by i as long as it's a factor
+        while (n % i == 0) 
         {
-            ret.push_back(i);            // small side of the pair
-            if (i * i != n)              // avoid pushing sqrt twice (e.g. 25 -> 5)
-                ret.push_back(n / i);    // big side of the pair
-            // 12: i=3 gives divisor 3 AND its partner 12/3 = 4
-            // 25: i=5 gives 5 only, since 5*5 == 25
+            ret.push_back(i);
+            n /= i;
         }
     }
-    return ret; // not sorted; sort(ret.begin(), ret.end()) if you need order
+
+    // Step 3: If n is still greater than 1, the leftover is a prime itself
+    if (n > 1) 
+    {
+        ret.push_back(n);
+    }
+
+    return ret;
 }
 ```
 
