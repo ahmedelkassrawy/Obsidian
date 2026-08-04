@@ -368,8 +368,107 @@ int main() {
 > Because `s` is a copy per frame, the `s -= arr[idx]` isn't strictly required for correctness (the child's changes don't leak back). But `ds` **is** shared by reference, so its `pop_back` undo *is* mandatory. Keeping both undos side by side makes the pattern uniform and easy to extend.
 
 ---
+## 8. Minimum Difference — Split an Array into Two Groups
 
-## 8. Print Numbers with Backtracking
+### Concept
+
+- Assign **every** element to one of two buckets, then minimize `|sum1 - sum2|`.
+- At each index there are exactly **two choices**: add `arr[idx]` to bucket 1, or add it to bucket 2.
+- Explore both, and **return the better (smaller) of the two** — this is *return-value* backtracking: instead of printing at the leaf, each level hands an answer up and the parent picks the minimum.
+- **Base case:** once `idx == n`, every element has been placed → the difference `|sum1 - sum2|` is final; return it.
+
+### Example
+
+- Array: `{1, 6, 11, 5}`
+- Best split: `{1, 6, 5}` (sum 12) vs `{11}` (sum 11) → difference `1`
+- Output: `1`
+
+```c++
+#include <iostream>
+#include <vector>
+#include <map>
+#include <math.h>
+#include <algorithm>
+#include <numeric>
+#include <unordered_map>
+
+using namespace std;
+
+int diff(int n, int idx , int sum1 , int sum2, vector<int> &arr)
+{
+    if(idx == n)
+    {
+        return abs(sum1 - sum2);
+    }
+
+    int op1 = diff(n, idx + 1, sum1 + arr[idx], sum2, arr);
+    int op2 = diff(n, idx + 1, sum1, sum2 + arr[idx], arr);
+
+    return min(op1, op2);
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+
+    for(int i = 0; i < n; i++)
+    {
+        cin>>arr[i];
+    }
+
+    cout<<diff(n, 0, 0, 0, arr)<<"\n";
+}
+```
+
+### How it runs (line by line)
+
+1. `diff(n, 0, 0, 0, arr)` — start at index `0`, both buckets empty.
+2. `op1 = diff(..., idx+1, sum1 + arr[idx], sum2, ...)` — the **"put `arr[idx]` in bucket 1"** branch.
+3. `op2 = diff(..., idx+1, sum1, sum2 + arr[idx], ...)` — the **"put `arr[idx]` in bucket 2"** branch.
+4. `return min(op1, op2)` — bubble the smaller difference up to the caller.
+5. At `idx == n` the recursion stops and reports `abs(sum1 - sum2)` for that one complete assignment.
+
+The whole call tree is a binary tree of depth `n`: each level branches into "bucket 1 / bucket 2", the $2^n$ leaves are the $2^n$ ways to split the array, and `min` sifts the best one back to the root.
+
+> [!note] Why there's no `push_back`/`pop_back` here
+> Sections 6–7 carried a shared `vector<int> &ds` and had to `pop_back` to undo. Here the "state" is just two **integers passed by value** (`sum1`, `sum2`). Each frame gets its own copies, so a child's additions never leak back to the parent — **no manual undo needed.** Passing state by value is the cleanest form of backtracking when the state is small (a couple of numbers or a running total).
+
+> [!info] Complexity
+> $O(2^n)$ — two branches at each of `n` levels. Fine up to ~`n ≤ 20`. Beyond that this exact problem becomes the classic **subset-sum / partition DP** ($O(n \cdot \text{totalSum})$), because the only thing that matters at a leaf is one bucket's sum (the other is `total - sum1`).
+
+### Reusing this pattern (the important part)
+
+This is the **"assign each item to one of K options, optimize a value"** template — one of the most reusable recursion shapes there is. The skeleton:
+
+```cpp
+int solve(int idx, /* running state */, ...) {
+    if (idx == n) return costOfLeaf(state);     // 1. base case: score this full assignment
+    int best = INF;                             // (or -INF / 0, depending on the goal)
+    for (each choice c at position idx)         // 2. try every option for this item
+        best = min(best, solve(idx + 1, stateAfter(c), ...));
+    return best;                                // 3. return the best result upward
+}
+```
+
+Swap three things and it solves a whole family of problems:
+
+| Change | Turns it into |
+|---|---|
+| `return min(...)` → `return max(...)` | maximize instead of minimize (e.g. best score) |
+| 2 branches → K branches (a loop over choices) | assign items to **K** groups / K colors / K machines |
+| leaf returns a **count** (`return 1;` and sum branches) | *count* the ways instead of optimizing |
+| leaf returns a **bool** (`op1 || op2`) | *feasibility* — "does any split reach target?" (subset-sum) |
+| add memoization on the distinguishing state | promote it to DP when $2^n$ is too slow |
+
+> [!tip] When to reach for it
+> Whenever a problem says *"partition / distribute / assign each element and minimize/maximize/count something"* — array partition, [load balancing across workers](https://en.wikipedia.org/wiki/Partition_problem), painter's partition, tug-of-war, "split into two equal-sum halves". Start with exactly this `diff`-style recursion to get a correct brute force, **then** add a `dp[idx][state]` cache if the constraints demand it. Getting the recursion right first is what makes the DP step easy — see [[Dynamic Programming]].
+
+---
+
+## 9. Print Numbers with Backtracking
 
 ### Concept
 
@@ -434,11 +533,12 @@ int main() {
 | Pattern | Where the work goes | Effect | Section |
 |---|---|---|---|
 | Print pre-call | before recursion | top-down (in-order) | [[#1 Basic Recursion Printing Numbers\|§1]] |
-| Print post-call | after recursion | bottom-up (reversed) | [[#1 Basic Recursion Printing Numbers\|§1]], [[#8 Print Numbers with Backtracking\|§8]] |
+| Print post-call | after recursion | bottom-up (reversed) | [[#1 Basic Recursion Printing Numbers\|§1]], [[#9 Print Numbers with Backtracking\|§9]] |
 | Accumulate on return | `return x + f(...)` | fold/aggregate | [[#2 Sum from 1 to n accumulate on return\|§2]] |
 | Two pointers | shrink `l++`, `r--` | in-place reversal / palindrome | [[#3 Array Reversal two pointers\|§3]], [[#4 Palindrome Check\|§4]] |
 | Memoization | cache in `dp[]` | kill repeated subproblems | [[#5 Fibonacci with Memoization\|§5]] |
 | Pick / don't-pick | `push` → recurse → `pop` | enumerate all subsets | [[#6 Backtracking Print All Subsets\|§6]], [[#7 Backtracking Subsets with a Given Sum\|§7]] |
+| Assign to K groups + optimize | branch per choice, `min`/`max` on return | partition / distribute / minimize diff | [[#8 Minimum Difference Split an Array into Two Groups\|§8]] |
 
 ## See also
 
