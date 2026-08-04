@@ -1,12 +1,38 @@
+---
+title: Recursion Notes
+tags:
+  - problem-solving
+  - recursion
+  - backtracking
+  - competitive-programming
+aliases:
+  - Recursion
+---
+
+# Recursion Notes
+
+> [!abstract] What's in here
+> Recursion from the ground up: how the call stack drives execution order, the classic patterns (linear recursion, accumulate-on-return, two-pointer, memoization), and the pick/don't-pick backtracking template that powers subset generation.
+
+> [!tip] The mental model
+> Every recursive function answers three questions:
+> 1. **Base case** — when do I stop?
+> 2. **Work** — what do I do at this level?
+> 3. **Recurrence** — how do I shrink the problem toward the base case?
+>
+> The subtle part is *when* the work happens: **before** the recursive call (top-down, on the way *in*) or **after** it (bottom-up, on the way *out* — "backtracking").
+
+---
+
 ## 1. Basic Recursion: Printing Numbers
 
 ### Concept
 
-- **Pre-call vs. Post-call execution** affects the order of operations.
-- When the print statement is before the recursive call, it executes bottom-up.
-- When the print statement is after the recursive call, it executes top-down (backtracking).
+- **Pre-call vs. post-call execution** decides the order of operations.
+- Print **before** the recursive call → runs on the way in (top-down).
+- Print **after** the recursive call → runs on the way out (during backtracking).
 
-### Example 1: Print Before Recursive Call
+### Example 1 — Print *before* the recursive call
 
 - Stack fills: `main -> f(3,3) + print(3) -> f(2,3) + print(2) -> f(1,3) + print(1)`
 - Output: `3 2 1`
@@ -28,7 +54,7 @@ int main() {
 }
 ```
 
-### Example 2: Print After Recursive Call
+### Example 2 — Print *after* the recursive call
 
 - Stack fills: `main -> f(3,3) -> f(2,3) -> f(1,3) -> top`
 - Prints during backtracking: `print(1) -> print(2) -> print(3)`
@@ -51,16 +77,22 @@ int main() {
 }
 ```
 
-## 2. Factorial (Sum Up to n)
+> [!note] The one-line difference
+> Both functions count down the same way. Only the **position of the `cout`** relative to `f(i - 1, n)` changes — and that flips the output from descending to ascending. This is the single most important intuition in recursion.
+
+---
+
+## 2. Sum from 1 to n (accumulate on return)
 
 ### Concept
 
-- Recursive function to compute `n + (n-1) + ... + 1`.
-- Call stack evaluates from innermost call outward.
+- Recursively compute `n + (n-1) + ... + 1`.
+- Each frame adds its own `n`, then trusts the recursive call to return the sum of everything smaller.
+- The additions actually happen as the stack **unwinds**.
 
 ### Example
 
-- For `n = 3`: `main -> fact(3) = 3 + fact(2) -> 3 + 2 + fact(1) -> 3 + 2 + 1`
+- For `n = 3`: `fact(3) = 3 + fact(2) = 3 + (2 + fact(1)) = 3 + 2 + 1 + fact(0)`
 - Output: `6`
 
 ```cpp
@@ -80,12 +112,21 @@ int main() {
 }
 ```
 
-## 3. Array Reversal
+> [!warning] It's a *sum*, not a factorial
+> Despite the name `fact`, this computes $\sum_{k=1}^{n} k = \tfrac{n(n+1)}{2}$, **not** $n!$. For a true factorial the base case returns `1` and the operator is `*`:
+> ```cpp
+> if (n == 0) return 1;
+> return n * fact(n - 1);
+> ```
+
+---
+
+## 3. Array Reversal (two pointers)
 
 ### Concept
 
-- Swap elements from both ends of the array recursively.
-- Base case: when left index `l` is greater than or equal to right index `r`.
+- Swap the outermost pair, then recurse inward on the rest.
+- **Base case:** left index `l >= r` — the pointers met (or crossed), nothing left to swap.
 
 ### Example
 
@@ -115,17 +156,23 @@ int main() {
 }
 ```
 
+> [!note] Feeding the example
+> `main` reads `l` and `r` from input, so to reverse the whole 5-element array you'd type `0 4`. In general pass `f(0, size - 1)`.
+
+---
+
 ## 4. Palindrome Check
 
 ### Concept
 
-- Check if a string is a palindrome by comparing characters from both ends.
-- Base case: when index `i` reaches or exceeds half the string length.
+- Compare characters from both ends inward: `s[i]` vs `s[n - i - 1]`.
+- **Base case:** once `i` reaches the middle (`i >= n / 2`), all pairs matched → it's a palindrome.
+- Any mismatch short-circuits to `false` immediately.
 
 ### Example
 
 - Input: `n = 5, s = "radar"`
-- Checks: `s[0] == s[4]`, `s[1] == s[3]`, etc.
+- Checks: `s[0] == s[4]`, `s[1] == s[3]` (middle char `s[2]` is skipped)
 - Output: `YES`
 
 ```cpp
@@ -155,17 +202,22 @@ int main()
 }
 ```
 
+> [!tip] Why only `n / 2` checks
+> Each comparison validates **two** characters at once, so you only need to reach the halfway point. The middle character of an odd-length string never needs checking — it's its own mirror.
+
+---
+
 ## 5. Fibonacci with Memoization
 
 ### Concept
 
-- Compute Fibonacci numbers using recursion with memoization to avoid redundant calculations.
-- Store results in a `dp` array to optimize performance.
+- Plain recursive Fibonacci recomputes the same subproblems exponentially often.
+- **Memoization** caches each result in a `dp` array; a value is computed once, then reused in $O(1)$.
 
 ### Example
 
-- For `n = 5`: Computes `fib(5) = fib(4) + fib(3)` with memoized values.
-- Output: `5` (Fibonacci sequence: 0, 1, 1, 2, 3, 5)
+- For `n = 5`: `fib(5) = fib(4) + fib(3)`, reusing memoized `fib(3)`, `fib(2)`…
+- Output: `5` (sequence: 0, 1, 1, 2, 3, 5)
 
 ```cpp
 #include <iostream>
@@ -195,17 +247,31 @@ int main()
 }
 ```
 
+> [!info] Complexity: exponential → linear
+> | Version | Time | Why |
+> |---|---|---|
+> | Naive `fib(n-1) + fib(n-2)` | $O(\varphi^{\,n}) \approx O(2^n)$ | each call spawns two, subtrees overlap |
+> | Memoized (above) | $O(n)$ | each `dp[n]` filled exactly once |
+>
+> `-1` is the "not computed yet" sentinel — safe here because no Fibonacci value is negative.
+
+> [!warning] Overflow
+> `int` Fibonacci overflows around `fib(47)`. Use `long long` (and a matching `dp`) for larger `n`.
+
+---
+
 ## 6. Backtracking: Print All Subsets
 
 ### Concept
 
-- Generate all possible subsets of an array using backtracking.
-- At each index, decide to include or exclude the element.
+- Walk the array index by index; at each element make a binary choice: **exclude it** or **include it**.
+- That's the universal **pick / don't-pick** pattern — `push_back` → recurse → `pop_back` (undo).
+- Reaching `idx == n` means one complete subset has been decided → print it.
 
 ### Example
 
 - Array: `{1, 2, 3}`
-- Output: All subsets including `{}`, `{1}`, `{2}`, `{3}`, `{1, 2}`, etc.
+- Output: all $2^3 = 8$ subsets — `{}`, `{1}`, `{2}`, `{3}`, `{1,2}`, … `{1,2,3}`
 
 ```cpp
 #include <iostream>
@@ -241,17 +307,28 @@ int main()
 }
 ```
 
-## 7. Backtracking: Subsets with Given Sum
+> [!note] The two recursive calls
+> - First `printt(idx + 1, …)` — the **don't-pick** branch (element left out).
+> - Then `push_back`, recurse (the **pick** branch), then `pop_back` to restore `ds` before returning to the caller.
+>
+> The `pop_back` is the heart of backtracking: it rewinds the shared `ds` so the next branch starts from a clean state.
+
+> [!info] Complexity
+> $O(2^n)$ leaves × $O(n)$ to print each ⇒ $O(n \cdot 2^n)$. Passing `ds` by reference (`&`) avoids copying the vector on every call.
+
+---
+
+## 7. Backtracking: Subsets with a Given Sum
 
 ### Concept
 
-- Find all subsets of an array that sum to a given value.
-- Track the current sum and include/exclude elements recursively.
+- Same pick/don't-pick skeleton, but carry a running `s` (current sum).
+- At a full subset (`idx == n`), print it **only if** `s == sum`.
 
 ### Example
 
-- Array: `{1, 2, 3}`, Target sum: `5`
-- Output: `{2, 3}`
+- Array: `{1, 2, 3}`, target `sum = 5`
+- Output: `2 3`
 
 ```cpp
 #include <iostream>
@@ -287,20 +364,23 @@ int main() {
 }
 ```
 
+> [!tip] `s` is passed by value — no manual undo needed
+> Because `s` is a copy per frame, the `s -= arr[idx]` isn't strictly required for correctness (the child's changes don't leak back). But `ds` **is** shared by reference, so its `pop_back` undo *is* mandatory. Keeping both undos side by side makes the pattern uniform and easy to extend.
+
+---
+
 ## 8. Print Numbers with Backtracking
 
 ### Concept
 
-- **Backtracking** involves making recursive calls first and performing actions (e.g., printing) during the unwinding of the call stack.
-- For printing from **1 to N**, recursive calls reach the base case, then print in ascending order.
-- For printing from **N to 1**, recursive calls reach the base case, then print in descending order.
+- **Backtracking** here means: recurse first, act (print) on the way back up.
+- Whether you count *up* or *down* in the recursion decides which direction the printing runs.
 
-### Example 1: Print from N to 1 (Backtracking)
+### Example 1 — count up, print on the way back → `5 4 3 2 1`
 
-- **Logic**: Make recursive calls until `i > n`, then print `i` during backtracking.
-- Stack: `main -> f(1,n) -> f(2,n) -> ... -> f(n+1,n)` (base case), then print `1, 2, ..., n`.
-- Input: `n = 5`
-- Output: `5 4 3 2 1`
+- **Logic:** recurse `i + 1` until `i > n` (base case), then print `i` while unwinding.
+- Stack: `main -> f(1,n) -> f(2,n) -> ... -> f(n+1,n)` (base), then prints `n, n-1, ..., 1`.
+- Input: `n = 5` → Output: `5 4 3 2 1`
 
 ```cpp
 #include <iostream>
@@ -320,12 +400,11 @@ int main() {
 }
 ```
 
-### Example 2: Print from N to 1 (Backtracking)
+### Example 2 — count down, print on the way back → `1 2 3 4 5`
 
-- **Logic**: Make recursive calls until `i < 1`, then print `i` during backtracking.
-- Stack: `main -> f(n,n) -> f(n-1,n) -> ... -> f(0,n)` (base case), then print `n, n-1, ..., 1`.
-- Input: `n = 5`
-- Output: `1 2 3 4 5`
+- **Logic:** recurse `i - 1` until `i < 1` (base case), then print `i` while unwinding.
+- Stack: `main -> f(n,n) -> f(n-1,n) -> ... -> f(0,n)` (base), then prints `1, 2, ..., n`.
+- Input: `n = 5` → Output: `1 2 3 4 5`
 
 ```cpp
 #include <iostream>
@@ -344,3 +423,25 @@ int main() {
     return 0;
 }
 ```
+
+> [!note] Deepest frame prints first
+> Because the print is *after* the recursive call, the **last** frame pushed is the **first** to print. So counting *up* to `n` and printing on return yields `n … 1`, while counting *down* yields `1 … n` — the reverse of what the recursion direction alone suggests. (Both headings read "N to 1", but Example 2 actually prints `1 → 5`.)
+
+---
+
+## Pattern cheat-sheet
+
+| Pattern | Where the work goes | Effect | Section |
+|---|---|---|---|
+| Print pre-call | before recursion | top-down (in-order) | [[#1 Basic Recursion Printing Numbers\|§1]] |
+| Print post-call | after recursion | bottom-up (reversed) | [[#1 Basic Recursion Printing Numbers\|§1]], [[#8 Print Numbers with Backtracking\|§8]] |
+| Accumulate on return | `return x + f(...)` | fold/aggregate | [[#2 Sum from 1 to n accumulate on return\|§2]] |
+| Two pointers | shrink `l++`, `r--` | in-place reversal / palindrome | [[#3 Array Reversal two pointers\|§3]], [[#4 Palindrome Check\|§4]] |
+| Memoization | cache in `dp[]` | kill repeated subproblems | [[#5 Fibonacci with Memoization\|§5]] |
+| Pick / don't-pick | `push` → recurse → `pop` | enumerate all subsets | [[#6 Backtracking Print All Subsets\|§6]], [[#7 Backtracking Subsets with a Given Sum\|§7]] |
+
+## See also
+
+- [[Number Theory]] — modular arithmetic, binary exponentiation (itself a divide-and-conquer recursion)
+- [[Backtracking]]
+- [[Dynamic Programming]]
