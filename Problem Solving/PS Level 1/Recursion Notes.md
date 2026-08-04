@@ -136,16 +136,21 @@ using namespace std;
 string s;
 int n;
 
-bool f(int i) {
+bool f(int i) 
+{
     if (i >= (n / 2)) return true;
     if (s[i] != s[n - i - 1]) return false;
+
     return f(i + 1);
 }
 
-int main() {
+int main() 
+{
     cin >> n >> s;
+
     if (f(0)) cout << "YES";
     else cout << "NO";
+
     return 0;
 }
 ```
@@ -170,16 +175,22 @@ using namespace std;
 int n;
 vector<int> dp(1000, -1);
 
-int fib(int n) {
+int fib(int n) 
+{
     if (n == 0) return 0;
     if (n == 1) return 1;
+    
     if (dp[n] != -1) return dp[n];
+    
     return dp[n] = fib(n - 1) + fib(n - 2);
 }
 
-int main() {
+int main() 
+{
     cin >> n;
+    
     cout << fib(n);
+    
     return 0;
 }
 ```
