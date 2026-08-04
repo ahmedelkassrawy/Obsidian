@@ -278,16 +278,20 @@ int main() {
 #include <vector>
 using namespace std;
 
-bool isSafe(vector<vector<int>>& board, int row, int col, int n) {
+bool isSafe(vector<vector<int>>& board, int row, int col, int n) 
+{
     // Check column
     for (int i = 0; i < row; i++)
-        if (board[i][col]) return false;
+        if (board[i][col] == 1) return false;
+        
     // Check upper-left diagonal
     for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
-        if (board[i][j]) return false;
+        if (board[i][j] == 1) return false;
+        
     // Check upper-right diagonal
     for (int i = row, j = col; i >= 0 && j < n; i--, j++)
-        if (board[i][j]) return false;
+        if (board[i][j] == 1) return false;
+        
     return true;
 }
 
