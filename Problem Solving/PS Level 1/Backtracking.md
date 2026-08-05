@@ -258,6 +258,29 @@ int main() {
 - Space Complexity: O(k) for recursion stack.
 - Using `start` ensures elements are picked in order, avoiding duplicates.
 
+### Why the For-Loop Pattern Needs Only One Recursive Call
+
+It is incredibly common to mix this up! You were likely thinking of the "Pick / Don't Pick" style of backtracking, which does use two recursive calls. Here is why this specific pattern (the For-Loop pattern) only needs one.
+
+**The Role of the For-Loop**
+
+In this pattern, the `for` loop's job is to say: "For this specific spot in my combination, let me try every possible valid number." When you are inside the loop looking at a specific number `i`, you do exactly three things in order:
+
+1. **Choose**: `ds.push_back(i);` (You say: "Let's include `i` in my current combination.")
+2. **Explore**: `combine(i + 1, ds);` (You say: "Now that I have `i`, go find the rest of the numbers I need from the remaining pool.")
+3. **Un-choose**: `ds.pop_back();` (You say: "I am done exploring combinations that use `i` in this spot. Let me take it out.")
+
+Once you pop it out, the `for` loop automatically moves to `i + 1`. That is your "don't pick" action! The loop handles skipping to the next number for you.
+
+**What happens if you have two calls?**
+
+If you had a recursive call before you pushed `i`, you would be telling the program: "Go explore the rest of the numbers without putting anything in my array yet." Because you are inside a loop, you would be triggering this "empty" exploration over and over again for every single step of the loop, which causes a massive explosion of duplicate and incorrect combinations.
+
+**Summary**
+
+- **For-Loop Pattern**: 1 loop + 1 recursive call. The loop iterates through your choices; the recursive call explores the consequences of one choice.
+- **Pick / Don't Pick Pattern**: 0 loops + 2 recursive calls. One call includes the item, the other skips it entirely.
+
 ## 4. N-Queens
 
 **Description**: Place N queens on an NxN chessboard such that no two queens threaten each other (no two queens share the same row, column, or diagonal).
