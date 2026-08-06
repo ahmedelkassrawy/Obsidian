@@ -51,14 +51,14 @@ vector<int> getbinary(long long n,long long base)
 
 These are special buttons that work on **all the switches at once**.
 
-| Button | Name | What it does (for a 6-year-old) |
-|--------|------|----------------------------------|
-| `&`  | AND  | Keeps a switch ON only if **both** were ON |
-| `\|` | OR   | Turns a switch ON if **either** was ON |
-| `^`  | XOR  | ON only if the two are **different** |
-| `~`  | NOT  | Flips **every** switch (on↔off) |
-| `<<` | Left shift  | Push all switches to the **left** |
-| `>>` | Right shift | Push all switches to the **right** |
+| Button | Name        | What it does (for a 6-year-old)            |
+| ------ | ----------- | ------------------------------------------ |
+| `&`    | AND         | Keeps a switch ON only if **both** were ON |
+| ` \| ` | OR          | Turns a switch ON if **either** was ON     |
+| `^`    | XOR         | ON only if the two are **different**       |
+| `~`    | NOT         | Flips **every** switch (on↔off)            |
+| `<<`   | Left shift  | Push all switches to the **left**          |
+| `>>`   | Right shift | Push all switches to the **right**         |
 
 > ⚠️ Careful: `&&` and `||` (doubles) are the "yes/no" logic buttons — **not** the switch buttons. Use single `&` and `|` for bits.
 
