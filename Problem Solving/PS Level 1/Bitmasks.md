@@ -130,22 +130,6 @@ bool checkbit(long long n,long long i)
 }
 ```
 
-Same idea, written the long way (this one uses a big-number `1LL`):
-
-```c++
-bool check_bit(int n, long long i)
-{
-    if ((n & (1LL << i)) != 0) // i starts from zero to get the first digit
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-```
-
 ### Flip switch number `bit` (toggle)
 
 XOR with a single ON switch flips it — on becomes off, off becomes on:
@@ -154,14 +138,6 @@ XOR with a single ON switch flips it — on becomes off, off becomes on:
 long long togglebit(long long n,long long bit)
 {
 	return (n ^ (1ll << bit));
-}
-```
-
-```c++
-long long toggle_bit(long long n, long long bit)
-{
-    return (n ^ (1LL << bit)); // starts from zero
-    // bits are numbered from right to left
 }
 ```
 
