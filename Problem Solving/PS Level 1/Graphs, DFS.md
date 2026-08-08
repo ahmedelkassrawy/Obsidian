@@ -930,6 +930,81 @@ Every single problem above is the **same tiny DFS** with a small twist. Once you
 
 ---
 
+```c++
+#include <iostream>
+#include <vector>
+#include <map>
+#include <math.h>
+#include <algorithm>
+#include <numeric>
+#include <unordered_map>
+#include <set>
+
+using namespace std;
+
+int dx[] = {0, 1, -1, 0};
+int dy[] = {1, 0, 0, -1};
+
+vector<vector<int>> vis;
+vector<string> board;
+
+int n, m;
+
+void dfs(int i, int j)
+{
+    vis[i][j] = 1;
+
+    for(int k = 0; k < 4; k++)
+    {
+        int ni = i + dx[k];
+        int nj = j + dy[k];
+
+        if(ni >= 0 && ni < n && nj >= 0 && nj < m)
+        {
+            if(!vis[ni][nj] && board[ni][nj] == '.')
+            {
+                dfs(ni, nj);
+            }
+        }
+    }
+}
+
+int main() 
+{
+    // Optimize standard I/O operations for speed
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n >> m;
+
+    // Resizing to exactly n and m is sufficient (0-indexed)
+    vis.resize(n, vector<int>(m, 0));
+    board.resize(n);
+
+    for(int i = 0; i < n; i++)
+    {
+        cin >> board[i];
+    }
+
+    // FIX 2: Only declare ans here, removed the global declaration
+    int ans = 0; 
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(board[i][j] == '.' && !vis[i][j])
+            {
+                ans++;
+                dfs(i, j);
+            }
+        }
+    }
+
+    cout << ans << "\n";
+    return 0;
+}
+```
+
 ## Quick complexity note
 
 Building the adjacency list and running DFS both take about **`O(n + m)`** time — you touch every node once and every edge twice. That's as fast as it gets for these problems, and it's why the **adjacency list** ([§3c](#3c-adjacency-list--each-node-keeps-a-list-of-its-neighbors-)) is the default choice.
