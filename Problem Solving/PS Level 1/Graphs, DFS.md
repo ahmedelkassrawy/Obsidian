@@ -481,10 +481,10 @@ int main()
         {
             cout<<u<<' ';
         }
-        cout<<endl;
+        cout<<"\n";
     }
 
-    cout<<ans<<endl;
+    cout<<ans<<"\n";
 }
 ```
 
@@ -547,11 +547,9 @@ void DFS(int u)
 
     for(auto v:adj_list[u])
     {
-
-
         if(!vis[v])
         {
-            DFS(v,u);
+            DFS(v);
         }
     }
 }
@@ -589,9 +587,6 @@ int main()
     //to check if this graph was a forest or not
 }
 ```
-
-> [!bug] Heads-up: small typo in this snippet
-> Inside `DFS`, the call reads `DFS(v,u)` but the function is declared as `DFS(int u)` (one argument). This won't compile as-is. Either change the declaration to `void DFS(int u, int p)` (like the cycle version below) or make the call `DFS(v)`. The *tree/forest logic itself is correct* — this is just a signature mismatch to fix before running.
 
 ---
 
