@@ -88,6 +88,8 @@ graph LR
 > [!tip] When is this good?
 > Great for **storing** edges. **Bad** for asking *"is 2 connected to 4?"* because you'd have to scan the whole list. To make that lookup fast, the second half of your code uses a `set` (sorted + fast search).
 
+**📄 Code — Edge list:** read all edges into a list, then use a `set` to answer *"is there an edge between u and v?"* queries fast.
+
 ```C++
 vector<pair<int,int>> edge_list(m);
 
@@ -101,14 +103,14 @@ for(int i = 0; i < m;i++)
 	cout<<edge_list[i].first<<" "<<edge_list[i].second<<endl;
 }
 
-set<pair<int,int>> edge_list;
+set<pair<int,int>> edge_set;
 for(int i = 0; i < m; i++)
 {
 	int u , v;
 	cin>>u>>v;
 
-	edge_list.insert({u,v});
-	edge_list.insert({v,u});
+	edge_set.insert({u,v});
+	edge_set.insert({v,u});
 }
 
 int q;
@@ -119,7 +121,7 @@ while(q--)
 	int u,v;
 	cin>>u>>v;
 
-	if(edge_list.find({u,v}) != edge_list.end())
+	if(edge_set.find({u,v}) != edge_set.end())
 	{
 		cout<<"YES"<<endl;
 	}
@@ -158,6 +160,8 @@ Read row `2`: it has `1`s in columns `1, 3, 4` → node 2 is connected to 1, 3, 
 > - ✅ **Instant** "is i connected to j?" — just check `mat[i][j]`.
 > - ❌ Wastes memory: always uses `n²` cells even if there are few edges. For `n = 100000` this is impossible.
 > - Notice the grid is **symmetric** across the diagonal (mirror image) — again because the graph is undirected.
+
+**📄 Code — Adjacency matrix:** build the `n × n` grid of 0/1 flags from the edges, then print it out.
 
 ```C++
 vector<vector<int>> mat(n+1,vector<int>(n+1,0));
@@ -200,6 +204,8 @@ Node 6 -> [5]
 > - ✅ Uses only as much memory as there are edges (fast **and** small).
 > - ✅ Looping over "all neighbors of `u`" is trivial — exactly what DFS needs.
 > - This is why the matrix is `n²` but the list is roughly `2·m`.
+
+**📄 Code — Adjacency list (the setup template):** read the edges and store each node's neighbors. This exact `main()` is the skeleton every DFS problem below reuses.
 
 ```C++
 #include <iostream>
@@ -278,6 +284,8 @@ graph TD
 
 ### The code
 
+**📄 Code — DFS (the core function):** mark the current node, then dive into every unvisited neighbor. This tiny function is the engine behind every section that follows.
+
 ```C++
 void DFS(int u)
 {
@@ -331,6 +339,8 @@ graph TD
 > One DFS call visits **exactly one whole component** (remember: DFS from 1 reached 1,2,3,4 and stopped). So:
 >
 > **Loop through every node. Each time you find an unvisited one, that's a brand-new component → count it, then DFS to "paint" the whole blob as visited.**
+
+**📄 Code — Count connected components:** loop over all nodes; every unvisited node starts a new blob (`ans++`) and one DFS paints that whole blob.
 
 ```C++
 #include <iostream>
@@ -404,6 +414,8 @@ Output: **2**. ✅
 ### Variant: actually collecting each component's nodes
 
 Same idea, but instead of just counting, we save the nodes. `tmp` gathers nodes during one DFS; when that DFS finishes, `tmp` holds one full component, so we push it into `comps` and clear `tmp` for the next blob.
+
+**📄 Code — Collect the nodes of each component:** same loop, but DFS records nodes into `tmp`, which gets saved into `comps` after each blob is finished.
 
 ```C++
 #include <iostream>
@@ -513,6 +525,8 @@ The two output lines use these counts:
 - **Tree?** → `ans == 1` (one component) **AND** `m == n - 1` (right number of edges).
 - **Forest?** → `m == n - ans`. (Each of the `ans` trees uses one fewer edge than it has nodes, so a forest of `ans` trees has exactly `n - ans` edges total.)
 
+**📄 Code — Tree / forest check:** count components with DFS, then compare the edge count `m` against `n-1` (tree) and `n-ans` (forest).
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -598,6 +612,8 @@ graph TD
     style 1 fill:#f87171,stroke:#dc2626
     style 3 fill:#f87171,stroke:#dc2626
 ```
+
+**📄 Code — Undirected cycle detection:** DFS carries a `parent`; if it meets an already-visited neighbor that *isn't* the parent, there's a loop.
 
 ```C++
 #include <iostream>
@@ -687,6 +703,8 @@ graph LR
 
 Why gray-vs-black matters: hitting a **black** node is fine (it's a finished side-branch you happen to point at, not a loop). Only hitting a **gray** node — one still open in your current chain — is a true cycle.
 
+**📄 Code — Directed cycle detection:** uses a 3-state `vis` (white/gray/black); if DFS ever reaches a **gray** node, the path looped back → cycle.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -771,6 +789,8 @@ graph LR
 > It's the **directed cycle-detection DFS**, plus one line: after a node is **fully finished** (all its downstream stuff done), push it onto a list. Then **reverse** that list at the end.
 >
 > Why reverse? Because a node finishes *after* everything it points to. So the finish-order is "deepest dependency first" — the exact opposite of what we want, hence the flip. And if a cycle is found, there's no valid order at all → print `-1`.
+
+**📄 Code — Topological sort:** the directed-cycle DFS plus two lines — record each node when it *finishes*, then reverse the list (print `-1` if a cycle exists).
 
 ```C++
 #include <iostream>
@@ -873,6 +893,8 @@ graph TD
     6((6))
     end
 ```
+
+**📄 Code — Connectivity check:** run one DFS from node 1; if any node stayed unvisited afterward, the graph isn't all one piece.
 
 ```C++
 //check if graph is connected

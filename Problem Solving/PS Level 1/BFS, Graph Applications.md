@@ -83,6 +83,8 @@ Watch the queue empty out ring by ring:
 
 Notice node 4 was reached from node 2 first (level 2). When we later visit it from node 3, `vis[4]` is already `true`, so we ignore it — that's the shortest path being locked in.
 
+> **▶ Code — Plain BFS:** shortest distance (in edges) from the start node to every other node.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -179,6 +181,8 @@ To get the path to node 5, start at 5 and keep hopping to the parent until you h
 
 > [!tip] Why a stack?
 > Following parents walks the path from **end to start**. A stack is last-in-first-out, so popping it flips the order back to **start to end**. It's a free reversal.
+
+> **▶ Code — Path reconstruction:** BFS + a `parent[]` array + a stack to print the actual shortest route.
 
 ```C++
 #include <iostream>
@@ -293,6 +297,8 @@ Because the numbers can be anything, we can't use a fixed-size `vis` array — s
 
 ### Before optimization
 
+> **▶ Code — Implicit graph (before optimization):** min moves from `n` to `m` using `-1` / `x2`, with separate `vis` and `levels` maps.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -359,6 +365,8 @@ int main()
 Two clean-ups:
 1. **Drop the `levels` map.** Instead, store the level *next to* each node by making the queue hold `pair<int,int>` = `(node, its level)`. The distance travels with the node.
 2. **Stop early.** The moment we pop `m`, we return its level immediately — no need to keep exploring.
+
+> **▶ Code — Implicit graph (after optimization):** same problem, but the level rides inside the queue as a `pair`, and it returns early on reaching `m`.
 
 ```C++
 #include <iostream>
@@ -450,6 +458,8 @@ The left square works. The right triangle **fails**: 1 is red, 2 is blue, 3 must
 > If red = 1 and blue = 2, then `3 - 1 = 2` and `3 - 2 = 1`. So `teams[v] = 3 - teams[curr]` is a one-liner that always gives the *opposite* colour. Neat trick.
 
 Also note the `main` loop calls `bfs(i)` for every unvisited node — that handles graphs made of several disconnected pieces.
+
+> **▶ Code — Bipartite check:** 2-colour the graph with BFS; print `IMPOSSIBLE` if two neighbours ever share a colour.
 
 ```C++
 #include <iostream>
@@ -556,6 +566,8 @@ graph TD
     R2 -.can connect.- B2
 ```
 Every dotted line is a legal edge (red↔blue only). Count them all, subtract the ones already in the tree.
+
+> **▶ Code — Codeforces 862B:** colour the tree, count each team, then max new edges = `cnt[1] * cnt[2] - (n - 1)`.
 
 ```C++
 #include <iostream>
@@ -690,6 +702,8 @@ Here nodes **1 and 6** have no incoming arrows → they start the queue. A valid
 > [!warning] Detecting a cycle
 > If the graph has a cycle, those nodes can *never* reach `indegree 0` (they block each other forever), so they never enter the queue. That's why: if the final `topo` list has **fewer than `n` nodes**, a cycle exists → `IMPOSSIBLE`.
 
+> **▶ Code — Topological sort (Kahn's algorithm):** order the nodes by dependencies using `indegree`; detects cycles.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -793,6 +807,8 @@ Nodes ★1 and ★7 are both sources (special nodes). Node B sits in the middle:
 
 > [!tip] The only change from normal BFS
 > Instead of pushing **one** start node with level 0, you **push all the special nodes** into the queue at the start, each with level 0. The ripples from all of them spread out together, and whichever wave touches a node first wins automatically — because BFS always expands the closest ring first.
+
+> **▶ Code — Multi-source BFS:** push *all* special nodes at level 0, then answer distance-to-nearest-source queries.
 
 ```C++
 #include <iostream>
