@@ -1,4 +1,88 @@
-### BFS Code
+---
+date: 2026-08-08
+type: note
+tags: [problem-solving, graphs, bfs, algorithms]
+description: BFS explained in simple words with diagrams — the core loop, shortest paths, path reconstruction, implicit graphs, bipartite coloring, topological sort, and multi-source BFS.
+---
+# BFS & Graph Applications
+
+## The one big idea (in plain words)
+
+Imagine you drop a stone in the middle of a pond. The ripple spreads out in **rings**: first the water right next to the stone moves, then the ring after that, then the next. BFS (Breadth-First Search) explores a graph exactly like that ripple.
+
+- You start at one node (the stone).
+- You visit **all nodes 1 step away** first.
+- Then **all nodes 2 steps away**.
+- Then 3 steps away… and so on.
+
+Because BFS always finishes a whole ring before touching the next one, **the first time it reaches a node is always by the shortest route**. That single fact is why BFS is the go-to tool for "shortest number of steps" problems on unweighted graphs.
+
+```mermaid
+graph LR
+    subgraph "Ring 2 (2 steps)"
+        C((C))
+    end
+    subgraph "Ring 1 (1 step)"
+        A((A))
+        B((B))
+    end
+    subgraph "Ring 0 (start)"
+        S((Start))
+    end
+    S --- A
+    S --- B
+    A --- C
+    B --- C
+```
+
+## The 3 tools BFS always carries
+
+Every BFS uses the same three helpers. Learn them once and every variation below is just a small twist.
+
+| Tool | What it is | Why we need it |
+|------|-----------|----------------|
+| **Queue** (`queue<int> q`) | A line, first-in-first-out | Guarantees we finish the closer ring before the farther one |
+| **Visited** (`vis[]`) | A yes/no flag per node | Stops us from processing the same node twice (and looping forever) |
+| **Levels** (`levels[]`) | Distance from the start | This *is* the answer to "how many steps?" |
+
+> [!tip] The golden rule
+> **Mark a node as visited the moment you push it into the queue — not when you pop it.** If you wait until you pop it, the same node can get pushed many times and your `levels` become wrong. This one habit prevents most BFS bugs.
+
+---
+
+## 1) Plain BFS — shortest path length
+
+### What the code does, step by step
+1. Put the start node in the queue, mark it visited, set its level to 0.
+2. While the queue is not empty: take the front node out (`pop`).
+3. Look at every neighbour of that node.
+4. If a neighbour is unvisited → mark it, give it `level = current + 1`, push it.
+5. Repeat until the ripple has covered the whole reachable graph.
+
+### See it happen
+Say the edges are: `1-2, 1-3, 2-4, 3-4, 4-5`. Starting from node **1**:
+
+```mermaid
+graph TD
+    1((1<br/>lvl 0)) --- 2((2<br/>lvl 1))
+    1 --- 3((3<br/>lvl 1))
+    2 --- 4((4<br/>lvl 2))
+    3 --- 4
+    4 --- 5((5<br/>lvl 3))
+```
+
+Watch the queue empty out ring by ring:
+
+| Step | Pop | Queue after | Newly discovered (level) |
+|------|-----|-------------|--------------------------|
+| 1 | 1 | `[2, 3]` | 2 (1), 3 (1) |
+| 2 | 2 | `[3, 4]` | 4 (2) |
+| 3 | 3 | `[4]` | — (4 already seen) |
+| 4 | 4 | `[5]` | 5 (3) |
+| 5 | 5 | `[]` | — done |
+
+Notice node 4 was reached from node 2 first (level 2). When we later visit it from node 3, `vis[4]` is already `true`, so we ignore it — that's the shortest path being locked in.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -68,7 +152,34 @@ int main()
 }
 ```
 
-### Used for an example
+> [!note] Nodes vs edges
+> `levels[n]` = number of **edges** (jumps) on the shortest path. The number of **nodes** you pass through is always one more than the number of edges, so `levels[n] + 1`.
+
+---
+
+## 2) Reconstructing the actual path (the `parent` trick)
+
+BFS tells you *how far* a node is. But often you also want the *route itself*: "which nodes do I actually walk through?"
+
+The trick: for every node, remember **who discovered it** — its `parent`. The parent of a node is simply the node that was popped when this node got pushed.
+
+```mermaid
+graph TD
+    1((1)) -->|parent| 2((2))
+    1 -->|parent| 3((3))
+    2 -->|parent| 4((4))
+    4 -->|parent| 5((5))
+    style 1 fill:#2d6
+    style 2 fill:#2d6
+    style 4 fill:#2d6
+    style 5 fill:#2d6
+```
+
+To get the path to node 5, start at 5 and keep hopping to the parent until you hit `-1` (the start's parent): `5 → 4 → 2 → 1`. That's **backwards**, so we push each into a **stack** and pop it — the stack reverses it into `1 → 2 → 4 → 5`.
+
+> [!tip] Why a stack?
+> Following parents walks the path from **end to start**. A stack is last-in-first-out, so popping it flips the order back to **start to end**. It's a free reversal.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -155,7 +266,33 @@ int main()
 }
 ```
 
-### Before Optimization
+---
+
+## 3) BFS with no graph given (implicit graphs)
+
+Here's the mind-bender: **you don't always need a list of edges to run BFS.** Sometimes the "graph" is hidden inside the rules of the problem.
+
+**The problem:** you have a number `n` and want to reach `m`. Each move you can either do `n - 1` or `n * 2`. What's the **minimum number of moves**?
+
+Think of it as a graph where:
+- each **number is a node**,
+- each **allowed operation is an edge** to another number.
+
+Since minimum moves = shortest path, BFS is perfect. We just *generate* neighbours on the fly instead of reading them from a list.
+
+```mermaid
+graph LR
+    5((5)) -->|"-1"| 4((4))
+    5 -->|"x2"| 10((10))
+    4 -->|"-1"| 3((3))
+    4 -->|"x2"| 8((8))
+    3 -->|"x2"| 6((6))
+```
+
+Because the numbers can be anything, we can't use a fixed-size `vis` array — so we use a `map` instead (grows as needed).
+
+### Before optimization
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -214,7 +351,15 @@ int main()
 }
 ```
 
-### After Optimization
+> [!warning] The two guards that stop infinite loops
+> - `curr > 1` before doing `-1`: keeps us from marching down into negative numbers forever.
+> - `curr < m` before doing `x2`: once you're at or past `m`, doubling only takes you *further* away — pointless. From above `m`, the only useful move is subtracting.
+
+### After optimization
+Two clean-ups:
+1. **Drop the `levels` map.** Instead, store the level *next to* each node by making the queue hold `pair<int,int>` = `(node, its level)`. The distance travels with the node.
+2. **Stop early.** The moment we pop `m`, we return its level immediately — no need to keep exploring.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -276,7 +421,36 @@ int main()
 //made the queue of pair<int,int> to store the level of the node on the fly
 ```
 
-### Bipartite 
+---
+
+## 4) Bipartite check — 2-coloring a graph
+
+**Bipartite** means: can I paint every node **red** or **blue** so that no edge ever connects two nodes of the *same* colour? Think of splitting people into **two teams** where every friendship must cross between the teams.
+
+BFS makes this easy: colour the start red, then **every neighbour must be the opposite colour** of the node that discovered it. If you ever find an edge whose two ends already share a colour → it's **impossible**.
+
+```mermaid
+graph TD
+    subgraph "Bipartite (works)"
+        A1((1<br/>red)) --- A2((2<br/>blue))
+        A2 --- A3((3<br/>red))
+        A3 --- A4((4<br/>blue))
+        A4 --- A1
+    end
+    subgraph "Not bipartite (odd cycle)"
+        B1((1<br/>red)) --- B2((2<br/>blue))
+        B2 --- B3((3<br/>red))
+        B3 --- B1((1<br/>?))
+    end
+```
+
+The left square works. The right triangle **fails**: 1 is red, 2 is blue, 3 must be red (opposite of 2)… but 3 also touches 1, which is *already red*. Two reds share an edge → impossible. (Rule of thumb: a graph is bipartite **exactly when it has no odd-length cycle**.)
+
+> [!tip] The `3 - team` flip
+> If red = 1 and blue = 2, then `3 - 1 = 2` and `3 - 2 = 1`. So `teams[v] = 3 - teams[curr]` is a one-liner that always gives the *opposite* colour. Neat trick.
+
+Also note the `main` loop calls `bfs(i)` for every unvisited node — that handles graphs made of several disconnected pieces.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -365,8 +539,24 @@ int main()
 }
 ```
 
-##### Second example
-https://codeforces.com/problemset/problem/862/B
+### Second example — max edges in a bipartite graph
+Problem: https://codeforces.com/problemset/problem/862/B
+
+**The idea in words:** You're given a **tree** (connected, no cycles, `n` nodes, `n-1` edges). A tree is always bipartite, so 2-colour it and count how many nodes land in each team.
+
+- In a fully-connected bipartite graph, you can draw an edge between **every red–blue pair**: that's `cnt[red] * cnt[blue]` edges total.
+- You already have `n - 1` edges (the tree).
+- So the number of **new** edges you can still add = `cnt[1] * cnt[2] - (n - 1)`.
+
+```mermaid
+graph TD
+    R1((red)) -.can connect.- B1((blue))
+    R1 -.can connect.- B2((blue))
+    R2((red)) -.can connect.- B1
+    R2 -.can connect.- B2
+```
+Every dotted line is a legal edge (red↔blue only). Count them all, subtract the ones already in the tree.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -472,7 +662,34 @@ int main()
 //so max additional edges we an add is = (cnt[1] * cnt[2]) - (n - 1)
 ```
 
-### Topo Sort
+---
+
+## 5) Topological sort (Kahn's algorithm)
+
+Think of **course prerequisites**: you can't take "Calculus 2" before "Calculus 1". Topological sort finds a valid order to do tasks so that every task comes *after* everything it depends on. It only works on a **directed graph with no cycles** (a DAG).
+
+**Key word: `indegree`** = how many arrows point *into* a node = how many things must finish before it can start.
+
+The algorithm:
+1. Start with every node that has `indegree == 0` (nothing blocks it).
+2. Process one, then "remove" its outgoing arrows → decrease the `indegree` of its targets.
+3. Any target that drops to `indegree == 0` is now unblocked → add it to the queue.
+4. Repeat.
+
+```mermaid
+graph LR
+    1((1)) --> 2((2))
+    1 --> 3((3))
+    6((6)) --> 3
+    2 --> 4((4))
+    3 --> 4
+    4 --> 5((5))
+```
+Here nodes **1 and 6** have no incoming arrows → they start the queue. A valid order might be `1, 6, 2, 3, 4, 5`.
+
+> [!warning] Detecting a cycle
+> If the graph has a cycle, those nodes can *never* reach `indegree 0` (they block each other forever), so they never enter the queue. That's why: if the final `topo` list has **fewer than `n` nodes**, a cycle exists → `IMPOSSIBLE`.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -557,7 +774,26 @@ int main()
 }
 ```
 
-### BFS with Multi Sources
+---
+
+## 6) Multi-source BFS
+
+Normal BFS drops **one** stone. Multi-source BFS drops **many stones at once** and asks: for every node, *how far is the nearest stone?*
+
+Real example: several fire stations on a map — for each house, how far is the closest station?
+
+```mermaid
+graph LR
+    S1((★1<br/>lvl 0)) --- A((A<br/>lvl 1))
+    A --- B((B<br/>lvl 2))
+    B --- C((C<br/>lvl 1))
+    C --- S2((★7<br/>lvl 0))
+```
+Nodes ★1 and ★7 are both sources (special nodes). Node B sits in the middle: it's 2 steps from ★1 but only... well here it's 2 from both. Each node just takes the distance to whichever source reaches it **first**.
+
+> [!tip] The only change from normal BFS
+> Instead of pushing **one** start node with level 0, you **push all the special nodes** into the queue at the start, each with level 0. The ripples from all of them spread out together, and whichever wave touches a node first wins automatically — because BFS always expands the closest ring first.
+
 ```C++
 #include <iostream>
 #include <vector>
@@ -648,3 +884,18 @@ int main()
 }
 ```
 
+---
+
+## Cheat sheet — one table to remember it all
+
+| Variation | The twist on plain BFS | Answers the question |
+|-----------|------------------------|----------------------|
+| **Plain BFS** | — | Shortest # of steps from start |
+| **Path reconstruction** | Store `parent[]`, walk back via a stack | *Which* nodes are on the path |
+| **Implicit graph** | Generate neighbours from rules; use a `map` for `vis` | Min operations to transform a value |
+| **Bipartite** | Colour each neighbour the opposite colour | Can it split into 2 clean teams? |
+| **Topological sort** | Start from `indegree == 0`, decrement as you go | Valid order respecting dependencies |
+| **Multi-source** | Push *all* sources at level 0 | Distance to the *nearest* source |
+
+> [!summary] If you forget everything else
+> BFS = ripples in a pond. **Queue** keeps the rings in order, **visited** stops repeats, **levels** counts the steps. Every problem above is that same loop with one small idea added on top.
