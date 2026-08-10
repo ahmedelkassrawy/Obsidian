@@ -276,7 +276,9 @@ int main()
 
 Here's the mind-bender: **you don't always need a list of edges to run BFS.** Sometimes the "graph" is hidden inside the rules of the problem.
 
-**The problem:** you have a number `n` and want to reach `m`. Each move you can either do `n - 1` or `n * 2`. What's the **minimum number of moves**?
+**The problem:** you have a number `n` and want to reach `m`. 
+Each move you can either do `n - 1` or `n * 2`. 
+What's the **minimum number of moves**?
 
 Think of it as a graph where:
 - each **number is a node**,
