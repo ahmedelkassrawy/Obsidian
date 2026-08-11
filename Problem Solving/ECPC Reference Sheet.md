@@ -1,13 +1,27 @@
 ---
 tags: [problem-solving, reference, ecpc, contest]
 topic: ECPC Reference Sheet
-description: Printable one-file reference for the contest — templates, STL, and every Level-1 technique
+description: Printable one-file reference for the contest — concept, when-to-use, and code for every Level-1 technique
 ---
 
 # ECPC Reference Sheet
 
-Print settings: A4, portrait, margins 10mm, **scale 80%**. Code blocks are kept short on purpose so no line wraps in print.
+Print settings: A4, portrait, margins 10mm, **scale 80%**. Code blocks are kept compact on purpose so nothing wraps in print.
 Built from `PS Level 1` + `C++ Notes` + `Bookmarks`.
+
+**How to read this sheet:** every block has three parts — *Concept* (what it actually does), *When to use* (the signal in the problem statement that should make you reach for it), and the code.
+
+**Don't read it front to back — jump.** Start at §13 (the statement → technique table), then go to the section it names.
+
+| § | Section | § | Section |
+|---|---|---|---|
+| 0 | Template + complexity budget | 7 | Bit manipulation & bitmask |
+| 1 | STL | 8 | Strings |
+| 2 | Sorting | 9 | Math & number theory |
+| 3 | Binary search | 10 | Dynamic programming |
+| 4 | Two pointers & sliding window | 11 | Graphs |
+| 5 | Prefix sums & difference arrays | 12 | Contest checklist (WA/TLE/RE) |
+| 6 | Recursion & backtracking | **13** | **"Which technique?" — start here** |
 
 ---
 
@@ -46,16 +60,16 @@ If `bits/stdc++.h` is missing on the judge:
 #include <climits>
 ```
 
-**Complexity budget — ~10^8 simple ops/second.**
+**Read the constraints before you think about the algorithm — they tell you which complexity is intended.** ~10^8 simple ops/second.
 
-| n up to | What fits |
-|---|---|
-| 10 – 12 | `O(n!)` permutations |
-| 20 – 24 | `O(2^n)` or `O(2^n · n)` bitmask |
-| 500 | `O(n^3)` |
-| 5·10^3 | `O(n^2)` |
-| 10^5 – 10^6 | `O(n log n)` — sort, binary search, set/map |
-| 10^7 – 10^8 | `O(n)` only, and keep the constant small |
+| n up to | What fits | So think… |
+|---|---|---|
+| 10 – 12 | `O(n!)` | permutations, brute force every order |
+| 20 – 24 | `O(2^n)` / `O(2^n · n)` | bitmask subsets |
+| 500 | `O(n^3)` | triple loop, Floyd–Warshall |
+| 5·10^3 | `O(n^2)` | double loop, classic 2D DP |
+| 10^5 – 10^6 | `O(n log n)` | sort, binary search, set/map, heap |
+| 10^7 – 10^8 | `O(n)` | one pass — prefix sum, two pointers, greedy |
 
 **Value limits**
 
@@ -67,8 +81,6 @@ If `bits/stdc++.h` is missing on the judge:
 
 Constants: `const ll INF = 1e18;` `const int inf = 1e9;` `const ll MOD = 1e9 + 7;`
 
-**Output formatting**
-
 ```cpp
 cout << fixed << setprecision(2) << x;   // needs <iomanip>
 cout << "\n";                            // never endl in loops (flushes)
@@ -78,7 +90,11 @@ cout << "\n";                            // never endl in loops (flushes)
 
 ## 1. STL
 
-### 1.1 Containers — pick by what you need
+**Concept.** Ready-made data structures. The whole skill is picking the one whose *cost profile* matches what the problem does most often.
+
+**When to use.** Always. Choosing right is usually the difference between AC and TLE.
+
+### 1.1 Which container?
 
 | Need | Container | Access | Ordered? |
 |---|---|---|---|
@@ -92,7 +108,13 @@ cout << "\n";                            // never endl in loops (flushes)
 | Always-max / always-min | `priority_queue<T>` | O(log n) push/pop | — |
 | Both ends | `deque<T>` | O(1) both ends | — |
 
+Rule of thumb: **`vector` unless you need something a `vector` can't do.** If keys are small integers (`≤ 10^6`), a plain array beats any map.
+
 ### 1.2 vector
+
+**Concept.** A resizable array — contiguous memory, so indexing is free and iteration is cache-friendly.
+
+**When to use.** The default container. Insert/erase in the *middle* is O(n), so if you need that a lot, rethink.
 
 ```cpp
 vector<int> v(n);              // n zeros
@@ -111,6 +133,10 @@ v.erase(unique(all(v)), v.end());      // dedupe AFTER sorting
 
 ### 1.3 map / set
 
+**Concept.** Balanced BSTs — every operation O(log n) and the contents stay **sorted**. `unordered_*` are hash tables: O(1) average but no order.
+
+**When to use.** `map` when you need counting/lookup by a key that isn't a small int (strings, big values, pairs). `set` when you need "is it there?" *plus* "what's the smallest/next bigger?". If you only need counting and keys are small, use a frequency `vector` instead — it's much faster.
+
 ```cpp
 map<char,int> freq;
 for (char c : s) freq[c]++;            // missing key auto-creates 0
@@ -121,8 +147,7 @@ if (mp.find(x) != mp.end()) ...        // same thing
 mp.erase(key);
 
 set<int> s;
-s.insert(x);
-s.erase(x);
+s.insert(x); s.erase(x);
 *s.begin();                            // smallest
 *s.rbegin();                           // largest
 auto it = s.lower_bound(x);            // MEMBER version — O(log n)
@@ -130,14 +155,16 @@ auto it = s.lower_bound(x);            // MEMBER version — O(log n)
 
 > On a `set` / `map` always use the **member** `s.lower_bound(x)`, never `lower_bound(s.begin(), s.end(), x)` — the free function is O(n) on a tree.
 
-`multiset` erase gotcha:
-
 ```cpp
 ms.erase(x);                  // erases ALL copies of x
 ms.erase(ms.find(x));         // erases exactly ONE copy   <-- usually what you want
 ```
 
 ### 1.4 priority_queue
+
+**Concept.** A heap — you can always see and remove the current best element in O(log n), but you can't look at anything else.
+
+**When to use.** "Repeatedly take the largest/smallest remaining" — greedy scheduling, merging k lists, Dijkstra, "join the two cheapest ropes".
 
 ```cpp
 priority_queue<int> pq;                                     // MAX-heap
@@ -147,9 +174,13 @@ priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<>> d;  // Dijkstra
 pq.push(x); pq.top(); pq.pop(); pq.empty(); pq.size();
 ```
 
-Pairs sort by `.first`, then `.second`. To make a max-heap into a min-heap cheaply, push `-x`.
+Pairs sort by `.first`, then `.second`. Cheap min-heap trick: push `-x` into a max-heap.
 
 ### 1.5 pair / tuple
+
+**Concept.** Glue 2–3 values into one comparable object; comparison is lexicographic (first, then second).
+
+**When to use.** Sorting by one field while carrying another (value+index), edges `{weight, node}`, grid cells `{row, col}`.
 
 ```cpp
 pair<int,int> p = {a, b};
@@ -161,7 +192,11 @@ tuple<int,int,int> t = {a, b, c};
 auto [x, y, z] = t;            // C++17 structured binding
 ```
 
-### 1.6 Algorithms you will actually use
+### 1.6 Algorithms
+
+**Concept.** One-line library versions of loops you'd otherwise write by hand (and get wrong).
+
+**When to use.** Before writing any loop, ask whether `<algorithm>` already has it.
 
 ```cpp
 sort(all(v));
@@ -173,14 +208,17 @@ accumulate(all(v), 0LL);                  // 0LL !! or it overflows
 count(all(v), x);
 find(all(v), x) != v.end();
 next_permutation(all(v));                 // sort first; loops all n! orders
-__gcd(a, b);
-swap(a, b);
+__gcd(a, b);  swap(a, b);
 min({a,b,c});  max({a,b,c});
 fill(all(v), 0);
 memset(arr, 0, sizeof arr);               // only for 0 and -1
 ```
 
 ### 1.7 String
+
+**Concept.** A `vector<char>` with text helpers — everything vector can do, plus `substr`/`find`.
+
+**When to use.** Anything character-based. `s[i] - 'a'` turns a letter into a 0..25 index for frequency arrays.
 
 ```cpp
 string s; cin >> s;                 // stops at whitespace
@@ -198,7 +236,15 @@ s[i] - 'a';                         // 0..25 index
 
 ## 2. Sorting
 
+**Concept.** Rearranging data into an order that makes the answer obvious. Sorting itself is O(n log n) — the *point* is that a sorted array unlocks binary search, two pointers, and greedy.
+
+**When to use.** When the answer depends on relative order, ranks, "k-th smallest", pairing extremes, or when you're about to binary-search / two-point. Also: **sorting is a legitimate first move even when the problem never mentions order.**
+
 ### 2.1 Comparators
+
+**Concept.** You tell `sort` what "comes first" means.
+
+**When to use.** Multi-field ordering — "by score descending, ties by name ascending".
 
 ```cpp
 bool cmp(const pair<int,int> &a, const pair<int,int> &b) {
@@ -207,41 +253,35 @@ bool cmp(const pair<int,int> &a, const pair<int,int> &b) {
 }
 sort(all(v), cmp);
 
-// lambda, inline
-sort(all(v), [](auto &a, auto &b) { return a.second < b.second; });
+sort(all(v), [](auto &a, auto &b) { return a.second < b.second; });  // lambda
 ```
 
-Rule: the comparator returns **true when `a` must come before `b`**. It must be a strict weak order — never `<=`, that crashes.
+Returns **true when `a` must come before `b`**. Must be a strict weak order — never `<=`, that crashes.
 
 ### 2.2 Sorting structs
 
-```cpp
-struct Dragon {
-    int strength;
-    int bonus;
-};
+**Concept.** Bundle related fields, sort the bundle.
 
-bool compare(const Dragon &a, const Dragon &b) {
-    return a.strength < b.strength;
-}
+**When to use.** Each input line describes an object with several attributes (dragon: strength+bonus; person: x+y; interval: start+end).
+
+```cpp
+struct Dragon { int strength; int bonus; };
+
+bool compare(const Dragon &a, const Dragon &b) { return a.strength < b.strength; }
 
 vector<Dragon> d(n);
 for (int i = 0; i < n; i++) cin >> d[i].strength >> d[i].bonus;
 sort(all(d), compare);
-```
 
-Or define it inside the struct:
-
-```cpp
-struct P {
-    int x, y;
-    bool operator<(const P &o) const { return x < o.x; }
-};
+struct P { int x, y;
+    bool operator<(const P &o) const { return x < o.x; } };   // or inside
 ```
 
 ### 2.3 Keeping the original index
 
-Sorting destroys positions. If the answer needs indices, sort `(value, index)` pairs:
+**Concept.** Sorting destroys positions, so carry the position along as part of the element.
+
+**When to use.** The output asks for *indices* ("print the 1-based positions of the two numbers"). This is the #1 sorting WA.
 
 ```cpp
 vector<pair<int,int>> v;
@@ -251,7 +291,9 @@ sort(all(v));                          // v[k].second is the original index
 
 ### 2.4 Counting sort / frequency array
 
-When values are small (`≤ 10^6`), skip the sort:
+**Concept.** Don't compare anything — just tally how many times each value appears, then read the tally in order. O(n + V).
+
+**When to use.** Values are bounded and small (`≤ 10^6`), n is huge, or you need "how many of value x" repeatedly.
 
 ```cpp
 vector<int> freq(MAXV + 1, 0);
@@ -264,9 +306,13 @@ for (int x = 0; x <= MAXV; x++)
 
 ## 3. Binary search
 
-**Rule: the array must be sorted.** Every step halves the window → O(log n).
+**Concept.** Every step throws away **half** the remaining possibilities, so 10^6 items take ~20 steps. It works only because the data is **monotonic**: once you know which side the answer is on, the other side can never contain it.
+
+**When to use.** (1) Searching a **sorted array**. (2) The answer is a number in a known range and you can *check* a guess faster than you can *find* the answer — that's §3.4, and it is the single highest-value trick on this sheet.
 
 ### 3.1 Does `x` exist?
+
+**When to use.** Plain membership on a sorted array. (In contest: `binary_search(all(v), x)`.)
 
 ```cpp
 int l = 0, r = n - 1, ans = -1;
@@ -278,9 +324,13 @@ while (l <= r) {
 }
 ```
 
-`l <= r` (not `<`) — when `l == r` the window still holds one element.
+`l <= r` (not `<`) — when `l == r` the window still holds one element to check.
 
 ### 3.2 Lower / upper bound by hand
+
+**Concept.** Don't stop at a match — record it and keep shrinking left, so you land on the *first* valid position.
+
+**When to use.** Duplicates exist, or `x` may be absent and you want the insertion point.
 
 ```cpp
 // first index with a[i] >= x
@@ -292,8 +342,7 @@ while (l <= r) {
 }
 ```
 
-Upper bound = the same code with `a[mid] > x`.
-Initialise `ans = n`, **not 0** — with `ans = 0` a "not found" answer is indistinguishable from "found at index 0".
+Upper bound = the same code with `a[mid] > x`. Initialise `ans = n`, **not 0** — with `0` you can't tell "not found" from "found at index 0".
 
 ### 3.3 STL version (use this in contest)
 
@@ -309,15 +358,17 @@ int inRange = upper_bound(all(v),R) - lower_bound(all(v),L);      // count in [L
 
 | Question | Tool |
 |---|---|
-| Does `x` exist? | plain binary search / `binary_search(all(v),x)` |
+| Does `x` exist? | `binary_search(all(v),x)` |
 | First index `>= x` | `lower_bound` |
 | First index `> x` | `upper_bound` |
 | How many `x` | `upper_bound - lower_bound` |
 | How many in `[L,R]` | `upper_bound(R) - lower_bound(L)` |
 
-### 3.4 Binary search on the ANSWER
+### 3.4 Binary search on the ANSWER ⭐
 
-Use when the question is "minimum X such that it works" and `check(X)` is **monotonic** (false…false, true…true).
+**Concept.** Stop searching *an array* and start searching *the range of possible answers*. If `check(X)` is monotonic — false, false, …, false, **true**, true, … — you can binary-search the boundary.
+
+**When to use.** The statement says **"minimum X such that…"**, **"maximum X such that…"**, "minimum time/capacity/size that suffices", "maximise the minimum distance". Test for monotonicity out loud: *if X works, does X+1 automatically work?* If yes → binary search.
 
 ```cpp
 bool check(ll mid) { /* is mid feasible? */ }
@@ -325,29 +376,27 @@ bool check(ll mid) { /* is mid feasible? */ }
 ll l = 1, r = 1e18, ans = -1;
 while (l <= r) {
     ll mid = l + (r - l) / 2;
-    if (check(mid)) { ans = mid; r = mid - 1; }   // MINIMISE: shrink right
+    if (check(mid)) { ans = mid; r = mid - 1; }   // MINIMISE: keep it, shrink right
     else              l = mid + 1;
 }
 ```
 
 To **maximise**, flip: on success `ans = mid; l = mid + 1;`.
 
-Classic shapes: minimum machine time to produce k items, minimum capacity, max minimum distance, "magic powder", split-array-into-k-parts.
-
-**Real form (Machines: t seconds to make ≥ k items):**
+Real form — *Machines*: can we make ≥ k items in t seconds?
 
 ```cpp
 bool check(ll t) {
     ll made = 0;
     for (int i = 0; i < n; i++) {
         made += t / a[i];
-        if (made >= k) return true;    // early exit avoids overflow
+        if (made >= k) return true;    // early exit also avoids overflow
     }
     return made >= k;
 }
 ```
 
-Floating point version: run a fixed 100 iterations instead of `l <= r`.
+Floating-point version: fixed 100 iterations instead of `l <= r`.
 
 ```cpp
 double l = 0, r = 1e9;
@@ -357,21 +406,29 @@ for (int i = 0; i < 100; i++) {
 }
 ```
 
+Total cost = O(log(range) · cost of `check`).
+
 ---
 
 ## 4. Two pointers & sliding window
 
-Both are O(n) because **each pointer only ever moves forward** — total moves ≤ 2n.
+**Concept.** Replace a nested O(n²) scan with two indices that each only ever move **forward** — total movement ≤ 2n, hence O(n). It's valid only when moving a pointer can never make you miss a better answer.
+
+**When to use.** Subarrays/substrings (contiguous!), pairs in a sorted array, merging sorted data. **If you can't say *why* moving the pointer is safe, you don't have a two-pointer solution — you have a guess.**
 
 ### 4.1 The three families
 
 | Family | Movement | Needs | Typical use |
 |---|---|---|---|
-| Opposite | `l→ ... ←r` | sorted / symmetric | pair with sum X, palindrome, container-with-most-water |
-| Same direction (window) | both → | window validity monotonic | longest/shortest subarray, ≤k distinct |
+| Opposite | `l→ ... ←r` | sorted / symmetric | pair with sum X, palindrome, most water |
+| Same direction (window) | both → | validity monotonic | longest/shortest subarray, ≤k distinct |
 | Two arrays | one pointer each | both sorted | merge, intersection, union |
 
 ### 4.2 Pair with a given sum
+
+**Concept.** Sorted array: too small → the only way to grow the sum is `l++`; too big → the only way to shrink it is `r--`. Each comparison discards a whole row of the O(n²) grid.
+
+**When to use.** "Do two numbers add up to X?" on sorted data (or when you may sort). If the array is unsorted *and* you need indices, a hash map is simpler.
 
 ```cpp
 sort(all(a));
@@ -379,12 +436,16 @@ int l = 0, r = n - 1;
 while (l < r) {                       // '<' : an element can't pair with itself
     ll sum = a[l] + a[r];             // ll — two 1e9 values overflow int
     if (sum == target) break;
-    else if (sum < target) l++;       // only way to grow the sum
-    else                   r--;       // only way to shrink it
+    else if (sum < target) l++;
+    else                   r--;
 }
 ```
 
 ### 4.3 Count pairs with sum ≤ X
+
+**Concept.** If the smallest + largest already fits, then that smallest fits with **everything** between them — count `r - l` pairs in one shot.
+
+**When to use.** "How many pairs satisfy …" — counting, not finding. This shape appears in contests more than "find one pair".
 
 ```cpp
 sort(all(v));
@@ -395,9 +456,11 @@ while (l < r) {
 }
 ```
 
-`cnt += (r - l)` because if `v[l]+v[r] ≤ target`, then `v[l]` paired with **every** index in `l+1..r` is also ≤ target — count them all at once.
+### 4.4 3Sum — fix one, two-point the rest
 
-### 4.4 3Sum — fix one, two-point the rest (O(n²))
+**Concept.** Freeze one element, and the remaining problem is a 2-sum on a sorted array. O(n³) → O(n²).
+
+**When to use.** Any "find k numbers with property P" for small k. Recognise **fix-one-then-two-point** instantly.
 
 ```cpp
 sort(all(a));
@@ -420,6 +483,10 @@ for (int i = 0; i < n - 2; i++) {
 
 ### 4.5 Palindrome / reverse
 
+**Concept.** Symmetric structure — compare the ends, walk inward.
+
+**When to use.** Palindrome checks, reversing in place, "is the sequence symmetric".
+
 ```cpp
 int l = 0, r = s.size() - 1;
 bool ok = true;
@@ -430,6 +497,10 @@ while (l < r) {
 ```
 
 ### 4.6 Merge two sorted arrays
+
+**Concept.** Whichever front element is smaller must come next — no comparison is ever wasted.
+
+**When to use.** Merging, intersection, union, "combine two sorted lists". Same skeleton with `a[i] == b[j]` gives intersection.
 
 ```cpp
 int i = 0, j = 0; vector<int> res;
@@ -443,6 +514,10 @@ while (j < m) res.push_back(b[j++]);
 
 ### 4.7 Fixed-size window (size k)
 
+**Concept.** Move the window one step: add the entering element, subtract the leaving one. O(1) per step instead of O(k).
+
+**When to use.** "Every contiguous block of exactly k elements" — max sum of k consecutive, average of k days.
+
 ```cpp
 ll sum = 0, best = LLONG_MIN;
 for (int i = 0; i < n; i++) {
@@ -453,6 +528,10 @@ for (int i = 0; i < n; i++) {
 ```
 
 ### 4.8 Variable window — the universal skeleton
+
+**Concept.** `r` expands greedily; the moment the window breaks the rule, `l` shrinks until it's legal again. Every index enters and leaves once → O(n).
+
+**When to use.** "Longest / shortest **contiguous** subarray such that …" — at most k distinct, no repeats, sum ≤ S. **Requires all-positive values** (see 4.9).
 
 ```cpp
 int l = 0; ll cur = 0; int best = 0;
@@ -479,7 +558,9 @@ for (int r = 0; r < (int)s.size(); r++) {
 
 ### 4.9 When sliding window FAILS
 
-Sliding window needs adding an element to only ever make the window "more invalid". **Negative numbers break this** — a longer window is not necessarily a bigger sum. Use prefix sum + hash map instead:
+**Concept.** The window relies on "growing can only make things worse". **Negative numbers destroy that** — a longer window isn't necessarily a bigger sum. Then you need prefix sums keyed in a hash map: `sum(l..r) = pre[r] - pre[l-1]`, so for each `r` you ask how many earlier prefixes equal `pre[r] - x`.
+
+**When to use this instead.** Array contains negatives, or the target is an exact value/divisibility rather than a bound.
 
 ```cpp
 // count subarrays with sum == x  (works with negatives)
@@ -492,58 +573,64 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-Subarray sum divisible by k → same idea keyed on `((pre % k) + k) % k`.
+Divisible by k → same idea keyed on `((pre % k) + k) % k`.
 
 ---
 
 ## 5. Prefix sums & difference arrays
 
-### 5.1 1D prefix sum — many range-sum QUERIES
+**Concept.** Two mirror-image tricks. **Prefix sum** = precompute once, answer any range *query* in O(1). **Difference array** = record only the *edges* of each range update, then one final sweep materialises the array.
+
+**When to use.** Prefix sum: many range-sum questions on a fixed array. Difference array: many "add v to everything in [l,r]" updates, and you only print at the end. If updates and queries are **interleaved**, you need a Fenwick/segment tree (Level 2).
+
+### 5.1 1D prefix sum
+
+**When to use.** q queries × O(n) each is too slow → precompute in O(n), answer in O(1).
 
 ```cpp
 vector<ll> pre(n + 1, 0);
 for (int i = 1; i <= n; i++) pre[i] = pre[i-1] + a[i];   // a is 1-indexed
-// sum of a[l..r] :
-ll s = pre[r] - pre[l-1];
+ll s = pre[r] - pre[l-1];                                 // sum of a[l..r]
 ```
 
-### 5.2 1D difference array — many range UPDATES
+### 5.2 1D difference array
 
-Mirror of prefix sum: add at `l`, cancel at `r+1`, then prefix-sum once at the end.
+**Concept.** `+val` at `l` turns the addition on, `-val` at `r+1` turns it off; prefix-summing replays every switch.
+
+**When to use.** "m operations, each adds v to range [l,r]; print the final array." O(1) per update instead of O(n).
 
 ```cpp
 vector<ll> diff(n + 2, 0);
-// for each update "add val to [l, r]":
-diff[l] += val;
+diff[l] += val;                        // per update "add val to [l, r]"
 diff[r + 1] -= val;
 
-// materialise the final array:
-ll run = 0;
+ll run = 0;                            // materialise the final array
 for (int i = 1; i <= n; i++) { run += diff[i]; a[i] = run; }
 ```
 
-O(1) per update, O(n) once at the end — instead of O(n) per update.
-
 ### 5.3 2D prefix sum
 
+**Concept.** Inclusion–exclusion: add the two overlapping rectangles, subtract the part you counted twice.
+
+**When to use.** Many "sum of this sub-rectangle" queries on a fixed grid.
+
 ```cpp
-// build
 for (int i = 1; i <= n; i++)
   for (int j = 1; j <= m; j++)
     pre[i][j] = g[i][j] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];
 
-// sum of rectangle (r1,c1)..(r2,c2)
 ll s = pre[r2][c2] - pre[r1-1][c2] - pre[r2][c1-1] + pre[r1-1][c1-1];
 ```
 
-### 5.4 2D difference array — 4 corners
+### 5.4 2D difference array
+
+**When to use.** Many "add v to this sub-rectangle" updates, print the grid at the end. Same idea as 1D but 4 corners.
 
 ```cpp
 d[r1][c1]     += val;
 d[r1][c2+1]   -= val;
 d[r2+1][c1]   -= val;
 d[r2+1][c2+1] += val;
-
 // then 2D prefix-sum d in place to get the final grid
 ```
 
@@ -552,30 +639,40 @@ d[r2+1][c2+1] += val;
 | 1D | prefix sum (2 corners) | difference array (2 corners) |
 | 2D | prefix sum (4 corners) | difference array (4 corners) |
 
-Recognise it: **"add v to every element in [l,r], many times, print the array at the end"** → difference array. **"answer many range-sum questions on a fixed array"** → prefix sum.
-
 ---
 
 ## 6. Recursion & backtracking
 
+**Concept.** Solve a problem by solving a smaller copy of itself. **Backtracking** adds one move: try a choice → recurse → **undo it** → try the next. That undo is what lets one array explore an entire decision tree.
+
+**When to use.** The answer is built from a sequence of choices and you must try them all: subsets, permutations, placements, "count the ways", grid paths with constraints. **Only when n is tiny** — 2^n needs n ≤ ~24, n! needs n ≤ ~10.
+
 Every recursion needs: **(1) a base case, (2) a step that shrinks the problem.**
 
 ### 6.1 Print before vs after the call
+
+**Concept.** Work placed *before* the call happens on the way down; *after* the call it happens on the way back up (reverse order, for free).
+
+**When to use.** Any "print/process in reverse" — and it's the mental model behind DFS post-order.
 
 ```cpp
 void down(int n) { if (n == 0) return; cout << n << " "; down(n-1); }  // 5 4 3 2 1
 void up(int n)   { if (n == 0) return; up(n-1); cout << n << " "; }    // 1 2 3 4 5
 ```
 
-Before the call = on the way **down**. After the call = on the way **back up**.
-
 ### 6.2 Accumulate on return
+
+**When to use.** The answer for `n` is a simple function of the answer for `n-1`.
 
 ```cpp
 ll sum(int n) { return n == 0 ? 0 : n + sum(n - 1); }
 ```
 
 ### 6.3 Memoized recursion (top-down DP)
+
+**Concept.** The recursion revisits the same state many times; store each result the first time and the exponential tree collapses to one node per state.
+
+**When to use.** Plain recursion is correct but too slow, and the state is small (an index, a remaining capacity). **This is the easiest way to write a DP** — get the recursion right, then add the memo.
 
 ```cpp
 vector<ll> memo(n + 1, -1);
@@ -588,7 +685,11 @@ ll fib(int n) {
 
 `-1` as "unsolved" only works when a real answer is never `-1`.
 
-### 6.4 Subsets — the pick / don't-pick tree (2^n)
+### 6.4 Subsets — the pick / don't-pick tree
+
+**Concept.** At each item there are exactly two branches: take it or skip it → 2^n leaves, every subset exactly once.
+
+**When to use.** "Choose any group of items…" with n ≤ ~24. (For pure enumeration a bitmask loop, §7.5, is shorter.)
 
 ```cpp
 void rec(int i, vector<int> &cur) {
@@ -602,6 +703,8 @@ The `pop_back()` **is** the backtracking: undo the choice before trying the othe
 
 ### 6.5 Subsets with a given sum
 
+**When to use.** "Can a group sum to exactly S?" / "how many groups sum to S?" — carry the running sum as a parameter instead of building the list.
+
 ```cpp
 int cnt = 0;
 void rec(int i, ll cur) {
@@ -611,7 +714,11 @@ void rec(int i, ll cur) {
 }
 ```
 
-### 6.6 Split array into two groups, minimise the difference
+### 6.6 Split into two groups, minimise the difference
+
+**Concept.** Every subset defines a split; if one side sums to `s1`, the difference is `|total - 2·s1|`.
+
+**When to use.** "Divide the items into two teams as evenly as possible" (Apple Division).
 
 ```cpp
 ll total, best = LLONG_MAX;
@@ -623,6 +730,10 @@ void rec(int i, ll s1) {
 ```
 
 ### 6.7 Permutations
+
+**Concept.** A loop over *all unused* items at each depth → n! orders. `used[]` is what enforces "each item once".
+
+**When to use.** Order matters (arrangements, TSP brute force). n ≤ ~10.
 
 ```cpp
 void rec(vector<int> &cur, vector<bool> &used) {
@@ -636,9 +747,13 @@ void rec(vector<int> &cur, vector<bool> &used) {
 }
 ```
 
-Or just: `sort(all(a)); do { ... } while (next_permutation(all(a)));`
+Shortcut: `sort(all(a)); do { ... } while (next_permutation(all(a)));`
 
 ### 6.8 Combinations (choose k of n)
+
+**Concept.** The `start` parameter forbids going backwards, so `{1,3}` is generated but `{3,1}` never is — order stops mattering.
+
+**When to use.** "Choose exactly k of them" where order is irrelevant.
 
 ```cpp
 void rec(int start, vector<int> &cur) {
@@ -651,14 +766,16 @@ void rec(int start, vector<int> &cur) {
 }
 ```
 
-The `start` parameter is what kills duplicate orderings — one recursive call inside a loop, not two.
-
 ### 6.9 N-Queens skeleton
+
+**Concept.** Place one row at a time and **prune** immediately — a partial placement that already conflicts is abandoned before exploring below it. Pruning is what makes backtracking beat brute force.
+
+**When to use.** Constraint placement: queens, sudoku, graph coloring, "assign without conflicts".
 
 ```cpp
 bool safe(int row, int col) {
     for (int i = 0; i < row; i++) {
-        if (pos[i] == col) return false;                 // same column
+        if (pos[i] == col) return false;                      // same column
         if (abs(pos[i] - col) == abs(i - row)) return false;  // same diagonal
     }
     return true;
@@ -670,11 +787,15 @@ void rec(int row) {
 }
 ```
 
-**The pattern, in one line:** choose → recurse → **undo**.
+**The whole pattern in one line:** choose → recurse → **undo**.
 
 ---
 
 ## 7. Bit manipulation & bitmask
+
+**Concept.** Every integer is a row of on/off switches. Bitwise operators act on all 64 switches at once, in one CPU instruction. A **bitmask** reinterprets those switches as *"is item i selected?"*, so a single `int` encodes an entire subset.
+
+**When to use.** (1) Micro-operations: parity, powers of 2, XOR tricks. (2) **n ≤ 20–24 and you must try every subset** — counting `0 … 2^n - 1` enumerates all of them for free. (3) Problems where bits are independent, so you solve each bit column separately.
 
 ### 7.1 Operators
 
@@ -687,7 +808,7 @@ void rec(int row) {
 | `<<` | left shift | `x << 1` = ×2 |
 | `>>` | right shift | `x >> 1` = ÷2 |
 
-Use single `&` `|` for bits — `&&` `||` are the boolean operators.
+Single `&` `|` for bits — `&&` `||` are the boolean operators.
 
 ### 7.2 The spells
 
@@ -704,7 +825,14 @@ Use single `&` `|` for bits — `&&` `||` are the boolean operators.
 | Lowest set bit | `n & (-n)` |
 | Turn off lowest set bit | `n & (n-1)` |
 | All-ones mask of `k` bits | `(1LL << k) - 1` |
-| Loop all subsets of `n` items | `for (int m = 0; m < (1 << n); m++)` |
+| Loop all subsets | `for (int m = 0; m < (1 << n); m++)` |
+
+```cpp
+bool checkbit(ll n, ll i)   { return (n >> i) & 1; }
+ll   setbit  (ll n, ll b)   { return n | (1LL << b); }
+ll   clearbit(ll n, ll b)   { return n & (~(1LL << b)); }
+ll   togglebit(ll n, ll b)  { return n ^ (1LL << b); }
+```
 
 ### 7.3 Two traps
 
@@ -720,9 +848,13 @@ A & 1 = last bit        A | 0 = A       A ^ 0 = A
 A ^ 1 = flip            A ^ A = 0       A ^ 0 ^ B = B
 ```
 
-`A ^ A = 0` is how you find "the one number that appears an odd number of times": XOR everything together.
+**When to use `A ^ A = 0`.** "Everything appears twice except one" — XOR the whole array and the pairs cancel, leaving the odd one out. O(n) time, O(1) memory.
 
-### 7.5 Subset enumeration (n ≤ 20-24)
+### 7.5 Subset enumeration
+
+**Concept.** `mask` counts 0 → 2^n−1; bit `i` of `mask` says whether item `i` joined this subset. No subset is ever missed or repeated.
+
+**When to use.** n ≤ 20–24 and the problem is "over all possible groups…". Check the constraint first — if n = 30 this is the wrong tool.
 
 ```cpp
 for (int mask = 0; mask < (1 << n); mask++) {
@@ -741,14 +873,15 @@ for (int mask = 0; mask < (1 << n); mask++) {
 
 ### 7.6 Per-bit column trick
 
-Many problems become easy when you handle **each bit position independently**:
+**Concept.** AND/OR/XOR never carry between positions, so bit 3 of the answer depends only on bit 3 of the inputs. Solve 30 (or 64) independent easy problems instead of one hard one.
+
+**When to use.** The problem is about AND/OR/XOR over ranges or subsets, or "maximise the XOR/AND of…".
 
 ```cpp
 for (int bit = 30; bit >= 0; bit--) {
     int on = 0;
     for (int i = 0; i < n; i++)
-        if (a[i] & (1 << bit)) on++;
-    // on = how many numbers have this bit set
+        if (a[i] & (1 << bit)) on++;      // how many have this bit set
 }
 ```
 
@@ -772,23 +905,33 @@ for (int b = 0; b < 64; b++) {
 
 ## 8. Strings
 
+**Concept.** A string is an array of small integers (`s[i] - 'a'` ∈ 0..25), which is why frequency arrays and two pointers dominate string problems at this level.
+
+**When to use.** Anagram/frequency questions → count letters. Substring (contiguous) → sliding window. Subsequence (not contiguous) → greedy two pointers or DP.
+
 ### 8.1 Frequency / anagram
+
+**Concept.** Two strings are anagrams iff their letter counts match — sorting produces the same canonical signature.
+
+**When to use.** "Same letters, different order", grouping words, "can we rearrange s into t".
 
 ```cpp
 vector<int> f(26, 0);
 for (char c : s) f[c - 'a']++;
 
-// anagram check
-string x = s, y = t;
+string x = s, y = t;                    // anagram check
 sort(all(x)); sort(all(y));
 bool anagram = (x == y);
 
-// group anagrams
-unordered_map<string, vector<string>> mp;
+unordered_map<string, vector<string>> mp;   // group anagrams
 for (string w : words) { string k = w; sort(all(k)); mp[k].push_back(w); }
 ```
 
-### 8.2 Longest palindromic substring — expand around center O(n²)
+### 8.2 Longest palindromic substring — expand around center
+
+**Concept.** Every palindrome has a center; there are 2n−1 centers (n single + n−1 double), so grow outward from each. O(n²).
+
+**When to use.** Palindromic **substring** questions with n ≤ ~5000.
 
 ```cpp
 int start = 0, best = 1;
@@ -802,7 +945,11 @@ for (int i = 0; i < n; i++) { expand(i, i); expand(i, i + 1); }  // odd, even
 return s.substr(start, best);
 ```
 
-### 8.3 Subsequence check (greedy two pointers)
+### 8.3 Subsequence check
+
+**Concept.** Greedy: matching each character of `s` as early as possible in `t` is always optimal.
+
+**When to use.** "Is s a subsequence of t?" — characters in order but not adjacent.
 
 ```cpp
 int i = 0;
@@ -813,21 +960,29 @@ bool isSub = (i == (int)s.size());
 
 ### 8.4 Tokenizing a line
 
+**When to use.** Input is a whole line with an unknown number of words, or CSV-style separated values.
+
 ```cpp
 string line; getline(cin, line);
 stringstream ss(line);
 string word;
 while (ss >> word) { /* ... */ }
-
-// split on a delimiter
-while (getline(ss, word, ',')) { /* ... */ }
+while (getline(ss, word, ',')) { /* split on a delimiter */ }
 ```
 
 ---
 
 ## 9. Math & number theory
 
+**Concept.** Facts about integers that let you skip enumeration. Nearly all of it comes from two ideas: **divisors pair up around √n**, and **modular arithmetic keeps huge numbers small**.
+
+**When to use.** The statement mentions divisors, primes, gcd/lcm, "count the ways mod 10^9+7", or numbers up to 10^18 where looping is impossible.
+
 ### 9.1 Divisors of n — O(√n)
+
+**Concept.** Divisors come in pairs `(i, n/i)`, so testing up to √n finds them all.
+
+**When to use.** "How many divisors", "sum of divisors", "is it a perfect square", for one n up to ~10^12.
 
 ```cpp
 vector<ll> divs;
@@ -838,7 +993,7 @@ for (ll i = 1; i * i <= n; i++)
     }
 ```
 
-Divisor **count** of every number ≤ N in O(N log N):
+Divisor **count** of *every* number ≤ N in O(N log N) — use when many queries:
 
 ```cpp
 vector<int> cnt(N + 1, 0);
@@ -847,6 +1002,8 @@ for (int i = 1; i <= N; i++)
 ```
 
 ### 9.2 Primality — O(√n)
+
+**When to use.** A handful of primality checks on big numbers. For *many* numbers ≤ 10^6, sieve instead (9.4).
 
 ```cpp
 bool isPrime(ll n) {
@@ -858,6 +1015,10 @@ bool isPrime(ll n) {
 
 ### 9.3 Prime factorization — O(√n)
 
+**Concept.** Strip each prime out completely before moving on; anything left above √n must itself be prime.
+
+**When to use.** Counting divisors from exponents, gcd/lcm reasoning, "semi-prime" problems.
+
 ```cpp
 map<ll,int> f;
 for (ll p = 2; p * p <= n; p++)
@@ -867,6 +1028,10 @@ if (n > 1) f[n]++;                              // leftover prime > sqrt
 
 ### 9.4 Sieve of Eratosthenes — O(N log log N)
 
+**Concept.** Cross out multiples of each prime; whatever survives is prime. Start at `i*i` — smaller multiples are already crossed.
+
+**When to use.** You need primality/primes **many times** for values up to 10^6–10^7. Preprocess once, answer O(1).
+
 ```cpp
 vector<bool> isP(N + 1, true);
 isP[0] = isP[1] = false;
@@ -875,7 +1040,7 @@ for (int i = 2; (ll)i * i <= N; i++)
         for (int j = i * i; j <= N; j += i) isP[j] = false;
 ```
 
-Smallest-prime-factor sieve → factorize any `n ≤ N` in O(log n):
+Smallest-prime-factor sieve → factorize any `n ≤ N` in O(log n). Use when factorizing many numbers:
 
 ```cpp
 vector<int> spf(N + 1);
@@ -887,15 +1052,22 @@ while (n > 1) { int p = spf[n]; while (n % p == 0) n /= p; /* p is a factor */ }
 
 ### 9.5 GCD / LCM
 
+**Concept.** Euclid: `gcd(a,b) = gcd(b, a mod b)` — O(log n).
+
+**When to use.** Fraction reduction, "meet at the same time again" (lcm), cycle lengths, "make all elements equal by dividing".
+
 ```cpp
 ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }   // or __gcd(a,b)
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }            // DIVIDE FIRST — overflow
 ```
 
-Properties: `gcd(a,0)=a`, `gcd(a,b)=gcd(b, a%b)`, `gcd(a,b)·lcm(a,b)=a·b`.
-GCD of an array: fold with `g = __gcd(g, a[i])` starting from `g = 0`.
+`gcd(a,0)=a` · `gcd(a,b)·lcm(a,b)=a·b`. GCD of an array: fold `g = __gcd(g, a[i])` from `g = 0`.
 
 ### 9.6 Modular arithmetic
+
+**Concept.** A clock: after `m` you wrap to 0. `%` distributes over `+`, `−`, `×` — so you can reduce at every step and never overflow.
+
+**When to use.** The answer is huge and the statement says "modulo 10^9+7". Take `% MOD` after **every** multiplication.
 
 ```
 (a + b) % m = ((a % m) + (b % m)) % m
@@ -903,9 +1075,13 @@ GCD of an array: fold with `g = __gcd(g, a[i])` starting from `g = 0`.
 (a * b) % m = ((a % m) * (b % m)) % m
 ```
 
-Division does **not** distribute — you need the modular inverse.
+Division does **not** distribute — use the modular inverse (9.8).
 
 ### 9.7 Binary exponentiation — O(log n)
+
+**Concept.** `a^n` by repeated squaring: `a^10 = (a^5)^2`. 60 multiplications instead of 10^18.
+
+**When to use.** Any big power, especially `pow(a, b) % MOD`. Never use `pow()` from `<cmath>` for integers — it returns a double and loses precision.
 
 ```cpp
 ll power(ll b, ll e, ll m) {
@@ -921,12 +1097,20 @@ ll power(ll b, ll e, ll m) {
 
 ### 9.8 Modular inverse (m prime — Fermat)
 
+**Concept.** Dividing mod a prime = multiplying by `a^(m-2)`.
+
+**When to use.** Any division inside a mod computation — probabilities, nCr, averages.
+
 ```cpp
 ll inv(ll a, ll m) { return power(a, m - 2, m); }
 // a / b mod m  ==  a * inv(b, m) % m
 ```
 
 ### 9.9 Combinatorics with factorials
+
+**Concept.** Precompute factorials and their inverses once → every `nCr` is O(1).
+
+**When to use.** "Count the number of ways … mod 10^9+7" with many queries.
 
 ```cpp
 vector<ll> fact(N), ifact(N);
@@ -953,22 +1137,30 @@ ll ceilDiv(ll a, ll b) { return (a + b - 1) / b; }   // avoids ceil() precision 
 
 ## 10. Dynamic programming
 
-Two ways to write the same thing. **Top-down** = recursion + memo (easier to derive). **Bottom-up** = loops (faster, no stack limit).
+**Concept.** The problem has **overlapping subproblems** (the same situation is reached by many paths) and **optimal substructure** (the best whole is built from best parts). Solve each distinct situation once, store it, reuse it.
+
+**When to use.** "Count the number of ways", "minimum/maximum cost to…", "is it possible to reach…", where a greedy choice is provably wrong and brute force is exponential. **Test:** can you describe your situation with 1–2 small numbers (index, remaining capacity)? Then that's your state.
+
+**How to design one:** name the state in words → write the transition → set the base case → choose the loop order so every dependency is already computed. Complexity = number of states × cost per transition.
+
+Top-down = recursion + memo (easier to derive). Bottom-up = loops (faster, no stack limit).
 
 ### 10.1 Fibonacci — both forms
 
 ```cpp
-// top-down
-ll f(int n) { if (n <= 1) return n;
+ll f(int n) { if (n <= 1) return n;                 // top-down
               if (memo[n] != -1) return memo[n];
               return memo[n] = f(n-1) + f(n-2); }
 
-// bottom-up
-dp[0] = 0; dp[1] = 1;
+dp[0] = 0; dp[1] = 1;                               // bottom-up
 for (int i = 2; i <= n; i++) dp[i] = dp[i-1] + dp[i-2];
 ```
 
 ### 10.2 0/1 Knapsack
+
+**Concept.** State = (items considered, capacity used). Each item is a binary choice: skip, or take it and pay its weight.
+
+**When to use.** Pick a subset under a **capacity/budget** limit to maximise value, each item usable **once**. `n × W` must be affordable (~10^7).
 
 ```cpp
 // dp[i][w] = best value using items 0..i-1 with capacity w
@@ -981,7 +1173,7 @@ for (int i = 1; i <= n; i++)
 // answer dp[n][W]
 ```
 
-1D space optimisation (**iterate w downward** or you reuse the same item):
+1D version — **iterate w downward** so each item is used once:
 
 ```cpp
 for (int i = 0; i < n; i++)
@@ -989,24 +1181,30 @@ for (int i = 0; i < n; i++)
       dp[w] = max(dp[w], dp[w - wt[i]] + val[i]);
 ```
 
-Unbounded knapsack / coin change = the same loop **upward**.
+Loop **upward** instead → unlimited copies (unbounded knapsack / coin change).
 
 ### 10.3 Coin change
 
+**Concept.** To make `i`, try every coin as the *last* one used.
+
+**When to use.** "Fewest coins to make X" / "number of ways to make X". Coins in the **outer** loop counts combinations; in the inner loop it counts ordered sequences — pick deliberately.
+
 ```cpp
-// minimum coins to make x
-vector<ll> dp(x + 1, INF); dp[0] = 0;
+vector<ll> dp(x + 1, INF); dp[0] = 0;               // minimum coins
 for (int i = 1; i <= x; i++)
   for (int c : coins)
       if (c <= i) dp[i] = min(dp[i], dp[i - c] + 1);
 
-// number of ways (combinations — coins outer loop kills permutation duplicates)
-vector<ll> ways(x + 1, 0); ways[0] = 1;
+vector<ll> ways(x + 1, 0); ways[0] = 1;             // number of combinations
 for (int c : coins)
   for (int i = c; i <= x; i++) ways[i] = (ways[i] + ways[i - c]) % MOD;
 ```
 
 ### 10.4 LCS + reconstruction
+
+**Concept.** State = (prefix of a, prefix of b). Characters match → extend the diagonal; otherwise drop one character and take the better side.
+
+**When to use.** Comparing two sequences: longest common subsequence, edit distance, diff. Walk the table backwards to rebuild the actual answer.
 
 ```cpp
 for (int i = 1; i <= n; i++)
@@ -1025,6 +1223,10 @@ reverse(all(res));
 
 ### 10.5 LIS in O(n log n)
 
+**Concept.** `tails[k]` = the smallest possible tail of an increasing subsequence of length k+1. Binary-search where each new value belongs and overwrite.
+
+**When to use.** "Longest increasing/decreasing subsequence" with n up to 10^5. (The O(n²) DP is fine up to ~5000.)
+
 ```cpp
 vector<int> tails;
 for (int x : a) {
@@ -1036,6 +1238,10 @@ int lis = tails.size();                          // tails is NOT the actual LIS
 ```
 
 ### 10.6 Grid paths / minimum path sum
+
+**Concept.** Each cell's best value comes from the cells you could have arrived from — so fill top-left to bottom-right.
+
+**When to use.** Movement restricted to right/down (or similar), counting paths, minimum cost path, paths with blocked cells.
 
 ```cpp
 dp[0][0] = g[0][0];
@@ -1049,13 +1255,19 @@ for (int i = 0; i < n; i++)
   }
 ```
 
-**How to design a DP:** name the state (what does `dp[i][j]` MEAN in words?) → write the transition → set the base case → decide the iteration order so every dependency is already computed.
-
 ---
 
 ## 11. Graphs
 
+**Concept.** Nodes + connections. The moment a problem has *"is X reachable from Y"*, *"fewest steps"*, *"groups of connected things"*, or *"A must come before B"*, it is a graph problem — even if the word "graph" never appears (grids, word ladders, states of a puzzle are all graphs).
+
+**When to use.** Explicit edges, or an **implicit** graph where nodes are positions/states and edges are legal moves. Everything below is O(V + E) except Dijkstra.
+
 ### 11.1 Building an adjacency list
+
+**Concept.** For each node, store the list of its neighbours. Memory O(V + E) — the only sane choice for sparse graphs.
+
+**When to use.** Default representation. Adjacency **matrix** only when V ≤ ~1000 and you need O(1) "is there an edge u-v".
 
 ```cpp
 int n, m; cin >> n >> m;
@@ -1072,6 +1284,10 @@ Weighted: `vector<vector<pair<int,int>>> g;` with `g[u].push_back({v, w});`
 
 ### 11.2 DFS
 
+**Concept.** Go as deep as possible, then back up. `vis[]` guarantees each node is processed once.
+
+**When to use.** Reachability, connected components, cycle detection, trees, topological order, flood fill. **Not** for shortest paths.
+
 ```cpp
 void dfs(int u) {
     vis[u] = true;
@@ -1080,7 +1296,7 @@ void dfs(int u) {
 }
 ```
 
-Iterative (when n is large and recursion may stack-overflow):
+Iterative version — use when n ≥ ~10^5 and recursion may blow the stack:
 
 ```cpp
 stack<int> st; st.push(s); vis[s] = true;
@@ -1091,6 +1307,10 @@ while (!st.empty()) {
 ```
 
 ### 11.3 BFS — shortest path in an UNWEIGHTED graph
+
+**Concept.** Explore in rings: all nodes at distance 1, then 2, then 3. The first time you reach a node is necessarily via a shortest path.
+
+**When to use.** "Minimum number of moves/steps" where **every move costs the same**. If costs differ → Dijkstra.
 
 ```cpp
 vector<int> dist(n + 1, -1);
@@ -1109,7 +1329,7 @@ while (!q.empty()) {
 
 **Mark visited when you PUSH, not when you pop** — otherwise nodes enter the queue many times.
 
-Reconstruct the path:
+Reconstruct the path (store `par[v] = u` when you first reach `v`):
 
 ```cpp
 vector<int> path;
@@ -1119,15 +1339,21 @@ reverse(all(path));
 
 ### 11.4 Connected components
 
+**Concept.** Start a fresh DFS from every unvisited node; each start = one new component.
+
+**When to use.** "How many groups/islands/friend circles", "is everyone connected".
+
 ```cpp
 int comps = 0;
 for (int i = 1; i <= n; i++)
     if (!vis[i]) { comps++; dfs(i); }
 ```
 
-To collect each component's nodes, push `u` into a vector inside `dfs` and clear it between roots.
-
 ### 11.5 Grid as a graph (implicit)
+
+**Concept.** No edge list needed — the neighbours of `(r,c)` are computed from the direction arrays.
+
+**When to use.** Mazes, islands, flood fill, "shortest path in a grid with walls". Check bounds **before** touching the cell.
 
 ```cpp
 int dx[] = {0, 0, 1, -1};
@@ -1147,11 +1373,13 @@ while (!q.empty()) {
 }
 ```
 
-**Multi-source BFS**: push *all* sources with distance 0 before the loop starts. Answers "nearest X from every cell" in one pass.
+**Multi-source BFS** — push *all* sources with distance 0 before the loop. Use for "distance from each cell to the **nearest** fire/exit/shop" in one pass instead of one BFS per source.
 
 ### 11.6 Cycle detection
 
-Undirected — a visited neighbour that isn't the parent:
+**Concept (undirected).** Reaching an already-visited node that isn't the one you came from means there was a second route → a cycle.
+
+**When to use.** "Is it a tree/forest?", "does the system contain a loop?" A connected undirected graph is a **tree** iff it's connected and `edges == n - 1`.
 
 ```cpp
 bool dfs(int u, int p) {
@@ -1164,9 +1392,9 @@ bool dfs(int u, int p) {
 }
 ```
 
-A connected undirected graph is a **tree** iff `edges == n - 1` and it's connected (no cycle).
+**Concept (directed).** The parent trick fails; you need to know whether the node is *currently on the recursion stack*. 0 = unseen, 1 = in progress, 2 = finished.
 
-Directed — 3 colors (0 = unseen, 1 = in progress, 2 = done):
+**When to use.** Dependency loops, "can these tasks be ordered?", deadlock detection.
 
 ```cpp
 bool dfs(int u) {
@@ -1181,6 +1409,10 @@ bool dfs(int u) {
 ```
 
 ### 11.7 Topological sort (Kahn / BFS)
+
+**Concept.** Repeatedly output any node with no remaining prerequisites, and remove it. Works only on a DAG.
+
+**When to use.** "A must happen before B" — course prerequisites, build order, task scheduling. If fewer than n nodes come out, there's a cycle → no valid order.
 
 ```cpp
 vector<int> indeg(n + 1, 0);
@@ -1200,6 +1432,10 @@ if ((int)order.size() != n) /* cycle exists — no valid order */;
 
 ### 11.8 Bipartite check (2-coloring)
 
+**Concept.** Paint each node the opposite colour of its neighbour. A conflict means an odd-length cycle → not bipartite.
+
+**When to use.** "Split into two teams with no internal conflicts", "is the graph 2-colorable", odd-cycle detection.
+
 ```cpp
 vector<int> col(n + 1, -1);
 queue<int> q; q.push(s); col[s] = 0;
@@ -1214,6 +1450,10 @@ while (!q.empty()) {
 
 ### 11.9 Dijkstra (non-negative weights)
 
+**Concept.** BFS with a priority queue: always expand the closest unfinished node, so the first time you finalise a node its distance is optimal.
+
+**When to use.** Shortest path when **edges have different costs** and none are negative. O((V+E) log V).
+
 ```cpp
 vector<ll> d(n + 1, INF); d[s] = 0;
 priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<>> pq;
@@ -1227,6 +1467,10 @@ while (!pq.empty()) {
 ```
 
 ### 11.10 DSU / Union-Find
+
+**Concept.** Keep one representative per group; `find` follows parents to the root (compressing the path), `unite` hangs the smaller tree under the bigger. Effectively O(1).
+
+**When to use.** Groups **merge over time** and you keep asking "same group?" — connectivity with incremental edges, Kruskal's MST, "are these two people already friends".
 
 ```cpp
 vector<int> par(n + 1), sz(n + 1, 1);
@@ -1243,19 +1487,17 @@ void unite(int a, int b) {
 
 ### 11.11 Which tool?
 
-| Question | Tool |
+| Question in the statement | Tool |
 |---|---|
-| Reachable? / components | DFS or BFS |
-| Shortest path, unweighted | BFS |
-| Shortest path, weighted ≥ 0 | Dijkstra |
+| Reachable? / how many groups | DFS or BFS |
+| Fewest moves, all moves equal | BFS |
+| Cheapest path, costs differ | Dijkstra |
 | Nearest source from every cell | multi-source BFS |
-| Valid ordering of dependencies | topological sort |
-| Cycle in undirected | DFS with parent |
-| Cycle in directed | DFS with 3 colors |
-| 2-colorable? | BFS bipartite |
-| Merge groups online | DSU |
-
-All of DFS/BFS is **O(V + E)**.
+| A before B / valid order | topological sort |
+| Loop in an undirected graph | DFS with parent |
+| Loop in a directed graph | DFS with 3 colors |
+| Split into two conflict-free sides | BFS bipartite |
+| Groups merging as edges arrive | DSU |
 
 ---
 
@@ -1296,3 +1538,28 @@ All of DFS/BFS is **O(V + E)**.
 - Division by zero, `s[i]` on an empty string, `.top()` / `.front()` on an empty container.
 
 ---
+
+## 13. "Which technique?" — read the statement
+
+| The statement says… | Reach for |
+|---|---|
+| "sorted array", "find a value" | binary search (§3) |
+| "minimum X such that", "maximum X such that" | binary search on the answer (§3.4) |
+| "contiguous subarray/substring", all positive | sliding window (§4.8) |
+| "contiguous" but with negatives, or exact sum | prefix sum + hash map (§4.9) |
+| "pair/triple with sum …" | sort + two pointers (§4.2–4.4) |
+| many range-sum queries | prefix sum (§5.1) |
+| many range-add updates, print at end | difference array (§5.2) |
+| "count the ways", "min/max cost", greedy fails | DP (§10) |
+| n ≤ 24, "every possible group" | bitmask subsets (§7.5) |
+| n ≤ 10, "every possible order" | permutations / backtracking (§6.7) |
+| "fewest moves", equal cost | BFS (§11.3) |
+| "cheapest path", costs differ | Dijkstra (§11.9) |
+| "how many groups/islands" | DFS components (§11.4) or DSU (§11.10) |
+| "A before B" | topological sort (§11.7) |
+| divisors / primes / gcd / "mod 10^9+7" | number theory (§9) |
+| XOR / AND / OR of things | per-bit columns (§7.6) |
+
+---
+
+Related: [[Problem Solving/PS Level 1/Binary Search]] · [[Two Pointers]] · [[Bitmasks]] · [[Recursion Notes]] · [[Sliding window Tips]] · [[Graphs, DFS]] · [[BFS, Graph Applications]] · [[DP]] · [[Number theory.1]] · [[Number Theory.2]] · [[1D Partial Sum]] · [[2D Partial Sum]] · [[Backtracking]] · [[MUST HAVE]]
