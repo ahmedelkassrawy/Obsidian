@@ -182,3 +182,12 @@ const nuu = prompt("Whats the number you want to check?");
 && -> AND 
 | | -> OR
 ! -> NOT
+
+expression is something that gives a value
+statement is a bigger code that is executed and which doesnt producer a value on itself
+
+ternanry operator
+```javascript
+const drink = age >= 18 ? "wine" : "water";
+console.log(drink);
+```
