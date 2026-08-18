@@ -125,3 +125,50 @@ console.log(`String
     multiple
     lines`)
 ```               
+
+Type conversion and Type Coercion
+- conversion is when we manually convert from one type to another
+- coercion is when JS automatically convert types behind the scenes for us but it happens implicilty , completely hidden from us
+
+Conversion
+```javascript
+const input = "1991";
+console.log(Number(input) + 91);
+console.log(String(input))
+console.log(Boolean(input))
+```
+
+Number function gives us a NaN (Not a number) if any number operations fail
+
+Coercion
+```javascript
+console.log(`I'm a` + 23 + `years old`);
+console.log(`I'm a` + `23` + `years old`);
+
+console.log(`23` - `10` - 3); //converted to numbers
+console.log(`23` + `10` + 3); //converted to strings
+
+console.log(`23` * `2`) //converted to numbers
+```
+
+the +  operator triggers the strings conversion 
+the - ,"**" , /  operator triggers the number conversion
+
+Truthy and Falsy values
+Falsy values are the values that when converted to boolean will give false
+```javascript
+console.log(Boolean(0)); //false
+console.log(Boolean(undefined)); //false
+console.log(Boolean("Jonas")); //true
+console.log(Boolean({})); //true
+```
+
+=== (Strict equality operator) -> because it doesnt perform type coercion and so it only returns true when both values are exactly the same
+```javascript
+console.log(19 === 19); //true
+```
+
+== (loose equality operator) -> does type coercion
+```javascript
+console.log("19" == 19) //true, coercion happend and it was converted to a number
+```
