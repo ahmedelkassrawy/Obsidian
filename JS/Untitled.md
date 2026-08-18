@@ -191,3 +191,108 @@ ternanry operator
 const drink = age >= 18 ? "wine" : "water";
 console.log(drink);
 ```
+
+Use strict mode to get a better view of the errors
+```javascript
+`use strict`;
+```
+
+Functions
+we declare a function using the keyword function
+```javascript
+function logger()
+{
+    console.log('My name is Jonas');
+}
+
+logger();
+
+function fruit(num_apples,num_oranges)
+{
+    console.log(num_apples,num_oranges);
+    const juice = `Juice with ${num_apples} apples and ${num_oranges} oranges.`;
+    return juice;
+}
+
+const appleJuice = fruit(5,0);
+console.log(appleJuice);
+
+const appleOrangeJuice = fruit(2,4);
+console.log(appleOrangeJuice);
+```
+
+anonymous function
+we dont give the function a name we just declare a variable and attach the function to it , it appears as an expression which always produces a value
+```javascript
+function calcAge(birthYear) 
+{
+    return 2026 - birthYear;
+}
+
+const age = calcAge(1990);
+console.log(age); // Output: 36
+
+////////////////////////////////////////////
+///////////////////////////////////////////
+
+//anonymous function
+const ageee = function (birthYear)
+{
+    return 2026 - birthYear;
+}
+console.log(ageee(1990)); // Output: 36
+```
+
+In fact in javascript functions are actually just values so just as a number or a string or a boolean so function is not a type, its not like a string or a number type its a value and since its a value it can be stored in a variable
+
+difference between function declarations and function expressions is we can actually call function declarations before they are defined in the code
+```javascript
+const agee = calcAge(1990);
+
+function calcAge(birthYear)
+{
+    return 2026 - birthYear;
+}
+
+console.log(agee);
+```
+
+arrow function is simply a special form of function expression  is shorter and therefore faster to write
+return happens implicitly 
+```javascript
+const calcAge = birthYear => 2026 - birthYear;
+const agee = calcAge(1990);
+console.log(agee);
+```
+
+```javascript
+const yearsUntilRetirement = birthYear => {
+    const age = 2026 - birthYear;
+    const retirement = 65 - age;
+    return retirement;
+}
+
+console.log(yearsUntilRetirement(1990)); // Output: 29
+```
+
+for multiple params use ( ) at the params like (birthYear,firstName)
+
+Functions calling other functions
+```javascript
+function cutFruit(fruit)
+{
+    return fruit * 4;
+}
+
+function fruitProcessor(apples,oranges)
+{
+    if(apples > 0) const applePieces = cutFruit(apples);
+    if(oranges > 0) const orangePieces = cutFruit(oranges);
+
+    const juice = `Juice with ${applePieces} pieces of apple and ${orangePieces} pieces of orange.`;
+    return juice;
+}
+
+const appleJuice = fruitProcessor(2, 0);
+console.log(appleJuice);
+```
