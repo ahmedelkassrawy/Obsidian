@@ -108,3 +108,20 @@ console.log(firstName + " " + LastName); //Jonas Schemedtman
 
 we can still use "+=" sign like c++ and "x++" also works
   
+Template Literals
+```javascript
+const jonas = `I'm ${firstName} ${lastName}, a ${ageJonas} years old`;
+
+console.log(jonas);
+```
+
+They are both the same lines
+```javascript
+console.log(`String with \n\
+    multiple \n\
+    lines`);
+
+console.log(`String
+    multiple
+    lines`)
+```
