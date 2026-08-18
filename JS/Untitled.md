@@ -178,3 +178,7 @@ taking input
 const nuu = prompt("Whats the number you want to check?");
 //it takes it as a string
 ```
+
+&& -> AND 
+| | -> OR
+! -> NOT
