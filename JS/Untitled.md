@@ -87,3 +87,24 @@ birthYear = 1980;
 
 You can just say the variable = value , without using  let or const 
 but a warning its not a good convention because this doesnt create a variable in the current so called scope, instead JS will create a property on the global object  
+
+Operators
+we can print two values using the same console.log
+```javascript
+const ageJonas = 2038 - 1919;
+const ageSarah = 2038 - 2018;
+
+console.log(ageJonas, ageSarah); // prints 46 19
+```
+
+```javascript
+const firstName = 'Jonas';
+
+const lastName = 'Schmedtmann';
+
+console.log(firstName + LastName); //JonasSchemedtman
+console.log(firstName + " " + LastName); //Jonas Schemedtman
+```
+
+we can still use "+=" sign like c++ and "x++" also works
+  
