@@ -40,3 +40,30 @@ class JsonStore:
 ```
 
 `JsonStore` just _happens_ to have the four methods from the checklist. And that's enough. Python's checker looks at it and thinks: "this can save, get, list, and delete… so it counts as a Storage
+
+turning an object into text is called serializing
+turning it back to object is deserializing
+
+Post -> Dict 
+```python
+object.model_dump(mode = "json")
+```
+
+dict -> json text -> file
+```python
+json.dump(...)
+```
+
+file -> json text -> dict
+```python
+json.load(...)
+```
+
+Validating the object is from the same class
+```python
+Class.model_validate(object)
+
+raw = json.loads(self.path.read_text())
+return [Post.model_validate(d) for d in raw]
+#takes each dictionary `d` and rebuilds a real `Post` from it.
+```
