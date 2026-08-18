@@ -23,12 +23,12 @@ SAVE :  Post object  ->  dict  ->  JSON text  ->  file
 LOAD :  Post object  <-  dict  <-  JSON text  <-  file
 ```
 
-| Arrow | Tool | From |
-|---|---|---|
-| Post → dict | `post.model_dump(mode="json")` | Pydantic |
-| dict → JSON text → file | `json.dump(x, f)` | `json` module |
+| Arrow                   | Tool                                | From          |
+| ----------------------- | ----------------------------------- | ------------- |
+| Post → dict             | `post.model_dump(mode="json")`      | Pydantic      |
+| dict → JSON text → file | `json.dump(x, f)`                   | `json` module |
 | file → JSON text → dict | `json.loads(text)` / `json.load(f)` | `json` module |
-| dict → Post | `Post.model_validate(d)` | Pydantic |
+| dict → Post             | `Post.model_validate(d)`            | Pydantic      |
 
 ---
 
