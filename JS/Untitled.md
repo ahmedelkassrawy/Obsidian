@@ -172,3 +172,9 @@ console.log(19 === 19); //true
 ```javascript
 console.log("19" == 19) //true, coercion happend and it was converted to a number
 ```
+
+taking input
+```javascript
+const nuu = prompt("Whats the number you want to check?");
+//it takes it as a string
+```
