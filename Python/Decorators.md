@@ -3,7 +3,6 @@ tags: [python, decorators, functools, contextmanager, design]
 source: Track A · postqueue · Lessons 5–7 (Day 3)
 updated: 2026-08-17
 ---
-
 # Decorators
 
 > The one idea: **`@deco` on top of `def f` means exactly `f = deco(f)`.** A decorator is a function that takes a function and returns a (usually new) function. Everything else is what the wrapper chooses to do.
