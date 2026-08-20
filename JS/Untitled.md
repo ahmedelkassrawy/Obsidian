@@ -298,3 +298,7 @@ console.log(appleJuice);
 ```
 
 ![[Pasted image 20260820212316.png]]
+
+Arrays 
+didnt i say that const variables cant be changed or mutated , how did i change the elements here in the array?
+only primitive values are immutable but an array is not a primitive value so we can always change it and mutate it
