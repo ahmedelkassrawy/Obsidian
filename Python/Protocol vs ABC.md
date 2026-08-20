@@ -3,7 +3,6 @@ tags: [python, typing, protocol, abc, interfaces, design]
 source: Track A · postqueue · Lesson 3 (the Storage checklist)
 updated: 2026-08-17
 ---
-
 # Protocol vs ABC — writing an "interface" in Python
 
 > Both are ways to say *"anything used here must be able to do X, Y, Z."* The difference is **how a class conforms** and **whether the contract can hand out shared code.**
@@ -60,7 +59,8 @@ class Storage(ABC):
     @abstractmethod
     def save(self, post: Post) -> None: ...
 
-    def describe(self) -> str:            # SHARED concrete code — the ABC superpower
+	# SHARED concrete code — the ABC superpower
+    def describe(self) -> str: 
         return f"{type(self).__name__} store"
 
 class JsonStore(Storage):                 # MUST subclass
