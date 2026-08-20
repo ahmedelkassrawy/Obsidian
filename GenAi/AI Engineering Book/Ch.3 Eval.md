@@ -1,50 +1,149 @@
-While I discuss evaluation in its own chapters, evaluation has to be considered in the context of a whole system, not in isolation.
+---
+title: "AI Engineering (Chip Huyen) — Ch.3 Evaluation Methodology"
+type: reading-note
+tags: [ai-engineering, evals, m1]
+source: "AI Engineering — Chip Huyen, Ch.3"
+date: 2026-08-20
+---
+# Ch.3: Evaluation Methodology
 
-Evalutation comes to aim to migtate risks and uncover oppurtunites
-we first have to identify the places where the system is likely to fail and design the eval around them which my aoften require the redesigning of the system to enhance the visibility.
+> Read for M1. The exact-vs-subjective, functional-correctness, and AI-as-judge sections below are the eval harness I'm building this week ([[m1-rag-evals-weekly]]).
+>
+> The entropy/perplexity section is background: good to know, not what I'll use for RAG. Jump to section 5 for how it maps to the harness.
 
-Evaluating foundation models is especially challenging because they are open-ended, and I’ll cover best practices for how to tackle these
+---
 
-First, the more intelligent AI models become, the harder it is to evaluate them. Most people can tell if a first grader’s math solution is wrong. Few can do the same for a PhD-level math solution. It’s easy to tell if a book summary is bad if it’s gibberish, but a lot harder if the summary is coherent. To validate the quality of a summary, you might need to read the book first.
+## 1. Why evaluation is its own hard problem
 
-Second the open edned nature of the  models make it more diffuclt than the ML models where you had to just check the ouput of the ML based on the output expected if its from a certain category or not
+Evaluation isn't a side task. It has to be considered as part of the whole system, not in isolation.
 
-third is that most foundational models are treated as black boxes , we can only evaluate the model based on the input and output , we cant see the reasoning
+The job of evals: mitigate risk and uncover opportunities. The method: find where the system is likely to fail, then design evals around those spots. Sometimes you have to redesign the system to make failures visible in the first place.
 
-Entropy
-- how much information on average a token carries 
-- the higher the entropy the more info each token carries, the more bits are needed to represent the token
-- entropy measures how difficult it is to predict what comes next in a language
+Why foundation models are especially hard to evaluate, three reasons:
 
-Cross Entropy 
-- same as entropy but it measures the difficulty of the model to predict what comes next in this dataset.
-model's cross entropy depends on two qualities:
-1. training data predictability
-2. how the distribution captured by the LLM diverges from the true distribution of the training data
+1. The smarter the model, the harder to judge. Anyone can tell a first-grader's math is wrong; few can check a PhD-level proof. A gibberish summary is obviously bad, but a coherent summary that's subtly wrong? You'd have to read the book to catch it. Fluent ≠ correct.
 
-Bits-per-Character and Bits-per-Byte
-If the cross entropy of a language model is 6 bits, this language model needs 6 bits to represent each token.
+2. Output is open-ended. Classic ML was easy: check whether the predicted category matches the expected one. Open-ended text has no single right answer to match against.
 
-Perplexity
-- perplexity measures the amount of uncertainty it has when predicting the next token.
-- Higher uncertainty means there are more possible options for the next token
+3. The model is a black box. You only see input and output, not the reasoning that produced it.
 
-More structured data gives lower expected perplexity -> since it is more predictable
-The bigger the vocabulary, the higher the perplexity -> because more possible tokens
-The longer the context length, the lower the perplexity -> the possible tokens possibility lowers
+---
 
-- perplexity of a model with respect to text measures how difficult it was for the model to predict the text
-- perplexity is the lowest for texts that model has seen and memorized during training
-- perplexity can be used to detect whether a text was in a model’s training data.
+## 2. Language-modeling metrics (the entropy family)
 
-Exact Evaluation 
-When evaluating models’ performance, it’s important to differentiate between exact and subjective evaluation. Exact evaluation produces judgment without ambiguity.
+> Background, optional for RAG. These measure how well a model predicts text. Useful mental model, but I won't compute them in my RAG eval harness. Skim and move on.
 
-Functional Correctness
-Functional correctness evaluation means evaluating a system based on whether it performs the intended functionality
+Entropy: average information per token.
 
+- Higher entropy = each token carries more info = more bits to represent it = harder to predict what comes next.
 
-1. Asking an evaluator to make the judgment whether two texts are the same
-2. Exact match: whether the generated response matches one of the reference responses exactly 
-3. Lexical similarity: how similar the generated response looks to the reference responses 
-4. Semantic similarity: how close the generated response is to the reference responses in meaning (semantics)
+Cross-entropy: how hard it is for this specific model to predict this specific dataset. It depends on two things:
+
+- how predictable the data itself is, and
+
+- how far the model's learned distribution is from the true distribution of the data.
+
+Bits-per-character / bits-per-byte: a fairness fix. Cross-entropy is measured per token, but different models tokenize differently, so we normalize to bits per character or per byte to compare models fairly regardless of tokenizer. (Correction to my first pass: I'd written this as "per token". The whole point of BPC/BPB is to get off tokens so you can compare across tokenizers.)
+
+Perplexity: the model's uncertainty when predicting the next token.
+
+- Intuition: how many equally-likely options it's effectively choosing between. Higher uncertainty means more possible next tokens.
+
+- Perplexity = exp(cross-entropy). Same quantity, different units. (This relationship wasn't in my first pass; it's the anchor that ties the two together.)
+
+- Lower for structured or predictable data (easier to guess).
+
+- Higher for a bigger vocabulary (more possible tokens).
+
+- Lower for longer context (more to go on, so easier to predict).
+
+- Lowest for text the model memorized in training, so perplexity can detect whether a text was in the training data (contamination check).
+
+---
+
+## 3. Two families of evaluation: exact vs subjective
+
+The key split of the chapter.
+
+- Exact: judgment with no ambiguity.
+
+- Subjective: needs interpretation, such as asking an AI to grade quality.
+
+### 3a. Exact evaluation
+
+Functional correctness: evaluate the system on whether it actually performs the intended job, for example whether generated code passes the tests. The gold standard when you can define it.
+
+Comparing an output against reference answers, four ways from strictest to most flexible:
+
+1. Human or evaluator judgment: a person decides "are these two texts the same?"
+
+2. Exact match: the output matches a reference response exactly.
+
+3. Lexical similarity: how similar the output looks to the reference (surface or word overlap).
+
+4. Semantic similarity: how close the output is to the reference in meaning.
+
+Strict and cheap (2, 3) at the top; flexible and fuzzy (4) at the bottom. Reach for the strict one first; use semantic only when meaning can't be pinned to words. (The lesson from my Wednesday eval-harness session.)
+
+### 3b. Embeddings: how "semantic similarity" actually works
+
+- A model turns text into a numerical representation, a vector, that captures meaning. That vector is an embedding.
+
+- An embedding algorithm is good if more-similar meanings land closer together, measured by cosine similarity.
+
+- Example: "the cat sits on a mat" should embed closer to "the dog plays on the grass" than to "AI research is super fun", because the first two are about a similar kind of thing even though the words differ.
+
+---
+
+## 4. AI as a judge (subjective evaluation)
+
+Why use it:
+
+- Fast, cheap, and easy compared to human evaluators.
+
+- Works without reference data.
+
+- Can judge on any criteria: correctness, repetitiveness, toxicity, hallucination, and more.
+
+- It can explain its decision, which helps when you want to audit your eval results.
+
+Because a model is "an aggregation of the masses", its judgments tend to reflect the mainstream view. With the right prompt on the right model, you get reasonably good judgments across many topics.
+
+Tools with built-in criteria:
+
+- Ragas: faithfulness, answer relevance.
+
+- LangChain: Criteria Evaluation.
+
+- Azure AI Studio and MLflow.metrics: groundedness, relevance, coherence, fluency, similarity.
+
+Limits of AI-as-judge (know these cold):
+
+- Inconsistency: the judge is itself non-deterministic; it can grade the same output differently across runs.
+
+- Criteria ambiguity: "is this good?" is under-specified, and vague criteria give noisy scores.
+
+- Cost and latency: every eval is now an extra model call.
+
+- Bias: the judge carries the model's biases into your scores.
+
+---
+
+## 5. How this maps to my M1 eval harness
+
+The chapter is a menu of eval methods. Here's which one each part of my harness is:
+
+| My harness | Huyen's method |
+|---|---|
+| Layer 1, retrieval hit@k (did the right chunk come back?) | Functional correctness, exact. No LLM in the loop |
+| Layer 2, `"2019" in answer` (cheap-strict fact check) | Exact or lexical match on a pinned fact |
+| Layer 2, citation check (expected filename is in sources) | Exact match on a reference |
+| Layer 2, faithfulness or paraphrase (week 3) | Semantic similarity plus AI-as-judge. Remember the limits above and spot-check the judge |
+
+Takeaways I'm carrying into the build:
+
+- Prefer exact or functional checks wherever I can define them (Layer 1, pinned facts). They're the reliable core.
+
+- Treat AI-as-judge as the last resort, only where meaning can't be pinned to words, and never trust it blind. Inconsistency and bias mean I have to spot-check the judge against my own labels. That's the week-3 "how do I know my judge is any good" gap.
+
+- "Design evals around where the system fails" means my eval set should target rag-prod's real weak spots, like the no-inline, file-level-only citations finding, not generic questions.

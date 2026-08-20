@@ -3,8 +3,9 @@
   "enabledCssSnippets": [
     "styles"
   ],
-  "cssTheme": "AnuPpuccin",
+  "cssTheme": "Minimal",
   "textFontFamily": "thmanyah serif text",
   "interfaceFontFamily": "",
-  "monospaceFontFamily": ""
+  "monospaceFontFamily": "",
+  "theme": "obsidian"
 }
