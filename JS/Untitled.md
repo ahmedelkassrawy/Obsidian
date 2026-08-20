@@ -296,3 +296,5 @@ function fruitProcessor(apples,oranges)
 const appleJuice = fruitProcessor(2, 0);
 console.log(appleJuice);
 ```
+
+![[Pasted image 20260820212316.png]]
