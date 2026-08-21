@@ -4,7 +4,7 @@ let js = "amazing"
 if(js === "amazing") alert("JS is FUN!")
 ```
 
-high level language -> dont worry about memory stuff
+high level language -> don't worry about memory stuff
 Based on objects for storing most kind of data
 
 content -> HTML5 -> Nouns like paragraph
@@ -404,3 +404,28 @@ console.log(friends.include("Bruno")); //false
 ```
 
 it doesnt do type coercion so it has to be the same type you cant look up for 23 as "23"
+
+Objects
+in objects we define key value pairs so that we can give each of these values a name
+we use objects to group certain things that come together
+we use arrays for more ordered data and objects 
+
+object literal syntax
+```javascript
+const jonas  = {
+    firstName: "Jonas",
+    lastName: "Schmedtmann",
+    age: 2037 - 1991,
+    friends: ["Michael", "Peter", "Steven"]
+}
+console.log(jonas)
+console.log(jonas.lastName); //return Schmedtmann
+console.log(jonas["lastName"]); //the same
+```
+
+the difference between the dot and the bracket notation is that the bracket notation can have any kind of expression inside 
+```javascript
+const nameKey = "Name";
+console.log("first" + nameKey); //Jonas
+console.log("last" + nameKey); // Schmedtmann
+```
