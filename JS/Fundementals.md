@@ -429,3 +429,80 @@ const nameKey = "Name";
 console.log("first" + nameKey); //Jonas
 console.log("last" + nameKey); // Schmedtmann
 ```
+
+```javascript
+const jonas  = {
+    firstName: "Jonas",
+    lastName: "Schmedtmann",
+    age: 2037 - 1991,
+    friends: ["Michael", "Peter", "Steven"]
+}
+
+const interseted = prompt("What do you want to know about Jonas? Choose between firstName, lastName, age, and friends")
+console.log(jonas[interseted]); //okay because this a expression 
+console.log(jonas.interseted); //undefined because there is no key with that name
+```
+
+Adding keys to the object
+```javascript
+jonas.location = "Portugal";
+jonas["twitter"] = "@jonasschmedtman";
+console.log(jonas);
+```
+
+Objects just like arrays can hold diff types of data
+
+here we used the function expression inside object
+```javascript
+const jonas  = {
+    firstName: "Jonas",
+    lastName: "Schmedtmann",
+    birthYear: 1991,
+    friends: ["Michael", "Peter", "Steven"],
+    calcAge: function (birthYear) {
+        return 2037 - birthYear;
+    }
+}
+
+console.log(jonas.calcAge(jonas.birthYear)); //46
+console.log(jonas["calcAge"](jonas.birthYear)); //46
+```
+
+if we don't want to use the argument birthYear and use the same birthYear used by the object
+```javascript
+const jonas  = {
+    firstName: "Jonas",
+    lastName: "Schmedtmann",
+    birthYear: 1991,
+    friends: ["Michael", "Peter", "Steven"],
+    calcAge: function () {
+        return 2037 - this.birthYear; //line that changed
+    }
+}
+
+console.log(jonas.calcAge()); //46
+console.log(jonas["calcAge"](); //46
+```
+
+this refers to the object calling the method so this here refers to jonas as a an object so as if it says 
+```javascript
+this.birthYear; //jonas.birthYear
+console.log(this); //return jonas object as a whole
+```
+
+we want to store the calculated age in a variable we dont want to re-calc it again
+```javascript
+const jonas  = {
+    firstName: "Jonas",
+    lastName: "Schmedtmann",
+    birthYear: 1991,
+    friends: ["Michael", "Peter", "Steven"],
+    calcAge: function () {
+        this.age = 2037 - this.birthYear;
+        return this.age;
+    }
+}
+
+console.log(jonas.calcAge());
+console.log(jonas["calcAge"]());
+```
