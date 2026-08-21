@@ -506,3 +506,43 @@ const jonas  = {
 console.log(jonas.calcAge());
 console.log(jonas["calcAge"]());
 ```
+
+For loop
+for loop keeps running until the condition is true
+```javascript
+for(let rep = 0; rep < 10; rep++)
+{
+    console.log("Hello World");
+}
+```
+
+for using the variable rep inside the for loop
+```javascript
+for(let i = 0; i < 10; i++)
+{
+	console.log(`Hello world ${rep + 1}`);
+}
+```
+
+for loops in array
+```javascript
+const arr1 = [1,2,3];
+for(let i = 0; i < arr1.length; i++)
+{
+    console.log(arr1[i]);
+}
+```
+
+for loops in object
+```javascript
+const jonas = {
+    firstName: 'Jonas',
+    lastName: 'Schmedtmann',
+}
+
+for(let key in jonas)
+{
+    console.log(`Key: ${key}`);
+    console.log(`Value: ${jonas[key]}`);
+}
+```
