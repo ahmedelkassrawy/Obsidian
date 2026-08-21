@@ -300,5 +300,107 @@ console.log(appleJuice);
 ![[Pasted image 20260820212316.png]]
 
 Arrays 
-didnt i say that const variables cant be changed or mutated , how did i change the elements here in the array?
+didn't i say that const variables cant be changed or mutated , how did i change the elements here in the array?
 only primitive values are immutable but an array is not a primitive value so we can always change it and mutate it
+
+we cannot do operations with arrays as a whole
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+console.log(friends);
+
+const years = new Array(1991, 1984, 2008, 2020);
+console.log(years);
+
+console.log(friends[0]);
+console.log(friends.length);
+console.log(friends[friends.length - 1]);
+
+friends[2] = "Jay";
+console.log(friends);
+
+const firstName = "Jonas";
+const array2 = [firstName,"Bob", 2037 - 1991,friends];
+
+const calcAge = function (birthYear) {
+    return 2037 - birthYear;
+} 
+
+const ages = [calcAge(years[0]),calcAge(years[1]),calcAge(years[years.length - 1])];
+console.log(ages);
+```
+
+Basic Function methods
+push function
+the push function actually returns the new length of the array
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+const l = friends.push("Jay");
+console.log(friends);
+console.log(l);
+```
+
+unshift method
+to add an element to the beginning of the array 
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+friends.unshift("Bruno");
+console.log(friends);
+```
+
+pop method
+opposite of the push , it removes the last element
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+cosnt popped = friends.pop();
+console.log(popped);
+```
+
+shift method
+remove the first element from array 
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+
+const popped = friends.shift();
+console.log(popped);
+```
+
+indexOf method
+return the index of a certain element
+```javascript
+const friend1 = "Michael";
+const friend2 = "Steven";
+const friend3 = "Peter";
+
+const friends = [friend1, friend2, friend3];
+console.log(friends.indexOf("Steven")); // 1
+console.log(friends.indexOf("Bruno")); // -1
+```
+
+includes method
+returns a Boolean if the element is there if not return false
+```javascript
+console.log(friends.include("Steven")); //true
+console.log(friends.include("Bruno")); //false
+```
+
+it doesnt do type coercion so it has to be the same type you cant look up for 23 as "23"
