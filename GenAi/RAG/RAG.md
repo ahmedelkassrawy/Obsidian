@@ -6,6 +6,27 @@
 4. Retrieval Process
 5. Generation
 
+## Overview / Pipeline at a glance
+
+![[Pasted image 20251011175322.png]]
+
+A RAG system has two halves:
+
+1. **Knowledge Base Creation**
+    - **Chunking**: split the text into sub-document chunks to simplify ingestion.
+    - **Embedding**: compute numerical embeddings for each chunk to capture semantic similarity to queries.
+    - **Storage**: store the embeddings for quick retrieval. A vector store/DB is common but not strictly essential — you can do it without one.
+2. **Generation Part** — retrieve the relevant chunks for a query and feed them to the LLM to produce the answer.
+
+Core steps of a minimal from-scratch build:
+
+1. **Data Loading:** read text data from a file.
+2. **Chunking:** split the text into manageable chunks.
+3. **Embedding (simulation):** create simple numerical representations (simulated embeddings).
+4. **Semantic Search (Similarity):** implement a basic similarity calculation.
+5. **Response Generation (Placeholder):** use string concatenation as a placeholder for the LLM response.
+6. **Evaluation (Basic String Matching):** compare the generated response against a known answer.
+
 ## Setup: Installs and Imports
 
 Start by installing required packages and importing modules. These are essential for document loading, splitting, embeddings, vector stores, LLMs, and chains.

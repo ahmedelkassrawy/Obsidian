@@ -1,9 +1,9 @@
 Learn how to configure speech recognition to convert user audio into text in your Pipecat pipeline
 
 **Speech to Text (STT)** services are responsible for converting user audio into text transcriptions. 
-They receive audio input from users and provide real-time transcriptions that your bot can process and respond to.
+- They receive audio input from users and provide real-time transcriptions that your bot can process and respond to.
 
-#### Pipeline Placement
+Pipeline Placement
 STT processors must be positioned correctly in your pipeline to receive and process audio frames:
 ```python
 pipeline = Pipeline([
@@ -21,22 +21,21 @@ pipeline = Pipeline([
 - **Before context processing**: Transcriptions must be available for context aggregation
 - **Before LLM processing**: Text must be ready for language model input
 
-## STT Service Types
-Pipecat provides two types of STT services based on how they process audio:
-### 1. STTService (Streaming)
-**How it works:**
+STT Service Types:
+how they process audio:
+1. STTService (Streaming)
+	How it works
+		- Establishes a WebSocket connection to the STT provider
+		- Continuously streams audio for real-time transcription
+		- Lower latency due to persistent connection
+2. SegmentedSTTService (HTTP-based)
+	How it works
+		- Uses local VAD (Voice Activity Detection) to chunk speech
+		- Sends audio segments to STT service as wav files
+		- Higher latency due to segmentation and HTTP POST requests
 
-- Establishes a WebSocket connection to the STT provider
-- Continuously streams audio for real-time transcription
-- Lower latency due to persistent connection
-### 2. SegmentedSTTService (HTTP-based)
-**How it works:**
-
-- Uses local VAD (Voice Activity Detection) to chunk speech
-- Sends audio segments to STT service as wav files
-- Higher latency due to segmentation and HTTP POST requests
-
-example looking at configureing the **DeepgramSTTService** using the **LiveOptions**:
+STT Configuration
+For example, let’s look at configuring the **DeepgramSTTService** using the `LiveOptions` class:
 ```python
 from deepgram import LiveOptions
 from pipecat.services.deepgram.stt import DeepgramSTTService
@@ -57,9 +56,9 @@ stt = DeepgramSTTService(
     live_options=live_options,
 )
 ```
-### STTService Base Class Configuration
-All STT services inherit from the STTService base class. The base class has base configuration options which are set with smart defaults:
 
+STTService Base Class Configuration
+All STT services inherit from the STTService base class. The base class has base configuration options which are set with smart defaults:
 ```python
 stt = YourSTTService(
     # Service-specific options...
@@ -67,12 +66,10 @@ stt = YourSTTService(
     sample_rate=16000,           # Audio sample rate (better set in PipelineParams)
 )
 ```
-
-**Key options:**
 - **`audio_passthrough=True`**: Allows audio frames to continue downstream to other processors (like audio recording)
 - **`sample_rate`**: Audio sampling rate - best practice is to **set the `audio_in_sample_rate` in `PipelineParams` for consistency**
 
-### Pipeline-Level Audio Configuration
+Pipeline-Level Audio Configuration
 Instead of setting sample rates on individual services, configure them pipeline-wide:
 ```python
 task = PipelineTask(
@@ -83,12 +80,15 @@ task = PipelineTask(
     ),
 )
 ```
+
 This ensures all audio processors use consistent sample rates without manual configuration.
 
----
-#### Best Practices
+>[!tip]
+>This ensures all audio processors use consistent sample rates without manual configuration.
 
-Enable Interim Results
+Best Practices
+
+- Enable Interim Results
 When available, enable interim transcripts for better user experience:
 ```python
 stt = DeepgramSTTService(
@@ -105,7 +105,7 @@ stt = DeepgramSTTService(
 - Enables interruption detection
 - Improves conversation flow
 
-### Enable Punctuation and Formatting
+- Enable Punctuation and Formatting
 Use punctuation when available for better LLM comprehension:
 ```python
 stt = DeepgramSTTService(
@@ -123,7 +123,7 @@ stt = DeepgramSTTService(
 - Eliminates post-processing needs
 - Improved context understanding
 
-### Use Local VAD
+- Use Local VAD
 While many STT services provide Voice Activity Detection, use Pipecat’s local Silero VAD for better performance:
 ```python
 from pipecat.audio.vad.silero import SileroVADAnalyzer
@@ -148,8 +148,7 @@ user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
 - This value is used by turn stop strategies to decide how long to wait before ending the user’s turn. 
 - If you notice the bot responding too early (cutting off the user) or too late (long pauses), tuning this value can help.
 
-## Key Takeaways
-
+Key Takeaways
 - **Pipeline placement matters** - STT must come after transport input, before context processing
 - **Service types differ** - streaming services have lower latency than segmented
 - **Services are modular** - easily swap providers without code changes

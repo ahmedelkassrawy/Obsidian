@@ -17,6 +17,30 @@ Most commonly cited metrics capture the fundamental goal: **finding relevant doc
 
 All these metrics require **ground truth** relevance judgments.
 
+### 1.1 Retrieval metrics — actual vs. predicted labels
+
+- **Actual labels**
+    - **p** = relevant context
+    - **n** = irrelevant context
+- **Predicted labels**
+    - **p̂** = returned context
+    - **n̂** = not returned
+- **Confusion matrix terms**:
+    - **True Positive (p p̂)** → relevant + returned
+    - **True Negative (n n̂)** → irrelevant + not returned
+    - **False Positive (n p̂)** → irrelevant + returned
+    - **False Negative (p n̂)** → relevant + not returned
+
+**Context Recall (Recall@K)** — how many relevant contexts were retrieved? Increasing @K **always raises recall**, up to perfect recall if K = dataset size. RAGAS default: **@K = 5**.
+
+**Context Precision (Precision@K)** — of all retrieved contexts, how many were relevant? High precision → fewer irrelevant contexts. Also uses **@K**, and a larger K generally **reduces precision**.
+
+### 1.2 Generation metrics
+
+**Faithfulness** — how factually grounded the answer is in the retrieved context. Range **0 to 1**. Uses an LLM to identify claims, so it's sometimes imperfect. A low score means the answer includes claims not supported by the context.
+
+**Answer Relevancy** — how relevant and concise the answer is relative to the question. Low score if the answer is incomplete or contains fluff / irrelevant info. Computed by having an LLM generate multiple questions from the answer, then comparing them with the original question via cosine similarity.
+
 ---
 
 ## 2. Evolution of Vector Retrieval: From kNN to HNSW
