@@ -6,6 +6,7 @@ pip install -qU langchain-postgres
 docker run --name pgvector-container -e POSTGRES_USER=langchain -e POSTGRES_PASSWORD=langchain -e POSTGRES_DB=langchain -p 6024:5432 -d pgvector/pgvector:pg16
 ```
 
+**`main.py`**
 ```python
 from langchain_postgres import PGVector
 
@@ -29,6 +30,8 @@ The provided Python code is an asynchronous method `setup_db` that sets up a Pos
 1. **`asyncpg.connect`**  
    - **Purpose**: Establishes an asynchronous connection to a PostgreSQL database.
    - **Usage in Code**: 
+
+     **`database.py`**
      ```python
      conn = await asyncpg.connect(
          host=self.url.host,
@@ -49,6 +52,8 @@ The provided Python code is an asynchronous method `setup_db` that sets up a Pos
 2. **`conn.fetchval`**  
    - **Purpose**: Executes a query and returns a single value from the result.
    - **Usage in Code**:
+
+     **`database.py`**
      ```python
      exists = await conn.fetchval(
          "SELECT 1 FROM pg_database WHERE datname = $1", 
@@ -63,6 +68,8 @@ The provided Python code is an asynchronous method `setup_db` that sets up a Pos
 3. **`conn.execute`**  
    - **Purpose**: Executes a SQL command that doesn’t return data (e.g., `CREATE`, `INSERT`, `UPDATE`).
    - **Usage in Code**:
+
+     **`database.py`**
      ```python
      await conn.execute(f'CREATE DATABASE {self.db_name}')
      ```
@@ -73,6 +80,8 @@ The provided Python code is an asynchronous method `setup_db` that sets up a Pos
 4. **`conn.close`**  
    - **Purpose**: Closes the database connection.
    - **Usage in Code**:
+
+     **`database.py`**
      ```python
      await conn.close()
      ```
@@ -88,6 +97,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 1. **`create_async_engine`**  
    - **Purpose**: Creates an asynchronous SQLAlchemy engine for PostgreSQL using the `asyncpg` driver.
    - **Usage in Code**:
+
+     **`database.py`**
      ```python
      async_engine = create_async_engine(db_url, echo=False)
      ```
@@ -99,6 +110,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 2. **`async_sessionmaker`**  
    - **Purpose**: Creates a factory for generating asynchronous SQLAlchemy sessions.
    - **Usage in Code**:
+
+     **`database.py`**
      ```python
      AsyncSessionLocal = async_sessionmaker(async_engine, class_=AsyncSession, expire_on_commit=False)
      ```
@@ -111,6 +124,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 3. **`AsyncSession.execute`**  
    - **Purpose**: Executes a SQL query asynchronously and returns the result.
    - **Usage in Code** (examples):
+
+     **`main.py`**
      ```python
      result = await db.execute(select(Auth).filter(Auth.username == username))  # In get_current_user
      result = await db.execute(select(Auth).filter(Auth.username == user.username))  # In register
@@ -124,6 +139,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 4. **`Result.scalar_one_or_none`**  
    - **Purpose**: Retrieves a single scalar value or object from a query result, or `None` if no result is found.
    - **Usage in Code** (examples):
+
+     **`main.py`**
      ```python
      user = result.scalar_one_or_none()  # In get_current_user, register, login
      ```
@@ -134,6 +151,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 5. **`AsyncSession.add`**  
    - **Purpose**: Adds an object to the session for insertion into the database.
    - **Usage in Code**:
+
+     **`main.py`**
      ```python
      db.add(new_user)  # In register
      ```
@@ -144,6 +163,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 6. **`AsyncSession.commit`**  
    - **Purpose**: Commits the current transaction, persisting changes to the database.
    - **Usage in Code**:
+
+     **`main.py`**
      ```python
      await db.commit()  # In register
      ```
@@ -153,6 +174,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 7. **`AsyncSession.refresh`**  
    - **Purpose**: Refreshes an ORM object with the latest data from the database.
    - **Usage in Code**:
+
+     **`main.py`**
      ```python
      await db.refresh(new_user)  # In register
      ```
@@ -163,6 +186,8 @@ The code uses SQLAlchemy's asynchronous features, specifically through the `Asyn
 8. **`AsyncSession.close`**  
    - **Purpose**: Closes the asynchronous session, releasing resources.
    - **Usage in Code**:
+
+     **`main.py`**
      ```python
      await session.close()  # In get_async_db
      ```
@@ -190,45 +215,63 @@ The `Result` object (e.g., `sqlalchemy.engine.Result` in Core or ORM query resul
 
 1. **Fetching Single Rows or Scalars**
    - `result.scalar_one()`: Retrieves exactly one scalar value from the query. Raises `NoResultFound` if no rows are returned or `MultipleResultsFound` if more than one row is returned.
+
+     **`main.py`**
      ```python
      value = result.scalar_one()  # Expects exactly one row, returns a single value
      ```
      
    - `result.one()`: Retrieves exactly one row as a `Row` object (or ORM object). Raises `NoResultFound` or `MultipleResultsFound` if the result doesn’t contain exactly one row.
+
+     **`main.py`**
      ```python
      row = result.one()  # Returns a single Row or ORM object
      ```
    - `result.one_or_none()`: Retrieves one row or `None` if no rows are found. Raises `MultipleResultsFound` if more than one row is returned.
+
+     **`main.py`**
      ```python
      row = result.one_or_none()  # Returns a Row/ORM object or None
      ```
    - `result.scalar()`: Retrieves the first column of the first row as a scalar value, or `None` if no rows are found. Does not enforce uniqueness.
+
+     **`main.py`**
      ```python
      value = result.scalar()  # First column of first row, or None
      ```
 
 2. **Fetching Multiple Rows**
    - `result.all()`: Returns all rows as a list of `Row` objects (or ORM objects in ORM queries).
+
+     **`main.py`**
      ```python
      rows = result.all()  # Returns list of all rows
      ```
    - `result.fetchall()`: Similar to `all()`, retrieves all rows as a list of `Row` objects. More common in Core queries.
+
+     **`main.py`**
      ```python
      rows = result.fetchall()  # Returns list of all rows
      ```
    - `result.fetchmany(size)`: Fetches the specified number of rows (`size`) as a list. Useful for processing large result sets in chunks.
+
+     **`main.py`**
      ```python
      rows = result.fetchmany(100)  # Fetches up to 100 rows
      ```
 
 3. **Fetching the First Row**
    - `result.first()`: Returns the first row as a `Row` object (or ORM object) or `None` if no rows are found.
+
+     **`main.py`**
      ```python
      row = result.first()  # First row or None
      ```
 
 4. **Iterating Over Results**
    - `result.__iter__()`: Allows iteration over the result set, yielding one `Row` (or ORM object) at a time.
+
+     **`main.py`**
      ```python
      for row in result:
          print(row)  # Iterate over rows
@@ -236,10 +279,14 @@ The `Result` object (e.g., `sqlalchemy.engine.Result` in Core or ORM query resul
 
 5. **Accessing Columns and Metadata**
    - `result.keys()`: Returns a list of column names (or aliases) in the result set.
+
+     **`main.py`**
      ```python
      columns = result.keys()  # List of column names
      ```
    - `result.mappings()`: Converts the result into a sequence of dictionaries, where each row is a dictionary mapping column names to values.
+
+     **`main.py`**
      ```python
      for row_dict in result.mappings():
          print(row_dict)  # Each row as a dict
@@ -248,48 +295,66 @@ The `Result` object (e.g., `sqlalchemy.engine.Result` in Core or ORM query resul
 6. **Row-Specific Methods**
    When iterating or fetching rows, each row is a `Row` object (in Core) or an ORM object (in ORM). `Row` objects have their own methods:
    - `row._mapping`: Access row data as a dictionary.
+
+     **`main.py`**
      ```python
      row = result.first()
      row_dict = row._mapping  # Dictionary of column names to values
      ```
    - `row._asdict()`: Returns the row as a dictionary (similar to `_mapping`).
+
+     **`main.py`**
      ```python
      row_dict = row._asdict()  # Row as dictionary
      ```
    - `row._tuple()`: Returns the row as a tuple of values.
+
+     **`main.py`**
      ```python
      row_tuple = row._tuple()  # Row as tuple
      ```
 
 7. **Partitioning and Yielding**
    - `result.partitions(size)`: Splits the result into partitions of `size` rows, yielding lists of rows for memory-efficient processing.
+
+     **`main.py`**
      ```python
      for partition in result.partitions(100):
          process(partition)  # Process 100 rows at a time
      ```
    - `result.yield_per(size)`: Configures the result to yield `size` rows at a time when iterating, useful for large datasets (Core-specific, used with database-specific settings).
+
+     **`main.py`**
      ```python
      result.yield_per(100)  # Yield 100 rows at a time during iteration
      ```
 
 8. **Unique Results**
    - `result.unique()`: Ensures that rows are unique based on their values (useful for ORM queries with duplicate rows due to joins).
+
+     **`main.py`**
      ```python
      unique_result = result.unique()  # Deduplicates rows
      ```
 
 9. **Closing the Result**
    - `result.close()`: Closes the result cursor, releasing database resources. This is often unnecessary in modern SQLAlchemy as results are automatically closed in many contexts, but it’s good practice for large result sets in Core queries.
+
+     **`main.py`**
      ```python
      result.close()  # Explicitly close the cursor
      ```
 
 10. **Checking Result Status**
     - `result.returns_rows`: Boolean indicating if the result contains rows (e.g., `SELECT` queries return `True`, while `INSERT`/`UPDATE` may return `False`).
+
+      **`main.py`**
       ```python
       has_rows = result.returns_rows  # True if result has rows
       ```
     - `result.rowcount`: Returns the number of rows affected (for `INSERT`, `UPDATE`, `DELETE`) or rows matched (for `SELECT` in some databases).
+
+      **`main.py`**
       ```python
       count = result.rowcount  # Number of rows affected or matched
       ```
@@ -298,12 +363,16 @@ The `Result` object (e.g., `sqlalchemy.engine.Result` in Core or ORM query resul
 If you’re using SQLAlchemy’s ORM (e.g., `session.execute()` or `session.scalars()`), the `result` object may be a `Result` specialized for ORM queries, such as `ChunkedIteratorResult` for `session.execute()` or `ScalarResult` for `session.scalars()`. Additional methods include:
 
 - `result.scalars()`: Returns a `ScalarResult` object, which yields scalar values (typically the first column or ORM objects) instead of full rows.
+
+  **`main.py`**
   ```python
   scalar_result = result.scalars()  # Yields scalar values
   for value in scalar_result:
       print(value)
   ```
 - `result.unique()`: As mentioned, ensures unique ORM objects, especially useful when joins cause duplicates.
+
+  **`main.py`**
   ```python
   unique_objects = result.unique().all()  # List of unique ORM objects
   ```
@@ -312,6 +381,8 @@ If you’re using SQLAlchemy’s ORM (e.g., `session.execute()` or `session.scal
 - **Core Queries**: When using `engine.execute()` or `connection.execute()`, the `result` is typically a `CursorResult`. Methods like `fetchall()`, `fetchmany()`, and `rowcount` are more commonly used.
 - **ORM Queries**: When using `session.execute()` or `session.scalars()`, the `result` is often a `Result` or `ScalarResult`, and methods like `scalar_one()`, `one_or_none()`, and `scalars()` are more relevant.
 - **Context Managers**: Results are often used in context managers, which automatically handle closing:
+
+  **`main.py`**
   ```python
   with engine.execute(query) as result:
       rows = result.fetchall()

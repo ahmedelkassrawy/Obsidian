@@ -1,3 +1,4 @@
+**`crud.py`**
 ```python
 import hashlib
 import json
@@ -163,6 +164,8 @@ You are using `async_session_maker` and `await session.close()`.
 4. **Timeouts:** Your logic for "stuck" tasks is good—just ensure the `started_at` is updated if a task is "re-claimed."
 ----
 Currently, your unique index includes `celery_task_id`. As we discussed, if a user sends the same file twice (creating two different `celery_task_id`s), the unique constraint won't trigger, and you'll process the same data twice.
+
+**`models.py`**
 ```python
 class CeleryTaskExecution(Base):
     __tablename__ = "celery_task_executions"
@@ -195,6 +198,8 @@ class CeleryTaskExecution(Base):
     )
 ```
 ---
+
+**`tasks.py`**
 ```python
 import sys
 import os

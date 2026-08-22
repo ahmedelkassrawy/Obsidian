@@ -18,6 +18,7 @@ pip install asyncpg
 
 Then, modify your database connection and session setup to use `asyncio` and `AsyncSession`:
 
+**`database.py`**
 ```python
 # database_async.py
 
@@ -51,6 +52,7 @@ async def get_async_db():
 
 Now, your FastAPI endpoints can use `async` and `await` with the `AsyncSession`:
 
+**`schemas.py`**
 ```python
 # main_async.py
 
@@ -117,6 +119,7 @@ We've already seen this with `db: Session = Depends(get_db)` or `db: AsyncSes
 - **Configuration**: Providing application settings.
 - **Business Logic**: Injecting services that encapsulate specific business operations.
 
+**`main.py`**
 ```python
 # main_dependencies.py
 
@@ -148,6 +151,7 @@ async def read_users_me(current_user: Annotated[dict, Depends(get_current_user)]
 
 FastAPI provides utilities for implementing various authentication and authorization schemes, including OAuth2 with JSON Web Tokens (JWT). This is crucial for securing your API endpoints.
 
+**`schemas.py`**
 ```python
 # auth.py
 
@@ -224,6 +228,7 @@ async def read_secure_data(current_user: Annotated[dict, Depends(get_current_use
 
 FastAPI makes testing easy with `TestClient` from `fastapi.testclient`. This allows you to simulate requests to your application without actually running a server.
 
+**`test_main.py`**
 ```python
 # test_main.py
 
@@ -280,6 +285,7 @@ This process allows you to track schema changes, apply them to different environ
 
 FastAPI provides robust error handling mechanisms. You can raise `HTTPException` for standard HTTP errors, and FastAPI will automatically convert them into appropriate JSON responses. For custom exceptions, you can use `@app.exception_handler`.
 
+**`main.py`**
 ```python
 # main_error_handling.py
 

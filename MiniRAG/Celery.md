@@ -71,6 +71,8 @@ CELERY_WORKER_CONCURRENCY=2
 ```
 
 /celery
+
+**`celery_app.py`**
 ```python
 from celery import Celery
 
@@ -123,6 +125,8 @@ celery_app.conf.task_default_queue = "default"
 Task:
 /tasks
 each task in a python file
+
+**`tasks.py`**
 ```python
 from celery_app import celery_app
 from helpers.config import get_settings,Settings
@@ -158,6 +162,8 @@ async def _send_email_reports(task_instance,mail_wait_seconds:int):
 ```
 
 #### FASTAPI Route:
+
+**`tasks.py`**
 ```python
 @base_router.get("/send_reports")
 async def send_reports(app_settings:Settings = Depends(get_settings)):
@@ -172,6 +178,8 @@ async def send_reports(app_settings:Settings = Depends(get_settings)):
 - Any exceptions please use try and except and finally (also raise exceptions)
 - Have to close the db engine after closes
 #### Exceptions:
+
+**`tasks.py`**
 ```python
 task_instance.update_state(
                     state = "FAILURE",
@@ -182,6 +190,8 @@ task_instance.update_state(
 raise Exception(f"No assets for file: {file_id}")
 ```
 #### Closing tasks:
+
+**`tasks.py`**
 ```python
 except Exception as e:
         logger.error(f"Task failed: {str(e)}")
@@ -205,6 +215,8 @@ python -m celery -A celery_app flower --port=5555
 ```
 
 can make a config for flower
+
+**`tasks.py`**
 ```python
 from dotenv import dotenv_values
 config = dotenv_values(".env")
@@ -224,6 +236,8 @@ python -m celery -A celery_app flower --conf=flowerconfig.py
 
 #### Workflow 
 We want to make a workflow containing more than one task each one after the other in correct order
+
+**`tasks.py`**
 ```python
 @celery_app.task(
                  bind=True, name="tasks.process_workflow.process_and_push_workflow",
@@ -250,6 +264,7 @@ def process_and_push_workflow(  self, project_id: int,
 ```
 we use chain instead of task here, the first task takes the same input , the next task takes the result from the task but the input of the task has to be in the result of the previous task 
 
+**`tasks.py`**
 ```python
 @celery_app.task(
                  bind=True, name="tasks.process_workflow.push_after_process_task",
@@ -274,6 +289,8 @@ def push_after_process_task(self, prev_task_result):
 
 #### Idempotency Manager
 Scheme:
+
+**`tasks.py`**
 ```python
 from .minirag_base import SQLAlchemyBase
 from sqlalchemy import Column, Integer, DateTime, func, String, Text
@@ -312,6 +329,8 @@ class CeleryTaskExecution(SQLAlchemyBase):
 #### Manager:
 We want to make a db table to store which worker is working on which task so that if some worker has a certain task other workers cant interfer with that worker's work so we use md5 hash so that not everytime we have a new task I have to compare the parameters one by one.
 The md5 hash gives u the ability to compare the parameters easily.
+
+**`crud.py`**
 ```python
 import hashlib
 import json
@@ -439,6 +458,8 @@ class IdempotencyManager:
 ```
 
 #### Maintenance
+
+**`tasks.py`**
 ```python
 from celery_app import celery_app, get_setup_utils
 from helpers.config import get_settings
@@ -492,6 +513,8 @@ async def _clean_celery_executions_table(task_instance):
             logger.error(f"Task failed while cleaning: {str(e)}")
 ```
 add the beat schedule in the celery_app (where schedule here is in seconds)
+
+**`main.py`**
 ```python
 beat_schedule = {
         "cleanup-old-task-records":{
@@ -505,6 +528,8 @@ beat_schedule = {
 ```
 ----
 #### API Endpoints in Celery
+
+**`tasks.py`**
 ```python
 @celery_app.task(bind = True, name = "tasks.check_complaint_by_id")
 def check_complaint_by_id(self,complaint_id:str):
@@ -534,6 +559,8 @@ async def _check_complaint_by_id(self,complaint_id:str):
 ```
 
 ##### How to use the task:
+
+**`tasks.py`**
 ```python
 @tool
 @traceable
@@ -569,6 +596,8 @@ def check_complaint_status(runtime: ToolRuntime[Context]) -> str:
             return f"Error connecting to complaint system: {e}"
 ```
 ###### Here
+
+**`tasks.py`**
 ```python
 result = check_complaint_by_id.delay(ctx.complaint_id)
 data = result.get(timeout=10)

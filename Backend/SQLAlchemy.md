@@ -13,6 +13,7 @@ SQLAlchemy provides a way to connect to a database using the `create_engine` fun
 
 **Example**: Connecting to an SQLite database and executing a simple query.
 
+**`database.py`**
 ```python
 from sqlalchemy import create_engine, text
 from contextlib import contextmanager
@@ -40,10 +41,10 @@ if __name__ == "__main__":
         print(res.scalar())
 ```
 
-Context Managers are a python feature that auto handle setup,cleanup
+Context Managers are a python feature that auto handle setup, cleanup
 Especially:
-- Opening,Closing DB connections
-- Opening,Closing files
+- Opening, Closing DB connections
+- Opening, Closing files
 - Releasing Locks
 
 A **context manager** is something that:
@@ -96,6 +97,7 @@ Tables are defined using the `Table` class and `MetaData` to manage schema defin
 
 **Example**: Defining and creating `products` and `users` tables.
 
+**`models.py`**
 ```python
 from sqlalchemy import Table, Column, Integer, String, Float, MetaData
 from sqlalchemy import create_engine
@@ -137,6 +139,7 @@ SQLAlchemy allows executing CRUD (Create, Read, Update, Delete) operations using
 
 **Example**: CRUD operations on the `products` table.
 
+**`crud.py`**
 ```python
 from sqlalchemy import insert, select, update, delete
 
@@ -215,6 +218,7 @@ SQLAlchemy ORM maps database tables to Python classes, allowing object-oriented 
 
 **Example**: Defining `User` and `Product` models with a one-to-many relationship.
 
+**`models.py`**
 ```python
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -265,6 +269,7 @@ Sessions manage database transactions in the ORM, providing a scope for operatio
 
 **Example**: Setting up a session for ORM operations.
 
+**`database.py`**
 ```python
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -292,6 +297,7 @@ Using the ORM, you can perform CRUD operations by interacting with model objects
 
 **Example**: CRUD operations with `User` and `Product` models.
 
+**`crud.py`**
 ```python
 from sqlalchemy.orm import Session
 from models_orm import User, Product, Base, engine
@@ -368,6 +374,7 @@ SQLAlchemy ORM simplifies managing relationships between tables.
 
 **Example**: Navigating relationships.
 
+**`main.py`**
 ```python
 # Access a user's products
 retrieved_user = get_user(db, user_id=1)
@@ -395,6 +402,7 @@ SQLAlchemy ORM supports advanced querying with filters, joins, and more.
 
 **Example**: Advanced queries.
 
+**`main.py`**
 ```python
 # Get products with price > 100
 expensive_products = db.query(Product).filter(Product.price > 100).all()
@@ -430,6 +438,8 @@ This enforces:
 - `(team_id, player_id)` is **globally unique**
 
 This is your **real uniqueness constraint** in the schema
+
+**`models.py`**
 ```python
 class TeamPlayer(Base):
     __tablename__ = "team_player"
@@ -442,6 +452,7 @@ class TeamPlayer(Base):
 ---
 ## (Many-to-Many Mapping)
 
+**`models.py`**
 ```python
 teams = relationship(
     "Team",
@@ -450,6 +461,8 @@ teams = relationship(
 )
 ```
 and
+
+**`models.py`**
 ```python
 players = relationship(
     "Player",
@@ -488,6 +501,7 @@ These handle **Relationship Symmetry**.
 
 Everything above uses the **sync** API (`create_engine`, `Session`). For an async FastAPI app you use the async layer instead — `sqlalchemy.ext.asyncio` — so queries, inserts, commits and refreshes are **non-blocking** and don't stall the event loop.
 
+**`database.py`**
 ```python
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy import select
@@ -506,6 +520,7 @@ All async DB actions use `AsyncSession` and `select()`, and every write is `awai
 
 ### 10.1 Creating an async session
 
+**`database.py`**
 ```python
 AsyncSessionLocal = async_sessionmaker(
     async_engine,
@@ -519,6 +534,7 @@ AsyncSessionLocal = async_sessionmaker(
 
 ### 10.2 Dependency injection for DB
 
+**`database.py`**
 ```python
 async def get_db():
     async with AsyncSessionLocal() as session:
@@ -529,17 +545,20 @@ async def get_db():
 
 ### 10.3 Executing queries (SELECT)
 
+**`main.py`**
 ```python
 result = await db.execute(select(Order).filter(Order.order_id == order_data["order_id"]))
 ```
 - **Library:** `sqlalchemy` — runs an async SELECT without blocking the event loop. General pattern:
 
+**`main.py`**
 ```python
 result = await db.execute(select(Model).filter(Model.field == value))
 ```
 
 ### 10.4 Fetching one result
 
+**`main.py`**
 ```python
 existing = result.scalar_one_or_none()
 ```
@@ -548,6 +567,7 @@ existing = result.scalar_one_or_none()
 
 ### 10.5 Adding a new record
 
+**`main.py`**
 ```python
 new_record = Model(**data)
 db.add(new_record)
@@ -556,6 +576,7 @@ db.add(new_record)
 
 ### 10.6 Committing changes
 
+**`main.py`**
 ```python
 await db.commit()
 ```
@@ -563,6 +584,7 @@ await db.commit()
 
 ### 10.7 Refreshing an object
 
+**`main.py`**
 ```python
 await db.refresh(obj)
 ```
@@ -570,18 +592,21 @@ await db.refresh(obj)
 
 ### 10.8 Reading data (GET)
 
+**`main.py`**
 ```python
 result = await db.execute(select(Complaint).filter(Complaint.id == complaint_id))
 complaint = result.scalar_one_or_none()
 ```
 Or fetch many:
 
+**`main.py`**
 ```python
 results = (await db.execute(select(Complaint))).scalars().all()
 ```
 
 ### 10.9 Updating data
 
+**`main.py`**
 ```python
 obj.field = new_value
 await db.commit()
@@ -590,6 +615,7 @@ await db.commit()
 
 ### 10.10 Startup data initialization
 
+**`main.py`**
 ```python
 @app.on_event("startup")
 async def startup_event():

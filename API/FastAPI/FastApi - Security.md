@@ -19,6 +19,7 @@
 
 ### OAuth2 in FastAPI
 
+**`main.py`**
 ```python
 from typing import Annotated
 from fastapi import Depends, FastAPI
@@ -74,6 +75,7 @@ Below is a complete example of OAuth2 authentication in FastAPI, including passw
 
 ### Configuration
 
+**`schemas.py`**
 ```python
 from typing import Annotated
 from datetime import datetime, timedelta, timezone
@@ -98,6 +100,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 ### Pydantic Models
 
+**`schemas.py`**
 ```python
 class Token(BaseModel):
     access_token: str
@@ -124,6 +127,7 @@ class UserInDB(User):
 
 ### Utility Functions
 
+**`main.py`**
 ```python
 def verify_password(plain_password, hashed_password):
     """Verify a plain password against a hashed password."""
@@ -173,6 +177,7 @@ async def get_current_active_user(current_user: Annotated[User, Depends(get_curr
 
 ### Endpoints
 
+**`main.py`**
 ```python
 @app.post("/token")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
@@ -196,6 +201,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 - **Purpose**: Allows cross-origin requests from different domains, critical for web apps.
 - **Security Note**: Avoid `allow_origins=["*"]` in production; specify exact domains.
 
+**`main.py`**
 ```python
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -214,6 +220,7 @@ A more advanced implementation using a database (SQLAlchemy) for user storage.
 
 ### Setup
 
+**`schemas.py`**
 ```python
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -235,6 +242,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 ### Pydantic Models
 
+**`schemas.py`**
 ```python
 class UserCreate(BaseModel):
     username: str
@@ -254,6 +262,7 @@ class Token(BaseModel):
 
 ### Database Dependency
 
+**`database.py`**
 ```python
 def get_db():
     db = SessionLocal()
@@ -265,6 +274,7 @@ def get_db():
 
 ### Password and JWT Functions
 
+**`crud.py`**
 ```python
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -282,6 +292,7 @@ def create_access_token(data: dict) -> str:
 
 ### Current User Dependency
 
+**`main.py`**
 ```python
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     credentials_exception = HTTPException(
@@ -306,6 +317,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
 
 1. **Register (/auth/register)**
 
+**`main.py`**
 ```python
 @router.post("/register", response_model=User)
 async def register(user: UserCreate, db: Session = Depends(get_db)):
@@ -323,6 +335,7 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
 
 2. **Login (/auth/login)**
 
+**`main.py`**
 ```python
 @router.post("/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -340,6 +353,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
 
 3. **Get Current User (/auth/me)**
 
+**`main.py`**
 ```python
 @router.get("/me", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_user)):

@@ -9,6 +9,7 @@
         - **asyncio.ensure_future()**: Schedules a coroutine to run in the current loop without blocking (returns a Future object, which is like a promise of a result).
         - **Future**: A placeholder for a result that will be available later. asyncio.iscoroutine() checks if something is a pending coroutine.
 
+**`main.py`**
 ```python
 def execute(self, input_data: List[SearchResult],
             context: Optional[Dict[str,Any]] = None) -> List[ScrapedContent]:
@@ -36,6 +37,7 @@ def execute(self, input_data: List[SearchResult],
     - If not running but a loop exists: Use loop.run_until_complete(...) to run the coroutine synchronously in that loop until it finishes.
 - If no loop exists (raises RuntimeError, e.g., in a plain sync script): Use asyncio.run(...) to create a new loop, run the coroutine, and close it. This is the simplest way to run async code from sync.
 
+**`main.py`**
 ```python
     if not asyncio.iscoroutine(scraped_results):
         #if its not a coroutine, it means it was run to completion
@@ -104,6 +106,7 @@ Modern Python supports **asynchronous code** using **coroutines** with `async` a
     - If using libraries that support `await` (e.g., `results = await some_library()`).
     - Example:
         
+        **`main.py`**
         ```python
         @app.get('/')
         async def read_results():
@@ -115,6 +118,7 @@ Modern Python supports **asynchronous code** using **coroutines** with `async` a
     - If the library doesn't support `await` (e.g., most database libraries).
     - Example:
         
+        **`main.py`**
         ```python
         @app.get('/')
         def results():
@@ -152,6 +156,7 @@ Modern Python supports **asynchronous code** using **coroutines** with `async` a
 - **Behavior**: Pauses at `await`, allowing the event loop to switch to other coroutines.
 - **Example**:
     
+    **`main.py`**
     ```python
     async def get_burgers(number: int):
         # Simulate async work (e.g., network call)
@@ -183,6 +188,7 @@ Modern Python supports **asynchronous code** using **coroutines** with `async` a
 - **Without FastAPI**:
     - Use `asyncio.run()` for top-level sync calls:
         
+        **`main.py`**
         ```python
         import asyncio
         
@@ -203,6 +209,8 @@ Modern Python supports **asynchronous code** using **coroutines** with `async` a
 #### asyncio.Semaphore
 - **asyncio.Semaphore**: A synchronization primitive that limits the number of concurrent coroutines (e.g., API calls) to prevent overloading resources. It acts like a “ticket system” where only a fixed number of tasks can run simultaneously.
 - How: async with semaphore acquires a “slot”; when done, it releases it, allowing another coroutine to proceed.
+
+**`main.py`**
 ```python
 semaphore = asyncio.Semaphore(2)  # Allow 2 concurrent tasks
 async with semaphore:
@@ -215,6 +223,8 @@ async with semaphore:
 - **What**: Runs a list of coroutines concurrently and waits for all to complete.
 - **Why**: Efficiently processes all chunks in parallel, respecting the semaphore’s limit.
 - **How**: Takes coroutines (tasks), schedules them, and returns their results (or None here, as results are stored in all_topics).
+
+**`main.py`**
 ```python
  async def task(i):
     await asyncio.sleep(1)
@@ -226,6 +236,8 @@ results = await asyncio.gather(*[task(i) for i in range(3)])  # Returns [0, 1, 2
 - **What**: Allows a nested function (process_chunk) to modify variables in the outer scope (all_topics, required_topics_count).
 - **Why**: Enables shared state across concurrent tasks without global variables or complex passing.
 - **How**: Declared with nonlocal to bind to the outer scope’s variable.
+
+**`main.py`**
 ```python
 def outer():
     count = 0
@@ -237,6 +249,7 @@ def outer():
 
 - **Example**
 
+**`main.py`**
 ```python
 async def process_chunk(chunk):
 	nonlocal all_topics
@@ -258,6 +271,7 @@ async def process_chunk(chunk):
     - Automatically releases the ticket when the block exits (even on errors).
 - **Early Exit**: If enough unique topics (len(set(all_topics))) are collected, skips processing to save resources.
 
+**`main.py`**
 ```python
 try:
 	await asyncio.sleep(3)
@@ -283,6 +297,7 @@ except Exception as e:
     - If it’s a GeminiQuotaExhaustedError, re-raises it (likely to stop the entire process, as quotas are critical).
     - For other errors, logs and continues (fault-tolerant).
 
+**`main.py`**
 ```python
 tasks = [process_chunk(chunk) for chunk in chunks]
 await asyncio.gather(*tasks)
@@ -313,6 +328,8 @@ Under the hood, it uses a `ThreadPoolExecutor` to manage the threads.
 
 ### Code Example
 Here is how you use it to prevent a blocking I/O operation from freezing your async program:
+
+**`main.py`**
 ```python
 import asyncio
 import time

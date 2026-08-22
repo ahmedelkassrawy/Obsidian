@@ -58,6 +58,8 @@ To support Large Language Models (LLMs) and efficient front-ends, the script inc
 | **AI Optimization** | `.count()` | Provides metadata for analytics and query planning. |
 
 ---
+
+**`models.py`**
 ```python
 #define the sqlalchemy models here
 from sqlalchemy import Column, Integer, ForeignKey, String, DATETIME
@@ -144,6 +146,8 @@ This enforces:
 - `(team_id, player_id)` is **globally unique**
 
 This is your **real uniqueness constraint** in the schema
+
+**`models.py`**
 ```python
 class TeamPlayer(Base):
     __tablename__ = "team_player"
@@ -156,6 +160,7 @@ class TeamPlayer(Base):
 ---
 ## (Many-to-Many Mapping)
 
+**`models.py`**
 ```python
 teams = relationship(
     "Team",
@@ -164,6 +169,8 @@ teams = relationship(
 )
 ```
 and
+
+**`models.py`**
 ```python
 players = relationship(
     "Player",
@@ -239,6 +246,7 @@ Below is the complete code for defining the Pydantic schemas.
 
 **Filename:** `schemas.py`
 
+**`schemas.py`**
 ```python
 from pydantic import BaseModel, ConfigDict
 from typing import List
@@ -383,6 +391,7 @@ Here is a step-by-step of what happens when you query a Player in FastAPI.
 You run a query like `player = db.query(PlayerModel).first()`.
 You get back a Python object that looks like this in memory:
 
+**`main.py`**
 ```python
 # SQLAlchemy Object (Not a dict!)
 <models.Player object at 0x104a>
@@ -410,6 +419,7 @@ You return this object to the `Player` Pydantic schema. Pydantic starts validati
 The real power of `from_attributes=True` is handling **Relationships**.
 If you didn't have this, you would have to write code like this for every single endpoint:
 
+**`main.py`**
 ```python
 # THE HARD WAY (Manual Conversion)
 return {
@@ -425,6 +435,7 @@ return {
 
 With `from_attributes=True`, you simply write:
 
+**`main.py`**
 ```python
 # THE EASY WAY
 return db_player
@@ -440,6 +451,7 @@ Pydantic automatically traverses the SQLAlchemy object graph, follows the relati
 ---
 ### FastAPI Controller (main.py)
 
+**`database.py`**
 ```python
 app = FastAPI()
 
@@ -452,6 +464,8 @@ def get_db():
 ```
 
 The second parameter of the decorator is response_model=list[schemas.Player]) . This informs FastAPI that the data returned from this endpoint will be a list of Pydantic Player objects, as defined in the schemas.py file. This information will be included in the OpenAPI specification that FastAPI automatically creates for this API. Consumers can count on the returned data being valid according to this definition.
+
+**`main.py`**
 ```python
 @app.get("/v0/players/", response_model = list[schemas.Player])
 def read_players(skip:int = 0, limit:int = 100,
@@ -490,6 +504,7 @@ The code tests two ways of sending data to an API:
 
 ### A. Initialization
 
+**`main.py`**
 ```python
 from fastapi.testclient import TestClient
 from main import app
@@ -503,6 +518,7 @@ client = TestClient(app)
 ---
 ### B. Testing List Endpoints (Pagination)
 
+**`test_main.py`**
 ```python
 def test_read_players():
     response = client.get("/v0/players/?skip=0&limit=2000")
@@ -518,6 +534,7 @@ def test_read_players():
 ---
 ### C. Testing Specific Resource Retrieval
 
+**`test_main.py`**
 ```python
 def test_read_players_with_id():
     response = client.get("/v0/players/1001/")
@@ -533,6 +550,7 @@ def test_read_players_with_id():
 ---
 ### D. Testing Nested Data Relationships
 
+**`test_main.py`**
 ```python
 def test_read_leagues_with_id():
     response = client.get("/v0/leagues/5002/")
@@ -547,6 +565,7 @@ def test_read_leagues_with_id():
 ---
 ### E. Testing Aggregated Data (Counts)
 
+**`test_main.py`**
 ```python
 def test_counts():
     response = client.get("/v0/counts/")
@@ -572,6 +591,8 @@ def test_counts():
 
 ----
 #### Docker
+
+**`Dockerfile`**
 ```python
 FROM python:3.10-slim
 

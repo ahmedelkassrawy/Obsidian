@@ -9,6 +9,7 @@ FastAPI's dependency injection system is perfect for managing database sessions.
 
 First, ensure you have your `database_orm.py` and `models_orm.py` set up as described in the previous sections. We'll use the `get_db` function from `database_orm.py` as a dependency.
 
+**`schemas.py`**
 ```python
 # main_integrated.py
 
@@ -60,6 +61,7 @@ app = FastAPI()
 Let's create API endpoints for users and products, demonstrating how to use the database session dependency and Pydantic models.
 ```
 
+**`main.py`**
 ```python
 # main_integrated.py (continued)
 @app.post("/users/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)

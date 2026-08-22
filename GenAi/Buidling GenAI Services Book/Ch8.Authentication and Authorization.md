@@ -32,6 +32,8 @@ In basic authentication, the client provides a username and password when making
 To perform an authenticated request via basic authentication, you must add an **Authorization** header with a value of Basic for the server to successfully authenticate it. The value must be a **Base64 encoding** of the username and password joined by a single colon (i.e., **base64.encode(ali:secretpassword)** .
 
 *Implementing basic authentication in FastAPI*
+
+**`main.py`**
 ```python
 import secrets
 from typing import Annotated
@@ -94,6 +96,8 @@ With the dependencies installed, you will then need tables in the database to st
 you will spot that the tokens table has a one-to-many relationship with the users table. You can use the token records to track successful login attempts for each user and to revoke access if needed.
 #### Declare user SQLAlchemy ORM models
 entities.py
+
+**`models.py`**
 ```python
 from datetime import UTC,datetime
 import uuid
@@ -123,6 +127,8 @@ You will be using the ORM models at the data access layer while the Pydantic sch
 
 Declare user Pydantic schemas with username and password field validators
 schemas.py
+
+**`schemas.py`**
 ```python
 from datetime import datetime
 from typing import Annotated
@@ -187,6 +193,8 @@ class UserOut(UserBase):
 4. Create a separate schema that accepts the hashed_password field to be used only for creating new user records during the registration process. All other schemas must skip storing this field to eliminate the risk of password leakage.
 #### Declare token ORM models and Pydantic schemas
 entities.py
+
+**`models.py`**
 ```python
 class Token(Base):
     __tablename__ = "tokens"
@@ -209,6 +217,8 @@ class Token(Base):
 ```
 
 schemas.py
+
+**`models.py`**
 ```python
 class TokenBase(BaseModel):
     model_config = ConfigDict(from_attributes= True)
@@ -273,6 +283,8 @@ Since hashes cannot be "decrypted," the system verifies a user by repeating the 
 ---
 #### Implement a password service
 services/auth.py
+
+**`main.py`**
 ```python
 from fastapi.security import HTTPBearer
 from passlib.context import CryptContext
@@ -295,6 +307,8 @@ The bcrypt cryptographic library provides the core functionality of the Password
 If a request can’t be authenticated, you will also need to raise authorization -related exceptions
 
 exceptions.py
+
+**`main.py`**
 ```python
 from fastapi import HTTPException,status
 
@@ -320,6 +334,8 @@ The two most common authorization HTTP exceptions you will raise are related to 
 - Finally, the token service will also require database access to store and retrieve tokens to perform its functions. Therefore, it should inherit a TokenRepository
 #### Implement token repo
 repositories.py
+
+**`main.py`**
 ```python
 from authentication.entities import Token
 from repo.interfaces import Repository
@@ -389,6 +405,8 @@ class TokenRepository(Repository):
 
 With the TokenRepository implemented, you can now develop the TokenService
 services/auth.py
+
+**`crud.py`**
 ```python
 from fastapi.security import HTTPBearer
 from passlib.context import CryptContext
@@ -455,6 +473,8 @@ Now that you have a PasswordService and a TokenService , you can complete the co
 
 Implement an auth service to handle higher-level authentication logic
 services/auth.py
+
+**`crud.py`**
 ```python
 from fastapi.security import HTTPBearer
 from passlib.context import CryptContext
@@ -628,6 +648,8 @@ You can now use the AuthService to register and authenticate users using their c
 
 Implement authentication controllers to enable login and registration functionality
 routes/auth.py
+
+**`main.py`**
 ```python
 from typing import Annotated
 from fastapi import APIRouter, Depends, Body
@@ -827,6 +849,7 @@ You can generate a client ID and secret from GitHub by visiting the developer se
 
 With your new application client ID and secret, you can now redirect users to the GitHub authorization server from your application
 
+**`main.py`**
 ```python
 from typing import Annotated
 from fastapi import APIRouter, Depends, Body
@@ -907,6 +930,8 @@ Redirect user to the GitHub authorization server to log into their account while
 
 Adding a GitHub login button to the Streamlit client-side application
 client.py
+
+**`main.py`**
 ```python
 import requests 
 import streamlit as st 
@@ -925,6 +950,8 @@ if st.button("Login with GitHub"):
 
 Exchanging grant code with an access token while protecting against CSRF attacks
 dependencies/auth.py
+
+**`main.py`**
 ```python
 from typing import Annotated
 import aiohttp
@@ -986,6 +1013,8 @@ Attackers can also create a replica of your application frontend and trick users
 
 Implement callback endpoint to get access token while protecting against CSRF attacks
 routes/auth.py
+
+**`main.py`**
 ```python
 from fastapi.responses import RedirectResponse
 from fastapi import APIRouter,Request,status
@@ -1007,6 +1036,8 @@ you are using the request session for CSRF protection, but this won’t work wit
 
 Add a session middleware to manage session state for protecting against CSRF attacks
 main.py
+
+**`main.py`**
 ```python
 from fastapi import FastAPI 
 from starlette.middleware.sessions import SessionMiddleware
@@ -1022,6 +1053,8 @@ Finally, you can use the access token you received from the authorization server
 
 Use access token to get user information from GitHub resource servers 
 routes/auth.py
+
+**`main.py`**
 ```python
 import secrets
 from fastapi.responses import RedirectResponse
@@ -1135,6 +1168,8 @@ Most commercial services start with two primary roles to distinguish between sta
 |**Data Privacy**|Cannot view other users' data.|Can view data across the entire platform.|
 |**Early Access**|Standard features only.|Access to beta features or restricted GenAI models.|
 dependencies/auth.py
+
+**`main.py`**
 ```python
 from typing import Annotated
 import aiohttp
@@ -1195,6 +1230,8 @@ async def is_admin(user:User = Depends(AuthService.get_current_user)) -> User:
 ```
 
 routers/resource.py
+
+**`main.py`**
 ```python
 from dependencies.auth import is_admin
 from fastapi import APIRouter, Depends
@@ -1227,6 +1264,8 @@ Implementing complex RBAC authorization using abstract dependencies
 ![[Pasted image 20260126185220.png]]
 
 dependencies/auth.py
+
+**`main.py`**
 ```python
 from typing import Annotated
 import aiohttp
@@ -1297,6 +1336,8 @@ async def has_role(user:CurrentUserDep,roles:list[str]):
 ```
 
 routes/resource.py
+
+**`main.py`**
 ```python
 from dependencies.auth import is_admin,has_role
 from fastapi import APIRouter, Depends
@@ -1421,6 +1462,8 @@ A hybrid approach combining RBAC, ReBAC, and ABAC models may give you the streng
 
 Implementing the hybrid authorization model combining RBAC, ReBAC, and ABAC
 dependencies/auth.py
+
+**`main.py`**
 ```python
 
 from typing import Annotated
@@ -1451,6 +1494,8 @@ def authorize(user: CurrentUserDep, resource: ResourceDep, team: TeamMembershipR
 ```
 
 routes/resource.py
+
+**`main.py`**
 ```python
 from dependencies.auth import authorize
 from fastapi import APIRouter, Depends 
@@ -1473,6 +1518,8 @@ Since implementing a hybrid model can be complex, you may consider developing a 
 
 Using an authorization service with the GenAI service
 authorization_api.py
+
+**`schemas.py`**
 ```python
 from typing import Annotated, Literal
 from fastapi import Depends, FastAPI
@@ -1502,6 +1549,8 @@ def authorization_controller(
 ```
 
  genai_api.py (GenAI Service) 
+
+ **`schemas.py`**
  ```python
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel 

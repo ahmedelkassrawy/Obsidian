@@ -73,6 +73,8 @@ Query example: `"What do you know about os"`
 5. **Return**: `DocumentChunk.rerank_score` for RAG
 
 **API remains unchanged**:
+
+**`main.py`**
 ```python
 await retrieve_relevant_chunks(db, query, user_id, top_k=5)
 ```
@@ -118,6 +120,8 @@ Solution: **Cache BM25 indexes per-user**
 **Vector Search (Semantic Similarity) + BM25 Search (Keyword Matching) + Reranker (Cross-Encoder)**
 
 ---
+
+**`crud.py`**
 ```python
 # Global reranker (unchanged)
 RERANKER = Ranker(model_name="ms-marco-MiniLM-L-12-v2", cache_dir="/tmp/flashrank")
@@ -313,6 +317,8 @@ async def invalidate_user_bm25(user_id: uuid.UUID):
 ```
 ---
 #### LRU Cache
+
+**`main.py`**
 ```python
 _lru_cache: OrderedDict[uuid.UUID, BM25Retriever] = OrderedDict()
 CACHE_SIZE = 50
@@ -340,6 +346,8 @@ Think of it like a "Waiting Line" or a "Queue":
 5. **Line full?** The person at the very front (the one who hasn't talked in the longest time) gets kicked out to make room.
 ---
 #### BM25 Retrieving Cache
+
+**`crud.py`**
 ```python
 @staticmethod
     async def get_bm25_retriever_cached(
@@ -395,6 +403,7 @@ Hybrid Cache: Memory LRU -> Redis -> Build
 2. Fallback: Redis
 3. Fallback of Fallback: Build
 
+**`main.py`**
 ```python
 # 1. Memory LRU HIT (1ms)
 if user_id in HybridRetriever._lru_cache:
@@ -407,6 +416,7 @@ if user_id in HybridRetriever._lru_cache:
 
 move to the end is used to promote the user_id as it asks question now so its promoted back
 
+**`main.py`**
 ```python
 cache_key = f"bm25_index:{user_id}"
 cached_bytes = await redis_client.get(cache_key)
@@ -428,6 +438,7 @@ cached_bytes = await redis_client.get(cache_key)
 			logger.warning(f"Redis cache corrupt: {user_id}")
 ```
 
+**`main.py`**
 ```python
  # 3. COLD BUILD (~300ms, cache miss)
 logger.info(f"BM25 Cold build: {user_id}")
@@ -450,6 +461,8 @@ return retriever
 ```
 ---
 #### Get Vector Search
+
+**`main.py`**
 ```python
 @staticmethod
 async def _get_vector_results(
@@ -477,6 +490,8 @@ async def _get_vector_results(
 - Execution we get the limit only half of the intended candidates
 ---
 #### get_hybrid_candidates(Vector + BM25)
+
+**`crud.py`**
 ```python
 @staticmethod
 async def get_hybrid_candidates(
@@ -544,10 +559,12 @@ await vector_task
 	- Your code pauses here until the vector search is actually finished.
 - Since `bm25_task` was already started in the background on the previous lines, by the time you finish awaiting the `vector_task`, the `bm25_task` is likely already done or very close to it.
 
+**`main.py`**
 ```python
  bm25_docs = bm25_retriever.invoke(query, k=limit // 2)
 ```
 
+**`main.py`**
 ```python
 bm25_results = []
 chunk_map = {str(c.id): c for c in vector_results}  # String UUID keys
@@ -562,6 +579,8 @@ logger.debug(f"Raw: V={len(vector_results)}, B={len(bm25_results)}")
 ```
 
 doc in bm25_docs are Langchain Documents and the metadatas where made using :
+
+**`main.py`**
 ```python
 retriever = BM25Retriever.from_documents(
             [LC_Document(page_content=c.content, metadata={"chunk_id": str(c.id)}) 
@@ -571,6 +590,7 @@ retriever = BM25Retriever.from_documents(
 
 where we check for the chunk_id in the chunk_map taht we retrieved from the vector_results if its there then we append them to the bm25_results
 
+**`main.py`**
 ```python
 # Fusion unchanged
 #priortize the semantic matches from vector
@@ -610,6 +630,8 @@ If you have the **Reranker (FlashRank)** stage after this, the order here **does
 ---
 #### Get BM25 Chunks
 function is the data feeder for the BM25 algo. While the function itself looks like a standard database query, it is actually responsible for defining the **Corpus** (the total collection of text) that BM25 will use to calculate word frequencies and rankings.
+
+**`crud.py`**
 ```python
 @staticmethod
 async def get_bm25_chunks(db: AsyncSession, user_id: uuid.UUID, max_chunks: int = 5000,):
@@ -636,6 +658,8 @@ async def get_bm25_chunks(db: AsyncSession, user_id: uuid.UUID, max_chunks: int 
 - limited by max_chunks parameter
 ---
 #### Retrieve Relevant Chunks
+
+**`crud.py`**
 ```python
  @staticmethod
 async def retrieve_relevant_chunks(
@@ -686,6 +710,8 @@ async def retrieve_relevant_chunks(
 It follows a **Two-Stage Retrieval** pattern, which is the industry standard for balancing speed and high precision.
 
 Phase 1: Candidate Gathering
+
+**`main.py`**
 ```python
 candidates = await HybridRetriever.get_hybrid_candidates(
     db, query, user_id, candidate_limit
@@ -696,6 +722,8 @@ candidates = await HybridRetriever.get_hybrid_candidates(
 - **The Trade-off:** At this stage, we prioritize **Recall**. We want to make sure the right answer is somewhere in that list of 30, even if it's currently at position #25.
 
 Phase 2: Safety Guard 
+
+**`main.py`**
 ```python
 if not candidates:
     return []
@@ -713,6 +741,8 @@ Phase 3: Stage 2 Reranking (The "Brain")
 This is where the heavy lifting happens. It takes the "fuzzy" results from the hybrid search and re-evaluates them using a more powerful model.
 
 preperation
+
+**`main.py`**
 ```python
 if rerank and len(candidates) >= top_k:
 	passages = [{
@@ -723,12 +753,16 @@ if rerank and len(candidates) >= top_k:
 ```
 
 Cross-Encoder Execution
+
+**`main.py`**
 ```python
 results = RERANKER.rerank(RerankRequest(query=query, passages=passages))
 ```
 **Semantic Scoring:** Unlike vector search (which compares two numbers), the reranker looks at the **Query** and the **Text** together. It identifies if the answer is actually "contained" in the text, rather than just "mathematically similar.
 
 Resorting and filtering
+
+**`main.py`**
 ```python
 top_ids = [uuid.UUID(r['id']) for r in results[:top_k]]
 id_to_chunk = {c.id: c for c in candidates}
@@ -738,6 +772,8 @@ The reranker returns a list of IDs sorted by their new, better score.
 You use a dictionary (`id_to_chunk`) to quickly map those IDs back to your full `DocumentChunk` objects so you can keep the metadata (like source names).
 
 Storing the rerank_scores
+
+**`main.py`**
 ```python
 for chunk in final_chunks:
 	chunk.rerank_score = getattr(chunk, 'rerank_score', 0.0)
@@ -746,6 +782,8 @@ return final_chunks
 ```
 ---
 #### Outside the Class: APIS
+
+**`main.py`**
 ```python
 async def retrieve_relevant_chunks(db: AsyncSession, query: str, user_id: uuid.UUID, top_k: int = 5):
     return await HybridRetriever.retrieve_relevant_chunks(db, query, user_id, top_k)

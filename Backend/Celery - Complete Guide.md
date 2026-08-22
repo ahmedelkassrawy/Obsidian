@@ -155,6 +155,8 @@ my_project/
 ```
 
 **`celery_app.py`** - Celery Configuration:
+
+**`celery_app.py`**
 ```python
 from celery import Celery
 
@@ -176,6 +178,8 @@ app.conf.update(
 ```
 
 **`tasks/email.py`** - Define a Task:
+
+**`tasks.py`**
 ```python
 from celery_app import app
 
@@ -188,6 +192,8 @@ def send_welcome_email(user_email: str):
 ```
 
 **`main.py`** - Dispatch the Task:
+
+**`tasks.py`**
 ```python
 from tasks.email import send_welcome_email
 
@@ -208,6 +214,7 @@ python main.py
 
 ### Step 5: Production Configuration
 
+**`celery_app.py`**
 ```python
 # celery_app.py - Production-ready configuration
 from celery import Celery
@@ -298,6 +305,7 @@ CELERY_TASK_TIME_LIMIT=600
 
 **When:** Quick operations, no error handling needed.
 
+**`tasks.py`**
 ```python
 from celery_app import app
 
@@ -315,6 +323,7 @@ send_notification.delay(123, "Welcome!")
 
 **When:** External API calls, network operations that may fail.
 
+**`tasks.py`**
 ```python
 from celery_app import app
 from celery.exceptions import SoftTimeLimitExceeded
@@ -350,6 +359,7 @@ call_external_api.delay("https://api.example.com/webhook", {"event": "signup"})
 
 **Why:** Celery workers are synchronous. You must bridge with `asyncio.run()`.
 
+**`tasks.py`**
 ```python
 import asyncio
 import nest_asyncio
@@ -387,6 +397,7 @@ async def _sync_user_data_async(task_instance, user_id: int):
 
 **When:** Long-running tasks where you want to track progress.
 
+**`tasks.py`**
 ```python
 @celery_app.task(bind=True, name="tasks.processing.batch_process")
 def batch_process(self, items: list):
@@ -414,6 +425,7 @@ print(result.info)  # {'current': 2, 'total': 5} while running
 
 ### Dispatching Tasks from FastAPI
 
+**`tasks.py`**
 ```python
 from fastapi import APIRouter, UploadFile, HTTPException, BackgroundTasks
 from tasks.file_processing import process_file_task
@@ -512,6 +524,7 @@ Create a database record with a **unique hash of task arguments**. The database 
 
 ### Step 1: Database Schema
 
+**`models.py`**
 ```python
 from sqlalchemy import Column, Integer, DateTime, func, String, Index
 from sqlalchemy.dialects.postgresql import UUID, JSONB
@@ -557,6 +570,7 @@ class CeleryTaskExecution(Base):
 
 ### Step 2: IdempotencyManager Implementation
 
+**`crud.py`**
 ```python
 import hashlib
 import json
@@ -691,6 +705,7 @@ class IdempotencyManager:
 
 ### Step 3: Using IdempotencyManager in Tasks
 
+**`tasks.py`**
 ```python
 import asyncio
 from celery_app import celery_app
@@ -784,6 +799,7 @@ async def _process_upload_async(task_instance, file_path: str, user_id: int):
 
 **When:** Steps must run in order, each step needs the previous result.
 
+**`tasks.py`**
 ```python
 from celery import chain
 from celery_app import celery_app
@@ -826,6 +842,7 @@ print(f"Pipeline ID: {result.id}")
 
 **When:** Many independent tasks that can run simultaneously.
 
+**`tasks.py`**
 ```python
 from celery import group
 
@@ -851,6 +868,7 @@ print(f"Completed: {result.completed_count()} / 100")
 
 **When:** Run tasks in parallel, then do something when ALL complete.
 
+**`tasks.py`**
 ```python
 from celery import chord
 
@@ -877,6 +895,7 @@ result = workflow.apply_async()
 
 ### Real-World Example: File Processing Pipeline
 
+**`tasks.py`**
 ```python
 from celery import chain
 from celery_app import celery_app
@@ -952,6 +971,7 @@ def notify_completion(self, prev_result: dict):
 
 ### Step 1: Define Periodic Tasks
 
+**`tasks.py`**
 ```python
 # tasks/maintenance.py
 from celery_app import celery_app
@@ -990,6 +1010,7 @@ def health_check():
 
 ### Step 2: Configure Beat Schedule
 
+**`tasks.py`**
 ```python
 # celery_app.py - Add to your Celery configuration
 from celery.schedules import crontab
@@ -1103,6 +1124,7 @@ celery -A celery_app flower --conf=flowerconfig.py
 
 #### Flower Configuration
 
+**`main.py`**
 ```python
 # flowerconfig.py
 from dotenv import load_dotenv
@@ -1133,6 +1155,7 @@ basic_auth = [f"admin:{os.getenv('FLOWER_PASSWORD')}"]
 
 ### Checking Task Status Programmatically
 
+**`tasks.py`**
 ```python
 from celery.result import AsyncResult
 
@@ -1159,6 +1182,7 @@ def get_task_status(task_id: str) -> dict:
 
 ### HTTP Calls from Tasks
 
+**`tasks.py`**
 ```python
 import httpx
 from celery_app import celery_app
@@ -1197,6 +1221,7 @@ def call_external_service(self, endpoint: str, payload: dict):
 
 ### Using Results in Application Code
 
+**`tasks.py`**
 ```python
 # Synchronous wait (blocks)
 result = my_task.delay(args)
@@ -1242,6 +1267,7 @@ async def get_task_result(task_id: str):
 
 ### Exception Handling Best Practices
 
+**`tasks.py`**
 ```python
 @celery_app.task(bind=True, name="tasks.example.robust_task")
 def robust_task(self, data):
@@ -1341,6 +1367,7 @@ celery -A celery_app control shutdown  # Graceful shutdown
 
 ### Task Dispatch Methods
 
+**`main.py`**
 ```python
 # Fire and forget
 task.delay(arg1, arg2)

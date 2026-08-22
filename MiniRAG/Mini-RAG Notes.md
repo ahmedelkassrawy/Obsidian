@@ -41,10 +41,14 @@ Fastapi users -> Authentication
 
 4. Configure `alembic/env.py`  
    In the `env.py` file, find:
+
+   **`env.py`**
    ```python
    target_metadata = None
    ```
    Replace with:
+
+   **`env.py`**
    ```python
    from src.models import SQLAlchemyBase   # ← adjust import path
    target_metadata = SQLAlchemyBase.metadata
@@ -66,6 +70,7 @@ The rest of the workflow (new models → new migration → review & apply) is de
 
 ### Creating records (async SQLAlchemy 2.0+ style)
 
+**`crud.py`**
 ```python
 async def create_project(self, project: Project) -> Project:
     async with self.db_client() as session:
@@ -81,6 +86,8 @@ async def create_project(self, project: Project) -> Project:
 Instead of plain strings for status / type / role columns that have a fixed set of values.
 
 Example:
+
+**`crud.py`**
 ```python
 from enum import Enum as PyEnum
 
@@ -95,6 +102,7 @@ class AssetType(str, PyEnum):
 
 ### Example Model with PGVector + our conventions
 
+**`crud.py`**
 ```python
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func, Index
 from sqlalchemy.dialects.postgresql import UUID, JSONB

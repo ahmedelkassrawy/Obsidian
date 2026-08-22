@@ -8,6 +8,7 @@ FastAPI, Pydantic, and SQLAlchemy form a robust stack for various AI engineering
 
 One of the most common use cases for FastAPI in AI engineering is to serve machine learning models as RESTful APIs. This allows other applications or services to send input data and receive predictions.
 
+**`schemas.py`**
 ```python
 # main_ml_model.py
 
@@ -65,6 +66,7 @@ FastAPI's automatic validation with Pydantic ensures that the input features for
 
 Pydantic is invaluable for defining and validating data schemas at various stages of an ML pipeline, from raw data ingestion to feature engineering.
 
+**`schemas.py`**
 ```python
 # data_pipeline_models.py
 
@@ -115,6 +117,7 @@ except ValidationError as e:
 
 SQLAlchemy is perfect for storing and managing metadata about your machine learning models, including their versions, training parameters, performance metrics, and deployment status. This is crucial for MLOps and reproducibility.
 
+**`models.py`**
 ```python
 # ml_metadata_models.py
 
@@ -173,6 +176,7 @@ For long-running machine learning tasks (e.g., model training, batch inference, 
 
 While a full Celery setup is beyond the scope of this guide, here's how FastAPI would interact with it:
 
+**`schemas.py`**
 ```python
 # main_celery_ml.py
 
@@ -218,6 +222,7 @@ async def trigger_ml_task(input_data: MLTaskInput, background_tasks: BackgroundT
 
 For applications requiring real-time interaction, such as live model predictions based on streaming data, FastAPI supports WebSockets. This allows for persistent, bidirectional communication between the client and the server.
 
+**`main.py`**
 ```python
 # main_websocket_ml.py
 

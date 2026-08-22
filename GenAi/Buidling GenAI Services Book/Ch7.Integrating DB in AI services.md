@@ -2,6 +2,8 @@ An ORM library allows you to interact with a database and execute SQL operations
 Defining ORM Models The first step to query your database in Python is to define your ORM models with SQLAlchemy classes
 
 #### Defining ORM Models
+
+**`models.py`**
 ```python
 from datetime import UTC,datetime
 from sqlalchemy import ForeignKey
@@ -63,6 +65,7 @@ Once created, you can use the engine and the Base class to create tables for eac
 - Session factory is a design pattern that allows you to open, interact with, and close database connections across your services. 
 - Since you may reuse a session, you can use FastAPI’s dependency injection system to cache and reuse sessions across each request runtime
 
+**`main.py`**
 ```python
 import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
@@ -113,6 +116,8 @@ db_session = Annotated[AsyncSession, Depends(get_db)]
 - This avoids tightly coupling your API schema with your database models to give you the freedom and flexibility in developing your API and databases independent of each other.
 
 schemas.py
+
+**`schemas.py`**
 ```python
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
@@ -138,6 +143,8 @@ class ConversationOut(ConversationBase):
 Now that you have the SQLAlchemy and Pydantic models, you can start developing your CRUD API endpoints. When implementing CRUD endpoints, you should try to leverage FastAPI dependencies as much as you can to reduce database round-trips. For instance, when retrieving, updating, and deleting records, you need to check in with the database that a record exists using its ID. You can implement a record retrieval function to use a dependency across your get, update, and delete endpoints
 
 #### CRUD Endpoints
+
+**`main.py`**
 ```python
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
@@ -236,6 +243,8 @@ A repository is a design pattern that mediates the business logic of your applic
 
 To implement a repository pattern, you can use an abstract interface
 repo/interface.py
+
+**`schemas.py`**
 ```python
 from abc import ABC,abstractmethod
 from typing import Any, List,Dict,Optional
@@ -267,6 +276,8 @@ Define the abstract Repository interface with several CRUD-related abstract meth
 
 Implementing the conversation repository using the abstract repository interface
 repo/conversations.py
+
+**`schemas.py`**
 ```python
 from entities import Conversation
 from repo.interfaces import Repository
@@ -333,6 +344,7 @@ class ConversationRepository(Repository):
 #### Refactoring the conversation CRUD endpoints to use the repository pattern
 routers/conversations.py
 
+**`main.py`**
 ```python
 from typing import Annotated
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
@@ -390,6 +402,8 @@ async def delete_conversation_controller(conversation: get_conversation_dep, db:
 ```
 
 main.py
+
+**`main.py`**
 ```python
 from routers.conversations import router as conversations_router
 
@@ -409,6 +423,8 @@ Once again you can go back to your controllers and replace references to the Con
 
 #### Implementing the conversation services pattern
 services/conversations.py
+
+**`main.py`**
 ```python
 from entities import Message
 from repo.conversations import ConversationRepository
@@ -422,6 +438,8 @@ class ConversationService:
 ```
 
 routers/conversations.py
+
+**`main.py`**
 ```python
 from typing import Annotated
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
@@ -476,6 +494,8 @@ project/
 		versions/
 #### Connect the Alembic environment with your SQLAlchemy models
 With Alembic connected to your SQLAlchemy models, Alembic can now auto-generate your migration files by comparing the current schema of your database with your SQLAlchemy models
+
+**`env.py`**
 ```python
 from logging.config import fileConfig
 
@@ -506,6 +526,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 ```
 
+**`env.py`**
 ```python
 $ alembic revision --autogenerate -m "Initial Migration"
 ```
@@ -513,6 +534,8 @@ $ alembic revision --autogenerate -m "Initial Migration"
 This command will compare the defined SQLAlchemy models against the existing database schema and automatically generate a SQL migration file under the alembic/versions directory.
 
 Now that you’ve updated your first migration file, you’re ready to run it against the database:
+
+**`env.py`**
 ```python
 $ alembic upgrade head
 ```
@@ -529,6 +552,8 @@ If in any case, your database schemas and your migration history drift away, you
 
 Storing content of an LLM output stream
 main.py
+
+**`main.py`**
 ```python
 async def store_message(prompt_content:str, response_content:str,
                         conversation_id:int, session:AsyncSession):
@@ -562,6 +587,8 @@ async def stream_llm(prompt:str,background_tasks: BackgroundTasks,
 It won’t matter whether you’re using an SSE or WebSocket endpoint. Once a request a response is fully streamed, invoke a background task passing in the full stream response content. Within the background task, you can then run a function to store the message after the request is sent, with the full LLM response content. Using the same approach, you can even generate a title for a conversation based on the content of the first message. To do this, you can invoke the LLM again with the content of the first message in the conversation, requesting for an appropriate title for the conversation. Once a conversation title is generated, you can create the conversation record in the database
 
 Using the LLM to generate conversation titles based on the initial user prompt
+
+**`crud.py`**
 ```python
 from entities import Conversation
 from openai import AsyncClient
