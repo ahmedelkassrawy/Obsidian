@@ -1,135 +1,182 @@
 ---
-tags: [sqlalchemy, orm, declarative_base, model, relationship, foreignkey, tablename]
-aliases: [ORM models, declarative_base, Base, __tablename__, models_orm.py, DeclarativeBase, Mapped]
+tags: [sqlalchemy, orm, model, DeclarativeBase, Mapped, mapped_column, relationship, foreignkey, declarative_base]
+aliases: [ORM models, DeclarativeBase, Mapped, mapped_column, declarative_base, Base, __tablename__, models.py]
 source: https://github.com/h9-tec/AI_deployment#defining-orm-models
 ---
 
-# 04 — ORM Models (`declarative_base`)
+# 04 — ORM Models (`DeclarativeBase`, `Mapped`, `mapped_column`)
 
 > [!info] Source
-> README §5 "Defining ORM Models". Back to [[00 - Index]] · Previous: [[03 - Core CRUD (insert, select, update, delete)]]
+> README §5 "Defining ORM Models", rewritten in **SQLAlchemy 2.0 style** (the README's 1.x style is kept at the bottom for reference).
+> Back to [[00 - Index]] · Previous: [[03 - Core CRUD (insert, select, update, delete)]]
 
 ## The one-sentence version
 
-An ORM model is a Python class that inherits from `Base`; its class attributes are `Column`s (→ table columns) and `relationship`s (→ navigable links to other models).
+A model is a class inheriting from your `Base`; each `Mapped[type]` attribute is a column, each `relationship()` is a navigable link, and the type hints are real — your editor knows `user.products` is `list[Product]`.
 
-## The code
-
-```python
-# models_orm.py
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
-
-DATABASE_URL = "sqlite:///./test_orm.db"
-engine = create_engine(DATABASE_URL)
-Base = declarative_base()
-
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True)
-
-    # "products" is the attribute name here; back_populates names the
-    # attribute on the OTHER class ("owner") that points back.
-    products = relationship("Product", back_populates="owner")
-
-    def __repr__(self):
-        return f"<User(id={self.id}, username='{self.username}')>"
-
-class Product(Base):
-    __tablename__ = "products"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-    description = Column(String)
-    price = Column(Float)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-
-    # "owner" is the attribute name here; back_populates -> "products" on User.
-    owner = relationship("User", back_populates="products")
-
-    def __repr__(self):
-        return f"<Product(id={self.id}, name='{self.name}', price={self.price})>"
-
-# Base.metadata.create_all(engine)   # run once, or from main
-```
-
-## Pieces
-
-| Piece | What it does |
-|---|---|
-| `Base = declarative_base()` | Factory for the parent class. Every subclass registers its table in `Base.metadata`. **One `Base` per app** — models on different `Base`s can't relate to each other. |
-| `__tablename__` | Required. The SQL table name. |
-| `Column(...)` as class attribute | Becomes a table column **and** an instance attribute (`user.username`). Same options as in Core — see [[02 - Core Tables with MetaData]]. |
-| `ForeignKey("users.id")` | String is `"<tablename>.<column>"` — the **SQL** names, not the Python class names. Creates the FK constraint. |
-| `relationship("Product", ...)` | **Not a column.** A Python-level link that SQLAlchemy resolves via the FK. String is the **class** name (resolved lazily so you can reference classes defined later). |
-| `back_populates="owner"` | Makes the two `relationship`s aware of each other so `user.products.append(p)` also sets `p.owner`. Must match the attribute name on the other side exactly. |
-| `__repr__` | Optional; makes `print(user)` readable. |
-
-## Column vs relationship — the thing beginners mix up
-
-```
-Product.owner_id   -> Column(Integer, ForeignKey("users.id"))   # a real column, holds an int
-Product.owner      -> relationship("User", ...)                 # NOT a column, holds a User object
-```
-
-- The **column** is what's stored in the DB.
-- The **relationship** is what you navigate in Python. SQLAlchemy loads it (lazily, on first access, by default) using the FK column.
-- You need the FK column for the relationship to work; the relationship is optional sugar.
-
-Details on navigating them: [[07 - Relationships One-to-Many]].
-
-## Import note: 1.x vs 2.x
-
-| | 1.x (README) | 2.x modern |
-|---|---|---|
-| Base | `from sqlalchemy.ext.declarative import declarative_base` | `from sqlalchemy.orm import DeclarativeBase` then `class Base(DeclarativeBase): pass` |
-| Columns | `id = Column(Integer, primary_key=True)` | `id: Mapped[int] = mapped_column(primary_key=True)` |
-| Relationship | `products = relationship("Product", back_populates="owner")` | `products: Mapped[list["Product"]] = relationship(back_populates="owner")` |
-
-The README style still runs on 2.x (with a `MovedIn20Warning` for the `ext.declarative` import). The 2.x style gives real type hints — your IDE knows `user.products` is `list[Product]`.
-
-Modern rewrite of the same models, for reference:
+## The recommended way (2.0)
 
 ```python
-from sqlalchemy import ForeignKey, String
+# models.py
+from datetime import datetime
+from sqlalchemy import ForeignKey, String, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+
 class Base(DeclarativeBase):
-    pass
+    """One Base per app. Every model inherits from it; Base.metadata knows all tables."""
+
 
 class User(Base):
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    username: Mapped[str] = mapped_column(String, unique=True, index=True)
-    email: Mapped[str] = mapped_column(String, unique=True)
-    products: Mapped[list["Product"]] = relationship(back_populates="owner")
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+
+    products: Mapped[list["Product"]] = relationship(
+        back_populates="owner",
+        cascade="all, delete-orphan",
+    )
+
+    def __repr__(self) -> str:
+        return f"<User id={self.id} username={self.username!r}>"
+
 
 class Product(Base):
     __tablename__ = "products"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(String, unique=True, index=True)
-    description: Mapped[str | None]
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True, index=True)
+    description: Mapped[str | None]                    # Optional -> nullable=True, no mapped_column needed
     price: Mapped[float]
-    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+
     owner: Mapped["User"] = relationship(back_populates="products")
+
+    def __repr__(self) -> str:
+        return f"<Product id={self.id} name={self.name!r} price={self.price}>"
+```
+
+## Reading the syntax
+
+| Piece | Meaning |
+|---|---|
+| `class Base(DeclarativeBase)` | Your base class. Replaces `declarative_base()`. Put it in `models.py` (or `db/base.py`) and import it everywhere. |
+| `id: Mapped[int] = mapped_column(primary_key=True)` | Column of type int, primary key. Type comes from the hint, options from `mapped_column`. |
+| `description: Mapped[str \| None]` | Nullable string column. **No `mapped_column` needed** when you have nothing to configure — the hint alone defines it. |
+| `price: Mapped[float]` | Non-null float (no `None` in the hint → `nullable=False`). |
+| `Mapped[list["Product"]] = relationship(...)` | One-to-many. The `list[...]` hint tells SQLAlchemy it's a collection; no need to pass the class name as a string arg anymore. |
+| `Mapped["User"] = relationship(...)` | Many-to-one, scalar. |
+| `ForeignKey("users.id", ondelete="CASCADE")` | FK to the **SQL** table/column; `ondelete` makes the DB delete products when their user goes. |
+| `cascade="all, delete-orphan"` | The ORM-side equivalent: deleting a `User` in the session deletes its products; removing a product from `user.products` deletes it. |
+| `server_default=func.now()` | DB fills the timestamp. Prefer server defaults over Python `default=` for timestamps — they're consistent across processes. |
+
+### Type hint → column type mapping
+
+| Hint | Column |
+|---|---|
+| `Mapped[int]` | `Integer`, NOT NULL |
+| `Mapped[str]` | `String` (unbounded; pass `String(n)` in `mapped_column` for MySQL) |
+| `Mapped[str \| None]` | `String`, nullable |
+| `Mapped[float]` | `Float` |
+| `Mapped[bool]` | `Boolean` |
+| `Mapped[datetime]` | `DateTime` |
+| `Mapped[Decimal]` | `Numeric` — use for money |
+| `Mapped[dict]` / `Mapped[list]` | needs `mapped_column(JSON)` explicitly |
+| custom (e.g. `pgvector.sqlalchemy.Vector`) | `mapped_column(Vector(1024))` |
+
+Override anything via `mapped_column(Type, ...)`.
+
+## Column vs relationship — don't confuse them
+
+```
+Product.owner_id   -> mapped_column(ForeignKey("users.id"))   # real column, stores an int
+Product.owner      -> relationship(...)                       # NOT a column, yields a User object
+```
+
+The FK column is what's in the DB. The relationship is Python-side navigation built on top of it. You need the column; the relationship is optional sugar. Navigation details: [[07 - Relationships One-to-Many]].
+
+## Best practices baked into the example above
+
+- [x] One `Base` per application.
+- [x] `String(n)` lengths on anything that might hit MySQL.
+- [x] `index=True` on every FK column and every column you filter by.
+- [x] `unique=True` where the business rule says unique — let the DB enforce it, catch `IntegrityError`.
+- [x] `ondelete="CASCADE"` + `cascade="all, delete-orphan"` together, so DB and ORM agree.
+- [x] `server_default=func.now()` for created-at timestamps.
+- [x] `__repr__` for readable logs.
+- [ ] Don't put `engine` in `models.py` (the README does) — models shouldn't know about connections. Engine lives in `database.py` → [[05 - Sessions and sessionmaker]].
+- [ ] Don't call `Base.metadata.create_all` at import time — do it in a startup hook or use Alembic.
+
+## Common model additions
+
+```python
+# soft timestamps on every table — a mixin
+class TimestampMixin:
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+
+class User(TimestampMixin, Base): ...
+
+# enum column
+import enum
+class Role(enum.Enum):
+    admin = "admin"; member = "member"
+role: Mapped[Role] = mapped_column(default=Role.member)
+
+# pgvector embedding (what raaaaag uses)
+from pgvector.sqlalchemy import Vector
+embedding_vector: Mapped[list[float]] = mapped_column(Vector(1024), nullable=False)
 ```
 
 ## Creating the tables
 
 ```python
-Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)                       # sync, dev only
+# async:
+async with engine.begin() as conn:
+    await conn.run_sync(Base.metadata.create_all)
 ```
 
-Same semantics as Core's `metadata.create_all` — creates missing tables, never alters existing ones.
+Creates missing tables only; never alters. For real schema changes use Alembic ([[Advanced Topics and Best Practices]]).
 
-## Where this file is used
+## Legacy style (what the README shows) — recognise it, don't write it
 
-- [[05 - Sessions and sessionmaker]] imports `engine` and `Base` from here.
-- [[Backend/Deployment/Integrating FastAPI, Pydantic, and SQLAlchemy/03 - Pydantic Schemas (Request and Response Models)|The FastAPI integration]] imports `Base, User, Product, engine` from here.
+```python
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base   # 2.x: from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import relationship
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True)
+    products = relationship("Product", back_populates="owner")
+
+class Product(Base):
+    __tablename__ = "products"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    description = Column(String)
+    price = Column(Float)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("User", back_populates="products")
+```
+
+| Legacy | 2.0 |
+|---|---|
+| `declarative_base()` | `class Base(DeclarativeBase)` |
+| `Column(Integer, primary_key=True)` | `Mapped[int] = mapped_column(primary_key=True)` |
+| `Column(String)` (nullable by default) | `Mapped[str \| None]` |
+| `relationship("Product", back_populates=...)` | `Mapped[list["Product"]] = relationship(back_populates=...)` |
+| no IDE types | full IDE types |
+
+Both run on SQLAlchemy 2.x; the legacy one just gives you no type checking and a deprecation warning on the `ext.declarative` import.
 
 ## Next
 

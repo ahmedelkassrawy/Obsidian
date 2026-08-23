@@ -68,6 +68,8 @@ db.query(Product).filter(Product.id == 1).one_or_none()
 
 ## Legacy query() vs 2.0 select()
 
+> [!tip] Write 2.0 `select()` in new code. It is the only API on `AsyncSession`, it composes with Core statements, and it gives typed results. `query()` is kept here so you can read older code.
+
 `db.query()` still works in SQLAlchemy 2.x but is "legacy". New code (and all async code) uses `select()`:
 
 | Legacy | 2.0 |

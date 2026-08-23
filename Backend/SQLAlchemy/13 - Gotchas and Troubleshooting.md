@@ -164,3 +164,24 @@ Something's wrong
 |- thread error (SQLite)     -> check_same_thread=False
 |- many tiny queries         -> N+1 -> selectinload
 ```
+
+---
+
+## `AttributeError: '_GeneratorContextManager' object has no attribute 'add'` / `'_AsyncGeneratorContextManager' object has no attribute 'execute'`
+
+**Cause:** `db = get_db()` — calling a `@contextmanager` / `@asynccontextmanager` function directly gives you the context-manager wrapper, not the session. (Seen in `raaaaag/ingest.py`.)
+**Fix:** `with get_db() as db:` / `async with get_db() as db:`. For FastAPI use the undecorated generator with `Depends`. See [[05 - Sessions and sessionmaker#The FastAPI dependency is a different shape — don't mix them up]].
+
+---
+
+## `NameError: name 'Insert' is not defined` / built an ORM object then tried `db.execute(insert(...))`
+
+**Cause:** mixing the two write paths. You either build model instances and `db.add()` them, **or** you call `insert(Model)` with dicts. Not both.
+**Fix:** default to `db.add(obj)` / `db.add_all(objs)`; use `db.execute(insert(Model), [dicts])` only for bulk loads. → [[06 - ORM CRUD#db.add() vs Core insert() — which write path?]]
+
+---
+
+## Transaction held open while calling an external API (embeddings, HTTP)
+
+**Cause:** `with get_db() as db:` wraps a loop that calls Cohere/OpenAI per row. The DB connection sits idle-in-transaction for the whole duration; on Postgres this blocks vacuum and can exhaust the pool.
+**Fix:** do all network calls first (batched), then open the session and write. → [[10 - Async SQLAlchemy#Worked example — PDF ingestion]]

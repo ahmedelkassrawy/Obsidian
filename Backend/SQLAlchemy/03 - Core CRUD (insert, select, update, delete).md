@@ -132,6 +132,15 @@ graph TD
     A -->|conn.commit| C
 ```
 
+## Bulk inserts — the main reason to drop into Core from ORM code
+
+```python
+with get_db() as db:                      # ORM session, Core statement
+    db.execute(insert(Product), [{"name": n, "price": p} for n, p in rows])   # one executemany
+```
+
+Thousands of rows in one round-trip; no per-object ORM bookkeeping. Decision table: [[06 - ORM CRUD#db.add() vs Core insert() — which write path?]].
+
 ## When Core is the right tool
 
 > SQLAlchemy Core is ideal when you need fine-grained control over your SQL queries or when working with existing database schemas that don't map cleanly to an ORM approach.

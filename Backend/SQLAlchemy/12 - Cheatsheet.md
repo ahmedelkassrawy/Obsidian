@@ -1,123 +1,118 @@
 ---
-tags: [sqlalchemy, cheatsheet, reference]
-aliases: [SQLAlchemy cheatsheet, SQLAlchemy quick reference]
+tags: [sqlalchemy, cheatsheet, reference, 2.0-style]
+aliases: [SQLAlchemy cheatsheet, SQLAlchemy quick reference, SQLAlchemy 2.0 cheatsheet]
 ---
 
-# 12 — Cheatsheet
+# 12 — Cheatsheet (2.0 style)
 
-> [!info] One screen, no prose. Back to [[00 - Index]].
+> [!info] One screen, no prose. Back to [[00 - Index]]. Legacy `query()` equivalents: [[09 - Querying Data#Legacy query() vs 2.0 select()]].
 
-## Engine
+## Project layout
 
-```python
-from sqlalchemy import create_engine, text
-engine = create_engine("sqlite:///./test.db", echo=False,
-                       connect_args={"check_same_thread": False})   # SQLite+threads only
-with engine.connect() as conn:
-    conn.execute(text("SELECT 1")).scalar()
-with engine.begin() as conn:          # auto-commit on success
-    conn.execute(insert(t).values(...))
+```
+db/
+├── database.py   engine, SessionLocal, get_db (context manager), get_db_dep (FastAPI)
+├── models.py     Base + models — no engine here
+└── crud.py       functions taking db: Session, never committing
 ```
 
-URLs: `sqlite:///./f.db` · `postgresql://u:p@h:5432/db` · `postgresql+asyncpg://…` · `mysql+pymysql://…`
-
-## Core
+## database.py
 
 ```python
-from sqlalchemy import Table, Column, Integer, String, MetaData, insert, select, update, delete
-metadata = MetaData()
-t = Table("users", metadata, Column("id", Integer, primary_key=True), Column("username", String, unique=True))
-metadata.create_all(engine)
+engine = create_engine(URL, pool_pre_ping=True)                      # SQLite: connect_args={"check_same_thread": False}
+SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
-conn.execute(insert(t).values(username="ada")).inserted_primary_key[0]
-conn.execute(select(t).where(t.c.id == 1)).fetchone()
-conn.execute(update(t).where(t.c.id == 1).values(username="ada2"))
-conn.execute(delete(t).where(t.c.id == 1))
-conn.commit()
+@contextmanager
+def get_db():
+    with SessionLocal() as s:
+        try:     yield s; s.commit()
+        except Exception: s.rollback(); raise
+
+def get_db_dep():            # FastAPI: same body, NO decorator
+    with SessionLocal() as s:
+        try:     yield s; s.commit()
+        except Exception: s.rollback(); raise
 ```
 
-## ORM models
+Async: `create_async_engine`, `async_sessionmaker(engine, expire_on_commit=False)`, `@asynccontextmanager async def get_db()`, `async with get_db() as db`.
+
+## models.py
 
 ```python
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
-Base = declarative_base()
+class Base(DeclarativeBase): pass
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    products = relationship("Product", back_populates="owner", cascade="all, delete-orphan")
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    products: Mapped[list["Product"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
 
 class Product(Base):
     __tablename__ = "products"
-    id = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-    owner = relationship("User", back_populates="products")
-
-Base.metadata.create_all(engine)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True, index=True)
+    description: Mapped[str | None]
+    price: Mapped[float]
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    owner: Mapped["User"] = relationship(back_populates="products")
 ```
 
-## Session
+## CRUD (inside `with get_db() as db:`)
 
 ```python
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-def get_db():
-    db = SessionLocal()
-    try:     yield db
-    finally: db.close()
+u = User(username="ada", email="a@x"); db.add(u); db.flush()      # create, id available
+db.add_all([Product(...), Product(...)])                            # create many (ORM)
+db.execute(insert(Product), [dict, dict, ...])                      # create thousands (Core bulk)
+db.get(User, 1)                                                     # read by PK
+db.execute(select(User).where(User.email == e)).scalar_one_or_none()  # read one / None
+db.execute(select(User).order_by(User.id).offset(s).limit(n)).scalars().all()  # page
+db.execute(select(User).options(selectinload(User.products))).scalars().all()  # no N+1
+u.email = "new"                                                     # update
+db.delete(u)                                                        # delete
+db.execute(update(Product).where(Product.price < 10).values(price=10))   # bulk update
+db.execute(delete(Product).where(Product.owner_id == 42))           # bulk delete
+# commit: automatic on block exit
 ```
 
-## ORM CRUD
-
-```python
-obj = User(username="ada"); db.add(obj); db.commit(); db.refresh(obj)   # create
-db.query(User).filter(User.id == 1).first()                              # read one / None
-db.query(User).offset(0).limit(10).all()                                 # read many
-obj.username = "new"; db.commit()                                        # update
-db.delete(obj); db.commit()                                              # delete
-db.get(User, 1)                                                          # by PK (2.x)
-```
-
-## 2.0 select
-
-```python
-db.execute(select(User).where(User.id == 1)).scalar_one_or_none()
-db.execute(select(User)).scalars().all()
-db.execute(select(User).join(Product).where(Product.name == "Keyboard")).scalars().all()
-db.execute(select(User).options(selectinload(User.products))).scalars().all()
-```
+Async: prefix `execute/get/flush/delete/refresh/commit` with `await`; `add`, `.scalars()`, `.scalar_one_or_none()` stay sync.
 
 ## Filters
 
-`==` `!=` `>` `<` `.between()` `.in_()` `.not_in()` `.is_(None)` `.is_not(None)` `.like()` `.ilike()` `.startswith()` `.contains()` · `and_()` `or_()` `not_()`
+`==` `!=` `>` `<` `.between()` `.in_()` `.not_in()` `.is_(None)` `.is_not(None)` `.like()` `.ilike()` `.startswith()` `.contains()` · `and_()` `or_()` `not_()` · `order_by(X.desc())` · `func.count()`
 
 ## Results
 
-`scalar()` one value · `scalar_one_or_none()` one obj/None · `scalars().all()` list of objs · `first()` row/None · `all()` rows · `mappings()` dicts
+`scalar_one_or_none()` one obj/None · `scalar_one()` exactly one · `scalars().all()` objs · `scalar()` one value · `first()` row/None · `all()` rows (tuples!) · `mappings()` dicts
 
-## Many-to-many
+## Relationships
 
 ```python
+# one-to-many: FK on the many side + relationship on both sides, back_populates both ways
+# many-to-many (no extra cols):
 link = Table("a_b", Base.metadata, Column("a_id", ForeignKey("a.id"), primary_key=True),
-                                    Column("b_id", ForeignKey("b.id"), primary_key=True))
-class A(Base): bs = relationship("B", secondary=link, back_populates="as_")
-# with extra columns -> make the link a class (association object) and insert rows explicitly
+                                   Column("b_id", ForeignKey("b.id"), primary_key=True))
+bs: Mapped[list["B"]] = relationship(secondary=link, back_populates="as_")
+# many-to-many with extra cols: make the link a model (association object) and insert rows explicitly
 ```
 
-## Async
+## Core (raw / one-off)
 
 ```python
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-engine = create_async_engine("sqlite+aiosqlite:///./t.db")
-AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-async def get_db():
-    async with AsyncSessionLocal() as s: yield s
+with engine.begin() as conn:                           # auto-commit
+    conn.execute(text("SELECT 1")).scalar()
+    conn.execute(insert(t).values(...)).inserted_primary_key[0]
+```
 
-r = await db.execute(select(User).where(User.id == 1)); u = r.scalar_one_or_none()
-db.add(obj); await db.commit(); await db.refresh(obj)
+## Tables
+
+```python
+Base.metadata.create_all(engine)                                   # dev; never alters
 async with engine.begin() as c: await c.run_sync(Base.metadata.create_all)
+# real projects: alembic revision --autogenerate && alembic upgrade head
 ```
 
 ## Errors → fix
 
-`IntegrityError` → `db.rollback()`, return 409 · `DetachedInstanceError` → `refresh` before close · `check_same_thread` → `connect_args` · `MissingGreenlet` → eager-load / `expire_on_commit=False` · `PendingRollbackError` → call `rollback()` first
+`IntegrityError` → catch outside `with get_db()`, 409 · `PendingRollbackError` → `rollback()` first · `DetachedInstanceError` → `expire_on_commit=False` / eager-load · `MissingGreenlet` → eager-load / `expire_on_commit=False` · `check_same_thread` → `connect_args` · `db = get_db()` gives a context-manager object → `with get_db() as db` · tuples not objects → `.scalars()`
