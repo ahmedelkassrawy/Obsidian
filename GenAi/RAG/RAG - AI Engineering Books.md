@@ -1,4 +1,3 @@
-
 # Chapter 6: RAG (Retrieval-Augmented Generation) and Agents
 
 ## 1. Introduction to RAG and Context Construction
