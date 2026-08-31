@@ -42,3 +42,32 @@ git status
 ```
 
 **`--soft HEAD~1`** — moves the pointer, and the undone commit's changes stay **staged** (green). ← this task.
+
+---
+You need to develop a new feature without messing up the stable code on main so we make a new branch just a movable pointer to a commit
+
+```git
+git switch -c feature-idea
+echo "my idea" > idea.txt
+git add idea.txt
+git commit -m "feat: add new idea"
+```
+
+---
+while you were updating the main branch and we finished the feature and want to be merged to the main branch
+
+```git
+git merge branch-name
+
+#check them using the 
+git log --oneline --graph
+```
+
+fast forward merge -> if your branch hasn't moved since the split , git just slides the pointer forward -  no extra commit
+
+true merge -> both branches got new commits after they split , we need to create a merge commit that ties the 2 histories together.
+
+---
+you and teammate both edited the same line in todo.md at the same time on different branches
+when you try to merge his work into yours git gets confused because it doesnt know which line is the truth , so it stops the merge and asks you to decide
+
