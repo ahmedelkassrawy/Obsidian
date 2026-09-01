@@ -71,3 +71,14 @@ true merge -> both branches got new commits after they split , we need to create
 you and teammate both edited the same line in todo.md at the same time on different branches
 when you try to merge his work into yours git gets confused because it doesnt know which line is the truth , so it stops the merge and asks you to decide
 
+```git 
+git merge feature-conflict     #this will fail
+
+so we edit the file that is wrong and finish it 
+
+git add -file that was edited-
+git commit
+```
+
+after the conflict, you must **`add` + `commit` while the merge is still in progress** — that's what produces the merge commit. 
+If you abort or start over, you get a plain linear commit and the judge won't see a merge.
