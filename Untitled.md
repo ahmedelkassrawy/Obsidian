@@ -170,3 +170,74 @@ in the last 2 commits
 in the first line change the pick to reword and save then
 change the commit message
 ```
+
+----
+**drop.** Delete a commit entirely (its changes vanish). Same interactive rebase, but this time you `drop` the bad commit.
+
+```git
+git rebase -i HEAD~2
+
+in the pick change it to drop and save and close
+```
+
+---
+rebase reorder -> Change the order of commits
+
+**reorder.** The to-do list's line order _is_ the new history order (top = oldest, applied first). To swap two commits, you just swap their lines.
+
+```git
+git rebase -i HEAD~2 
+
+change the order of the commits and save and close
+```
+
+---
+**rebase-edit** — the last rebase variant, and the most involved (it _pauses_ so you can change a commit's actual content)
+
+`edit` doesn't just change a message — it **pauses** the rebase at that commit so you can change its _content_, then you resume.
+
+```git
+git rebase -i HEAD~2
+
+in the notepad, change the pick to edit and save and close 
+now the git stops and tell you finish your bug
+after finishing the bug
+
+git add file-name
+git commit --amend --no-edit
+
+git rebase --continue
+```
+
+`edit` = "stop here, let me change this commit's content in place." You amend to bake the fix in, then `--continue` to finish
+
+---
+Normally: **HEAD → a branch → a commit.** You're "on master." HEAD follows the branch.
+
+When you `git checkout <a-commit-hash>`, HEAD points **straight at that commit, with no branch** — that's **"detached HEAD."**
+
+You've time-traveled to look at old code. The scary warning Git prints is just telling you "you're not on a branch right now."
+
+- **Safe for looking.** Checking out an old commit to inspect it is harmless.
+- **The one danger:** if you _commit_ while detached, those commits belong to **no branch**. When you switch away, nothing points to them, so they look "lost."
+
+You are in 'detached HEAD' state. You can look around, make experimental changes and commit them, and you can discard any commits you make in this state without impacting any branches by switching back to a branch
+
+```git
+git log --oneline
+git checkout <hash-of-the-wanted-commit>
+
+finish what you want in that old code or commit
+
+git switch master
+```
+
+---
+cherry pick 
+**concept:** cherry-pick copies **one specific commit's changes** onto your current branch (as a new commit).
+
+Unlike merge/rebase, which take a whole branch, cherry-pick grabs exactly one — perfect for pulling a single fix out of a messy branch without dragging the rest.
+
+- `git log` shows commits **reachable from your branch now**. A hard-reset commit isn't reachable, so it vanishes from the log.
+- `git reflog` shows **everywhere HEAD has been** — commits, resets, rebases, checkouts. The "lost" commit is still there with its hash.
+- Recover by pointing your branch back at it.
