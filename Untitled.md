@@ -1,243 +1,298 @@
-we created two files , these files are untracked, this means the Git is aware they exist in the folder, its not recording those yet
+---
+title: "Git — hands-on reference (Git-Gud workshop)"
+type: reference-note
+tags: [git, version-control, rebase, reflog]
+source: "Git-Gud workshop (16 exercises), 2026-08"
+date: 2026-08-31
+---
 
-```git
+# Git — hands-on reference
+
+Notes from working through the Git-Gud challenges by hand. Organized as: save work → undo → branches → rewrite history → navigate & recover.
+
+## The mental model (read this first)
+
+**Three places your work lives:**
+
+- **Working directory** — your actual files.
+
+- **Staging area** — what you've marked (`git add`) to save in the next commit.
+
+- **Repository** — the committed history.
+
+Almost every command just moves work between these three.
+
+**Two more ideas that make the rest click:**
+
+- A **commit** is a saved snapshot (think: a photo).
+
+- **HEAD** and each **branch** are **bookmarks** pointing at "where you are." `git log` only shows what a bookmark can **reach**.
+
+- **Rewriting history** (amend, rebase) doesn't edit a commit in place — it makes a **new commit with a new hash**. So the rule everywhere: **never rewrite commits you've already pushed/shared** — the hash changes and your history splits from everyone else's.
+
+---
+
+## 1. Save work
+
+### commit — the basic flow
+
+Untracked files exist in the folder but Git isn't recording them yet. `add` stages them, `commit` saves them to history.
+
+```bash
 git status
 git add hello.txt notes.txt
 git commit -m "Initial commit"
 git log
 ```
 
----
-concept -> --amend 
-fixes the last commit instead of making a new one
-like we forgot "file2.txt" and you stage it and fold it into the existing add files commit
-now the end result is still one commit and holding both files
+### amend — fix the LAST commit
 
-amend doesnt edit the commit in place, it replaces it with a new commit that has a new hash
-the new hash means that the old commit is discarded, so this is you first taste of rewriting history .
-never amend a commit you have already pushed/shared -- the hash changes
+Forgot a file, or want to fix the message, on the most recent commit? Fold it in instead of making a new commit.
 
-```git
-git status
+```bash
 git add file2.txt
-git commit --amend --no-edit
-```
-the --no-edit is to not edit the commit message
-
-```git 
-git show HEAD       #should list both file1.txt and file2.txt
-git log --oneline
+git commit --amend --no-edit     # --no-edit keeps the old message
 ```
 
-git show HEAD -> shows the head commit
-and the online is to see the commit 
+- Still one commit, now holding both files.
+
+- Amend **replaces** the commit with a new one (new hash) — your first taste of rewriting history. Don't amend pushed commits.
 
 ---
-you made a commit but immedialty realized you forgot to include another change, you want to uncommit the last commit so that you can add more files to it and you dont want to lose the code you wrote
 
-```git
-git reset --soft HEAD~1
-git log
-git status
+## 2. Undo
+
+### reset — move the branch pointer back
+
+`git reset <mode> HEAD~1` moves your branch back one commit. The **mode** decides how much it keeps. The **target** (`HEAD~1`) is which commit; leave it off and it defaults to HEAD (a no-op).
+
+| mode | commit | staging area | working files |
+| --- | --- | --- | --- |
+| `--soft` | back | **keeps** (staged) | keeps |
+| `--mixed` (default) | back | unstages | keeps |
+| `--hard` | back | throws away | **throws away** |
+
+```bash
+git reset --soft HEAD~1     # un-commit but keep changes staged (green)
 ```
 
-**`--soft HEAD~1`** — moves the pointer, and the undone commit's changes stay **staged** (green). ← this task.
+- `--hard` is the dangerous one your history gets burned by — but even it is recoverable via reflog (see the end).
 
 ---
-You need to develop a new feature without messing up the stable code on main so we make a new branch just a movable pointer to a commit
 
-```git
-git switch -c feature-idea
+## 3. Branches
+
+### branch + switch — parallel work
+
+A branch is just a movable pointer to a commit.
+
+```bash
+git switch -c feature-idea     # create AND switch (older: git checkout -b)
 echo "my idea" > idea.txt
 git add idea.txt
 git commit -m "feat: add new idea"
 ```
 
----
-while you were updating the main branch and we finished the feature and want to be merged to the main branch
+- `git branch name` creates without switching. `git switch name` switches to an existing one. `*` in `git branch` marks where you are.
 
-```git
-git merge branch-name
+### merge — combine a branch back
 
-#check them using the 
-git log --oneline --graph
+```bash
+git merge feature-login
+git log --oneline --graph      # see the shape
 ```
 
-fast forward merge -> if your branch hasn't moved since the split , git just slides the pointer forward -  no extra commit
+- **Fast-forward:** if your branch hasn't moved since the split, Git just slides the pointer forward — no extra commit.
 
-true merge -> both branches got new commits after they split , we need to create a merge commit that ties the 2 histories together.
+- **True merge:** both branches gained commits after the split, so Git makes a **merge commit** (two parents) tying the histories together.
 
----
-you and teammate both edited the same line in todo.md at the same time on different branches
-when you try to merge his work into yours git gets confused because it doesnt know which line is the truth , so it stops the merge and asks you to decide
+### merge conflict — Git hands you the decision
 
-```git 
-git merge feature-conflict     #this will fail
+When two branches change the **same line**, Git can't pick a winner. It stops and writes both versions into the file with markers:
 
-so we edit the file that is wrong and finish it 
-
-git add -file that was edited-
-git commit
+```
+<<<<<<< HEAD
+your current branch's version
+=======
+the incoming branch's version
+>>>>>>> other-branch
 ```
 
-after the conflict, you must **`add` + `commit` while the merge is still in progress** — that's what produces the merge commit. 
-If you abort or start over, you get a plain linear commit and the judge won't see a merge.
+Fix it by hand, then finish the merge:
 
----
-You are in the middle of complex configuration change on main
-Your code is currently broken and not ready to be commited
-an urgent bug appears on a branch
-git wont let you switch branches because of the uncommited changes , 
-you need to pause your work safly without commiting it
-
-stash -> temporary drawer for uncommited work
-
-your config.json change is half done and you cant switch branches with it dirty
-stash shelves it and you handle the urgent fix and then you pop it back exactly as it was
-
-- When you `stash`, it doesn't just save your changes — it also **cleans your working files** back to the last commit, so your branch is tidy and you can switch freely.
-- The shelf is actually a **stack** — you can stash several times. `pop` takes the **most recent** one off and reapplies it; `git stash list` shows them all.
-
-```git
-git stash              #put on the shelf
-git switch urgent-fix         #to fix a bug
-git commit -m "Commit messsage"
-git switch master             #return to the master branch
-git stash pop           #bring the on shelf back
+```bash
+git merge other-branch     # fails with a conflict
+# edit the file: keep the right content, delete all <<<<<<< ======= >>>>>>> lines
+git add <the-file>
+git commit                 # completes the merge -> a merge commit
 ```
 
-git stash -> save your changes to the drawer AND revert your files to clean.
-git stash pop -> take the most recent stash and reapply it
-git stash list -> show whats on the shelf
-git stash apply -> reapplies but keeps it in the drawer (opposite of the pop)
+- You must `add` + `commit` **while the merge is in progress** — that's what makes the merge commit. Abort or start over and you get a plain linear commit instead.
+
+### stash — a temporary drawer
+
+Shelve unfinished work so you can switch tasks, then bring it back.
+
+```bash
+git stash            # save changes AND clean your files back to the last commit
+git switch urgent-fix
+git commit -m "fix: done"
+git switch master
+git stash pop        # bring your shelved changes back
+```
+
+- The shelf is a **stack**. `pop` = take the newest off and reapply. `git stash list` = see them all. `git stash apply` = reapply but keep it on the shelf.
 
 ---
-your `feature-darkmode` has "Start dark mode," and `master` moved ahead with "Critical bug fix." They forked from "Initial commit." You want your feature to sit **on top of** master's latest, as a straight line — no merge commit.
 
-rebase -> it lifts your commits off and moves the tip of the other branch and replays your commits on top as if you started from the latest version all along
+## 4. Rewrite history (the rebase family)
 
-**Merge** keeps both lines and ties them with a merge commit. History shows the fork — honest, but messier.
+> Set a friendly editor first — interactive rebase opens one, and the default (Vim) is painful on Windows:
+> ```bash
+> git config --global core.editor notepad
+> ```
 
-**Rebase** moves your commits on top for a **straight line** — cleaner, but it **rewrites your commits**
+### rebase — replay your commits on a new base
 
-Before the rebase
+Make your feature sit **on top of** the latest of another branch, as a straight line — no merge commit.
 
-              (B) Start dark mode        <- feature-darkmode (your work)
+```bash
+git rebase master     # run while ON your feature branch
+```
+
+**Before**
+```
+              (B) Start dark mode      <- feature (your work)
              /
   (o) Initial
              \
-              (C) Critical bug fix        <- master
-
-After the rebase
-
-  (o) Initial  ->  (C) Critical bug fix  ->  (B') Start dark mode      <- feature-darkmode
-
-Your "Start dark mode" now sits **above** "Critical bug fix." No merge commit.
-
-```git
-git rebase master
-git log --oneline
-git status
+              (C) Critical bug fix      <- master
 ```
 
----
-while developig func A , you made several messy commits , about to open a PR for code review , to make it easier for the seniors to review the work , we want to combine those messy commits into one clean commit
-
-Use an interactive rebase to squash the last 3 commits into 1 single commit 
-
-squash means fold this commit into the one above it 
-you keep the first comit as is and the squash next two into it as a single commit
-
-```git
-git config --global core.editor notepad
-
-git rebase -i HEAD~3         # last 3 commits
-
-in the notepad change the last 2 from pick to squash and leave the first as pick as it is and save 
-then write 1 commit message only
+**After `git rebase master`**
+```
+  (o) Initial  ->  (C) Critical bug fix  ->  (B') Start dark mode   <- feature
 ```
 
----
-you realized the second commit in history has a messy message since it isnt the most recent commit and you cant use the simple amend because it only fixes the last commit so for an older one you use a intactive rebase with reword
+- Merge keeps both lines (honest, messier). Rebase moves your commits on top (cleaner, but **rewrites them** → new hashes → never rebase pushed commits).
 
-reword -> changes the messge only the content is untouched ,
-rebase just rewrites one message
+### interactive rebase — history surgery
 
-```git
-git rebase -i HEAD~2     #because the commit was 2 back 
+`git rebase -i HEAD~N` opens a to-do list of the last N commits (oldest at top). You change the verb in front of each line:
 
-in the last 2 commits 
-in the first line change the pick to reword and save then
-change the commit message
+| verb | does |
+| --- | --- |
+| `pick` | keep the commit as-is |
+| `squash` | fold this commit **into the one above** |
+| `reword` | change this commit's **message** only |
+| `drop` | delete this commit entirely (or just delete its line) |
+| `edit` | **pause** here so you can change the commit's **content** |
+| (reorder) | swap the **line order** = swap the commit order |
+
+**Squash** (combine messy commits into one):
+```bash
+git rebase -i HEAD~3
+# change the 2nd and 3rd 'pick' to 'squash', save
+# second editor opens -> write ONE clean message
 ```
 
-----
-**drop.** Delete a commit entirely (its changes vanish). Same interactive rebase, but this time you `drop` the bad commit.
-
-```git
+**Reword** (fix an older message):
+```bash
 git rebase -i HEAD~2
-
-in the pick change it to drop and save and close
+# change the target line's 'pick' to 'reword', save
+# second editor -> type the new message
 ```
 
----
-rebase reorder -> Change the order of commits
-
-**reorder.** The to-do list's line order _is_ the new history order (top = oldest, applied first). To swap two commits, you just swap their lines.
-
-```git
-git rebase -i HEAD~2 
-
-change the order of the commits and save and close
-```
-
----
-**rebase-edit** — the last rebase variant, and the most involved (it _pauses_ so you can change a commit's actual content)
-
-`edit` doesn't just change a message — it **pauses** the rebase at that commit so you can change its _content_, then you resume.
-
-```git
+**Drop** (remove a commit, e.g. a leaked secret):
+```bash
 git rebase -i HEAD~2
+# change its 'pick' to 'drop' (or delete the line), save
+```
+- Caveat: if the bad commit was already **pushed**, drop only fixes YOUR copy — the secret is still in the remote + everyone's clone + reflog. Rotate the secret anyway.
 
-in the notepad, change the pick to edit and save and close 
-now the git stops and tell you finish your bug
-after finishing the bug
+**Reorder** (swap order):
+```bash
+git rebase -i HEAD~2
+# swap the two lines, save
+```
 
-git add file-name
+**Edit** (change a commit's content in place):
+```bash
+git rebase -i HEAD~2
+# change the target line's 'pick' to 'edit', save
+# git STOPS at that commit; now fix the file:
+git add <file>
 git commit --amend --no-edit
-
-git rebase --continue
+git rebase --continue          # resume back to the present
 ```
 
-`edit` = "stop here, let me change this commit's content in place." You amend to bake the fix in, then `--continue` to finish
-
 ---
-Normally: **HEAD → a branch → a commit.** You're "on master." HEAD follows the branch.
 
-When you `git checkout <a-commit-hash>`, HEAD points **straight at that commit, with no branch** — that's **"detached HEAD."**
+## 5. Navigate & recover
 
-You've time-traveled to look at old code. The scary warning Git prints is just telling you "you're not on a branch right now."
+### detached HEAD — standing on a commit, not a branch
 
-- **Safe for looking.** Checking out an old commit to inspect it is harmless.
-- **The one danger:** if you _commit_ while detached, those commits belong to **no branch**. When you switch away, nothing points to them, so they look "lost."
+Normally **HEAD → branch → commit**. Check out a raw commit and **HEAD points straight at it, no branch** = detached. Safe for *looking* at old code; the warning is just informational.
 
-You are in 'detached HEAD' state. You can look around, make experimental changes and commit them, and you can discard any commits you make in this state without impacting any branches by switching back to a branch
-
-```git
+```bash
 git log --oneline
-git checkout <hash-of-the-wanted-commit>
-
-finish what you want in that old code or commit
-
-git switch master
+git checkout <old-hash>     # detached HEAD (the warning is expected)
+git switch master           # re-attach to the branch
 ```
 
+- Danger: commits made *while detached* belong to no branch, so they look "lost" when you leave. Recoverable via reflog.
+
+### cherry-pick — copy ONE commit
+
+Grab a single commit from another branch (a fix) without dragging the whole branch.
+
+```bash
+git log --oneline experimental    # find the commit's hash
+git cherry-pick <hash>
+```
+
+- Merge/rebase move whole branches; cherry-pick copies one commit (new hash). Can conflict, same resolve-then-continue.
+
+### reflog — the safety net (why rebase/reset are actually safe)
+
+You ran `git reset --hard HEAD~1` and Version 2 vanished from `git log`. It is **NOT deleted.**
+
+- `reset --hard` just **moved the branch bookmark back**. Version 2's snapshot still exists on disk — but no bookmark points to it, so `git log` (which only shows reachable commits) can't see it. It's **unbookmarked**, not gone.
+
+- `git reflog` is a **diary of every place HEAD has ever been** (commits, resets, checkouts, rebases), newest first:
+
+```
+9c33636 HEAD@{0}: reset: moving to HEAD~1     <- now: Version 1
+f78bd71 HEAD@{1}: commit: Version 2           <- one move ago: the "lost" commit
+9c33636 HEAD@{2}: commit (initial): Version 1
+```
+
+- `HEAD@{0}` = where you are now; `HEAD@{1}` = one move ago; the hash is on the left.
+
+Recover by moving the bookmark back onto it:
+
+```bash
+git reflog
+git reset --hard HEAD@{1}     # or: git reset --hard <that-hash>
+```
+
+**The whole point:** reset / rebase / drop only **move bookmarks** — they don't delete snapshots, and reflog remembers every position (~90 days). So nothing here was ever truly lost. **Rebase and reset are safe because reflog has your back.**
+
 ---
-cherry pick 
-**concept:** cherry-pick copies **one specific commit's changes** onto your current branch (as a new commit).
 
-Unlike merge/rebase, which take a whole branch, cherry-pick grabs exactly one — perfect for pulling a single fix out of a messy branch without dragging the rest.
+## Quick reference
 
-- `git log` shows commits **reachable from your branch now**. A hard-reset commit isn't reachable, so it vanishes from the log.
-- `git reflog` shows **everywhere HEAD has been** — commits, resets, rebases, checkouts. The "lost" commit is still there with its hash.
-- Recover by pointing your branch back at it.
+| I want to… | command |
+| --- | --- |
+| stage + save | `git add <f>` → `git commit -m "..."` |
+| fix the last commit | `git commit --amend --no-edit` |
+| un-commit, keep work staged | `git reset --soft HEAD~1` |
+| throw away last commit + changes | `git reset --hard HEAD~1` (recoverable via reflog) |
+| new branch + switch | `git switch -c <name>` |
+| combine a branch in | `git merge <branch>` |
+| shelve / restore work | `git stash` / `git stash pop` |
+| replay onto latest | `git rebase <base>` |
+| squash / reword / drop / reorder / edit | `git rebase -i HEAD~N` |
+| look at an old commit | `git checkout <hash>` → `git switch master` |
+| copy one commit | `git cherry-pick <hash>` |
+| recover a "lost" commit | `git reflog` → `git reset --hard HEAD@{n}` |
