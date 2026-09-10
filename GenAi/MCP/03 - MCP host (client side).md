@@ -1,3 +1,9 @@
+# Building an MCP host (the client side)
+
+> The other notes build MCP *servers*. This one is the other end: an MCP **host/client** that consumes servers, a Gemini-backed host with a connection manager, a tool registry, and a webhook. This is how a model actually discovers tools, calls them, and loops on the results.
+
+---
+
 #### Using Webhook with MCP
 
 Import Libraries

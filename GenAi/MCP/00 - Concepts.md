@@ -243,3 +243,41 @@ def weather_report(location: str) -> str:
 if __name__ == "__main__":
     mcp.run()
 ```
+
+> This minimal example uses the **v1** import (`mcp.server.fastmcp`). The build tutorial in `01 - Build a server (SDK v2)` uses the **v2** class (`from mcp.server import MCPServer`). Same idea, different name, see step 0 there.
+
+## Message types as Python models
+
+The JSON-RPC shapes above, written as Python. You rarely build these by hand (the SDK does), but this is what moves between host and server.
+
+```python
+from typing import Any, Optional
+from pydantic import BaseModel
+
+# Request — expects a Result or an Error back
+class Request(BaseModel):
+    method: str
+    params: Optional[dict[str, Any]] = None
+
+# Result — a successful response; any keys allowed
+Result = dict[str, Any]
+
+# Error — a failed response
+class Error(BaseModel):
+    code: int
+    message: str
+    data: Optional[Any] = None
+
+# Notification — one-way, no response expected
+class Notification(BaseModel):
+    method: str
+    params: Optional[dict[str, Any]] = None
+```
+
+The real split: a **Request** carries an `id` so its Result/Error can be matched to it; a **Notification** has no `id`, so nothing comes back. If a tool raises, the SDK turns it into an `Error`.
+
+## Connection lifecycle
+
+1. **Initialization** — client sends `initialize` (protocol version + capabilities), server replies with its own, client sends the `initialized` notification, then normal traffic begins.
+2. **Message exchange** — request/response both ways, plus one-way notifications from either side.
+3. **Termination** — clean shutdown via `close()`, a transport disconnect, or an error.
