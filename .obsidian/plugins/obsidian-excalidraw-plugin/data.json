@@ -21,7 +21,7 @@
   "loadJapaneseFonts": false,
   "loadKoreanFonts": false,
   "compress": true,
-  "decompressForMDView": false,
+  "decompressForMDView": true,
   "onceOffCompressFlagReset": true,
   "onceOffGPTVersionReset": true,
   "autosave": true,
@@ -526,11 +526,6 @@
   "aiEnabled": true,
   "aiVerboseLogging": false,
   "aiProviderProfiles": {
-    "OpenAI": {
-      "provider": "openai",
-      "apiKey": "",
-      "baseURL": "https://api.openai.com/v1"
-    },
     "Anthropic": {
       "provider": "anthropic",
       "apiKey": "",
@@ -541,24 +536,23 @@
       "apiKey": "",
       "baseURL": "https://generativelanguage.googleapis.com/v1beta"
     },
-    "xAI": {
-      "provider": "xai",
-      "apiKey": "",
-      "baseURL": "https://api.x.ai/v1"
-    },
     "OpenAI-compatible": {
       "provider": "openai-compatible",
       "apiKey": "",
       "baseURL": "https://api.openai.com/v1"
+    },
+    "OpenCode": {
+      "provider": "openai",
+      "apiKey": "ex-obf:v1:AKMmqSyvMrU4uwCpJ4sBkhyEa7kc9wjNbd8C9FHAaNtpvhvoOLp8zEPOVSy1M4Y9sj+BDL9fuwqLOdMtlzyTasVC8G/3QvB8hl+oBJNu2Hvecfo6yj0=",
+      "baseURL": "https://opencode.ai/zen/v1"
+    },
+    "xAI": {
+      "provider": "xai",
+      "apiKey": "",
+      "baseURL": "https://api.x.ai/v1"
     }
   },
   "aiTextModelConfigs": {
-    "gpt-5-mini": {
-      "providerId": "OpenAI",
-      "model": "gpt-5-mini",
-      "endpoint": "",
-      "multimodalSupport": true
-    },
     "claude-sonnet-4-5": {
       "providerId": "Anthropic",
       "model": "claude-sonnet-4-5",
@@ -571,6 +565,12 @@
       "endpoint": "",
       "multimodalSupport": true
     },
+    "gpt-5-mini": {
+      "providerId": "OpenCode",
+      "model": "gpt-5-mini",
+      "endpoint": "",
+      "multimodalSupport": true
+    },
     "grok-4-fast": {
       "providerId": "xAI",
       "model": "grok-4-fast",
@@ -580,7 +580,7 @@
   },
   "aiImageModelConfigs": {
     "dall-e-2": {
-      "providerId": "OpenAI",
+      "providerId": "OpenCode",
       "model": "dall-e-2",
       "supportedSizes": [
         "256x256",
@@ -591,7 +591,7 @@
       "supportsMaskImageEdits": true
     },
     "dall-e-3": {
-      "providerId": "OpenAI",
+      "providerId": "OpenCode",
       "model": "dall-e-3",
       "supportedSizes": [
         "1024x1024",
@@ -600,51 +600,6 @@
       ],
       "supportsPromptImageTransforms": false,
       "supportsMaskImageEdits": false
-    },
-    "gpt-image-1": {
-      "providerId": "OpenAI",
-      "model": "gpt-image-1",
-      "supportedSizes": [
-        "1024x1024",
-        "1536x1024",
-        "1024x1536"
-      ],
-      "supportsPromptImageTransforms": true,
-      "supportsMaskImageEdits": true
-    },
-    "gpt-image-1-mini": {
-      "providerId": "OpenAI",
-      "model": "gpt-image-1-mini",
-      "supportedSizes": [
-        "1024x1024",
-        "1536x1024",
-        "1024x1536"
-      ],
-      "supportsPromptImageTransforms": true,
-      "supportsMaskImageEdits": true
-    },
-    "gpt-image-1.5": {
-      "providerId": "OpenAI",
-      "model": "gpt-image-1.5",
-      "supportedSizes": [
-        "1024x1024",
-        "1536x1024",
-        "1024x1536"
-      ],
-      "supportsPromptImageTransforms": true,
-      "supportsMaskImageEdits": true
-    },
-    "gpt-image-2": {
-      "providerId": "OpenAI",
-      "model": "gpt-image-2",
-      "supportedSizes": [
-        "1024x1024",
-        "1536x1024",
-        "1024x1536",
-        "2048x2048"
-      ],
-      "supportsPromptImageTransforms": true,
-      "supportsMaskImageEdits": true
     },
     "gemini-2.5-flash-image": {
       "providerId": "Google Gemini",
@@ -660,6 +615,44 @@
         "768x1376",
         "1376x768",
         "1584x672"
+      ],
+      "supportsPromptImageTransforms": true,
+      "supportsMaskImageEdits": false
+    },
+    "gemini-3-pro-image-preview": {
+      "providerId": "Google Gemini",
+      "model": "gemini-3-pro-image-preview",
+      "supportedSizes": [
+        "1024x1024",
+        "2048x2048",
+        "4096x4096",
+        "848x1264",
+        "1696x2528",
+        "3392x5056",
+        "1264x848",
+        "2528x1696",
+        "5056x3392",
+        "896x1200",
+        "1792x2400",
+        "3584x4800",
+        "1200x896",
+        "2400x1792",
+        "4800x3584",
+        "928x1152",
+        "1856x2304",
+        "3712x4608",
+        "1152x928",
+        "2304x1856",
+        "4608x3712",
+        "768x1376",
+        "1536x2752",
+        "3072x5504",
+        "1376x768",
+        "2752x1536",
+        "5504x3072",
+        "1584x672",
+        "3168x1344",
+        "6336x2688"
       ],
       "supportsPromptImageTransforms": true,
       "supportsMaskImageEdits": false
@@ -728,40 +721,56 @@
       "supportsPromptImageTransforms": true,
       "supportsMaskImageEdits": false
     },
-    "gemini-3-pro-image-preview": {
-      "providerId": "Google Gemini",
-      "model": "gemini-3-pro-image-preview",
+    "gpt-image-1": {
+      "providerId": "OpenCode",
+      "model": "gpt-image-1",
       "supportedSizes": [
         "1024x1024",
-        "2048x2048",
-        "4096x4096",
-        "848x1264",
-        "1696x2528",
-        "3392x5056",
-        "1264x848",
-        "2528x1696",
-        "5056x3392",
-        "896x1200",
-        "1792x2400",
-        "3584x4800",
-        "1200x896",
-        "2400x1792",
-        "4800x3584",
-        "928x1152",
-        "1856x2304",
-        "3712x4608",
-        "1152x928",
-        "2304x1856",
-        "4608x3712",
-        "768x1376",
-        "1536x2752",
-        "3072x5504",
-        "1376x768",
-        "2752x1536",
-        "5504x3072",
-        "1584x672",
-        "3168x1344",
-        "6336x2688"
+        "1536x1024",
+        "1024x1536"
+      ],
+      "supportsPromptImageTransforms": true,
+      "supportsMaskImageEdits": true
+    },
+    "gpt-image-1-mini": {
+      "providerId": "OpenCode",
+      "model": "gpt-image-1-mini",
+      "supportedSizes": [
+        "1024x1024",
+        "1536x1024",
+        "1024x1536"
+      ],
+      "supportsPromptImageTransforms": true,
+      "supportsMaskImageEdits": true
+    },
+    "gpt-image-1.5": {
+      "providerId": "OpenCode",
+      "model": "gpt-image-1.5",
+      "supportedSizes": [
+        "1024x1024",
+        "1536x1024",
+        "1024x1536"
+      ],
+      "supportsPromptImageTransforms": true,
+      "supportsMaskImageEdits": true
+    },
+    "gpt-image-2": {
+      "providerId": "OpenCode",
+      "model": "gpt-image-2",
+      "supportedSizes": [
+        "1024x1024",
+        "1536x1024",
+        "1024x1536",
+        "2048x2048"
+      ],
+      "supportsPromptImageTransforms": true,
+      "supportsMaskImageEdits": true
+    },
+    "grok-imagine-image-pro": {
+      "providerId": "xAI",
+      "model": "grok-imagine-image-pro",
+      "supportedSizes": [
+        "1024x1024"
       ],
       "supportsPromptImageTransforms": true,
       "supportsMaskImageEdits": false
@@ -769,15 +778,6 @@
     "grok-imagine-image-quality": {
       "providerId": "xAI",
       "model": "grok-imagine-image-quality",
-      "supportedSizes": [
-        "1024x1024"
-      ],
-      "supportsPromptImageTransforms": true,
-      "supportsMaskImageEdits": false
-    },
-    "grok-imagine-image-pro": {
-      "providerId": "xAI",
-      "model": "grok-imagine-image-pro",
       "supportedSizes": [
         "1024x1024"
       ],
@@ -1036,7 +1036,7 @@
         "rules": [
           {
             "shift": false,
-            "ctrl_cmd": false,
+            "ctrl_cmd": true,
             "alt_opt": false,
             "meta_ctrl": false,
             "result": "active-pane"
