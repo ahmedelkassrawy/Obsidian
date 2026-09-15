@@ -204,3 +204,44 @@ Components: client → Load Balancer → App servers (stateless) → Cache (Redi
 
 ## Phase 0 checklist (grokked-when)
 On a blank page, no AI: list the **6 steps** in order, the **5 latency numbers / the ranking**, and do **one estimate** (writes/day → storage/year). Then run the full method on a novel prompt.
+
+----
+### Rate Limiter - Worked Design
+1. Requirements 
+Functional -> check each request against user's limit (allow -> pass through) or deny (return 429 + a retry after )
+
+Non Functional 
+- a very low latency 
+- high availability (if its down it cant take the whole api with it)
+- Fail open (if the counter store is unreachable)
+
+Where to live + counter store
+- lives in app middleware 
+- counter in shared Redis (but redis becomes a dependency)
+
+Algorithm -> sliding window counter ( 2 counters per user in redis: current + previous minute)
+
+Data in Redis
+```
+key:
+	ratelimit:
+		{user_id}:{minute}
+
+value:
+	request count (integer)
+	
+INCR on each request
+expire the key after ~2 minutes so old window self-cleans
+```
+
+High Level Flow
+```
+request → app middleware → Redis: read current+previous counts → compute weighted count
+   ≤ limit → INCR + allow
+   > limit → 429 (Retry-After)
+```
+
+**6. Scale & failure**
+- 10k req/s → 10k Redis ops/s: trivial for one Redis. At much higher scale, shard Redis by user_id, or use local counters + periodic sync (approximate).
+- **Failure:** Redis down → **fail-open** (allow) so the limiter never becomes the outage. Trade-off: brief window with no limiting.
+- 10×: Redis becomes the bottleneck → shard it, or move to a token-bucket done locally per server with a shared budget.
