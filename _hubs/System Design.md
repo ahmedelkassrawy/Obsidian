@@ -35,7 +35,7 @@ tags:
 
 ## How-tos & recipes
 - [[Best Practices for SQL Connection Pooling]] — Lessons from a Node.js/PostgreSQL to-do app on connection pooling and database permissions, with the problems hit and the fixes applied.
-- [[System Design Phase 0 - Method and Numbers]] — A fixed six-step method for attacking any system design prompt, plus the latency numbers and back-of-envelope estimation math behind steps 2-5.
+- [[Phase0]] — A fixed six-step method for attacking any system design prompt, plus the latency numbers and back-of-envelope estimation math behind steps 2-5.
 
 ## Book notes
 - [[Agent UX Design]] — Ch3 notes on user experience for agentic systems: text and terminal interfaces, the discoverability problem, GUIs and generative UIs.
