@@ -20,7 +20,7 @@ Start from a **Map of Content** (one per domain), or jump straight to a **hub** 
 - **Filter by kind**: `#type/concept`, `#type/howto`, `#type/solution`, `#type/reference`.
 - **Filter by quality**: `#status/digested` (my own words), `#status/raw` (pasted), `#status/stub`, `#status/stale` (old API), `#status/empty`.
 - Every note's frontmatter has `description`, `aliases` (old names + search terms) and `hubs`.
-- `_inbox/` holds raw clippings, empty and duplicate files. Nothing was deleted.
+- Raw clippings, empty and duplicate files stay in their folders but carry `#status/raw`, `#status/empty` or `#status/stub`. Exclude them in search with `-tag:#status/raw`.
 
 ## All hubs by domain
 **AI Engineering**: [[AI Evaluation]] · [[AI Security]] · [[Agent Memory]] · [[Agents]] · [[Caching]] · [[Claude Code]] · [[Cloudflare Workers]] · [[Context Engineering]] · [[CrewAI]] · [[DSPy]] · [[Fine-tuning]] · [[Google ADK]] · [[HuggingFace]] · [[LLM Internals]] · [[LLM Serving & vLLM]] · [[LangChain]] · [[LangGraph]] · [[LlamaIndex]] · [[MCP]] · [[Multi-Agent Systems]] · [[OCR]] · [[Observability]] · [[Pipecat]] · [[Prompting]] · [[RAG]] · [[Redis]] · [[Temporal & Durable Workflows]] · [[Tool Use & Function Calling]] · [[Vector Search]] · [[Voice Agents]]
