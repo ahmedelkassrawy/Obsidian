@@ -23,11 +23,12 @@ source: System Design Primer (donnemartin) + kassra lesson Phase 0
 ---
 # System Design — Phase 0 (the method + the numbers)
 
-The goal of Phase 0: given any vague design prompt, take it to a defended design. You do that with a fixed **6-step method** + a few **numbers** you keep in your head.
+The goal of Phase 0: given any vague design prompt, take it to a defended design. You do that with a fixed **6-step method** plus a few **numbers** you keep in your head.
 
 ---
 
 ## The 6-step method (the attack for any prompt)
+
 Memorize the **order** — it's the spine of every answer.
 
 1. **Requirements** — what it does (functional) + the scale/latency/availability targets (non-functional). Ask questions; nail what's in and out of scope. Never draw before this.
@@ -40,6 +41,7 @@ Memorize the **order** — it's the spine of every answer.
 ---
 
 ## The latency numbers (learn the ratios, not the exact values)
+
 | Operation | Time |
 |---|---|
 | Read from **RAM** | ~100 ns |
@@ -48,72 +50,93 @@ Memorize the **order** — it's the spine of every answer.
 | Round trip **same datacenter** | ~0.5 ms |
 | Round trip **cross-continent** | ~150 ms |
 
-**The one takeaway:** RAM ≪ SSD ≪ disk ≪ far network. So: **cache in memory, avoid disk seeks, avoid cross-region round trips.** That single ranking drives half of all design decisions.
+> [!tip] The one takeaway
+> RAM ≪ SSD ≪ disk ≪ far network. So: **cache in memory, avoid disk seeks, avoid cross-region round trips.** That single ranking drives half of all design decisions.
 
 ---
 
 ## The estimation math (step 2, explained)
-Rough math to figure out *how big* the system is, so you know what design it needs. Three numbers:
+
+Rough math to figure out *how big* the system is, so you know what design it needs. Three numbers.
+
+> [!definition] QPS — queries per second
+> How much traffic hits the system per second. Track reads and writes separately, because they scale differently.
 
 **1. QPS — queries per second** (how much traffic hits it)
+
 - `requests per day ÷ 86,400` (seconds/day ≈ 100,000 = 10⁵).
 - **Peak ≈ 2× average** (traffic isn't flat).
 - Track **reads/sec and writes/sec separately** — they scale differently.
 - *Why it matters:* 100 writes/s fits one DB box; 100,000 writes/s needs sharding. The number picks the design.
 
 **2. Storage/year** = `writes per day × bytes per write × days kept`.
+
 - *Why:* a few GB fits one Postgres; petabytes/year → object storage + sharding.
 
 **3. Bandwidth** = `QPS × bytes per request`.
+
 - *Why:* tells you if you need a CDN and whether the network (not the CPU) is the bottleneck.
 
 **Sizes:** KB = 10³, MB = 10⁶, GB = 10⁹, TB = 10¹² bytes.
 
 **Worked example — a photo service, 10M uploads/day, 1 MB each:**
+
 - write QPS = 10,000,000 ÷ 100,000 = **100 writes/s** (peak ~200)
 - storage/day = 10M × 1 MB = **10 TB/day** → ~3.65 PB/year
 - upload bandwidth = 100 × 1 MB = **100 MB/s**
-→ From those three numbers alone you *know* one DB won't hold it (object storage + sharding) and you'll want a CDN. **The estimate picks the design before you draw a box.**
 
-Rules of thumb: **seconds/day ≈ 10⁵**, **peak ≈ 2× average**, **read:write ratio matters** (most systems read far more than they write → cache the reads).
+From those three numbers alone you *know* one DB won't hold it (object storage + sharding) and you'll want a CDN. **The estimate picks the design before you draw a box.**
+
+> [!abstract] Rules of thumb
+> **seconds/day ≈ 10⁵** · **peak ≈ 2× average** · **read:write ratio matters** (most systems read far more than they write → cache the reads).
 
 ---
 
 ## Step 3 — API (explained)
+
 Write the exact operations a client can call, with inputs and outputs — the **contract** between client and system. Once you name the operations, the data model and the boxes almost fall out of them.
 
-Each endpoint needs: a verb, its inputs, its output. **HTTP verb rule: GET = read (safe, changes nothing), POST = create/write.**
+Each endpoint needs: a verb, its inputs, its output.
+
+> [!note] HTTP verb rule
+> **GET = read** (safe, changes nothing). **POST = create/write.**
 
 Keep it small — the 3–5 core endpoints that define what the system does. (Shutterabia's MCP tools are exactly this: each tool = a name + inputs + output.)
 
 ---
 
 ## Step 4 — Data model + access patterns (explained)
+
 Two halves:
+
 1. **The shape** — tables/entities, fields, primary key, links.
 2. **The access patterns** — *how* each piece is read and written, and how often. This matters more than the shape.
 
-**An access pattern answers four things:**
-1. How do I **read** it? (by what key?)
-2. How do I **write** it? (insert / update / append?)
-3. **Read-heavy or write-heavy?** (the ratio)
-4. **How much, how fast?** (from the estimate)
+> [!definition] Access pattern
+> A description of how a piece of data is used. It answers four things:
+> 1. How do I **read** it? (by what key?)
+> 2. How do I **write** it? (insert / update / append?)
+> 3. **Read-heavy or write-heavy?** (the ratio)
+> 4. **How much, how fast?** (from the estimate)
 
 **Why it's the most important part:** the access pattern decides three concrete choices:
+
 - **What to index** — you index the field you *look up by*.
 - **SQL vs NoSQL** — simple key lookups suit key-value; complex joins suit SQL.
 - **What to cache / how to shard** — read-heavy → cache; "by user_id" → shard by user_id.
 
 The one-line habit: before choosing a DB or index, write *"I read this by ___ and write it by ___, mostly reads/writes."* That sentence picks your storage.
 
-*Contrast:* URL shortener reads by short_code (100:1) → index short_code + cache. Twitter timeline reads "newest posts from everyone I follow" → a hard pattern that forces precomputing timelines. Same-ish data, different pattern, different design.
+*Contrast:* a URL shortener reads by short_code (100:1) → index short_code + cache. A Twitter timeline reads "newest posts from everyone I follow" → a hard pattern that forces precomputing timelines. Same-ish data, different pattern, different design.
 
 ---
 
 ## Step 5 — High-level design (explained)
-Draw the components as boxes, connect with arrows, trace the **happy path** (normal, no failures yet).
+
+Draw the components as boxes, connect them with arrows, and trace the **happy path** (normal, no failures yet).
 
 **The standard boxes (add one only when justified):**
+
 - **Client** — browser/app/service making the request.
 - **Load balancer (LB)** — one front door spreading requests across many identical app servers.
 - **App servers** — your logic; usually several identical copies behind the LB.
@@ -124,9 +147,12 @@ Draw the components as boxes, connect with arrows, trace the **happy path** (nor
 Start with the dumbest version that works (client → app → DB), get the happy path flowing, *then* add cache/queue/LB as the estimate demands. Knowing what to **leave out** is part of the skill.
 
 ### CDN (explained)
-**CDN = Content Delivery Network** — servers spread worldwide that keep **copies** of your static files close to users, so a request doesn't travel to your one origin.
+
+> [!definition] CDN — Content Delivery Network
+> Servers spread worldwide that keep **copies** of your static files close to users, so a request doesn't travel all the way to your one origin.
+
 - *Problem it solves:* a cross-world round trip is ~150 ms; a nearby edge is a few ms.
-- *How:* caches images/video/CSS/JS at ~hundreds of edge locations. First request fetches from origin + caches; everyone after gets the fast local copy. Also takes load off your origin.
+- *How:* caches images/video/CSS/JS at ~hundreds of edge locations. The first request fetches from the origin and caches it; everyone after gets the fast local copy. It also takes load off your origin.
 - *When to use:* read-heavy static content served to a wide geography.
 - *Two flavors:* **pull** (CDN fetches from origin on first request — easy, common) vs **push** (you upload to the CDN — more control, large/rare files).
 - You already use one: **Cloudflare in front of Shutterabia.**
@@ -134,9 +160,11 @@ Start with the dumbest version that works (client → app → DB), get the happy
 ---
 
 ## Step 6 — Scale & bottlenecks (explained)
+
 Look at the happy-path design under the real load, find the **one box that maxes out first** (usually the DB), fix it, then ask "what breaks *next* at 10×."
 
 **The four fixes — each does one thing and costs one thing:**
+
 | Fix | What it does | Trade-off (what you give up) |
 |---|---|---|
 | **Caching** | serve hot reads from memory, skip the DB | staleness; invalidation is hard |
@@ -146,43 +174,52 @@ Look at the happy-path design under the real load, find the **one box that maxes
 
 Pattern: **reads don't scale → cache + replicas. Writes/storage don't scale → shard. Slow/spiky work → queue.**
 
-**"What breaks at 10×"** is the senior discipline: after each fix, name the *next* choke point (e.g. "10× corpus → pgvector flat scan slows → add an HNSW index").
+> [!important] "What breaks at 10×" is the senior discipline
+> After each fix, name the *next* choke point (e.g. "10× corpus → pgvector flat scan slows → add an HNSW index").
 
 The habit: never present the scaled design first. Show the simple happy path, then say "the DB is the bottleneck at N QPS — here's how I relieve it, and here's what gives."
 
 ---
 
 ## Worked example — URL shortener (bit.ly)
+
 Givens: 100M new URLs/month, ~500 bytes/record, read:write = 100:1.
 
 **1. Requirements**
+
 - Functional: **create** (long URL → short code, with sanitization of tracking params) + **redirect** (short code → long URL, a 302).
 - Non-functional: read-heavy; **low latency on redirect** (it's in the click path → cache); **high availability** (down = every link breaks); **short codes unique**. Write-light (we do write, ~100× less than we read).
 
 **2. Estimate**
+
 - write QPS = 100M / 2.6M ≈ **38/s** (peak ~77/s) → tiny, one DB handles writes.
 - read QPS = 100 × 38 ≈ **3,850/s** (peak ~7,700/s) → needs cache + read replicas.
 - storage/year = 100M × 12 × 500 B ≈ **600 GB/year** → fits one DB for years, no sharding yet.
 
 **3. API**
-```
+
+```text
 POST /shorten   { long_url }        -> { short_url }
 GET  /{short_code}                  -> 302 redirect to long_url
 ```
+
 (POST = write/create, GET = read/redirect.)
 
 **4. Data model**
-```
+
+```text
 urls
   short_code  (PK, unique, indexed)   "aX9k2"
   long_url
   created_at
 access: read by short_code (hot, 100:1) · write = insert one row (rare)
 ```
+
 The access pattern (read by short_code) is what makes short_code the index.
 
 **5. High-level design**
-```
+
+```text
 READ (hot, 100:1):
   client → LB → app → cache?  hit → return; miss → DB → fill cache → return → 302
 WRITE (rare):
@@ -191,57 +228,65 @@ Components: client → Load Balancer → App servers (stateless) → Cache (Redi
 ```
 
 **6. Scale & bottlenecks**
-- Bottleneck = **DB reads**. Cache absorbs most (100:1 + good hit rate); **read replicas** spread the misses. Writes (~77/s) fine on one primary.
-- Trade-off: **replication lag** — a just-created link may not be on a replica yet (could 404 for a second). Mitigate: read new codes from primary, or the write-time cache.
+
+- Bottleneck = **DB reads**. Cache absorbs most (100:1 + good hit rate); **read replicas** spread the misses. Writes (~77/s) are fine on one primary.
+- Trade-off: **replication lag** — a just-created link may not be on a replica yet (could 404 for a second). Mitigate: read new codes from the primary, or the write-time cache.
 - 10×: reads (~80k/s) → cache is critical (guard against a cache-flush stampede); storage → eventually **shard** by short_code.
 
 ### Deep-dive: generating the short code (unique, at scale, no bottleneck)
+
 - **Counter + base62** — a global incrementing number encoded to base62 (`aX9k2`). Guaranteed unique; the counter is a single point → hand out ID *ranges* per server to avoid it. **Best default.**
 - **Random + check** — generate random, check the DB for a collision, retry. Simple; collisions rise as it fills.
-- **Why NOT SHA-256** — a hash is 64 chars → you must **truncate** → truncation reintroduces collisions → you're back to "random + check." Also a hash is **deterministic** (same URL → same code), which blocks separate links for the same URL, blocks custom codes, and makes codes predictable. It doesn't remove the per-write DB check either. (Hashing *is* fine separately if you *want* dedup — "have I shortened this URL before?")
+- **Why NOT SHA-256** — a hash is 64 chars → you must **truncate** → truncation reintroduces collisions → you're back to "random + check." A hash is also **deterministic** (same URL → same code), which blocks separate links for the same URL, blocks custom codes, and makes codes predictable. It doesn't remove the per-write DB check either. (Hashing *is* fine separately if you *want* dedup — "have I shortened this URL before?")
+
+---
+
+## Worked example — Rate Limiter
+
+**1. Requirements**
+
+- Functional: check each request against the user's limit. **Allow** → pass through, or **deny** → return `429` + a `Retry-After`.
+- Non-functional:
+  - very low latency
+  - high availability (if it's down, it can't take the whole API down with it)
+  - **fail open** if the counter store is unreachable
+
+**Where it lives + the counter store**
+
+- Lives in the app middleware.
+- Counter lives in a shared Redis (but Redis then becomes a dependency).
+
+**Algorithm** — sliding-window counter: 2 counters per user in Redis (current + previous minute).
+
+**2. Data in Redis**
+
+```text
+key:    ratelimit:{user_id}:{minute}
+value:  request count (integer)
+
+- INCR on each request
+- expire the key after ~2 minutes so the old window self-cleans
+```
+
+**3. High-level flow**
+
+```text
+request → app middleware → Redis: read current + previous counts → compute weighted count
+  ≤ limit → INCR + allow
+  > limit → 429 (Retry-After)
+```
+
+**4. Scale & failure**
+
+- 10k req/s → 10k Redis ops/s: trivial for one Redis. At much higher scale, shard Redis by user_id, or use local counters + periodic sync (approximate).
+
+> [!warning] Failure mode — fail open
+> If Redis is down, **allow** the request so the limiter never becomes the outage. Trade-off: a brief window with no limiting.
+
+- 10×: Redis becomes the bottleneck → shard it, or move to a token-bucket done locally per server with a shared budget.
 
 ---
 
 ## Phase 0 checklist (grokked-when)
+
 On a blank page, no AI: list the **6 steps** in order, the **5 latency numbers / the ranking**, and do **one estimate** (writes/day → storage/year). Then run the full method on a novel prompt.
-
-----
-### Rate Limiter - Worked Design
-1. Requirements 
-Functional -> check each request against user's limit (allow -> pass through) or deny (return 429 + a retry after )
-
-Non Functional 
-- a very low latency 
-- high availability (if its down it cant take the whole api with it)
-- Fail open (if the counter store is unreachable)
-
-Where to live + counter store
-- lives in app middleware 
-- counter in shared Redis (but redis becomes a dependency)
-
-Algorithm -> sliding window counter ( 2 counters per user in redis: current + previous minute)
-
-Data in Redis
-```
-key:
-	ratelimit:
-		{user_id}:{minute}
-
-value:
-	request count (integer)
-	
-INCR on each request
-expire the key after ~2 minutes so old window self-cleans
-```
-
-High Level Flow
-```
-request → app middleware → Redis: read current+previous counts → compute weighted count
-   ≤ limit → INCR + allow
-   > limit → 429 (Retry-After)
-```
-
-**6. Scale & failure**
-- 10k req/s → 10k Redis ops/s: trivial for one Redis. At much higher scale, shard Redis by user_id, or use local counters + periodic sync (approximate).
-- **Failure:** Redis down → **fail-open** (allow) so the limiter never becomes the outage. Trade-off: brief window with no limiting.
-- 10×: Redis becomes the bottleneck → shard it, or move to a token-bucket done locally per server with a shared budget.
