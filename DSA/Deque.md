@@ -1,3 +1,18 @@
+---
+description: "std::deque as a vector that can also push and pop at the front, with the member-function demo program."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "double ended queue"
+hubs:
+  - "[[STL Containers]]"
+---
 all vectors + push_front() + pop_front()
 double ended queue (mftoo7 mn n7yteen)
 ![[Pasted image 20240604174858.png]]

@@ -1,3 +1,23 @@
+---
+description: "Chip Huyen chapter notes on agents: what an environment and action set are, tool categories and function calling, planning vs execution, and agent memory."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/agents
+  - topic/tool-use-and-function-calling
+  - topic/agent-memory
+aliases:
+  - "AI Engineering agents chapter"
+  - "planning and tools"
+hubs:
+  - "[[Agents]]"
+  - "[[Tool Use & Function Calling]]"
+  - "[[Agent Memory]]"
+---
 # Agents, Planning, Tools, and Memory
 
 

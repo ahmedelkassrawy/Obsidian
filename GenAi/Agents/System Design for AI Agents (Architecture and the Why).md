@@ -1,9 +1,26 @@
 ---
-title: System Design for AI Agents — Architecture & the "Why"
+description: "Trains you to defend every agent design decision: start from constraints, place the system on the agency spectrum, split into single-responsibility agents, and route for cost vs quality."
+domain: ai-eng
 type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/agents
+  - topic/ai-evaluation
+aliases:
+  - "agent system design"
+  - "agency spectrum"
+  - "routing"
+hubs:
+  - "[[System Design]]"
+  - "[[Agents]]"
+  - "[[AI Evaluation]]"
+title: System Design for AI Agents — Architecture & the "Why"
 source: Distilled from Uber Eats agent talk + generalized agent system-design patterns
 topics: [agents, system-design, architecture, orchestration, production, trade-offs]
-status: learning
 created: 2026-07-31
 ---
 

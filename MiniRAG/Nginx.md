@@ -1,3 +1,22 @@
+---
+description: "What NGINX actually does - web server, reverse proxy, load balancer, cache - and why you would pick it over other servers."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/http-and-networking
+  - topic/cloud-deployment
+aliases:
+  - "NGINX"
+  - "reverse proxy"
+  - "load balancer"
+hubs:
+  - "[[HTTP & Networking]]"
+  - "[[Cloud Deployment]]"
+---
 At its core, **NGINX** (pronounced "engine-ex") is high-performance open-source software used for web serving, reverse proxying, caching, load balancing, and media streaming.
 
 While it started as a simple web server designed for maximum stability, it has evolved into a Swiss Army knife for modern web architecture.

@@ -1,3 +1,22 @@
+---
+description: "Building a voice agent as an STT-agent-TTS sandwich: synchronizing the async pieces, reading the stream, routing parsed output, error handling, and the WebSocket endpoint."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/voice-agents
+  - topic/langchain
+aliases:
+  - "STT LLM TTS"
+  - "sandwich architecture"
+  - "websocket"
+hubs:
+  - "[[Voice Agents]]"
+  - "[[LangChain]]"
+---
 1. STT > Agent > TTS architecture (The “Sandwich”)
 2. Sppech to Speech 
 

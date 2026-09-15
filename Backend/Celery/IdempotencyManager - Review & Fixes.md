@@ -1,3 +1,24 @@
+---
+description: "Code review of a project's IdempotencyManager: the race condition, the celery_task_id coupling and the sync/async mismatch, with the fixes for each."
+domain: backend
+type: project
+status: digested
+tags:
+  - domain/backend
+  - type/project
+  - status/digested
+  - topic/celery-and-message-queues
+  - topic/transactions-and-concurrency-control
+  - topic/sqlalchemy
+aliases:
+  - "idempotency"
+  - "race condition"
+  - "celery_task_id"
+hubs:
+  - "[[Celery & Message Queues]]"
+  - "[[Transactions & Concurrency Control]]"
+  - "[[SQLAlchemy]]"
+---
 **`crud.py`**
 ```python
 import hashlib

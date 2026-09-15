@@ -1,3 +1,23 @@
+---
+description: "Full walkthrough of SVMs: maximum-margin intuition, linear and kernel SVMs, the soft-margin C parameter, SVR for regression, and OneClassSVM for outliers, with scikit-learn code."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/classification
+  - topic/regression
+aliases:
+  - "Support Vector Machine"
+  - "kernel trick"
+  - "SVR"
+  - "soft margin"
+hubs:
+  - "[[Classification]]"
+  - "[[Regression]]"
+---
 ## What is SVM?
 
 **Support Vector Machine (SVM)** is a supervised machine learning algorithm used for:

@@ -1,3 +1,23 @@
+---
+description: "Tutorial notes on building a memory-enabled travel agent with Redis and LangGraph: short-term vs long-term memory, data models, storage, and vector search over memories."
+domain: ai-eng
+type: course
+status: digested
+tags:
+  - domain/ai-eng
+  - type/course
+  - status/digested
+  - topic/agent-memory
+  - topic/redis
+  - topic/langgraph
+aliases:
+  - "Redis agent memory"
+  - "short term long term memory"
+hubs:
+  - "[[Agent Memory]]"
+  - "[[Redis]]"
+  - "[[LangGraph]]"
+---
 # Agent Memory with Redis Study Guide
 
 This guide summarizes the "Agent Memory with Redis" tutorial, which demonstrates building a **memory-enabled travel agent** using **Redis** and **LangGraph**. It covers short-term and long-term memory management, vector-powered semantic search, and conversation summarization, with practical code snippets for study. Key concepts are linked to enterprise RAG system design principles for broader applicability.

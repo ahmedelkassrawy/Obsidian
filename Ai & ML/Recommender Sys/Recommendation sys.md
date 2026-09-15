@@ -1,3 +1,22 @@
+---
+description: "Builds content-based recommenders step by step: TF-IDF vectors over descriptions, cosine similarity, and where keyword matching fails versus semantic embeddings."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/recommender-systems
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "content based filtering"
+  - "TF-IDF recommender"
+  - "movie recommender"
+hubs:
+  - "[[Recommender Systems]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 Content Based Filtering
 Vectorization(Tf-IDF) -> convert the description into a vector
 Similarity metric (cosine similiartiy) -> Once the movies as converted into vectors

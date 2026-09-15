@@ -1,5 +1,24 @@
 ---
-tags: [python, pydantic, validation, data-modeling]
+description: "Pydantic v2 in practice: when to use it and when not to, BaseModel basics, enums to close a value set, field_validator for one field vs model_validator across fields."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/pydantic
+  - topic/python-language
+  - python
+  - pydantic
+  - validation
+  - data-modeling
+aliases:
+  - "BaseModel"
+  - "validators"
+hubs:
+  - "[[Pydantic]]"
+  - "[[Python Language]]"
 source: Track A · postqueue · Lesson 1
 updated: 2026-08-17
 ---

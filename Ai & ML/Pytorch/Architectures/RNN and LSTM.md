@@ -1,3 +1,24 @@
+---
+description: "NLP in PyTorch with RNNs and LSTMs: preprocessing, spaCy tokenization, vocabulary building and numericalization, then an RNN question-answering model and an LSTM next-word predictor."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/pytorch
+  - topic/rnn-and-lstm
+  - topic/nlp-preprocessing
+aliases:
+  - "PyTorch RNN"
+  - "LSTM next word"
+  - "spaCy tokenization"
+hubs:
+  - "[[PyTorch]]"
+  - "[[RNN & LSTM]]"
+  - "[[NLP Preprocessing]]"
+---
 # NLP with RNN and LSTM in PyTorch
 
 ## Text Preprocessing

@@ -1,3 +1,19 @@
+---
+description: "Pasted PydanticAI starter code: creating an Agent with a Gemini model, running it, and carrying message history between runs."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/agents
+aliases:
+  - "PydanticAI"
+  - "Agent run"
+hubs:
+  - "[[Agents]]"
+---
 ```python
 from pydantic_ai import Agent
 import asyncio

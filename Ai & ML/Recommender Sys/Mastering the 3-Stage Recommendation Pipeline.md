@@ -1,3 +1,22 @@
+---
+description: "Explains the industry-standard three-stage recommender pipeline - candidate generation, ranking, post-processing - and why serving at scale needs it."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/recommender-systems
+  - topic/ml-system-design
+aliases:
+  - "3-stage recsys"
+  - "candidate generation"
+  - "ranking re-ranking"
+hubs:
+  - "[[Recommender Systems]]"
+  - "[[ML System Design]]"
+---
 The 3-stage recommendation pipeline is the industry standard for production-level recommendation systems (RecSys) at companies like YouTube, Meta, and Netflix.
 
 When you are engineering systems that need to serve millions of items to millions of users in milliseconds, you cannot afford to run a computationally expensive machine learning model on the entire catalog. The pipeline architecture solves this by cascading models—trading off recall for precision as the item pool gets smaller.

@@ -1,3 +1,24 @@
+---
+description: "Why GenAI services block under load and how to fix it: concurrency vs parallelism, Python execution models, asyncio, and FastAPI concurrency choices."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/concurrency-and-async
+  - topic/fastapi
+  - topic/llm-serving-and-vllm
+aliases:
+  - "async"
+  - "concurrency vs parallelism"
+  - "asyncio"
+hubs:
+  - "[[Concurrency & Async]]"
+  - "[[FastAPI]]"
+  - "[[LLM Serving & vLLM]]"
+---
 AI workloads are computationally expensive. In production, services must handle simultaneous requests from multiple users. However, GenAI models and external system interactions (databases, filesystems, internet) introduce operations that block program execution.
 
 ## Blocking Operations

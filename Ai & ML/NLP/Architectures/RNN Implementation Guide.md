@@ -1,3 +1,24 @@
+---
+description: "Explains every parameter choice in a small LSTM text classifier - vocab size, embedding dim, LSTM units, dense layer, optimizer, epochs - and when to add more layers."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/rnn-and-lstm
+  - topic/tensorflow-and-keras
+  - topic/optimizers-and-training
+aliases:
+  - "RNN parameter guide"
+  - "LSTM units"
+  - "how many layers"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[TensorFlow & Keras]]"
+  - "[[Optimizers & Training]]"
+---
 ## Understanding the Task and Dataset
 Your code is for a **binary text classification task** (positive vs. negative sentiment) using synthetic text data. The dataset consists of short sentences (e.g., "I love coding") with binary labels (1 for positive, 0 for negative). The model uses an `Embedding` layer, an `LSTM` layer, and a `Dense` layer for classification.
 

@@ -1,3 +1,22 @@
+---
+description: "A run of plotting snippets - line, scatter, histogram, heatmap, pairplot - using matplotlib and seaborn on sample and California housing data."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/matplotlib
+  - topic/pandas
+aliases:
+  - "data visualization"
+  - "seaborn"
+  - "correlation heatmap"
+hubs:
+  - "[[Matplotlib]]"
+  - "[[Pandas]]"
+---
 Line Plot
 ```python
 x = [1,2,3,4,5]

@@ -1,3 +1,19 @@
+---
+description: "Bottom-up DP: filling the table in order instead of recursing, and cutting the table down to one or two rows (memory reduction)."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/dynamic-programming
+aliases:
+  - "bottom up"
+  - "memory reduction"
+hubs:
+  - "[[Dynamic Programming]]"
+---
 ```C++
 #include <iostream>
 #include <vector>

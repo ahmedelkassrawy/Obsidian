@@ -1,3 +1,19 @@
+---
+description: "Grokking-style intro: Dijkstra answers the shortest path on a weighted graph, where BFS only counts hops, and it breaks on negative-weight edges."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/shortest-paths
+aliases:
+  - "Dijkstra"
+  - "weighted shortest path"
+hubs:
+  - "[[Shortest Paths]]"
+---
 - lets you answer “What’s the shortest path to X?” for weighted graphs.
 - You learn about cycles in graphs, where Dijkstra’s algorithm doesn’t work.
 

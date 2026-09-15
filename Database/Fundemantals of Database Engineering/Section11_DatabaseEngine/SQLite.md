@@ -1,3 +1,20 @@
+---
+description: "Course notes on SQLite as an embedded storage engine: its history, architecture, features and where it is the right choice."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/sqlite
+  - topic/database-internals
+aliases:
+  - "embedded database"
+hubs:
+  - "[[SQLite]]"
+  - "[[Database Internals]]"
+---
 # SQLite Database
 
 ## Overview

@@ -1,3 +1,24 @@
+---
+description: "FastAPI course notes on response models and return types, multiple models for different purposes, and choosing HTTP status codes."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/fastapi
+  - topic/pydantic
+  - topic/api-design
+aliases:
+  - "response_model"
+  - "status codes"
+  - "extra models"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Pydantic]]"
+  - "[[API Design]]"
+---
 # FastAPI Response Models and Status Codes Study Notes
 
 This Obsidian Markdown file provides a structured overview of FastAPI's response models, return types, and HTTP status codes, with a focus on using Pydantic for data validation and serialization. It is designed for studying and quick reference.

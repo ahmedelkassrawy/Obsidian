@@ -1,3 +1,21 @@
+---
+description: "Running commentary on implementing the Transformer paper: token ids, nn.Embedding to d_model vectors, positional encoding and what each forward pass does."
+domain: ml
+type: concept
+status: raw
+tags:
+  - domain/ml
+  - type/concept
+  - status/raw
+  - topic/transformers
+  - topic/pytorch
+aliases:
+  - "input embeddings"
+  - "d_model"
+hubs:
+  - "[[Transformers]]"
+  - "[[PyTorch]]"
+---
 sentence -> tokenized to tokens(numbeers) known as token id and the seq len is the length of the sentence
 vocab_size is the size of the list of words learned by the tokenzer while toknizing
 

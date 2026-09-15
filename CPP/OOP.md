@@ -1,3 +1,20 @@
+---
+description: "Beginner walkthrough of declaring a C++ class, creating objects, the access specifiers, and encapsulation through getters and setters."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/oop
+  - topic/c-language
+aliases:
+  - "C++ classes"
+hubs:
+  - "[[OOP]]"
+  - "[[C++ Language]]"
+---
 To create a class, use the `class` keyword:
 ```C++
 class MyClass {       // The class  

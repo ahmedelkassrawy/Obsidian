@@ -1,3 +1,20 @@
+---
+description: "The prometheus.yml scrape config for a FastAPI app and node-exporter."
+domain: ai-eng
+type: howto
+status: stub
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stub
+  - topic/observability
+  - topic/docker
+aliases:
+  - "scrape config"
+hubs:
+  - "[[Observability]]"
+  - "[[Docker]]"
+---
 prometheus.yml
 ```python
 global:

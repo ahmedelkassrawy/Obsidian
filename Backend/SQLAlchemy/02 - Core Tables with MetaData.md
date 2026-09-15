@@ -1,6 +1,29 @@
 ---
-tags: [sqlalchemy, core, table, metadata, column, create_all, schema]
-aliases: [Core tables, Table and MetaData, metadata.create_all, Column types]
+description: "Describing tables in SQLAlchemy Core with Table and MetaData, column options and create_all."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - core
+  - table
+  - metadata
+  - column
+  - create_all
+  - schema
+aliases:
+  - "MetaData"
+  - "Table"
+  - "Column types"
+  - "Core tables"
+  - "Table and MetaData"
+  - "metadata.create_all"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#defining-tables-metadata
 ---
 

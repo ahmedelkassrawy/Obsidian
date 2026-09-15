@@ -1,12 +1,28 @@
+---
+description: "The three two-pointer families (opposite direction, same direction, two arrays) with pair-with-given-sum, counting pairs under a limit, palindrome check and 3Sum."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/two-pointers-and-sliding-window
+aliases:
+  - "3Sum"
+  - "opposite direction"
+hubs:
+  - "[[Two Pointers & Sliding Window]]"
+---
 # Two Pointers
 
-Related: [[Sliding window Tips]] (the same-direction family) · [[Problem Solving/PS Level 1/Binary Search]] · [[Prefix Sum]]
+Related: [[Sliding Window Technique]] (the same-direction family) · [[Problem Solving/PS Level 1/Binary Search]] · [[Prefix Sum]]
 ## The three families
 
 | Family | Movement | Prerequisite | Typical use |
 |---|---|---|---|
 | **Opposite direction** | `l→ ... ←r`, meet in the middle | array is **sorted** (or the problem is symmetric) | pair with sum X, palindrome, reverse, container-with-most-water |
-| **Same direction** (sliding window) | `l` and `r` both →, `l` never passes `r` | window validity is **monotonic** | longest/shortest subarray, ≤ k distinct — see [[Sliding window Tips]] |
+| **Same direction** (sliding window) | `l` and `r` both →, `l` never passes `r` | window validity is **monotonic** | longest/shortest subarray, ≤ k distinct — see [[Sliding Window Technique]] |
 | **Two arrays** | one pointer per array | both **sorted** | merge, intersection, union |
 
 All three are O(n) because **each pointer only ever moves forward** — total moves ≤ 2n. That's the entire reason the technique exists: it replaces a nested O(n²) loop.
@@ -212,7 +228,7 @@ Intersection is the same skeleton with `if (a[i] == b[j]) { record; i++; j++; }`
 
 Two pointers is only valid when moving a pointer **can never make you miss a better answer**. Concretely:
 - Opposite direction needs **sorted / monotonic** data. Unsorted → sort first (O(n log n)) or use a hash map instead.
-- Same direction needs the window property to be **monotonic** (adding an element can only make the window "more invalid"). Sums with **negative numbers break this** — a longer window isn't necessarily a bigger sum, so sliding window fails and you need prefix sum + hash map instead (that's exactly the "subarray sum = x" solution in [[Sliding window Tips]]).
+- Same direction needs the window property to be **monotonic** (adding an element can only make the window "more invalid"). Sums with **negative numbers break this** — a longer window isn't necessarily a bigger sum, so sliding window fails and you need prefix sum + hash map instead (that's exactly the "subarray sum = x" solution in [[Sliding Window Technique]]).
 
 If you can't state *why* moving the pointer is safe, you don't have a two-pointer solution — you have a guess.
 
@@ -228,7 +244,7 @@ If you can't state *why* moving the pointer is safe, you don't have a two-pointe
 ## Practice
 
 - CSES **Sum of Two Values** (indices matter → the pair trick), **Sum of Three Values**, **Apartments**, **Ferris Wheel** — this is the best two-pointer set that exists at your level, do these four.
-- Your bookmarks already touch this: [[Shift Zeros]], [[Renting bikes]], [[Counting Arthimetic Sequence]] (from the "Adhocs & Two Pointers" sheet) — re-solve them consciously naming which family you're using.
+- Your bookmarks already touch this: [[Arrays - Shift Zeros]], [[Binary Search - Renting Bikes]], [[Two Pointers - Counting Arithmetic Sequences]] (from the "Adhocs & Two Pointers" sheet) — re-solve them consciously naming which family you're using.
 - LeetCode: Container With Most Water (the "why is it safe to move the shorter side?" proof is worth 10 minutes of thinking on paper).
 
 ## Can I defend it?

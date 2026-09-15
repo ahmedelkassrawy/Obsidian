@@ -1,3 +1,19 @@
+---
+description: "Two pasted Python requests snippets showing a POST with a JSON payload and a GET against a local FastAPI service."
+domain: backend
+type: reference
+status: raw
+tags:
+  - domain/backend
+  - type/reference
+  - status/raw
+  - topic/http-and-networking
+aliases:
+  - "python requests"
+  - "POST GET example"
+hubs:
+  - "[[HTTP & Networking]]"
+---
 ### Post
 ```python
 import requests

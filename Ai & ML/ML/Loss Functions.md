@@ -1,3 +1,22 @@
+---
+description: "A lookup table of common loss functions saying which are for classification, which for regression, and when to prefer each."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/evaluation-metrics
+  - topic/optimizers-and-training
+aliases:
+  - "loss function table"
+  - "MSE MAE"
+  - "cross entropy"
+hubs:
+  - "[[Evaluation Metrics]]"
+  - "[[Optimizers & Training]]"
+---
 This table outlines the applicability of common loss functions to classification and regression problems.
 
 | **Loss Function**                          | **Classification** | **Regression** |

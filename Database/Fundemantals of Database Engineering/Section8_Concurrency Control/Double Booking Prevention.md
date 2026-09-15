@@ -1,3 +1,22 @@
+---
+description: "Course notes on preventing double booking with SELECT ... FOR UPDATE versus a direct conditional UPDATE, and when each is better."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/transactions-and-concurrency-control
+  - topic/postgres
+aliases:
+  - "SELECT FOR UPDATE"
+  - "double booking"
+  - "row lock"
+hubs:
+  - "[[Transactions & Concurrency Control]]"
+  - "[[Postgres]]"
+---
 ## Overview
 ## Original Approach: `SELECT ... FOR UPDATE`
 

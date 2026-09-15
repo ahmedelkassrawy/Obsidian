@@ -1,3 +1,23 @@
+---
+description: "The eight-step checklist for running an ML project end to end, from framing the problem through data prep, model shortlisting, fine-tuning and presenting the solution."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/ml-system-design
+  - topic/feature-engineering-and-pipelines
+  - topic/mlops
+aliases:
+  - "8 steps ML project"
+  - "Hands-On ML appendix"
+hubs:
+  - "[[ML System Design]]"
+  - "[[Feature Engineering & Pipelines]]"
+  - "[[MLOps]]"
+---
 This checklist can guide you through your machine learning projects. There are eight main steps:
 
 1. Frame the problem and look at the big picture.

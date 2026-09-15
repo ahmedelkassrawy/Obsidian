@@ -1,6 +1,37 @@
 ---
-tags: [sqlalchemy, orm, crud, add, commit, flush, refresh, select, get, bulk-insert]
-aliases: [ORM CRUD, crud.py, add commit refresh, db.get, db.add vs insert, bulk insert, update with ORM, delete with ORM, repository pattern]
+description: "ORM create/read/update/delete in one crud.py, and when to drop to Core inserts instead."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - orm
+  - crud
+  - add
+  - commit
+  - flush
+  - refresh
+  - select
+  - get
+  - bulk-insert
+aliases:
+  - "ORM CRUD"
+  - "db.add"
+  - "commit refresh"
+  - "crud.py"
+  - "add commit refresh"
+  - "db.get"
+  - "db.add vs insert"
+  - "bulk insert"
+  - "update with ORM"
+  - "delete with ORM"
+  - "repository pattern"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#basic-crud-operations-with-orm
 ---
 

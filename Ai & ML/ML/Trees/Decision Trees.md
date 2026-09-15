@@ -1,3 +1,22 @@
+---
+description: "Explains how a decision tree splits, when to stop growing it, and which regularization hyperparameters (depth, min samples, leaf nodes) control overfitting."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+  - topic/regularization-and-overfitting
+aliases:
+  - "decision tree"
+  - "pruning"
+  - "max_depth"
+hubs:
+  - "[[Trees & Boosting]]"
+  - "[[Regularization & Overfitting]]"
+---
 
 ---
 - Start with a seed node and labeled training data

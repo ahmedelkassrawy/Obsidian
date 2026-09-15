@@ -1,3 +1,20 @@
+---
+description: "Explains k-means intuitively - assign, recompute centroid, repeat - with scikit-learn code and its main strengths and weaknesses."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+aliases:
+  - "K-Means"
+  - "centroids"
+  - "elbow method"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+---
 ![[Pasted image 20240901195858.png]]
 
 ```python

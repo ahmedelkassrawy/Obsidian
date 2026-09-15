@@ -1,6 +1,30 @@
 ---
-tags: [fastapi, pydantic, sqlalchemy, architecture, overview]
-aliases: [Integration overview, Project layout, How the three libraries fit together]
+description: "Maps which of the three libraries owns which job and traces one POST request end to end through the project layout."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/pydantic
+  - fastapi
+  - pydantic
+  - sqlalchemy
+  - architecture
+  - overview
+aliases:
+  - "project layout"
+  - "request lifecycle"
+  - "Integration overview"
+  - "Project layout"
+  - "How the three libraries fit together"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[Pydantic]]"
 source: https://github.com/h9-tec/AI_deployment#6-integrating-fastapi-pydantic-and-sqlalchemy
 ---
 

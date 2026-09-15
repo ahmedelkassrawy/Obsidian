@@ -1,3 +1,20 @@
+---
+description: "Short note on CREATE INDEX CONCURRENTLY: it keeps reads and writes running but is slower and can fail."
+domain: backend
+type: howto
+status: stub
+tags:
+  - domain/backend
+  - type/howto
+  - status/stub
+  - topic/database-indexing
+  - topic/postgres
+aliases:
+  - "CREATE INDEX CONCURRENTLY"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Postgres]]"
+---
 
 ```POSTGRESQL
 create index concurrently g on grades(g);

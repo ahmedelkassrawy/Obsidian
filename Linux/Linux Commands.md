@@ -1,3 +1,20 @@
+---
+description: "Reference list of everyday Linux commands grouped by job - file and directory management, permissions, text and process tools - with syntax and options."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/linux-and-shell
+aliases:
+  - "linux commands"
+  - "ls cd mkdir"
+  - "shell cheat sheet"
+hubs:
+  - "[[Linux & Shell]]"
+---
 ## File and Directory Management
 
 ### `ls` - List Files and Directories

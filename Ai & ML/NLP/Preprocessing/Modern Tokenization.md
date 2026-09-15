@@ -1,3 +1,26 @@
+---
+description: "Shows modern subword tokenization with the BERT tokenizer and how to run text through BERT to get contextual embeddings."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/transformers
+  - topic/huggingface
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "BERT tokenizer"
+  - "subword tokenization"
+  - "AutoTokenizer"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Transformers]]"
+  - "[[HuggingFace]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 ## 1. Tokenization with BERT
 
 Before feeding text into a model, it must be converted into tokens. Modern models like BERT use subword tokenization (e.g., "replayed" → ["replay", "##ed"]). This allows the model to handle unknown words by breaking them into recognizable parts (e.g., "unkindness" ≈ "un" + "kind" + "ness").

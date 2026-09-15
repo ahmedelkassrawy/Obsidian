@@ -1,3 +1,18 @@
+---
+description: "Explains how C++ picks between same-named functions with different parameter types, and what makes a call an ambiguous match."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "overloading"
+hubs:
+  - "[[C++ Language]]"
+---
 **Function overloading** allows us to create multiple functions with the same name, so long as each identically named function has different parameter types (or the functions can be otherwise differentiated).
 
 ```C++

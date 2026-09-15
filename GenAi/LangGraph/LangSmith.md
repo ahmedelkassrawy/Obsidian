@@ -1,3 +1,23 @@
+---
+description: "The .env variables that turn LangSmith tracing on and the two lines of Python that load them."
+domain: ai-eng
+type: howto
+status: stub
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stub
+  - topic/observability
+  - topic/langgraph
+  - topic/ai-evaluation
+aliases:
+  - "LangSmith tracing"
+  - "LANGSMITH_TRACING"
+hubs:
+  - "[[Observability]]"
+  - "[[LangGraph]]"
+  - "[[AI Evaluation]]"
+---
 ```.env
 ###### LANGSMITH CONFIGURATION ######
 # Enable or disable LangSmith tracing (true/false)

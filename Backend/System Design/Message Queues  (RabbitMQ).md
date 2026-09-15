@@ -1,3 +1,22 @@
+---
+description: "Why message queues exist beyond request/response, polling vs push delivery, queue vs pub-sub, and when a queue is actually warranted."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/celery-and-message-queues
+  - topic/system-design
+aliases:
+  - "RabbitMQ"
+  - "pub/sub"
+  - "polling vs push"
+hubs:
+  - "[[Celery & Message Queues]]"
+  - "[[System Design]]"
+---
 
 ---
 ## 🧠 Core Idea

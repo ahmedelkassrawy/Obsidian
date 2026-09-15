@@ -1,3 +1,20 @@
+---
+description: "A bare list of eight links to courses and talks the owner plans to work through (CS224N, Manara, DeepLearning.AI post-training, YouTube lectures)."
+domain: career
+type: meta
+status: stub
+tags:
+  - domain/career
+  - type/meta
+  - status/stub
+  - topic/learning-plans
+aliases:
+  - "Study Plan"
+  - "Course Links"
+  - "To Watch"
+hubs:
+  - "[[Learning Plans]]"
+---
 https://youtu.be/PrusdhS2lmo?si=yZAC8wAqBsqHZZdy
 https://www.youtube.com/live/VetYFD0MlGI?si=3_uV7ygBf5l26FQ1
 [Stanford CS224N - 2024 - YouTube](https://www.youtube.com/playlist?list=PLuQUxYHEVjGlsrrmx57BBTJeomSk5gQy4)

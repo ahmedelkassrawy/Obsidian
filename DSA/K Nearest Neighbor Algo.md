@@ -1,3 +1,20 @@
+---
+description: "Grokking-style intro to K-nearest-neighbours: picking good features, classification vs regression, and the spam-filter example."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/classification
+aliases:
+  - "KNN"
+  - "feature extraction"
+  - "Grokking"
+hubs:
+  - "[[Classification]]"
+---
 ![[Pasted image 20240519205223.png]]
 ![[Pasted image 20240519205347.png]]
 

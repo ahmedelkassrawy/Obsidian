@@ -1,3 +1,19 @@
+---
+description: "Covers implicit type conversion (no value is changed, a new one is produced), the traps of unsigned-to-signed conversion, and type aliases."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "casting"
+  - "type aliases"
+hubs:
+  - "[[C++ Language]]"
+---
 ```C++
 #include <iostream>
 void print(double x) // print takes a double parameter

@@ -1,3 +1,22 @@
+---
+description: "Explains the handler/service/repository split, what middleware does in the request lifecycle, and why a request context object exists."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/api-design
+aliases:
+  - "handler service repository"
+  - "middleware"
+  - "request context"
+hubs:
+  - "[[System Design]]"
+  - "[[API Design]]"
+---
 ## Overview
 Three closely related backend topics explained together:
 - **Handler (Controller) / Service / Repository** – pattern for separating concerns.

@@ -1,3 +1,16 @@
+---
+description: "The insertion sort C++ function - shift larger elements right and drop the current one into place - with no surrounding explanation."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/sorting
+hubs:
+  - "[[Sorting]]"
+---
 ```C++
 #include <iostream>
 #include <vector>

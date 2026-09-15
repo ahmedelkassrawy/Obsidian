@@ -1,3 +1,24 @@
+---
+description: "Course notes on running a LiteLLM proxy in front of several model providers: config file, starting the server, calling it with the OpenAI client, logging and load balancing."
+domain: ai-eng
+type: course
+status: digested
+tags:
+  - domain/ai-eng
+  - type/course
+  - status/digested
+  - topic/llm-serving-and-vllm
+  - topic/observability
+  - topic/caching
+aliases:
+  - "LiteLLM"
+  - "proxy server"
+  - "load balancer"
+hubs:
+  - "[[LLM Serving & vLLM]]"
+  - "[[Observability]]"
+  - "[[Caching]]"
+---
 Link: [LLM-Proxy-Course.ipynb - Colab](https://colab.research.google.com/drive/169AKoMXcT460hiqmtrP4Y_sxWVOLnlQ3?usp=sharing#scrollTo=GiaAQkVggT3B)
 # LLM Proxy Course
 

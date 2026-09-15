@@ -1,3 +1,24 @@
+---
+description: "Deep dive from HTTP/1 vs HTTP/2 fundamentals through Protocol Buffers and a hands-on gRPC service implementation."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/grpc
+  - topic/http-and-networking
+  - topic/api-design
+aliases:
+  - "protobuf"
+  - ".proto"
+  - "HTTP/2"
+hubs:
+  - "[[gRPC]]"
+  - "[[HTTP & Networking]]"
+  - "[[API Design]]"
+---
 # gRPC and Protocol Buffers: From HTTP/2 Fundamentals to Hands-On Implementation
 
 > A structured deep dive based on a two‑part video lecture. We cover the speed advantages of gRPC, the differences between HTTP/1 and HTTP/2, the Protocol Buffers message format, a practical Node.js demo of protobuf encoding, building a gRPC server, and testing it with Insomnia.

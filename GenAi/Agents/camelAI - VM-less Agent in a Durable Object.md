@@ -1,9 +1,33 @@
 ---
+description: "Beginner-level walkthrough of how camelAI moved a coding agent off VMs into a Cloudflare Durable Object, explaining each term and comparing it to serverless sandboxes."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/cloudflare-workers
+  - topic/system-design
+  - genai
+  - agents
+  - cloudflare
+  - durable-objects
+  - code-mode
+  - sandbox
+  - architecture
+  - beginner
+aliases:
+  - "Durable Objects"
+  - "code mode"
+  - "sandbox"
+hubs:
+  - "[[Agents]]"
+  - "[[Cloudflare Workers]]"
+  - "[[System Design]]"
 date: 2026-07-29
-type: reference
 project: learning
-tags: [genai, agents, cloudflare, durable-objects, code-mode, sandbox, architecture, beginner]
-description: A beginner-friendly walkthrough of how camelAI moved a coding agent off VMs into a Cloudflare Durable Object (with pi, R2, Artifacts, Code Mode) — every term explained simply, and compared to Archil serverless sandboxes.
 ---
 
 # camelAI — VM-less Agent in a Durable Object (Beginner's Walkthrough)
@@ -65,7 +89,7 @@ They didn't get here in one jump. It took **three redesigns**, and it's clearest
 > Anthropic uses this exact phrase — *"brain separated from the hands"* — for its own managed agents. It's a common, powerful pattern.
 
 **How they did it:**
-- They needed their own **harness**. (A **harness** = the wrapper program that runs the AI in a loop: send the AI a message → it replies with an action → run the action → send it the result → repeat. The [[Core Architecture|Claude Code harness]] is one example, but it was glued to a VM and they couldn't separate them.)
+- They needed their own **harness**. (A **harness** = the wrapper program that runs the AI in a loop: send the AI a message → it replies with an action → run the action → send it the result → repeat. The [[Claude Code Core Architecture|Claude Code harness]] is one example, but it was glued to a VM and they couldn't separate them.)
 - So they built a new harness on top of **pi** — an open-source coding-agent toolkit by Mario Zechner. The neat thing about pi: it's built in **layers.** The *top* layer assumes "I'm running on a normal computer with bash." But the *lower* layers just give you the raw agent machinery — the loop, the memory of the conversation — **without caring what machine it runs on.** camelAI grabbed only the lower layers.
 - They ran those lower layers inside a **Durable Object.**
 
@@ -271,5 +295,5 @@ If you forget everything else, keep these:
 ## Related notes
 - [[Deep Agents]] · [[Agent Patterns]] · [[AI Workflows VS AI Agent]]
 - [[Function Calling]] (methods ≈ tools) · [[MCP Arch]] (another "expose safe capabilities" model)
-- [[Core Architecture]] (the Claude Code harness camelAI started on) · [[AWS Bedrock Agent Core]] (another brain/hands split)
+- [[Claude Code Core Architecture]] (the Claude Code harness camelAI started on) · [[AWS Bedrock Agent Core]] (another brain/hands split)
 - [[Context Engineering]] · [[Agents Best Practice]] (why fewer choices can beat more freedom)

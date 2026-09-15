@@ -1,3 +1,20 @@
+---
+description: "A one-page ASCII map tying together every other note in the Orange folder: the lifecycle, the CI/CD/CT pipeline, both infrastructure stacks, the two drift types, and the golden terms."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/mlops
+aliases:
+  - "MLOps One Pager"
+hubs:
+  - "[[Interviews]]"
+  - "[[MLOps]]"
+---
 
 
 > [!info]

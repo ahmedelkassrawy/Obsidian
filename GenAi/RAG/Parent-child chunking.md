@@ -1,3 +1,19 @@
+---
+description: "Parent-child (small-to-big) chunking: search over small precise chunks but hand the model the larger parent chunk, so precision and context stop fighting each other."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/rag
+aliases:
+  - "small to big retrieval"
+  - "parent child chunks"
+hubs:
+  - "[[RAG]]"
+---
 Parent-child chunking (often called "Small-to-Big Retrieval") is an advanced Retrieval-Augmented Generation (RAG) technique that solves a fundamental trade-off: **search precision vs. context completeness.**
 
 By decoupling the text used for _searching_ from the text used for _generation_, you get the best of both worlds.

@@ -1,3 +1,21 @@
+---
+description: "std::priority_queue as a max-heap by default, how to flip it to a min-heap, using it with a custom struct, and the common methods."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/heaps-and-priority-queues
+  - topic/stl-containers
+aliases:
+  - "max heap"
+  - "min heap"
+hubs:
+  - "[[Heaps & Priority Queues]]"
+  - "[[STL Containers]]"
+---
 To use the STL priority queue, include the `<queue>` header:
 
 ```cpp

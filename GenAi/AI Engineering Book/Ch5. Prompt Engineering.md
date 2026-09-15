@@ -1,3 +1,21 @@
+---
+description: "Chip Huyen Ch5 notes: what makes a prompt effective, and how to defend an application against prompt injection and other prompt attacks."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/prompting
+  - topic/ai-security
+aliases:
+  - "AI Engineering Ch5"
+  - "prompt attacks"
+hubs:
+  - "[[Prompting]]"
+  - "[[AI Security]]"
+---
 The problem is not with prompt engineering. It’s a real and useful skill to have. The problem is when prompt engineering is the only thing people know
 
 This chapter covers both how to write effective prompts and how to defend your applications against prompt attacks.

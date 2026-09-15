@@ -1,3 +1,22 @@
+---
+description: "Step-by-step PostgreSQL range partitioning: parent table, child partitions, attaching them, querying and indexing."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/postgres
+  - topic/database-replication-and-sharding
+aliases:
+  - "partitioning"
+  - "range partition"
+  - "attach partition"
+hubs:
+  - "[[Postgres]]"
+  - "[[Database Replication & Sharding]]"
+---
 This guide demonstrates how to create a partitioned table in PostgreSQL, create child partitions, attach them, and manage indexes.
 ## Step 1: Create the Parent Table
 

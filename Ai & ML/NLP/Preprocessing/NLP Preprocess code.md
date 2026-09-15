@@ -1,3 +1,20 @@
+---
+description: "Copy-ready NLTK preprocessing block: downloads, tokenizer, stemmer, lemmatizer and a customized stop-word list."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/nlp-preprocessing
+aliases:
+  - "NLTK preprocessing"
+  - "PorterStemmer"
+  - "WordNetLemmatizer"
+hubs:
+  - "[[NLP Preprocessing]]"
+---
 ```python
 import nltk
 from nltk.tokenize import word_tokenize

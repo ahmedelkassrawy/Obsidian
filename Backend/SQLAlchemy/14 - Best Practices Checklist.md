@@ -1,6 +1,26 @@
 ---
-tags: [sqlalchemy, best-practices, checklist, review]
-aliases: [SQLAlchemy best practices, SQLAlchemy checklist, SQLAlchemy code review checklist]
+description: "A tick-box review checklist for any file that touches SQLAlchemy, each item linking to the note that explains it."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/sqlalchemy
+  - topic/testing
+  - sqlalchemy
+  - best-practices
+  - checklist
+  - review
+aliases:
+  - "SQLAlchemy checklist"
+  - "PR review list"
+  - "SQLAlchemy best practices"
+  - "SQLAlchemy code review checklist"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[Testing]]"
 ---
 
 # 14 — Best Practices Checklist

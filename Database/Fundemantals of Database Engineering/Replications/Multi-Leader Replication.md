@@ -1,3 +1,20 @@
+---
+description: "Course notes on multi-leader replication: multi-datacenter setups, the replication loop problem and write conflict resolution."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-replication-and-sharding
+aliases:
+  - "multi-leader"
+  - "write conflicts"
+  - "replication loop"
+hubs:
+  - "[[Database Replication & Sharding]]"
+---
 # Multi-Leader Replication in Databases
 ## Introduction
 

@@ -1,3 +1,23 @@
+---
+description: "What Celery is and when a web app needs it, how it works at a high level, the terminology, and how to choose between Redis and RabbitMQ as the broker."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/celery-and-message-queues
+  - topic/redis
+  - topic/concurrency-and-async
+aliases:
+  - "task queue"
+  - "broker"
+hubs:
+  - "[[Celery & Message Queues]]"
+  - "[[Redis]]"
+  - "[[Concurrency & Async]]"
+---
 # Celery Overview
 
 ## What is Celery?

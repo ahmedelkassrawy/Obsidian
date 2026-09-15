@@ -1,3 +1,18 @@
+---
+description: "Grokking-style intro to binary search: why the list must be sorted, what it returns, and the log n step count against linear search."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/binary-search
+aliases:
+  - "Grokking"
+hubs:
+  - "[[Binary Search]]"
+---
 - Binary search is an algorithm; its input is a sorted list of elements (I’ll explain later why it needs to be sorted). 
 - If an element you’re looking for is in that list, binary search returns the position where it’s located. Otherwise, binary search returns null.
 - With each step of binary search, you cut the number of words in half until you’re left with only one word

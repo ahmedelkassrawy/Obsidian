@@ -1,9 +1,26 @@
 ---
+description: "Production case study of Uber Eats' photo-enhancement agent system, focused on how each stage is wrapped in its own eval loop and how routing controls agency."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/ai-evaluation
+  - topic/system-design
+aliases:
+  - "Uber Eats agents"
+  - "eval loop"
+  - "case study"
+hubs:
+  - "[[Agents]]"
+  - "[[AI Evaluation]]"
+  - "[[System Design]]"
 title: Uber Eats — Designing Agents & Eval Loops
-type: case-study
 source: Talk by Jay & Sia (Sam), Computer Vision team @ Uber Eats
 topics: [agents, evaluation, eval-loops, self-improving-agents, production, multimodal]
-status: learning
 created: 2026-07-31
 ---
 

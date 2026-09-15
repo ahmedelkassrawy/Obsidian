@@ -1,3 +1,21 @@
+---
+description: "Video-course notes on the three ways to train an LLM (pre-training, fine-tuning, LoRA/QLoRA) plus a practical Axolotl-on-RunPod run and the key hyperparameters."
+domain: ai-eng
+type: course
+status: digested
+tags:
+  - domain/ai-eng
+  - type/course
+  - status/digested
+  - topic/fine-tuning
+aliases:
+  - "Axolotl"
+  - "LoRA"
+  - "QLoRA"
+  - "RunPod"
+hubs:
+  - "[[Fine-tuning]]"
+---
 
 # Fine-tuning Large Language Models: Fundamentals & Axolotl Tutorial
 

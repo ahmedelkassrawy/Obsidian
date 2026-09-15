@@ -1,3 +1,24 @@
+---
+description: "Builds a character and token-level GRU language model from scratch: encoding text to ids, sliding-window datasets, dataloaders, embeddings, and predicting the next character."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/rnn-and-lstm
+  - topic/pytorch
+  - topic/nlp-preprocessing
+aliases:
+  - "GRU char model"
+  - "sliding windows"
+  - "next character prediction"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[PyTorch]]"
+  - "[[NLP Preprocessing]]"
+---
 ## Tokenization Overview
 
 This time, instead of splitting the text into individual characters, we will split it into **tokens**:  

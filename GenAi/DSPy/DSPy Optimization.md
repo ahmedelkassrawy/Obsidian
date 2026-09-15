@@ -1,3 +1,24 @@
+---
+description: "The DSPy optimization workflow: how to build and split datasets, what an optimizer actually tunes, and a step-by-step walk through MIPROv2's bootstrapping and proposal stages."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/dspy
+  - topic/prompting
+  - topic/ai-evaluation
+aliases:
+  - "DSPy optimizer"
+  - "MIPROv2"
+  - "bootstrapping"
+hubs:
+  - "[[DSPy]]"
+  - "[[Prompting]]"
+  - "[[AI Evaluation]]"
+---
 ## DSPy Optimization Workflow — Key Points
 
 ### **1. Build proper datasets**

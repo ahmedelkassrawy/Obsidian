@@ -1,9 +1,28 @@
+---
+description: "Grokking-style intro to greedy: the classroom-scheduling example (always pick the class that ends soonest), set covering, and greedy as an approximation for NP-complete problems."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/complexity-analysis
+  - topic/sorting
+aliases:
+  - "greedy"
+  - "set covering"
+  - "NP-complete"
+hubs:
+  - "[[Complexity Analysis]]"
+  - "[[Sorting]]"
+---
 3ndk gdwl feh mw3eed kolha intersect b3dha ht3ml eh 34an tmly lyoum 3la 2ad ma te2dr .
 Sounds like a hard problem, right? Actually, the algorithm is so easy, it might surprise you. Here’s how it works: 
 1. Pick the class that ends the soonest. This is the first class you’ll hold in this classroom. 
 2. 2. Now, you have to pick a class that starts after the first class. Again, pick the class that ends the soonest. This is the second class you’ll hold.
 
-Fakr [[Knapsack]] you could use greedy algo there:
+Fakr [[Backtracking - Knapsack Recursive]] you could use greedy algo there:
 1. pick the most expensive thing
 2. pick the next most expensive thing
 mtf3nna4 brdo leeh 34an enta hta5od expensive bs mhowa mokn sum two items > expensive one.

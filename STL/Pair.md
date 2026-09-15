@@ -1,3 +1,19 @@
+---
+description: "std::pair: holding two values of different types, reaching them through .first and .second, and the helper functions."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "make_pair"
+  - "first second"
+hubs:
+  - "[[STL Containers]]"
+---
 [Pair in C++ Standard Template Library (STL) - GeeksforGeeks](https://www.geeksforgeeks.org/pair-in-cpp-stl/)
 
 Pair is used to combine together two values that may be of different data types.

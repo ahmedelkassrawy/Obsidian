@@ -1,3 +1,21 @@
+---
+description: "Pasted Mem0 code for giving an agent long-term memory with Gemini models: init, add, search, and use memories in a chat loop."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/agent-memory
+  - topic/agents
+aliases:
+  - "Mem0"
+  - "agent memory"
+hubs:
+  - "[[Agent Memory]]"
+  - "[[Agents]]"
+---
 ```python
 pip install mem0ai
 ```

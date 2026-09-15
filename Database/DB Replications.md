@@ -1,3 +1,22 @@
+---
+description: "Compares master/backup and multi-master replication, synchronous vs asynchronous, and the trade-offs of each including eventual consistency."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/database-replication-and-sharding
+  - topic/system-design
+aliases:
+  - "master backup replication"
+  - "multi-master"
+  - "eventual consistency"
+hubs:
+  - "[[Database Replication & Sharding]]"
+  - "[[System Design]]"
+---
 ### Master/Backup Replication 
 ● One Master/Leader node that accepts writes/DDLs
 ● One or more backup/standby nodes that receive those writes from the master 

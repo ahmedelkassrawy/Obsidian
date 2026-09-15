@@ -1,6 +1,32 @@
 ---
-tags: [sqlalchemy, core, crud, insert, select, update, delete, expression-language]
-aliases: [Core CRUD, insert select update delete, SQL expression language, lastrowid, inserted_primary_key]
+description: "The four Core statement builders, why not f-strings, commit for writes, and bulk inserts."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - topic/sql
+  - sqlalchemy
+  - core
+  - crud
+  - insert
+  - select
+  - update
+  - delete
+  - expression-language
+aliases:
+  - "Core CRUD"
+  - "insert select update delete"
+  - "bulk insert"
+  - "SQL expression language"
+  - "lastrowid"
+  - "inserted_primary_key"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[SQL]]"
 source: https://github.com/h9-tec/AI_deployment#executing-sql-queries
 ---
 

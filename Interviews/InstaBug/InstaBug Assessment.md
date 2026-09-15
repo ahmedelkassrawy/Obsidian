@@ -1,3 +1,24 @@
+---
+description: "The InstaBug written assessment with worked answers: ULID vs UUID as a primary key, race conditions and locks, webhooks, HTTP auth headers, statelessness, and page tables."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/concurrency-and-async
+  - topic/auth-and-security
+  - topic/operating-systems
+aliases:
+  - "Instabug Written Test"
+hubs:
+  - "[[Interviews]]"
+  - "[[Concurrency & Async]]"
+  - "[[Auth & Security]]"
+  - "[[Operating Systems]]"
+---
 ## 1. Between UUID and ULID, which is more convenient for a primary key in a relational database table?
 
 **Answer:** ULIDs, because they are timestamp-based and lexicographically sortable, improving index performance.

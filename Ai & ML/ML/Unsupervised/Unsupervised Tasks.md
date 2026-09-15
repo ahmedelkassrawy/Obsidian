@@ -1,3 +1,20 @@
+---
+description: "Surveys what unsupervised learning is used for - clustering, anomaly detection, dimensionality reduction, semi-supervised labelling - with k-means and DBSCAN as the worked examples."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+aliases:
+  - "unsupervised learning tasks"
+  - "customer segmentation"
+  - "clustering uses"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+---
 ## Clustering
 
 Clustering groups similar instances into clusters, serving as a powerful tool for various applications:

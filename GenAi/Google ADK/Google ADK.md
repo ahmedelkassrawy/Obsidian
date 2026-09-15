@@ -1,3 +1,24 @@
+---
+description: "Long compiled ADK tutorial: creating and running an agent project, building a multi-tool agent, agent teams, and adding memory."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/google-adk
+  - topic/agents
+  - topic/agent-memory
+aliases:
+  - "ADK tutorial"
+  - "multi-tool agent"
+  - "agent teams"
+hubs:
+  - "[[Google ADK]]"
+  - "[[Agents]]"
+  - "[[Agent Memory]]"
+---
 # Google ADK Agent Tutorial
 
 This document is a compiled tutorial on building agents using the Google Agent Development Kit (ADK). It covers creating agent projects, updating them, running agents, building multi-tool agents, the first agent setup, agent teams, and adding memory with session state.

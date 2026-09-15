@@ -1,3 +1,21 @@
+---
+description: "Short note on Pipecat transports as the media layer between users and the bot, carrying audio, video and data."
+domain: ai-eng
+type: concept
+status: stub
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/stub
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "transports"
+  - "media interface"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 Learn about the different ways users can connect to your Pipecat voice AI bot
 
 - **Transports** are the communication layer between users and your Pipecat bot. 

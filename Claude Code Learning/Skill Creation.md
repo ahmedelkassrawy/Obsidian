@@ -1,8 +1,26 @@
 ---
+description: "How to write an Agent Skill so it actually triggers: the name/description is the trigger, be precise about goals and loose about steps, and guard against skill rot."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/claude-code
+  - topic/agents
+  - topic/context-engineering
+  - skills
+  - agents
+  - authoring
+aliases:
+  - "SKILL.md"
+  - "Agent Skills"
+hubs:
+  - "[[Claude Code]]"
+  - "[[Agents]]"
+  - "[[Context Engineering]]"
 date: 2026-08-08
-type: note
-tags: [skills, agents, authoring]
-description: How to author Agent Skills that trigger reliably and give the agent room to work — precise on goals, ambiguous on steps.
 ---
 # Skill Creation Tips
 

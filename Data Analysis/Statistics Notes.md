@@ -1,3 +1,20 @@
+---
+description: "Foundations of statistics: population vs sample, data types, descriptive measures of centre and spread, the central limit theorem, and the steps of hypothesis testing."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/statistics
+aliases:
+  - "statistics basics"
+  - "central limit theorem"
+  - "hypothesis testing"
+hubs:
+  - "[[Statistics]]"
+---
 ## Basic Concepts
 
 ### Population and Sample

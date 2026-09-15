@@ -1,3 +1,27 @@
+---
+description: "A full fine-tuning tutorial on Rotten Tomatoes sentiment: loading data, BERT setup, freezing layers to save compute, few-shot SetFit, and masked-language-model pretraining."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/transformers
+  - topic/fine-tuning
+  - topic/huggingface
+  - topic/classification
+aliases:
+  - "BERT fine-tuning"
+  - "SetFit"
+  - "layer freezing"
+  - "MLM"
+hubs:
+  - "[[Transformers]]"
+  - "[[Fine-tuning]]"
+  - "[[HuggingFace]]"
+  - "[[Classification]]"
+---
 
 ---
 # Fine-Tuning NLP Models: Sentiment Analysis, Layer Freezing, SetFit, and MLM

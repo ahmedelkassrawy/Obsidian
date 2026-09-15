@@ -1,3 +1,21 @@
+---
+description: "A numpy function that computes cosine similarity between a query vector and a list of candidate vectors."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/embeddings-and-semantic-search
+  - topic/vector-search
+aliases:
+  - "cosine similarity"
+  - "numpy"
+hubs:
+  - "[[Embeddings & Semantic Search]]"
+  - "[[Vector Search]]"
+---
 ```python
 # Calculate cosine similarity between the search query and existing queries
 def get_similarity(target, candidates):

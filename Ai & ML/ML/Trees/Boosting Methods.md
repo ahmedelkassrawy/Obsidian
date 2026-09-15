@@ -1,3 +1,23 @@
+---
+description: "Deep dive on boosting: AdaBoost's reweighting, gradient boosting's residual fitting, and the practical differences between XGBoost, LightGBM and CatBoost."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+  - topic/optimizers-and-training
+aliases:
+  - "AdaBoost"
+  - "Gradient Boosting"
+  - "XGBoost"
+  - "LightGBM"
+hubs:
+  - "[[Trees & Boosting]]"
+  - "[[Optimizers & Training]]"
+---
 # Boosting
 ## Overview
 Boosting is an ensemble method that combines multiple weak learners sequentially to create a strong learner. Unlike bagging, where predictors are trained independently in parallel, boosting trains predictors sequentially, with each subsequent predictor focusing on correcting the errors of its predecessors.

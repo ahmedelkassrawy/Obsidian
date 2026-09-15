@@ -1,3 +1,24 @@
+---
+description: "Implementation guide for outgoing and incoming webhooks in FastAPI, with config, signature handling and the supporting code components."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/fastapi
+  - topic/api-design
+  - topic/http-and-networking
+aliases:
+  - "webhook sender"
+  - "webhook receiver"
+  - "callbacks"
+hubs:
+  - "[[FastAPI]]"
+  - "[[API Design]]"
+  - "[[HTTP & Networking]]"
+---
 # FastAPI Webhooks Implementation Guide
 
 ## 📚 What Are Webhooks?

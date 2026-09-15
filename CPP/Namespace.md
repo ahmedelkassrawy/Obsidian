@@ -1,3 +1,18 @@
+---
+description: "Explains a namespace as a named area whose contents are reached through that name, with the using-directive and scope-resolution forms."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "namespaces"
+hubs:
+  - "[[C++ Language]]"
+---
 a defined area where code inside refers to back.
 if namespace math contain plus or minus functions then it is only accessed by math or by letting access to it manually.
 ```C++

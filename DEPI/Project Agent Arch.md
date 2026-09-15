@@ -1,15 +1,34 @@
 ---
-title: DataPilot AI — Agent System Architecture
+description: "Architecture writeup for DataPilot AI, a LangGraph Text-to-SQL agent: the graph nodes from router through schema intelligence, memory, SQL generation, approval gate and retry loop."
+domain: ml
+type: project
+status: digested
 tags:
+  - domain/ml
+  - type/project
+  - status/digested
+  - topic/agents
+  - topic/langgraph
+  - topic/sql
+  - topic/ml-system-design
   - architecture
   - ai-agent
   - text-to-sql
   - langgraph
   - datapilot
 aliases:
-  - Agent Architecture
-  - DataPilot Agent
-  - Text-to-SQL Agent
+  - "DataPilot AI"
+  - "Text-to-SQL agent"
+  - "LangGraph StateGraph"
+  - "Agent Architecture"
+  - "DataPilot Agent"
+  - "Text-to-SQL Agent"
+hubs:
+  - "[[Agents]]"
+  - "[[LangGraph]]"
+  - "[[SQL]]"
+  - "[[ML System Design]]"
+title: DataPilot AI — Agent System Architecture
 cssclasses:
   - wide-page
 created: 2026-07-11

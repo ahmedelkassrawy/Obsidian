@@ -1,3 +1,20 @@
+---
+description: "The MCP architecture from the ground up: the host/client/server split, the four capabilities, and the JSON-RPC 2.0 request, response and notification message types."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/mcp
+aliases:
+  - "MCP concepts"
+  - "host client server"
+  - "JSON-RPC"
+hubs:
+  - "[[MCP]]"
+---
 # MCP Architecture
 
 MCP (Model Context Protocol) is a standard, like HTTP or USB-C, for connecting AI applications to external tools and data sources. Consistent terminology is essential for clear system design and interoperability.

@@ -1,3 +1,21 @@
+---
+description: "A tiny content-based recommender: embed item tags with a sentence transformer, build a cosine similarity matrix, and return the closest titles."
+domain: ml
+type: reference
+status: stub
+tags:
+  - domain/ml
+  - type/reference
+  - status/stub
+  - topic/recommender-systems
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "cosine similarity"
+  - "content based recommender"
+hubs:
+  - "[[Recommender Systems]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 ```python
 from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("all-MiniLM-L6-v2")

@@ -1,3 +1,21 @@
+---
+description: "Explains density-based clustering: DBSCAN's eps/minPts and noise points, how HDBSCAN removes the eps guess, and code on non-spherical data."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+aliases:
+  - "DBSCAN"
+  - "HDBSCAN"
+  - "density clustering"
+  - "eps minPts"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+---
 ## 🌟 DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
 
 **Core idea:**  

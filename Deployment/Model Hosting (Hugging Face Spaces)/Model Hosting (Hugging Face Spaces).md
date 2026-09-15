@@ -1,3 +1,19 @@
+---
+description: "Short walkthrough of hosting a model on Hugging Face Spaces with Gradio and calling it from a client."
+domain: backend
+type: howto
+status: stub
+tags:
+  - domain/backend
+  - type/howto
+  - status/stub
+  - topic/cloud-deployment
+aliases:
+  - "Hugging Face Spaces"
+  - "Gradio hosting"
+hubs:
+  - "[[Cloud Deployment]]"
+---
 ## **Overview**
 For hosting LLMs or ML models with an interface, **Hugging Face Spaces** provides a free, scalable environment using Gradio.
 ## **Step 1: Space Creation**

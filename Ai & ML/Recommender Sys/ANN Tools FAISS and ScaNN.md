@@ -1,3 +1,24 @@
+---
+description: "Explains exact vs approximate nearest-neighbour search and compares FAISS and ScaNN, with advice on when a backend should use a raw ANN library instead of a managed vector database."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/vector-search
+  - topic/recommender-systems
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "FAISS"
+  - "ScaNN"
+  - "approximate nearest neighbours"
+hubs:
+  - "[[Vector Search]]"
+  - "[[Recommender Systems]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 When you are building production-ready RAG pipelines and optimizing multi-agent architectures, the bottleneck often shifts from LLM generation to the vector retrieval phase. While managed vector databases like Qdrant, ChromaDB, and pgvector handle the heavy lifting out of the box, understanding the underlying Approximate Nearest Neighbor (ANN) libraries—like FAISS and ScaNN—gives you the granular control needed to balance latency, memory, and recall at scale.
 
 Here is a breakdown of how these tools work under the hood and how to leverage them.

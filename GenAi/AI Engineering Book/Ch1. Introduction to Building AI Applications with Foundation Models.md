@@ -1,9 +1,22 @@
 ---
+description: "Chip Huyen Ch1: how self-supervision and scale produced foundation models, why the job is called AI engineering, what people build with it, and the layers of the stack."
+domain: ai-eng
+type: book
+status: digested
 tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/llm-internals
   - AI-engineering
   - foundation-models
   - research
-type: research
+aliases:
+  - "AI Engineering Ch1"
+  - "foundation models"
+  - "AI engineering stack"
+hubs:
+  - "[[LLM Internals]]"
 source: "AI Engineering — Chip Huyen, Ch.1 (OReilly_Books/AI Engineering by Chip Huyen.pdf)"
 chapter: 1
 title: "Introduction to Building AI Applications with Foundation Models"

@@ -1,7 +1,29 @@
 ---
+description: "A synthesis note that stitches the transformer story together: why RNNs fell short, how attention fixed it, then embeddings, positional encoding, multi-head attention and the full stack."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/transformers
+  - topic/rnn-and-lstm
+  - topic/embeddings-and-semantic-search
+  - nlp
+  - transformers
+  - attention
+  - deep-learning
+  - synthesis
+aliases:
+  - "transformer overview"
+  - "positional encoding"
+  - "multi-head attention"
+hubs:
+  - "[[Transformers]]"
+  - "[[RNN & LSTM]]"
+  - "[[Embeddings & Semantic Search]]"
 title: Transformers — the big picture
-type: synthesis
-tags: [nlp, transformers, attention, deep-learning, synthesis]
 created: 2026-09-12
 ---
 
@@ -50,7 +72,7 @@ Attention works through three vectors per token. The "library" analogy makes it 
 | **Key (K)** | What do I offer / what am I about? | The label on each book |
 | **Value (V)** | My actual content | What's inside the book |
 
-You match your Query against every Key to get relevance scores, then use those scores to pull a weighted blend of the Values. → deeper: [[Self-Attention vs Cross-Attention]], [[Self Attention]]
+You match your Query against every Key to get relevance scores, then use those scores to pull a weighted blend of the Values. → deeper: [[Self-Attention vs Cross-Attention]], [[Clipping - Self-Attention Explained (Article)]]
 
 ### Self-attention vs cross-attention
 
@@ -134,7 +156,7 @@ Where it applies:
 
 ## 4. Autoregressive generation
 
-A decoder-style transformer is **autoregressive**: it predicts the next token from all previous ones, appends it, and repeats until a stop token (`<eos>`) appears. The number of tokens it can hold while doing this is its **context window** — bigger window = more it can "remember," but more memory and cost. → deeper: [[Ch.3]] (GenAI Services book — transformer + serving view)
+A decoder-style transformer is **autoregressive**: it predicts the next token from all previous ones, appends it, and repeats until a stop token (`<eos>`) appears. The number of tokens it can hold while doing this is its **context window** — bigger window = more it can "remember," but more memory and cost. → deeper: [[Agent UX Design]] (GenAI Services book — transformer + serving view)
 
 ---
 
@@ -159,8 +181,8 @@ Notes this was synthesized from (each goes deeper on its piece):
 - [[Seq2Seq]] — encoder/decoder, the context-vector bottleneck, attention's origin
 - [[Attention is all you need]] — embeddings, scaling, positional encoding, FFN, multi-head attention (implementation-level)
 - [[Self-Attention vs Cross-Attention]] — Q/K/V sources, decoder layers, masking, PyTorch patterns
-- [[Self Attention]] — self-attention clipping
-- [[Ch.3]] — transformers in the context of serving GenAI models (Building GenAI Services book)
+- [[Clipping - Self-Attention Explained (Article)]] — self-attention clipping
+- [[Agent UX Design]] — transformers in the context of serving GenAI models (Building GenAI Services book)
 
 ### Related architectures
 - [[LSTM PyTorch]] · [[LSTMS Adhocs]] · [[RNN and LSTM]] · [[RNN Implementation Guide]]

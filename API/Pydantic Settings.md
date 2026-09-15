@@ -1,3 +1,21 @@
+---
+description: "A pasted config.py snippet showing pydantic-settings BaseSettings reading values from a .env file."
+domain: backend
+type: reference
+status: raw
+tags:
+  - domain/backend
+  - type/reference
+  - status/raw
+  - topic/pydantic
+  - topic/fastapi
+aliases:
+  - "BaseSettings"
+  - "env file config"
+hubs:
+  - "[[Pydantic]]"
+  - "[[FastAPI]]"
+---
 config.py
 ```python
 from pydantic_settings import BaseSettings

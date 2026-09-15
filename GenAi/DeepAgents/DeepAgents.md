@@ -1,3 +1,24 @@
+---
+description: "Notes and code for the deepagents library: built-in planning with write_todos, streaming, the default StateBackend, and why a checkpointer is required for human-in-the-loop."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/agents
+  - topic/langgraph
+  - topic/agent-memory
+aliases:
+  - "deepagents library"
+  - "write_todos"
+  - "StateBackend"
+hubs:
+  - "[[Agents]]"
+  - "[[LangGraph]]"
+  - "[[Agent Memory]]"
+---
 ## How does it work?
 Your deep agent automatically:
 1. **Plans its approach** using the built-in [`write_todos`](https://docs.langchain.com/oss/python/deepagents/harness#to-do-list-tracking) tool to break down the research task.

@@ -1,3 +1,24 @@
+---
+description: "Explains data leakage: the common causes (future information, preprocessing before the split, duplicate rows), the damage it does, and how to prevent it."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/data-cleaning
+  - topic/evaluation-metrics
+  - topic/feature-engineering-and-pipelines
+aliases:
+  - "data leakage"
+  - "target leakage"
+  - "train test contamination"
+hubs:
+  - "[[Data Cleaning]]"
+  - "[[Evaluation Metrics]]"
+  - "[[Feature Engineering & Pipelines]]"
+---
 Data leakage in machine learning occurs when information from outside the training dataset, which should not be available during model training, inadvertently influences the model. This leads to overly optimistic performance estimates during training or evaluation, but poor generalization to new, unseen data.
 
 ## Common Causes of Data Leakage

@@ -1,3 +1,20 @@
+---
+description: "The vocabulary and the core problem of voice agents: VAD, end-of-turn detection, the STT-LLM-TTS chain, and how latency is fought with infrastructure and optimization."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/voice-agents
+aliases:
+  - "VAD"
+  - "end of utterance"
+  - "latency"
+hubs:
+  - "[[Voice Agents]]"
+---
 - Voice Activity Detection (VAD) -> detecting presence/abscence of human speech
 - End of Turn / Utternace Detection (EOU) -> detecting whether a speaker has finished their speech or not
 - STT

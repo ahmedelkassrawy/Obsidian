@@ -1,8 +1,30 @@
 ---
+description: "Ch2 notes on FastAPI: first server setup, dependency injection, Pydantic v2 validation, auto docs, project structure and onion architecture."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/fastapi
+  - topic/pydantic
+  - topic/api-design
+  - fastapi
+  - genai
+  - book-notes
+  - python
+  - backend
+aliases:
+  - "FastAPI setup"
+  - "onion architecture"
+  - "dependency injection"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Pydantic]]"
+  - "[[API Design]]"
 date: 2026-09-11
-tags: [fastapi, genai, book-notes, python, backend]
 source: "Building Generative AI Services with FastAPI (O'Reilly) — Chapter 2"
-description: Ch2 notes — FastAPI setup, features, project structures, onion architecture, limitations, tooling. Code examples verified against the official FastAPI docs (fastapi.tiangolo.com) and corrected for Pydantic v2.
 ---
 # Ch2 — Getting Started with FastAPI
 

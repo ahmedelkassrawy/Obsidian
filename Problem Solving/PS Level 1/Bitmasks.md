@@ -1,3 +1,19 @@
+---
+description: "Bits explained as rows of light switches: converting to binary, every bitwise operator, shifting, the long-long safety belt, and using a mask to stand for a subset."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/bitmask
+aliases:
+  - "bitwise"
+  - "light switches"
+hubs:
+  - "[[Bitmask]]"
+---
 # Bits, Bitwise & Bitmasks
 
 > A gentle, explain-it-like-I'm-6 walkthrough — with all my code snippets kept.

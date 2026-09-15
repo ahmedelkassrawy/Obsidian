@@ -1,3 +1,24 @@
+---
+description: "Why OFFSET paging degrades and duplicates rows, demonstrated in PostgreSQL, plus keyset (seek) pagination as the replacement."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/cursors-and-pagination
+  - topic/sql
+  - topic/postgres
+aliases:
+  - "OFFSET slow"
+  - "keyset pagination"
+  - "seek method"
+hubs:
+  - "[[Cursors & Pagination]]"
+  - "[[SQL]]"
+  - "[[Postgres]]"
+---
 ## What is SQL OFFSET?
 
 - **Definition**: `OFFSET` instructs the database to **skip a specified number of rows before returning results**, used with `LIMIT` to fetch a specific page of data.

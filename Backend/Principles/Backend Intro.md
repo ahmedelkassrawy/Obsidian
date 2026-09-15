@@ -1,3 +1,22 @@
+---
+description: "Ground-level explanation of what a backend is, the journey of a request, why backends exist, and the frontend/backend wall including CORS and pooling."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/http-and-networking
+aliases:
+  - "what is a backend"
+  - "request journey"
+  - "CORS"
+hubs:
+  - "[[System Design]]"
+  - "[[HTTP & Networking]]"
+---
 ## 1. What Exactly is a "Backend"?
 
 At its core, a **backend** is a remote computer—often called a **server**—that sits in a data center and waits. It doesn't have a screen or a mouse; instead, it listens to specific **ports** (like doors) for incoming messages.

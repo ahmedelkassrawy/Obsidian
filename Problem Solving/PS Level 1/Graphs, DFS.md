@@ -1,5 +1,22 @@
 ---
-tags: [problem-solving, graphs, dfs, cpp]
+description: "Graphs from zero: directed vs undirected edges, the three ways to store a graph (edge list, matrix, adjacency list) with their trade-offs, then DFS and what it powers."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/graphs-bfs-and-dfs
+  - problem-solving
+  - graphs
+  - dfs
+  - cpp
+aliases:
+  - "adjacency list"
+  - "DFS"
+hubs:
+  - "[[Graphs BFS & DFS]]"
 topic: Graphs & DFS
 level: PS Level 1
 ---

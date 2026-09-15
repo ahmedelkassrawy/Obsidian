@@ -1,3 +1,22 @@
+---
+description: "Explains the Singleton pattern, a __new__-based Python implementation, and its pros, cons and sane use cases."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/python-language
+aliases:
+  - "singleton"
+  - "__new__"
+  - "design pattern"
+hubs:
+  - "[[System Design]]"
+  - "[[Python Language]]"
+---
 Singleton Pattern is a design pattern that ensures 
 - a class has only one instance 
 - provides a global access point to that instance

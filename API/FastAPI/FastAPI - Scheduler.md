@@ -1,3 +1,21 @@
+---
+description: "A three-line snippet adding APScheduler BackgroundScheduler interval jobs inside a FastAPI app file."
+domain: backend
+type: howto
+status: stub
+tags:
+  - domain/backend
+  - type/howto
+  - status/stub
+  - topic/fastapi
+  - topic/celery-and-message-queues
+aliases:
+  - "BackgroundScheduler"
+  - "APScheduler"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Celery & Message Queues]]"
+---
 In the api py file.
 ```python
 scheduler = BackgroundScheduler()

@@ -1,6 +1,15 @@
 ---
-title: Celery - Complete Guide
+description: "End-to-end practical guide to Celery: whether you need it, broker choice, the four components, configuration, task patterns and production concerns."
+domain: backend
+type: howto
+status: digested
 tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/celery-and-message-queues
+  - topic/redis
+  - topic/fastapi
   - celery
   - distributed-tasks
   - rabbitmq
@@ -8,10 +17,18 @@ tags:
   - task-queue
   - backend
 aliases:
-  - Celery Documentation
-  - Task Queue Guide
+  - "Celery"
+  - "broker"
+  - "workers"
+  - "task queue"
+  - "Celery Documentation"
+  - "Task Queue Guide"
+hubs:
+  - "[[Celery & Message Queues]]"
+  - "[[Redis]]"
+  - "[[FastAPI]]"
+title: Celery - Complete Guide
 date: 2026-03-26
-status: refined
 ---
 
 # Celery - Complete Guide

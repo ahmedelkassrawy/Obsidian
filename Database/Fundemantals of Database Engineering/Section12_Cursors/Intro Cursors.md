@@ -1,3 +1,22 @@
+---
+description: "Course notes on PostgreSQL cursors: fetching a huge result set incrementally, the SQL to do it, and the pros and cons."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/postgres
+  - topic/cursors-and-pagination
+aliases:
+  - "cursor"
+  - "DECLARE FETCH"
+  - "large result set"
+hubs:
+  - "[[Postgres]]"
+  - "[[Cursors & Pagination]]"
+---
 # Database Cursors in PostgreSQL
 
 ## Overview

@@ -1,3 +1,19 @@
+---
+description: "Study guide for LeetCode array/hashing patterns: which problem maps to which pattern, a recommended study order, and short C++/Python templates for two-sum, frequency counting, group-anagrams and longest-consecutive."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/arrays-and-hashing
+aliases:
+  - "LeetCode patterns"
+  - "Two Sum template"
+hubs:
+  - "[[Arrays & Hashing]]"
+---
 These 8 problems are **core** LeetCode medium problems that almost every FAANG/company interview will test you on in some form.  
 Mastering the patterns below will let you solve ~80% of all array/hashing questions confidently.
 

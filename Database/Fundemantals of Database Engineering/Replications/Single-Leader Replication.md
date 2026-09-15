@@ -1,3 +1,20 @@
+---
+description: "Course notes on single-leader replication: how reads and writes flow, its advantages, and follower/leader failure scenarios."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-replication-and-sharding
+aliases:
+  - "single leader"
+  - "follower failure"
+  - "leader election"
+hubs:
+  - "[[Database Replication & Sharding]]"
+---
 # Single-Leader Replication in Distributed Databases
 Key concepts:
 - [[Replication Architectures]]

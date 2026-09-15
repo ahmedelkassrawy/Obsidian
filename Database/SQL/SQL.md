@@ -1,3 +1,24 @@
+---
+description: "A long unsectioned dump of SQL fundamentals - statement categories, schemas, joins, constraints and related concepts - in one flat run of bullets."
+domain: backend
+type: reference
+status: raw
+tags:
+  - domain/backend
+  - type/reference
+  - status/raw
+  - topic/sql
+  - topic/database-indexing
+  - topic/transactions-and-concurrency-control
+aliases:
+  - "SQL notes"
+  - "DDL DML DCL"
+  - "schema"
+hubs:
+  - "[[SQL]]"
+  - "[[Database Indexing]]"
+  - "[[Transactions & Concurrency Control]]"
+---
 SQL stands for Structured Query Language. It is a programming language used for managing and manipulating databases divided into three categories.
 
   

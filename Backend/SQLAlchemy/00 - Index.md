@@ -1,6 +1,27 @@
 ---
-tags: [sqlalchemy, orm, database, python, moc, 2.0-style]
-aliases: [SQLAlchemy, SQLAlchemy Study Notes, SQLAlchemy Index]
+description: "Index for the SQLAlchemy folder: the recommended project shape, reading order, look-up notes and a find-it table."
+domain: backend
+type: meta
+status: digested
+tags:
+  - domain/backend
+  - type/meta
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - orm
+  - database
+  - python
+  - moc
+  - 2.0-style
+aliases:
+  - "SQLAlchemy index"
+  - "reading order"
+  - "SQLAlchemy"
+  - "SQLAlchemy Study Notes"
+  - "SQLAlchemy Index"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#4-sqlalchemy-core-database-interaction
 ---
 

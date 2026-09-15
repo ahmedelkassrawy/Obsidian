@@ -1,3 +1,23 @@
+---
+description: "Side-by-side comparison of HTTP headers and cookies: purpose, transport, storage, security and how to read each one in FastAPI."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/http-and-networking
+  - topic/fastapi
+  - topic/auth-and-security
+aliases:
+  - "Header vs Cookie"
+  - "FastAPI Header Cookie"
+hubs:
+  - "[[HTTP & Networking]]"
+  - "[[FastAPI]]"
+  - "[[Auth & Security]]"
+---
 In the context of FastAPI (and HTTP in general), both `Header` and `Cookie` are utilities used to extract specific pieces of information from an HTTP request, but they serve different purposes and operate on different parts of the request. Below is a concise comparison of `Header` and `Cookie` in FastAPI, focusing on their differences, use cases, and characteristics.
 ### 1. **Definition**
 - **`Header`**:

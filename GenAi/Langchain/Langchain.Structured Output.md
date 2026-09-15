@@ -1,3 +1,21 @@
+---
+description: "Chatbot and chain code for getting structured output out of LangChain, including parallel chains and text splitting."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/langchain
+  - topic/pydantic
+aliases:
+  - "structured output"
+  - "output parser"
+hubs:
+  - "[[LangChain]]"
+  - "[[Pydantic]]"
+---
 #### Chatbot
 ```python
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage

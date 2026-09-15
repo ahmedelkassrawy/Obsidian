@@ -1,7 +1,29 @@
 ---
+description: "Walks through building a real LangGraph agent by hand: the tool loop, memory across turns, human approval before a tool runs, tool selection with 100 tools, and idempotent retries."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/langgraph
+  - topic/agents
+  - topic/context-engineering
+  - langgraph
+  - agents
+  - m4
+  - human-in-the-loop
+  - idempotency
+  - context-engineering
+aliases:
+  - "building agents LangGraph"
+  - "human in the loop"
+hubs:
+  - "[[LangGraph]]"
+  - "[[Agents]]"
+  - "[[Context Engineering]]"
 title: "Building agents with LangGraph (loop, memory, human-in-the-loop, idempotency)"
-type: reading-note
-tags: [langgraph, agents, m4, human-in-the-loop, idempotency, context-engineering]
 source: "Hands-on build (D:\\me\\teach\\agent_learning), langgraph 1.1.9, OpenRouter qwen-2.5-7b-instruct"
 date: 2026-08-30
 ---

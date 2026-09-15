@@ -1,3 +1,24 @@
+---
+description: "Explains semantic search versus keyword search, how embeddings plus a vector index make it work, and how it feeds into RAG, with advanced RAG techniques and evaluation metrics."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/embeddings-and-semantic-search
+  - topic/rag
+  - topic/vector-search
+aliases:
+  - "semantic search"
+  - "vector search"
+  - "RAG basics"
+hubs:
+  - "[[Embeddings & Semantic Search]]"
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+---
 ## 🔍 What is Semantic Search?
 **Semantic search** is a way of searching that tries to understand the _meaning_ (semantics) of your query, not just the _keywords_.
 - **Normal search (keyword-based):** Looks for exact matches of words.

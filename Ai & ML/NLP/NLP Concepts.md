@@ -1,3 +1,24 @@
+---
+description: "Compares the main text-representation methods (BoW, TF-IDF, Word2Vec), then BERT vs sentence transformers, and BLEU vs ROUGE for evaluation."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/embeddings-and-semantic-search
+  - topic/evaluation-metrics
+aliases:
+  - "BoW vs TF-IDF vs Word2Vec"
+  - "BERT vs sentence transformers"
+  - "BLEU ROUGE"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Embeddings & Semantic Search]]"
+  - "[[Evaluation Metrics]]"
+---
 Here's a concise comparison of **Bag of Words (BoW)**, **TF-IDF**, and **Word2Vec**, which are techniques used in natural language processing (NLP) for text representation:
 
 ### 1. **Bag of Words (BoW)**

@@ -1,3 +1,23 @@
+---
+description: "Two advanced retrievers explained with code: the self-querying retriever that turns a question into a metadata filter, and the parent-document retriever."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/rag
+  - topic/vector-search
+  - topic/langchain
+aliases:
+  - "self-querying retriever"
+  - "ParentDocumentRetriever"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+  - "[[LangChain]]"
+---
 ### **What is a Self-Querying Retriever?**
 
 - **Definition**: A retriever that uses a large language model (LLM) to convert a natural language query into a structured format, which is then used to query a vector store. It combines semantic search with metadata filtering.

@@ -1,3 +1,22 @@
+---
+description: "Explains logistic regression's sigmoid output and, in particular, how moving the decision threshold trades false positives against false negatives."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/classification
+  - topic/evaluation-metrics
+aliases:
+  - "logistic regression"
+  - "sigmoid"
+  - "threshold tuning"
+hubs:
+  - "[[Classification]]"
+  - "[[Evaluation Metrics]]"
+---
 # 🧠 Logistic Regression Notes
 
 ## 📘 Overview

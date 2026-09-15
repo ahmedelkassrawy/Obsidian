@@ -1,3 +1,22 @@
+---
+description: "Configuring speech-to-text in Pipecat: LiveOptions for full control, wiring STT into the context aggregator, and tuning transcription latency."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "STT"
+  - "LiveOptions"
+  - "transcription latency"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 Learn how to configure speech recognition to convert user audio into text in your Pipecat pipeline
 
 **Speech to Text (STT)** services are responsible for converting user audio into text transcriptions. 

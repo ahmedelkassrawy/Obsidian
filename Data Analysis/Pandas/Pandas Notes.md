@@ -1,3 +1,23 @@
+---
+description: "Pandas working notes: series vs dataframe indexing, iterating with iterrows, assigning with .loc, and numpy array iteration."
+domain: ml
+type: reference
+status: raw
+tags:
+  - domain/ml
+  - type/reference
+  - status/raw
+  - topic/pandas
+  - topic/numpy
+aliases:
+  - "pandas notes"
+  - "iterrows"
+  - "loc iloc"
+  - "assert"
+hubs:
+  - "[[Pandas]]"
+  - "[[Numpy]]"
+---
 series --> []
 dataframe --> [[]]
 

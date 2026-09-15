@@ -1,6 +1,25 @@
 ---
-tags: [sqlalchemy, core, orm, architecture, decision]
-aliases: [Core vs ORM, When to use Core, When to use ORM, Key takeaways]
+description: "Compares the Core and ORM layers side by side and gives the rules for picking one, the other, or both."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - core
+  - orm
+  - architecture
+  - decision
+aliases:
+  - "Core vs ORM"
+  - "When to use Core"
+  - "When to use ORM"
+  - "Key takeaways"
+hubs:
+  - "[[SQLAlchemy]]"
 ---
 
 # 11 — Core vs ORM: when to use which

@@ -1,3 +1,22 @@
+---
+description: "Why a model that is fast for one user crawls for a hundred, and the two fixes: KV cache to stop redoing attention maths, and paged attention to stop wasting GPU memory."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/llm-internals
+  - topic/llm-serving-and-vllm
+aliases:
+  - "KV cache"
+  - "paged attention"
+  - "GPU memory"
+hubs:
+  - "[[LLM Internals]]"
+  - "[[LLM Serving & vLLM]]"
+---
 When a large language model (LLM) is serving just one person, it feels lightning fast. But when 100 people use it at once, it slows to a crawl, and the hardware (GPU) memory maxes out.
 
 The video explains that the AI model itself usually isn't broken. Instead, the slowdown comes from **how the AI manages its memory** while generating words.

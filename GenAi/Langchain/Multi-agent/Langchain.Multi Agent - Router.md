@@ -1,3 +1,21 @@
+---
+description: "The router architecture: a classification step sends each input to the specialist agent for its vertical, and the router itself can be wrapped as a tool."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+aliases:
+  - "router pattern"
+  - "verticals"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+---
 In the **router** architecture, a routing step classifies input and directs it to specialized [agents](https://docs.langchain.com/oss/python/langchain/agents).
 This is useful when you have distinct **verticals**—separate knowledge domains that each require their own agent.
 

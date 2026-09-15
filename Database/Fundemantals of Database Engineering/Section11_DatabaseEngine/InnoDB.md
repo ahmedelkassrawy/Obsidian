@@ -1,3 +1,21 @@
+---
+description: "Course notes on the InnoDB storage engine: its structure, transactional ACID support, advanced features and when to pick it."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/mysql
+  - topic/database-internals
+aliases:
+  - "B+ tree storage engine"
+  - "ACID"
+hubs:
+  - "[[MySQL]]"
+  - "[[Database Internals]]"
+---
 # InnoDB Storage Engine
 
 ## Overview

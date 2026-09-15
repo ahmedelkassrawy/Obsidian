@@ -1,3 +1,24 @@
+---
+description: "Ch7 notes on wiring a database into a FastAPI AI service: SQLAlchemy ORM models, the engine as a connection pool, session dependency injection, and Alembic migrations."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/sqlalchemy
+  - topic/postgres
+  - topic/fastapi
+aliases:
+  - "ORM models"
+  - "Alembic"
+  - "async sessions"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[Postgres]]"
+  - "[[FastAPI]]"
+---
 An ORM library allows you to interact with a database and execute SQL operations without then need to write raw SQL yourself
 Defining ORM Models The first step to query your database in Python is to define your ORM models with SQLAlchemy classes
 

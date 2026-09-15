@@ -1,3 +1,23 @@
+---
+description: "Ch1-2 notes: build a minimal 'cancel order' agent in a LangGraph StateGraph, why scoping matters, a minimal evaluation, and the core components of an agent system."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/agents
+  - topic/langgraph
+  - topic/system-design
+aliases:
+  - "designing agent systems"
+  - "cancel order agent"
+hubs:
+  - "[[Agents]]"
+  - "[[LangGraph]]"
+  - "[[System Design]]"
+---
 # Chapter 2: Designing Agent Systems
 
 > [!abstract] Quick Start

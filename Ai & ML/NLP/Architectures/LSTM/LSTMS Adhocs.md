@@ -1,3 +1,23 @@
+---
+description: "Scratch notes on picking LSTM hidden-unit counts (64/128/256), what the timestep dimension of input_shape means, and how to handle NAs in text fields."
+domain: ml
+type: reference
+status: stub
+tags:
+  - domain/ml
+  - type/reference
+  - status/stub
+  - topic/rnn-and-lstm
+  - topic/tensorflow-and-keras
+  - topic/data-cleaning
+aliases:
+  - "LSTM hidden units"
+  - "input_shape timesteps"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[TensorFlow & Keras]]"
+  - "[[Data Cleaning]]"
+---
 the choice of numbers of hidden states in lstm layer , more units allow the model to capture more complex patterns
 256 is a common starting point beacuse it balances the model capacity and computational efficency ++ numbers like 256 is a power of 2 which will allign well with hardware optimizations 
 

@@ -1,3 +1,19 @@
+---
+description: "Grokking-style intro to BFS: it finds the shortest path in hops, with the checkers-AI and spell-checker examples."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/graphs-bfs-and-dfs
+aliases:
+  - "BFS"
+  - "Grokking"
+hubs:
+  - "[[Graphs BFS & DFS]]"
+---
 - Breadth-first search allows you to find the shortest distance between two things.
 - You can use breadth-first search to 
 - Write a checkers AI that calculates the fewest moves to victory 

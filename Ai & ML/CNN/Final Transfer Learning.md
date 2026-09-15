@@ -1,3 +1,26 @@
+---
+description: "Hands-on transfer learning in both Keras and PyTorch: load a pretrained backbone, freeze layers, add augmentation, and fine-tune for a custom image dataset."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/cnn
+  - topic/transfer-learning
+  - topic/pytorch
+  - topic/tensorflow-and-keras
+aliases:
+  - "Transfer Learning"
+  - "EfficientNetB0"
+  - "ResNet fine-tune"
+hubs:
+  - "[[CNN]]"
+  - "[[Transfer Learning]]"
+  - "[[PyTorch]]"
+  - "[[TensorFlow & Keras]]"
+---
 
 ---
 # 🧠 Transfer Learning in CNNs (TensorFlow + PyTorch)

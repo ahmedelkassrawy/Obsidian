@@ -1,16 +1,33 @@
 ---
-title: Claude Code Memory System - Deep Dive
-date: 2026-04-03
+description: "Full study reference on Claude Code's memory architecture from reading its source: the CLAUDE.md, MEMORY.md index, topic file, auto-extraction and consolidation layers, plus the failure modes of each."
+domain: ai-eng
+type: concept
+status: digested
 tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/claude-code
+  - topic/agent-memory
+  - topic/context-engineering
   - ai
   - claude
   - memory-systems
   - architecture
   - source-analysis
 aliases:
-  - Claude Code Memory
-  - Claude Memory Architecture
-  - Claude Code Internals
+  - "CLAUDE.md"
+  - "MEMORY.md"
+  - "auto-extraction"
+  - "Claude Code Memory"
+  - "Claude Memory Architecture"
+  - "Claude Code Internals"
+hubs:
+  - "[[Claude Code]]"
+  - "[[Agent Memory]]"
+  - "[[Context Engineering]]"
+title: Claude Code Memory System - Deep Dive
+date: 2026-04-03
 ---
 # Claude Code Memory System - Deep Dive
 

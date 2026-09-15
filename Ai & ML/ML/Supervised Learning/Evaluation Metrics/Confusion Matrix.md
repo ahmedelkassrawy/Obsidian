@@ -1,0 +1,35 @@
+---
+description: "Minimal snippet showing how to print a confusion matrix and classification report for a fitted scikit-learn classifier."
+domain: ml
+type: reference
+status: stub
+tags:
+  - domain/ml
+  - type/reference
+  - status/stub
+  - topic/evaluation-metrics
+  - topic/classification
+aliases:
+  - "1.Confussion Matrix"
+  - "confusion matrix"
+  - "classification report"
+hubs:
+  - "[[Evaluation Metrics]]"
+  - "[[Classification]]"
+---
+```python
+# Import confusion matrix
+from sklearn.metrics import confusion_matrix, classification_report
+
+knn = KNeighborsClassifier(n_neighbors=6)
+
+# Fit the model to the training data
+knn.fit(X_train,y_train)
+
+# Predict the labels of the test data: y_pred
+y_pred = knn.predict(X_test)
+
+
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+```

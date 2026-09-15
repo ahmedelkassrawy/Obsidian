@@ -1,3 +1,22 @@
+---
+description: "A complete pasted Pipecat bot script: imports, Silero VAD, the pipeline, and the runner."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "pipecat example"
+  - "SileroVAD"
+  - "PipelineRunner"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 ```python
 import os
 from dotenv import load_dotenv

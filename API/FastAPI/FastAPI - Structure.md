@@ -1,3 +1,19 @@
+---
+description: "Compares flat and nested FastAPI project layouts and when each one stops scaling."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/fastapi
+aliases:
+  - "project layout"
+  - "flat vs nested structure"
+hubs:
+  - "[[FastAPI]]"
+---
 #### Flat Structure
 A flat structure is one in which the application files remain at the root of your project with no nested directories. You may group all your files under a single directory for better organization. The main idea here is to keep all similar code in modules and placed together near the root of your project. For instance, put all your database models in models.py or your endpoints in routes.py.
 

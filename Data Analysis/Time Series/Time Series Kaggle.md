@@ -1,3 +1,24 @@
+---
+description: "Kaggle's time series course notes: time-step and lag features, fitting trend with a DeterministicProcess, and modelling seasonality with Fourier terms."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/time-series
+  - topic/feature-engineering-and-pipelines
+  - topic/pandas
+aliases:
+  - "Kaggle time series"
+  - "lag features"
+  - "trend seasonality"
+hubs:
+  - "[[Time Series]]"
+  - "[[Feature Engineering & Pipelines]]"
+  - "[[Pandas]]"
+---
 There are two kinds of features unique to time series: time-step features and lag features.
 Time-step features are features we can derive directly from the time index. The most basic time-step feature is the **time dummy**, which counts off time steps in the series from beginning to end.
 

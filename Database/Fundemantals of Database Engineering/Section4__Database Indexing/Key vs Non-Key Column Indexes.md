@@ -1,3 +1,22 @@
+---
+description: "Course notes distinguishing key-column indexes (constraints, uniqueness) from non-key INCLUDE columns, with the trade-offs."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-indexing
+  - topic/postgres
+aliases:
+  - "key column index"
+  - "non-key column"
+  - "covering index"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Postgres]]"
+---
 **indexes are default ordered**
 ## Key Column Indexes
 

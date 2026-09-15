@@ -1,14 +1,31 @@
 ---
-title: Complete REST API Design - Study Guide
-source: https://www.youtube.com/watch?v=RG6q57DwV8Y
-author: Ahmed Asar
-date: 2026-05-01
+description: "Full REST API design reference: the six constraints, URL naming, HTTP methods and idempotency, CRUD patterns, pagination/filtering/sorting and custom actions."
+domain: backend
+type: reference
+status: digested
 tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/api-design
+  - topic/http-and-networking
   - RESTAPI
   - Backend
   - DesignPatterns
   - HTTP
   - API
+aliases:
+  - "REST"
+  - "idempotency"
+  - "pagination"
+  - "versioning"
+hubs:
+  - "[[API Design]]"
+  - "[[HTTP & Networking]]"
+title: Complete REST API Design - Study Guide
+source: https://www.youtube.com/watch?v=RG6q57DwV8Y
+author: Ahmed Asar
+date: 2026-05-01
 ---
 ## Table of Contents
 

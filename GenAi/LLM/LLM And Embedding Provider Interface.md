@@ -1,0 +1,55 @@
+---
+description: "An abstract base class sketch for swapping LLM and embedding providers behind one interface."
+domain: ai-eng
+type: howto
+status: stub
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stub
+  - topic/llm-internals
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "LLM,Embedding Providers Interface"
+  - "provider abstraction"
+hubs:
+  - "[[LLM Internals]]"
+  - "[[Embeddings & Semantic Search]]"
+---
+#### LLM Interface
+```python
+from abc import ABC, abstractmethod
+
+class LLMInterface(ABC):
+    @abstractmethod
+    def set_generation_model(self,model_name:str):
+        pass
+
+    @abstractmethod
+    def generate_text(self,prompt:str,chat_history: list = [],
+                      max_tokens:int = None,temp : float = 0.2):
+        pass
+
+    @abstractmethod
+    def construct_prompt(self,prompt:str,role:str):
+        pass
+```
+
++ LLM Factory
++ LLM Enums
+
+#### Embedding Interface
+```python
+from abc import ABC, abstractmethod
+
+class EmbeddingInterface(ABC):
+    @abstractmethod
+    def set_embedding_model(self, model_name: str,embedding_size:int):
+        pass
+
+    @abstractmethod
+    def embed_text(self, text: str):
+        pass
+```
+- Embedding Providers
+- Embedding Enums

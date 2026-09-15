@@ -1,3 +1,20 @@
+---
+description: "When the planner uses both indexes, only one, or none, and how to force an index choice."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-indexing
+aliases:
+  - "index intersection"
+  - "force index"
+  - "full table scan"
+hubs:
+  - "[[Database Indexing]]"
+---
 ## Both Indexes
 
 ```SQL

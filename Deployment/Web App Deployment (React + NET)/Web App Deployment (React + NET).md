@@ -1,3 +1,20 @@
+---
+description: "Deploying a React + .NET app to Azure App Service with GitHub Actions CI/CD, without containers."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/cloud-deployment
+aliases:
+  - "Azure App Service"
+  - "React .NET deploy"
+  - "CI/CD"
+hubs:
+  - "[[Cloud Deployment]]"
+---
 ## **Overview**
 This guide covers deploying a full-stack application (React frontend and .NET backend) to **Azure App Service** using GitHub Actions for CI/CD, without the need for containerization.
 ## **Step 1: Resource Group Setup**

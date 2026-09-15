@@ -1,3 +1,22 @@
+---
+description: "Course notes on symmetric vs asymmetric encryption, where each is used, and the TLS-termination-at-the-load-balancer debate."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/auth-and-security
+  - topic/http-and-networking
+aliases:
+  - "symmetric encryption"
+  - "asymmetric"
+  - "TLS termination"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[HTTP & Networking]]"
+---
 # Encryption Study Notes
 
 ## Symmetric Encryption

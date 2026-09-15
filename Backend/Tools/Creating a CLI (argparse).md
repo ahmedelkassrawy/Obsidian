@@ -1,3 +1,20 @@
+---
+description: "How to build a subcommand CLI with argparse: main parser, subparsers, arguments and routing to handlers."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/python-language
+aliases:
+  - "argparse"
+  - "subparsers"
+  - "CLI"
+hubs:
+  - "[[Python Language]]"
+---
 ### 1. The Main Parser (The Foundation)
 Everything starts by creating the main parser object. Think of this as the "master controller" for your CLI.
 

@@ -1,3 +1,22 @@
+---
+description: "Explains Gaussian Mixture Models as soft, ellipse-shaped clustering, how they beat k-means on non-spherical data, and their use for anomaly detection."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+  - topic/statistics
+aliases:
+  - "GMM"
+  - "Gaussian Mixture Model"
+  - "expectation maximization"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+  - "[[Statistics]]"
+---
 
 ## 1. What is a Gaussian Mixture Model (GMM)?
 

@@ -1,3 +1,22 @@
+---
+description: "A worked scikit-learn Pipeline that chains an imputer with logistic regression, fitted and scored on a small synthetic dataset."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/feature-engineering-and-pipelines
+  - topic/classification
+aliases:
+  - "sklearn Pipeline"
+  - "SimpleImputer"
+  - "Colab pipeline"
+hubs:
+  - "[[Feature Engineering & Pipelines]]"
+  - "[[Classification]]"
+---
 ```python
 # -*- coding: utf-8 -*-
 """Pipeline.ipynb

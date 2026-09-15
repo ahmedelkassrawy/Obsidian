@@ -1,3 +1,21 @@
+---
+description: "How the LLM service sits in a Pipecat pipeline: where to place it, the base class config, and how it streams tokens out as LLMTextFrames."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "pipecat LLM service"
+  - "LLMTextFrame"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 Learn how to configure language models to generate intelligent responses in your voice AI pipeline
 - **LLM services** are responsible for chat completions and tool calling based on the provided context (conversation history). 
 - The LLM responds by streaming tokens via `LLMTextFrame`s, which are used by subsequent processors to create audio output for the bot.

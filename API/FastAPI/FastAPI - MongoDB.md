@@ -1,3 +1,24 @@
+---
+description: "How to wire FastAPI to MongoDB with the async Motor driver: Docker container setup, ObjectId handling in Pydantic, models and CRUD endpoints."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/fastapi
+  - topic/mongodb
+  - topic/docker
+aliases:
+  - "Motor"
+  - "ObjectId Pydantic"
+  - "Mongo CRUD"
+hubs:
+  - "[[FastAPI]]"
+  - "[[MongoDB]]"
+  - "[[Docker]]"
+---
 # FastAPI with MongoDB Integration Study Notes
 
 This Obsidian Markdown file provides a structured overview of integrating FastAPI with MongoDB using Motor (an async MongoDB driver) and Pydantic for data modeling. It covers setting up a Docker container, defining database models, handling MongoDB ObjectIds, and implementing CRUD endpoints. The content is designed for studying and quick reference.

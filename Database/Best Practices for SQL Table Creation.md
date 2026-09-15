@@ -1,3 +1,21 @@
+---
+description: "Whether to run CREATE TABLE IF NOT EXISTS at application startup, and what to do instead in production (migrations)."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/postgres
+  - topic/sql
+aliases:
+  - "CREATE TABLE IF NOT EXISTS"
+  - "migrations at startup"
+hubs:
+  - "[[Postgres]]"
+  - "[[SQL]]"
+---
 ##  Best Practices for SQL Table Creation on Application Startup
 
 ## Overview

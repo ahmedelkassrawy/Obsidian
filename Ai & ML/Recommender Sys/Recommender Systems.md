@@ -1,3 +1,21 @@
+---
+description: "A consolidated recommender-systems reference: the collaborative filtering pipeline, SVD vs neural collaborative filtering, and runnable pivot-table and surprise examples."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/recommender-systems
+aliases:
+  - "collaborative filtering"
+  - "SVD"
+  - "NCF"
+  - "surprise library"
+hubs:
+  - "[[Recommender Systems]]"
+---
 # Recommender Systems — Overview & Examples
 
 This folder contains a consolidated guide and runnable examples for collaborative-filtering recommender systems (matrix factorization, item-based CF, and from-scratch pivot-table approaches). It merges the previous `Steps.md` and `Untitled.md` into a single, organized reference.

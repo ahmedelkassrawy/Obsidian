@@ -1,3 +1,22 @@
+---
+description: "Explains the CNN building blocks with concrete tensor shapes: Conv2D filters, pooling layers, and how a typical CNN stack is assembled in Keras."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/cnn
+  - topic/tensorflow-and-keras
+aliases:
+  - "Convolutional Neural Networks"
+  - "Conv2D"
+  - "max pooling"
+hubs:
+  - "[[CNN]]"
+  - "[[TensorFlow & Keras]]"
+---
 # Convolutional Neural Networks (CNNs) Concepts
 ## Image Preprocessing and Convolutional Layers
 ### Initial Image Dimensions

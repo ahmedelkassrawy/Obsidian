@@ -1,6 +1,36 @@
 ---
-tags: [sqlalchemy, orm, query, select, filter, join, order_by, 2.0-style]
-aliases: [Querying data, db.query, select() 2.0 style, filter vs where, join, order_by, Query API]
+description: "Querying with 2.0 select() (and legacy query()): filters, ordering, paging, aggregates and relationship loading."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - topic/sql
+  - sqlalchemy
+  - orm
+  - query
+  - select
+  - filter
+  - join
+  - order_by
+  - 2.0-style
+aliases:
+  - "select()"
+  - "filter"
+  - "joinedload"
+  - "Querying data"
+  - "db.query"
+  - "select() 2.0 style"
+  - "filter vs where"
+  - "join"
+  - "order_by"
+  - "Query API"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[SQL]]"
 source: https://github.com/h9-tec/AI_deployment#querying-data
 ---
 

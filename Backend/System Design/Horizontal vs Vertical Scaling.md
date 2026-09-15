@@ -1,3 +1,22 @@
+---
+description: "Compares scaling up and scaling out, when each applies, and how both play out specifically for databases."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/database-replication-and-sharding
+aliases:
+  - "scale up vs scale out"
+  - "sharding"
+  - "read replicas"
+hubs:
+  - "[[System Design]]"
+  - "[[Database Replication & Sharding]]"
+---
 ### **1. Concept Overview**
 
 **Scaling** means increasing a system’s capacity to handle more load — users, data, or requests.  

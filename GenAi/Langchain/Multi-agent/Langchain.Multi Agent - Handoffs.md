@@ -1,3 +1,21 @@
+---
+description: "The handoffs architecture explained: tools update a persisted state variable that decides which behaviour is active next, plus when to use it."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+aliases:
+  - "handoffs"
+  - "active agent state"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+---
 - In the **handoffs** architecture, behavior changes dynamically based on state.
 - The core mechanism: [tools](https://docs.langchain.com/oss/python/langchain/tools) update a state variable (e.g., `current_step` or `active_agent`) that persists across turns, and the system reads this variable to adjust behavior—either applying different configuration (system prompt, tools) or routing to a different [agent](https://docs.langchain.com/oss/python/langchain/agents).
 - This pattern supports both handoffs between distinct agents and dynamic configuration changes within a single agent.

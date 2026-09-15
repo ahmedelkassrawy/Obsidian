@@ -1,3 +1,22 @@
+---
+description: "FastAPI course notes on OAuth2 and OpenID Connect: how the flows work, OpenAPI security schemes, and a password-flow implementation with hashing and token models."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/auth-and-security
+  - topic/fastapi
+aliases:
+  - "OAuth2"
+  - "OpenID Connect"
+  - "password hashing"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[FastAPI]]"
+---
 # OAuth2 and OpenID Connect Study Notes
 
 ## OAuth2

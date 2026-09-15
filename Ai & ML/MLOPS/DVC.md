@@ -1,3 +1,23 @@
+---
+description: "Command-by-command DVC setup: init, tracking a data file, adding a remote, pushing and pulling versioned data."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/mlflow-and-dvc
+  - topic/mlops
+  - topic/git
+aliases:
+  - "data version control"
+  - "dvc remote"
+hubs:
+  - "[[MLflow & DVC]]"
+  - "[[MLOps]]"
+  - "[[Git]]"
+---
 ```python
 git init
 dvc init

@@ -1,3 +1,19 @@
+---
+description: "What RabbitMQ does as a broker, when to use it with Celery vs on its own, plus memory management and TLS configuration notes."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/celery-and-message-queues
+aliases:
+  - "AMQP"
+  - "broker"
+hubs:
+  - "[[Celery & Message Queues]]"
+---
 ## RabbitMQ: The Broker
 RabbitMQ is a specialized piece of infrastructure. Its only job is to receive messages from one part of your system and hold them until another part is ready to receive them.
 - **Key Concept:** It uses the **AMQP protocol**, which offers complex routing (e.g., "send this message to all workers" or "only send this to the 'email' worker").

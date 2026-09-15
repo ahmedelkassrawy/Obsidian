@@ -1,7 +1,30 @@
 ---
-tags: [problem-solving, reference, ecpc, contest]
+description: "The printable one-file contest sheet: complexity budget per input size, which STL container to reach for, sorting, binary search, two pointers, prefix sums, graphs, DP and number theory - each block written as concept, code, and when to use it."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+  - topic/dynamic-programming
+  - topic/graphs-bfs-and-dfs
+  - topic/math-and-number-theory
+  - problem-solving
+  - reference
+  - ecpc
+  - contest
+aliases:
+  - "ECPC"
+  - "contest cheat sheet"
+  - "printable sheet"
+hubs:
+  - "[[STL Containers]]"
+  - "[[Dynamic Programming]]"
+  - "[[Graphs BFS & DFS]]"
+  - "[[Math & Number Theory]]"
 topic: ECPC Reference Sheet
-description: Printable one-file reference for the contest — concept, when-to-use, and code for every Level-1 technique
 ---
 
 # ECPC Reference Sheet
@@ -1562,4 +1585,4 @@ void unite(int a, int b) {
 
 ---
 
-Related: [[Problem Solving/PS Level 1/Binary Search]] · [[Two Pointers]] · [[Bitmasks]] · [[Recursion Notes]] · [[Sliding window Tips]] · [[Graphs, DFS]] · [[BFS, Graph Applications]] · [[DP]] · [[Number theory.1]] · [[Number Theory.2]] · [[1D Partial Sum]] · [[2D Partial Sum]] · [[Backtracking]] · [[MUST HAVE]]
+Related: [[Problem Solving/PS Level 1/Binary Search]] · [[Two Pointers]] · [[Bitmasks]] · [[Recursion Notes]] · [[Sliding Window Technique]] · [[Graphs, DFS]] · [[BFS, Graph Applications]] · [[DP Recursive Patterns]] · [[Number Theory - Divisors Factorization And Sieve]] · [[Number Theory - Modular Arithmetic And GCD]] · [[1D Partial Sum]] · [[2D Partial Sum]] · [[Backtracking]] · [[C++ Contest Template]]

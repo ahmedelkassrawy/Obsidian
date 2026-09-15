@@ -1,3 +1,22 @@
+---
+description: "Python classes end to end: defining a class and methods, what `self` actually refers to, instances, class attributes, and inheritance with super()."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/oop
+  - topic/python-language
+aliases:
+  - "classes"
+  - "self"
+  - "inheritance"
+hubs:
+  - "[[OOP]]"
+  - "[[Python Language]]"
+---
 ```python
 class Dog: #class definition
     def bark(self): #Method

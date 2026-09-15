@@ -1,3 +1,22 @@
+---
+description: "Step-by-step build of an MCP task server on SDK v2: server object, data shape, logging, each tool, saving to a file and loading on startup."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/mcp
+  - topic/tool-use-and-function-calling
+aliases:
+  - "build MCP server"
+  - "SDK v2"
+  - "task server"
+hubs:
+  - "[[MCP]]"
+  - "[[Tool Use & Function Calling]]"
+---
 MCP  is like giving the person a universal remote control with all your tools
 
 ```

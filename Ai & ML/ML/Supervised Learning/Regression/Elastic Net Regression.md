@@ -1,3 +1,22 @@
+---
+description: "Explains Elastic Net as the Lasso/Ridge blend: the combined penalty, when to use it, scikit-learn code, and its pros and cons."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/regression
+  - topic/regularization-and-overfitting
+aliases:
+  - "ElasticNet"
+  - "L1 L2 mix"
+  - "l1_ratio"
+hubs:
+  - "[[Regression]]"
+  - "[[Regularization & Overfitting]]"
+---
 ## 🔗 Elastic Net Regression
 ### 1. Intuition
 Elastic Net is like saying:  

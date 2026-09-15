@@ -1,3 +1,22 @@
+---
+description: "Two snippets for hyperparameter search: GridSearchCV and RandomizedSearchCV over a Ridge model with KFold cross-validation."
+domain: ml
+type: reference
+status: stub
+tags:
+  - domain/ml
+  - type/reference
+  - status/stub
+  - topic/feature-engineering-and-pipelines
+  - topic/evaluation-metrics
+aliases:
+  - "GridSearchCV"
+  - "RandomizedSearchCV"
+  - "cross validation tuning"
+hubs:
+  - "[[Feature Engineering & Pipelines]]"
+  - "[[Evaluation Metrics]]"
+---
 ```python
 from sklearn.model_selection import GridSearchCV
 kf = KFold(n_splits=5, shuffle=True, random_state=42)

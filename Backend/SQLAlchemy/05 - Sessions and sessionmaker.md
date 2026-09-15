@@ -1,6 +1,35 @@
 ---
-tags: [sqlalchemy, orm, session, sessionmaker, get_db, transaction, unit-of-work, asynccontextmanager]
-aliases: [Sessions, sessionmaker, SessionLocal, get_db, Session lifecycle, expire_on_commit, commit on exit, asynccontextmanager vs Depends]
+description: "The session factory, the commit-on-exit default, object states and the FastAPI session dependency."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - topic/fastapi
+  - sqlalchemy
+  - orm
+  - session
+  - sessionmaker
+  - get_db
+  - transaction
+  - unit-of-work
+  - asynccontextmanager
+aliases:
+  - "sessionmaker"
+  - "session lifecycle"
+  - "get_db"
+  - "Sessions"
+  - "SessionLocal"
+  - "Session lifecycle"
+  - "expire_on_commit"
+  - "commit on exit"
+  - "asynccontextmanager vs Depends"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[FastAPI]]"
 source: https://github.com/h9-tec/AI_deployment#session-management
 ---
 

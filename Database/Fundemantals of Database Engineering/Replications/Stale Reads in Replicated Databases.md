@@ -1,3 +1,20 @@
+---
+description: "Course notes on stale reads under async replication and the fixes: read-your-own-writes, consistent prefix and monotonic guarantees."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-replication-and-sharding
+aliases:
+  - "stale reads"
+  - "read your own writes"
+  - "monotonic reads"
+hubs:
+  - "[[Database Replication & Sharding]]"
+---
 Key concepts:
 - [[Replication Types]] (Synchronous vs. Asynchronous)
 - [[Eventual Consistency]]

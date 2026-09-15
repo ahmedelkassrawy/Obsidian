@@ -1,3 +1,18 @@
+---
+description: "std::queue member functions (empty, size, front, back, push, pop) with the FIFO picture."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "FIFO"
+hubs:
+  - "[[STL Containers]]"
+---
 ![[Pasted image 20240604174738.png]]
 **Functions:**
 

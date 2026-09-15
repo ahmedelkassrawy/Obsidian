@@ -1,3 +1,24 @@
+---
+description: "Four ways to classify text: sentence-transformer embeddings plus logistic regression, zero-shot cosine similarity against label embeddings, and a T5 generative classifier."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/classification
+  - topic/embeddings-and-semantic-search
+  - topic/transformers
+aliases:
+  - "text classification embeddings"
+  - "zero-shot classification"
+  - "sentence transformers"
+hubs:
+  - "[[Classification]]"
+  - "[[Embeddings & Semantic Search]]"
+  - "[[Transformers]]"
+---
 ## 1. Generating Text Embeddings with Sentence Transformers
 
 **Purpose**: Convert text data into dense vector representations (embeddings) for downstream tasks like classification.

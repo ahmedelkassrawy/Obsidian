@@ -1,3 +1,20 @@
+---
+description: "Explains the three methods a PyTorch Dataset needs, how DataLoader batches and shuffles, and wires them into a training and testing loop."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/pytorch
+aliases:
+  - "Dataset class"
+  - "DataLoader"
+  - "__getitem__"
+hubs:
+  - "[[PyTorch]]"
+---
 Create a pytorch dataset:
 	__init__ -> as most python classes
 	__getitem__ -> called every iteration

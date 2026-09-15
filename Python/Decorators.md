@@ -1,5 +1,23 @@
 ---
-tags: [python, decorators, functools, contextmanager, design]
+description: "Decorators built from the one fact that `@deco` means `f = deco(f)`: the two-layer basic decorator with functools.wraps, then the three-layer decorator that takes an argument."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/python-language
+  - python
+  - decorators
+  - functools
+  - contextmanager
+  - design
+aliases:
+  - "@wraps"
+  - "retry decorator"
+hubs:
+  - "[[Python Language]]"
 source: Track A · postqueue · Lessons 5–7 (Day 3)
 updated: 2026-08-17
 ---

@@ -1,5 +1,26 @@
 ---
-tags: [python, typing, protocol, abc, interfaces, design]
+description: "Two ways to write an interface in Python: Protocol (structural, duck typing, nothing to inherit) vs ABC (nominal, explicit inheritance, can share code) - with a side-by-side of when each fits."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/python-language
+  - topic/oop
+  - python
+  - typing
+  - protocol
+  - abc
+  - interfaces
+  - design
+aliases:
+  - "interface"
+  - "duck typing"
+hubs:
+  - "[[Python Language]]"
+  - "[[OOP]]"
 source: Track A · postqueue · Lesson 3 (the Storage checklist)
 updated: 2026-08-17
 ---

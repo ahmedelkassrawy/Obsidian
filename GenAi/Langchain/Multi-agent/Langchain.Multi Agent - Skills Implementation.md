@@ -1,3 +1,23 @@
+---
+description: "Implements the skills pattern with progressive disclosure - the agent loads only the skill it needs via a tool call - worked through a database schema and business-logic example."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+  - topic/context-engineering
+aliases:
+  - "skills implementation"
+  - "progressive disclosure"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+  - "[[Context Engineering]]"
+---
  - **Progressive disclosure** - a context management technique where the agent loads information on-demand rather than upfront
  - The agent loads skills via tool calls, rather than dynamically changing the system prompt, discovering and loading only the skills it needs for each task.
 

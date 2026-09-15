@@ -1,3 +1,24 @@
+---
+description: "A decision guide for feed-forward networks: which loss to use per task type, what each optimizer family does, and rules of thumb for picking layer and neuron counts."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/optimizers-and-training
+  - topic/pytorch
+  - topic/tensorflow-and-keras
+aliases:
+  - "MLP"
+  - "loss function picker"
+  - "optimizer picker"
+hubs:
+  - "[[Optimizers & Training]]"
+  - "[[PyTorch]]"
+  - "[[TensorFlow & Keras]]"
+---
 Summarizes the typical architecture of a regression MLP.
 ![[Pasted image 20250928140045.png]]
 

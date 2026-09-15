@@ -1,7 +1,21 @@
 ---
+description: "Using Neo4j for AI work: the Cypher queries to explore data, creating and querying a vector index, generating embeddings with genai.vector.encode, and wiring a GraphRAG pipeline."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/rag
+  - topic/vector-search
+aliases:
+  - "Cypher"
+  - "vector index"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
 name: Neo4j for AI Engineers
-description: A comprehensive guide to leveraging Neo4j for AI/ML tasks, focusing on vector indexing, embeddings, and GraphRAG pipelines.
-type: project
 ---
 
 # Neo4j for AI Engineers: A Study Guide

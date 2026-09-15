@@ -1,3 +1,25 @@
+---
+description: "An end-to-end NLP guide with code: lowercasing, stop words, tokenization, stemming vs lemmatization, n-grams, feature extraction, model training and saving."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/classification
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "NLP guide"
+  - "stemming lemmatization"
+  - "n-grams"
+  - "Sentiment140"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Classification]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 # NLP Guide for Text Preprocessing and Modeling
 
 This guide provides a comprehensive overview of natural language processing (NLP) techniques for text preprocessing, feature extraction, and modeling, tailored for tasks like sentiment analysis or text classification (e.g., using the Sentiment140 dataset). It includes code snippets for preprocessing, model training, evaluation, and saving/loading models, with a focus on Python libraries like NLTK, spaCy, scikit-learn, and transformers. The guide is structured for use in environments like Google Colab and formatted for Obsidian Markdown.

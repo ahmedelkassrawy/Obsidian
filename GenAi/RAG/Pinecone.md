@@ -1,3 +1,24 @@
+---
+description: "What an index means in Pinecone: dense (embedding) vs sparse (keyword) indexes, and how real systems combine both."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/vector-search
+  - topic/rag
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "dense index"
+  - "sparse index"
+  - "hybrid"
+hubs:
+  - "[[Vector Search]]"
+  - "[[RAG]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 ![[Pasted image 20251012172042.png]]
 
 #### Indexes

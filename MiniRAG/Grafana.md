@@ -1,3 +1,20 @@
+---
+description: "The docker-compose service block for running Grafana next to Prometheus."
+domain: ai-eng
+type: howto
+status: stub
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stub
+  - topic/observability
+  - topic/docker
+aliases:
+  - "docker-compose"
+hubs:
+  - "[[Observability]]"
+  - "[[Docker]]"
+---
 in the docker-compose.yml
 ```python
 services:

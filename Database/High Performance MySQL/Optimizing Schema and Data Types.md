@@ -1,3 +1,22 @@
+---
+description: "Book chapter on picking optimal MySQL data types, identifier choice, schema gotchas and the normalization/denormalization trade-off."
+domain: backend
+type: book
+status: digested
+tags:
+  - domain/backend
+  - type/book
+  - status/digested
+  - topic/mysql
+  - topic/sql
+aliases:
+  - "data types"
+  - "normalization"
+  - "schema design"
+hubs:
+  - "[[MySQL]]"
+  - "[[SQL]]"
+---
 ## Choosing Optimal Data Types in MySQL
 ## General Rules for Selecting Data Types
 

@@ -1,3 +1,22 @@
+---
+description: "Book chapter on profiling MySQL server performance: where response time goes, profiling types, instrumentation and the tools."
+domain: backend
+type: book
+status: digested
+tags:
+  - domain/backend
+  - type/book
+  - status/digested
+  - topic/mysql
+  - topic/observability
+aliases:
+  - "profiling"
+  - "slow query log"
+  - "response time"
+hubs:
+  - "[[MySQL]]"
+  - "[[Observability]]"
+---
 ## Introduction to Optimization
 
 Optimizing server performance focuses on reducing response time for queries. Understanding why a server takes a specific amount of time to respond requires detailed analysis of query execution.

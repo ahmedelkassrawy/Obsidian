@@ -1,3 +1,20 @@
+---
+description: "Study guide to Pydantic: defining models, nested models, validation and serialization, and settings management."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/pydantic
+aliases:
+  - "BaseModel"
+  - "validators"
+  - "serialization"
+hubs:
+  - "[[Pydantic]]"
+---
 # Pydantic: Data Validation and Settings Management Study Guide
 
 ## Overview

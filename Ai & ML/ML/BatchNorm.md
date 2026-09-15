@@ -1,3 +1,24 @@
+---
+description: "Compares batch normalization (per feature across the mini-batch) with layer normalization (per sample across features), why each helps training, and where to place them in PyTorch."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/optimizers-and-training
+  - topic/pytorch
+  - topic/cnn
+aliases:
+  - "Batch Normalization"
+  - "Layer Normalization"
+  - "BatchNorm vs LayerNorm"
+hubs:
+  - "[[Optimizers & Training]]"
+  - "[[PyTorch]]"
+  - "[[CNN]]"
+---
 ## Batch Normalization vs Layer Normalization
 
 So far, we learned how batch and layer normalization work. Let’s summarize the key differences between the two techniques.

@@ -1,3 +1,18 @@
+---
+description: "The 1D difference array: add a value to a whole range in O(1) and rebuild the array at the end, plus the warning that Arabic CP sheets often say 'partial sum' when they mean prefix sum."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/prefix-sums
+aliases:
+  - "difference array"
+hubs:
+  - "[[Prefix Sums]]"
+---
 # 1D Partial Sum (Difference Array)
 
 Related: [[Prefix Sum]] · [[2D Partial Sum]]

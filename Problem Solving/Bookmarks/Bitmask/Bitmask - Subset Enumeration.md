@@ -1,3 +1,19 @@
+---
+description: "Explains the subset-enumeration loop: an integer bitmask stands for a subset, bit j set means element j is included, so looping 0..2^n-1 walks every subset."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/bitmask
+aliases:
+  - "subset enumeration"
+  - "2^n loop"
+hubs:
+  - "[[Bitmask]]"
+---
 ```C++
 for(int mask = 0; mask < (1 << n); mask++)
     {

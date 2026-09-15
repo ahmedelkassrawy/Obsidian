@@ -1,3 +1,19 @@
+---
+description: "Explains a reference as a second name for the same storage (house vs address analogy), how it must be initialised, and how it is used for function parameters."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "references"
+  - "aliases"
+hubs:
+  - "[[C++ Language]]"
+---
 Refrencing is just pointing to the same data type
 ```C++
 int x =9;

@@ -1,5 +1,25 @@
 ---
-tags: [software-design, data-modeling, types, python, pydantic]
+description: "Why a class and why an enum: a type is the set of values a slot may hold, so pick types that make illegal states unrepresentable and validate once at the boundary."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/python-language
+  - topic/pydantic
+  - software-design
+  - data-modeling
+  - types
+  - python
+  - pydantic
+aliases:
+  - "enum"
+  - "illegal states"
+hubs:
+  - "[[Python Language]]"
+  - "[[Pydantic]]"
 source: Track A · postqueue · Lesson 2
 updated: 2026-08-17
 ---

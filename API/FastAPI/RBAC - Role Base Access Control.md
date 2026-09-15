@@ -1,3 +1,21 @@
+---
+description: "Cheat sheet for adding role-based access control to FastAPI: role field on the user model, a dependency that checks roles, and guarded routes."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/auth-and-security
+  - topic/fastapi
+aliases:
+  - "RBAC"
+  - "roles and permissions"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[FastAPI]]"
+---
 ### 🚀 Implementing RBAC in FastAPI (Cheat Sheet)
 
 **1. Define Your Roles**

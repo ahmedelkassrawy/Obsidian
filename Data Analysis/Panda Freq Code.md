@@ -1,3 +1,20 @@
+---
+description: "Frequently used pandas one-liners: info and describe, sorting, apply and map, boolean filtering and groupby aggregation."
+domain: ml
+type: reference
+status: raw
+tags:
+  - domain/ml
+  - type/reference
+  - status/raw
+  - topic/pandas
+aliases:
+  - "pandas snippets"
+  - "apply map"
+  - "sort_values"
+hubs:
+  - "[[Pandas]]"
+---
 ```python
 df.info()
 ```

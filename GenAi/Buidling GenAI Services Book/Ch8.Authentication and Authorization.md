@@ -1,3 +1,22 @@
+---
+description: "Ch8 notes on auth for AI services: registration and login flows, password hashing, JWT access and refresh tokens, logout, and role-based authorization."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/auth-and-security
+  - topic/fastapi
+aliases:
+  - "JWT"
+  - "OAuth"
+  - "refresh tokens"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[FastAPI]]"
+---
 #### Authentication and Authorization
 While authentication is about verifying the identity, authorization focuses on verifying permissions of an identity to access or mutate resources.
 #### Authentication Methods

@@ -1,3 +1,21 @@
+---
+description: "Session 1 course notes on Python's built-in containers - lists, tuples, sets, dictionaries - with a table comparing them, plus control flow."
+domain: cs
+type: course
+status: digested
+tags:
+  - domain/cs
+  - type/course
+  - status/digested
+  - topic/python-language
+aliases:
+  - "lists"
+  - "tuples"
+  - "sets"
+  - "dicts"
+hubs:
+  - "[[Python Language]]"
+---
 # Python Programming: Session 1 - Data Structures and Control Flow
 
 ## Agenda

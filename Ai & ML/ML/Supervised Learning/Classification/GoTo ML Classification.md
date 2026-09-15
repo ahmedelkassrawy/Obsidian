@@ -1,3 +1,24 @@
+---
+description: "A go-to playbook for classification problems: the EDA-to-baseline workflow, which model family fits which situation, and which metric to optimise."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/classification
+  - topic/evaluation-metrics
+  - topic/feature-engineering-and-pipelines
+aliases:
+  - "classification playbook"
+  - "which classifier to use"
+  - "imbalanced data"
+hubs:
+  - "[[Classification]]"
+  - "[[Evaluation Metrics]]"
+  - "[[Feature Engineering & Pipelines]]"
+---
 ## 🔹 1. Understand the Problem
 - Target variable is **categorical** (e.g. churn: Yes/No, disease: Positive/Negative).
 - Business goal: accuracy vs recall vs precision vs F1 depends on the context.

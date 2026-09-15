@@ -1,3 +1,21 @@
+---
+description: "Explains the encoder-decoder Seq2Seq architecture, the fixed-vector bottleneck problem, how attention fixes it, and how Seq2Seq compares to transformers."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/rnn-and-lstm
+  - topic/transformers
+aliases:
+  - "encoder decoder"
+  - "information bottleneck"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[Transformers]]"
+---
 ## 🧠 What Is Seq2Seq?
 
 **Seq2Seq (Sequence-to-Sequence)** is a neural network architecture used to **transform one sequence into another sequence**.

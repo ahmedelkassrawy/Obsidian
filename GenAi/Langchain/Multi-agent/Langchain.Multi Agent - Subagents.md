@@ -1,3 +1,22 @@
+---
+description: "The supervisor/subagent architecture: wrapping agents as tools, sync vs async execution, and why a single dispatch tool beats one tool per subagent."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+aliases:
+  - "subagents"
+  - "supervisor"
+  - "single dispatch"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+---
 ### Subagents
 - a central main [agent](https://docs.langchain.com/oss/python/langchain/agents) (often referred to as a **supervisor**) coordinates subagents by calling them as [tools](https://docs.langchain.com/oss/python/langchain/tools).
 - The main agent decides which subagent to invoke, what input to provide, and how to combine results.

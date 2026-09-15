@@ -1,3 +1,24 @@
+---
+description: "Shows a race condition in concurrent transactions and walks the fixes: single threading, locking and fine-grained locks, with common mistakes."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/transactions-and-concurrency-control
+  - topic/concurrency-and-async
+  - topic/system-design
+aliases:
+  - "race condition"
+  - "locking"
+  - "thread safety"
+hubs:
+  - "[[Transactions & Concurrency Control]]"
+  - "[[Concurrency & Async]]"
+  - "[[System Design]]"
+---
 ## What is Concurrency?
 
 - **Concurrency** as the name suggests is having **multiple transactions running at the same time**.

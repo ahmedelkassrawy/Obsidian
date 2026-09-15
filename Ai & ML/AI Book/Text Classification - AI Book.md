@@ -1,3 +1,24 @@
+---
+description: "Book-chapter notes on text classification: turning a corpus into vectors with CountVectorizer and TfidfVectorizer, then training and scoring a classifier on that matrix."
+domain: ml
+type: book
+status: digested
+tags:
+  - domain/ml
+  - type/book
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/classification
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "Text Classification AI Book"
+  - "CountVectorizer"
+  - "TfidfVectorizer"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Classification]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 #### Preparing text
 - CountVectorizer 
 - TfidfVectorizer

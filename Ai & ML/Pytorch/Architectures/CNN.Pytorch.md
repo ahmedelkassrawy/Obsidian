@@ -1,3 +1,21 @@
+---
+description: "Snippets for image work in PyTorch: ImageFolder datasets, torchvision transform pipelines, data augmentation and evaluation."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/pytorch
+  - topic/cnn
+aliases:
+  - "ImageFolder"
+  - "torchvision transforms"
+hubs:
+  - "[[PyTorch]]"
+  - "[[CNN]]"
+---
 ```python
 from torchvision.datasets import ImageFolder
 from torchvision import transforms

@@ -1,3 +1,23 @@
+---
+description: "Study guide on prompting: the sampling parameters, API roles, zero/one/few-shot and role prompting, then chain of thought and ReAct, with a LangChain script at the end."
+domain: ai-eng
+type: course
+status: stale
+tags:
+  - domain/ai-eng
+  - type/course
+  - status/stale
+  - topic/prompting
+  - topic/langchain
+aliases:
+  - "prompt engineering"
+  - "few-shot"
+  - "chain of thought"
+  - "ReAct"
+hubs:
+  - "[[Prompting]]"
+  - "[[LangChain]]"
+---
 # 📚 AI Prompt Engineering Study Guide
 
 > **Tags**: #AI #PromptEngineering #LLM #LangChain #APICalls  

@@ -1,3 +1,23 @@
+---
+description: "What context means in Pipecat, how it updates during a conversation, and how to set up the context aggregator with initial messages and a tools schema."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+  - topic/context-engineering
+aliases:
+  - "pipecat context"
+  - "context aggregator"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+  - "[[Context Engineering]]"
+---
 What is context in pipecat
 - In Pipecat, **context** refers to the conversation history that the LLM uses to generate responses. 
 - The context consists of a list of alternating user/assistant messages that represents the collective history of the entire conversation.

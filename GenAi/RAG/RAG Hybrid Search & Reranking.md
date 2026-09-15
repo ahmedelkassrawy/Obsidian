@@ -1,3 +1,22 @@
+---
+description: "Hybrid retrieval explained and implemented: dense embeddings plus BM25 keyword search, merged and then reranked before the model sees the chunks."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/rag
+  - topic/vector-search
+aliases:
+  - "hybrid search"
+  - "BM25"
+  - "reranking"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+---
 # RAG Hybrid Search & Reranking
 
 Hybrid search combines **dense (embedding-based)** retrieval and **sparse (keyword / BM25)** retrieval, then reranks the merged results before sending them to the LLM.

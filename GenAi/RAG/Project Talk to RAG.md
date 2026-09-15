@@ -1,3 +1,22 @@
+---
+description: "Project notes for a talk-to-your-documents RAG app: the extract, transform, embed and store pipeline, starting with the file-upload step."
+domain: ai-eng
+type: project
+status: digested
+tags:
+  - domain/ai-eng
+  - type/project
+  - status/digested
+  - topic/rag
+  - topic/fastapi
+aliases:
+  - "Talk to RAG"
+  - "file upload"
+  - "ingestion pipeline"
+hubs:
+  - "[[RAG]]"
+  - "[[FastAPI]]"
+---
 The pipeline for RAG consists of the following stages:
 1. Extraction of documents from a filesystem to load the textual content in chunks onto memory.
 2. Transformation of the textual content by cleaning, splitting, and preparing them to be passed into an embedding model to produce embedding vectors that represent a chunk’s semantic meaning

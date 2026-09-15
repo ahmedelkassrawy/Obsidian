@@ -1,3 +1,22 @@
+---
+description: "Covers anomaly detection approaches (statistical, distance, density, tree-based), when to remove vs keep outliers, and how to feed an anomaly score back in as a feature."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/feature-engineering-and-pipelines
+  - topic/clustering-and-dimensionality-reduction
+aliases:
+  - "Outlier Detection"
+  - "Isolation Forest"
+  - "anomaly score feature"
+hubs:
+  - "[[Feature Engineering & Pipelines]]"
+  - "[[Clustering & Dimensionality Reduction]]"
+---
 Anomaly detection (Outlier detection) is the process of identifying data points, events, or observations that deviate significantly from the majority of the data
 
 These “anomalies” often signal **rare but important** occurrences — like fraud, sensor failure, or system intrusion.

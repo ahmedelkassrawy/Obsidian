@@ -1,3 +1,22 @@
+---
+description: "FastAPI course notes on Pydantic models: field validation and metadata, nested models, lists of submodels, special types and request-body examples."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/fastapi
+  - topic/pydantic
+aliases:
+  - "BaseModel"
+  - "Field validation"
+  - "nested models"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Pydantic]]"
+---
 # FastAPI and Pydantic 
 
 This Obsidian Markdown file provides a structured overview of FastAPI and Pydantic concepts, focusing on model declarations, validations, and handling of request parameters like cookies and headers. It is designed for studying and quick reference.

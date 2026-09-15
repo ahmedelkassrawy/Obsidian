@@ -1,3 +1,20 @@
+---
+description: "std::map vs std::unordered_map (sorted by key vs hashed), with basic usage and the two ways to search - count and find."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "unordered_map"
+  - "count"
+  - "find"
+hubs:
+  - "[[STL Containers]]"
+---
 ## Map and Unordered Map Study Guide
 
 ## Overview

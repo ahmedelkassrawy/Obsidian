@@ -1,3 +1,21 @@
+---
+description: "Why real-time voice is hard and what Pipecat gives you: low latency, a modular pipeline, and the transport options (P2P WebRTC, Daily rooms, telephony)."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "WebRTC"
+  - "telephony"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 Challenging Voice Ai
 - **Speech recognition** must transcribe audio as users speak
 - **Language models** need to process context and generate responses

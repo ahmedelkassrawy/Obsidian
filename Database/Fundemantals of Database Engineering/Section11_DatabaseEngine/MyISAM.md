@@ -1,3 +1,21 @@
+---
+description: "Course notes on the MyISAM engine: index-everything design, no transactions, table-level locking and its reliability problems."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/mysql
+  - topic/database-internals
+aliases:
+  - "table locking"
+  - "non-transactional"
+hubs:
+  - "[[MySQL]]"
+  - "[[Database Internals]]"
+---
 # MyISAM Storage Engine
 
 ## Overview

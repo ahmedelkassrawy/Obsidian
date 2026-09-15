@@ -1,3 +1,25 @@
+---
+description: "Code for computing NLP metrics with the HuggingFace evaluate library: BLEU for translation, ROUGE for summarization and seqeval for NER, wired into a training loop."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/evaluation-metrics
+  - topic/transformers
+  - topic/huggingface
+aliases:
+  - "BLEU code"
+  - "ROUGE code"
+  - "seqeval"
+  - "evaluate library"
+hubs:
+  - "[[Evaluation Metrics]]"
+  - "[[Transformers]]"
+  - "[[HuggingFace]]"
+---
 ## Categories of metrics
 
 There are 3 high-level categories of metrics:

@@ -1,3 +1,21 @@
+---
+description: "Argues that one-run accuracy or LLM-as-judge is not agent evaluation, and lists what a production eval harness must collect across repeated non-deterministic runs."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/ai-evaluation
+  - topic/agents
+aliases:
+  - "agent evals"
+  - "eval harness"
+hubs:
+  - "[[AI Evaluation]]"
+  - "[[Agents]]"
+---
 # Agent Evaluation — Why Single-Run Eval Is Worthless
 
 > *"If your Evaluation consists solely of Accuracy or LLM-as-a-Judge... then you haven't even started evaluating AI Agents yet."*

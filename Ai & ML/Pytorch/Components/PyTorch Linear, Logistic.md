@@ -1,3 +1,26 @@
+---
+description: "Trains linear and logistic models in PyTorch by hand: define nn.Linear, MSE loss, an SGD optimizer, and step through the training loop."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/pytorch
+  - topic/regression
+  - topic/classification
+  - topic/optimizers-and-training
+aliases:
+  - "nn.Linear"
+  - "gradient descent PyTorch"
+  - "logistic PyTorch"
+hubs:
+  - "[[PyTorch]]"
+  - "[[Regression]]"
+  - "[[Classification]]"
+  - "[[Optimizers & Training]]"
+---
 
 ## Training a Linear Model with Gradient Descent
 

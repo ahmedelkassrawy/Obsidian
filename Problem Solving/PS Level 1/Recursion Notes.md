@@ -1,12 +1,24 @@
 ---
-title: Recursion Notes
+description: "Recursion from the ground up: how the call stack sets the order of execution, printing before vs after the call, accumulate-on-return, memoisation, and the pick/don't-pick template."
+domain: cs
+type: concept
+status: digested
 tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/recursion-and-backtracking
   - problem-solving
   - recursion
   - backtracking
   - competitive-programming
 aliases:
-  - Recursion
+  - "call stack"
+  - "pick or dont pick"
+  - "Recursion"
+hubs:
+  - "[[Recursion & Backtracking]]"
+title: Recursion Notes
 ---
 
 # Recursion Notes

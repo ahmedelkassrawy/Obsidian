@@ -1,3 +1,20 @@
+---
+description: "The five backtracking templates - subset generation, permutations, combinations, N-Queens and graph colouring - and why the for-loop pattern needs only one recursive call."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/recursion-and-backtracking
+aliases:
+  - "subsets"
+  - "permutations"
+  - "N-Queens"
+hubs:
+  - "[[Recursion & Backtracking]]"
+---
 ### Backtracking Patterns
 ## Table of Contents
 

@@ -1,3 +1,24 @@
+---
+description: "How a proof-of-concept retriever evolved into a 3-stage production pipeline: hybrid vector plus BM25 candidates, FlashRank cross-encoder reranking, and score-aware returns."
+domain: ai-eng
+type: project
+status: digested
+tags:
+  - domain/ai-eng
+  - type/project
+  - status/digested
+  - topic/rag
+  - topic/vector-search
+  - topic/database-indexing
+aliases:
+  - "RAG POC"
+  - "FlashRank"
+  - "hybrid retriever"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+  - "[[Database Indexing]]"
+---
 ### Production-Grade RAG Retriever Evolution  
 **Custom SQL → Hybrid (Vector + BM25) + FlashRank Reranking**
 ## Core Production Tips

@@ -1,3 +1,21 @@
+---
+description: "Explains how CrewAI Flows and Crews fit together - Flows hold state and control, Crews do collaborative work - and when to use each or both."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/crewai
+  - topic/multi-agent-systems
+aliases:
+  - "crews vs flows"
+  - "when to use flows"
+hubs:
+  - "[[CrewAI]]"
+  - "[[Multi-Agent Systems]]"
+---
 ## How It All Works Together
 
 1. **The Flow** triggers an event or starts a process.

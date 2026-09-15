@@ -1,5 +1,24 @@
 ---
-tags: [python, testing, pytest, pydantic, validation]
+description: "pytest aimed at validation: the habit of testing that bad input is rejected with pytest.raises, not just that good input constructs, and isolating one variable per test."
+domain: cs
+type: howto
+status: digested
+tags:
+  - domain/cs
+  - type/howto
+  - status/digested
+  - topic/testing
+  - topic/python-language
+  - python
+  - testing
+  - pytest
+  - pydantic
+  - validation
+aliases:
+  - "pytest.raises"
+hubs:
+  - "[[Testing]]"
+  - "[[Python Language]]"
 source: Track A · postqueue · Day 1 (pytest for Pydantic models)
 updated: 2026-08-17
 ---

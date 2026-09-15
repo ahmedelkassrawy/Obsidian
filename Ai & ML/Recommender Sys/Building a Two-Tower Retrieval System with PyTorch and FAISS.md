@@ -1,3 +1,26 @@
+---
+description: "Builds a two-tower retrieval model on MovieLens 1M in PyTorch: feature encoding, contrastive training with in-batch negatives, then serving the item tower through FAISS."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/recommender-systems
+  - topic/pytorch
+  - topic/vector-search
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "two-tower retrieval"
+  - "MovieLens"
+  - "in-batch negatives"
+hubs:
+  - "[[Recommender Systems]]"
+  - "[[PyTorch]]"
+  - "[[Vector Search]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 
 > [!abstract] Goal
 > This guide walks you through building a **production-style, decoupled retrieval model** from scratch.  

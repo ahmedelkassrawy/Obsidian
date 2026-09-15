@@ -1,3 +1,22 @@
+---
+description: "Explains how regression trees predict continuous values, the variance/MSE splitting criterion, and how they differ from classification trees, with scikit-learn code."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+  - topic/regression
+aliases:
+  - "regression tree"
+  - "DecisionTreeRegressor"
+  - "MSE split"
+hubs:
+  - "[[Trees & Boosting]]"
+  - "[[Regression]]"
+---
 
 ---
 ## What are Regression Trees?

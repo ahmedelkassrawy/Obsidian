@@ -1,3 +1,21 @@
+---
+description: "The four context-compaction strategies a Claude Code style agent loop uses to stay under the token limit, with a Python implementation of each."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/context-engineering
+  - topic/claude-code
+aliases:
+  - "context compaction"
+  - "snip compact"
+hubs:
+  - "[[Context Engineering]]"
+  - "[[Claude Code]]"
+---
 # Context Compression - Claude Code
 
 ## Summary

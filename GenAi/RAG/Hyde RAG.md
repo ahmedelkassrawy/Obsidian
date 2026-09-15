@@ -1,3 +1,21 @@
+---
+description: "HyDE explained and implemented: have the model write a fake answer first, embed that instead of the question, and retrieve against it."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/rag
+  - topic/langchain
+aliases:
+  - "HyDE"
+  - "hypothetical document embeddings"
+hubs:
+  - "[[RAG]]"
+  - "[[LangChain]]"
+---
 **HyDE (Hypothetical Document Embeddings)** RAG.
 
 Let’s go step-by-step, because it’s conceptually simple but _powerfully improves retrieval_.

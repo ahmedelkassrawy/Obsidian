@@ -1,3 +1,18 @@
+---
+description: "A single snippet showing a pointer holding the address of a string and printing the value, the address, and the dereferenced value."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/c-language
+aliases:
+  - "pointers"
+hubs:
+  - "[[C++ Language]]"
+---
 ```C++
 string food = "Pizza";  // A food variable of type string  
 **string* ptr = &food;**    // A pointer variable, with the name ptr, that stores the address of food  

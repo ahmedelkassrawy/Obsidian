@@ -1,3 +1,24 @@
+---
+description: "Explains collaborative filtering and how the two-tower network is its deep-learning form, including contrastive training and ANN retrieval at serving time."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/recommender-systems
+  - topic/embeddings-and-semantic-search
+  - topic/vector-search
+aliases:
+  - "two-tower network"
+  - "collaborative filtering"
+  - "in-batch negatives"
+hubs:
+  - "[[Recommender Systems]]"
+  - "[[Embeddings & Semantic Search]]"
+  - "[[Vector Search]]"
+---
 Two-Tower Networks and Collaborative Filtering are two of the most important ideas in modern recommender systems. They're deeply connected — the Two-Tower architecture is essentially a deep learning _implementation_ of collaborative filtering's core philosophy. Let me break them down layer by layer.
 
 ---

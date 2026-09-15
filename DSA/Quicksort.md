@@ -1,3 +1,20 @@
+---
+description: "Quicksort explained through divide-and-conquer: find the base case, shrink the problem toward it, partition around a pivot."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/sorting
+  - topic/recursion-and-backtracking
+aliases:
+  - "divide and conquer"
+hubs:
+  - "[[Sorting]]"
+  - "[[Recursion & Backtracking]]"
+---
 - Quicksort uses divide-and-conquer.
 - here’s how D&C works:
 - 1. Figure out a simple case as the base case. 

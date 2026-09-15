@@ -1,6 +1,23 @@
 ---
-tags: [sqlalchemy, cheatsheet, reference, 2.0-style]
-aliases: [SQLAlchemy cheatsheet, SQLAlchemy quick reference, SQLAlchemy 2.0 cheatsheet]
+description: "One-screen 2.0-style cheatsheet: project layout, CRUD, filters, results and relationship declarations."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - cheatsheet
+  - reference
+  - 2.0-style
+aliases:
+  - "SQLAlchemy cheatsheet"
+  - "SQLAlchemy quick reference"
+  - "SQLAlchemy 2.0 cheatsheet"
+hubs:
+  - "[[SQLAlchemy]]"
 ---
 
 # 12 — Cheatsheet (2.0 style)

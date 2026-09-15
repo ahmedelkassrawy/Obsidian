@@ -1,3 +1,25 @@
+---
+description: "Explains what RNNs are for and how their memory works, then the Keras text pipeline (tokenize, pad, embed) and the exact input and output shapes an LSTM layer expects."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/rnn-and-lstm
+  - topic/nlp-preprocessing
+  - topic/tensorflow-and-keras
+aliases:
+  - "RNN"
+  - "LSTM"
+  - "Keras Tokenizer"
+  - "padding sequences"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[NLP Preprocessing]]"
+  - "[[TensorFlow & Keras]]"
+---
 ## Overview of RNNs
 
 RNNs are designed for sequential data, leveraging a "memory" to capture context from previous inputs. This makes them ideal for tasks where order or context is crucial.

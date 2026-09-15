@@ -1,3 +1,22 @@
+---
+description: "Compares word-, character- and subword-based tokenization with code for each, plus practice questions on when each breaks down."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/transformers
+aliases:
+  - "tokenization types"
+  - "word vs char vs subword"
+  - "WordPiece BPE"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Transformers]]"
+---
 **Tokenizer** -> make the text have numerical representations called token indices
 ### Types
 - Word based

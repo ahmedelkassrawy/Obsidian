@@ -1,8 +1,23 @@
 ---
+description: "BFS explained with the ripple-in-a-pond picture: the queue/visited/dist trio, reconstructing the actual path with a parent array, grid BFS and multi-source BFS."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/graphs-bfs-and-dfs
+  - problem-solving
+  - graphs
+  - bfs
+  - algorithms
+aliases:
+  - "shortest path"
+  - "multi-source BFS"
+hubs:
+  - "[[Graphs BFS & DFS]]"
 date: 2026-08-08
-type: note
-tags: [problem-solving, graphs, bfs, algorithms]
-description: BFS explained in simple words with diagrams — the core loop, shortest paths, path reconstruction, implicit graphs, bipartite coloring, topological sort, and multi-source BFS.
 ---
 # BFS & Graph Applications
 

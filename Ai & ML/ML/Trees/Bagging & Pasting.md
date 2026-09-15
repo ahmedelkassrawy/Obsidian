@@ -1,3 +1,20 @@
+---
+description: "Explains bagging vs pasting (sampling with or without replacement), how bagging underpins Random Forest, and how that contrasts with XGBoost's sequential boosting."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+aliases:
+  - "Bagging"
+  - "Pasting"
+  - "bootstrap aggregating"
+hubs:
+  - "[[Trees & Boosting]]"
+---
 Bagging** (Bootstrap Aggregating) and **pasting** are ensemble methods that train multiple models (e.g., decision trees) on random subsets of the training data.
 
 - **Bagging**: Sampling **with replacement** (some samples may appear multiple times).

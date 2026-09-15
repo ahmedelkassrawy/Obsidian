@@ -1,3 +1,22 @@
+---
+description: "Course notes on Memcached internals: slab allocation against fragmentation, listener/worker threading and LRU eviction."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/caching
+  - topic/database-internals
+aliases:
+  - "memcached"
+  - "slab allocation"
+  - "LRU eviction"
+hubs:
+  - "[[Caching]]"
+  - "[[Database Internals]]"
+---
 # Memcached In-Memory Database Architecture
 
 ## Overview

@@ -1,3 +1,23 @@
+---
+description: "Course notes on PostgreSQL index scan vs index-only scan, covering indexes with INCLUDE, and leftmost-column rules for composite indexes."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-indexing
+  - topic/postgres
+aliases:
+  - "index only scan"
+  - "covering index"
+  - "INCLUDE"
+  - "composite index"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Postgres]]"
+---
 
 ## Single-Column Index
 

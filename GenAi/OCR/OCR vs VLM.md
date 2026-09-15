@@ -1,3 +1,19 @@
+---
+description: "When to use classic OCR and when to use a vision model: speed, cost, hallucination risk, handwriting accuracy, and a confidence-threshold hybrid that tries OCR first."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/ocr
+aliases:
+  - "handwritten"
+  - "hybrid pipeline"
+hubs:
+  - "[[OCR]]"
+---
 - OCR
 1-2 secs
 deterministic

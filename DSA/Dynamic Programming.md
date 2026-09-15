@@ -1,4 +1,20 @@
-Faker [[Knapsack]] , ROO7 efta7 ktab ch. 34an rsoomat kteer werg3ly hena
+---
+description: "Grokking-style intro to DP through the knapsack grid, and why the fractional version cannot be done with the DP table (that one is greedy)."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/dynamic-programming
+aliases:
+  - "knapsack"
+  - "Grokking"
+hubs:
+  - "[[Dynamic Programming]]"
+---
+Faker [[Backtracking - Knapsack Recursive]] , ROO7 efta7 ktab ch. 34an rsoomat kteer werg3ly hena
 
 - So now it’s not all or nothing—you can take a fraction of an item. How do you handle this using dynamic programming? Answer: You can’t. With the dynamic-programming solution, you either take the item or not. There’s no way for it to figure out that you should take half an item.
 - Dynamic programming is useful when you’re trying to optimize something given a constraint. In the knapsack problem, you had to maximize the value of the goods you stole, constrained by the size of the knapsack. 

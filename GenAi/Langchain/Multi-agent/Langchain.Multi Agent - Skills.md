@@ -1,3 +1,20 @@
+---
+description: "The skills architecture: packaging prompt-driven specializations as invokable skills the agent calls on demand instead of stuffing them all in the system prompt."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+aliases:
+  - "skills architecture"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+---
 In the **skills** architecture, specialized capabilities are packaged as invokable “skills” that augment an [agent’s](https://docs.langchain.com/oss/python/langchain/agents) behavior.
 Skills are primarily prompt-driven specializations that an agent can invoke on-demand.
 

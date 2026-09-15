@@ -1,3 +1,24 @@
+---
+description: "Copy-ready EDA snippets: describe/groupby summaries, feature binning, boxplots, KDE plots and a correlation heatmap, using the Titanic dataset."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/pandas
+  - topic/matplotlib
+  - topic/data-cleaning
+aliases:
+  - "EDA"
+  - "seaborn plots"
+  - "correlation heatmap"
+hubs:
+  - "[[Pandas]]"
+  - "[[Matplotlib]]"
+  - "[[Data Cleaning]]"
+---
 ```python
 train_df.describe(include=["O"]) #for the categorical data
 

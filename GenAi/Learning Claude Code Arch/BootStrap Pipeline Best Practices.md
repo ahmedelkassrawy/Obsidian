@@ -1,3 +1,21 @@
+---
+description: "What Claude Code's startup sequence teaches about system design: each phase narrows the space of possibilities, and slow work is loaded in parallel."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/claude-code
+  - topic/system-design
+aliases:
+  - "bootstrap pipeline"
+  - "startup phases"
+hubs:
+  - "[[Claude Code]]"
+  - "[[System Design]]"
+---
 ## What Startup Teaches About System Design
 
 The bootstrap pipeline is a study in narrowing scopes. Each phase reduces the space of possibilities:

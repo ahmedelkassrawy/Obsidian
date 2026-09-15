@@ -1,3 +1,18 @@
+---
+description: "std::stack member functions (empty, size, top, push, pop) with their O(1) costs."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "LIFO"
+hubs:
+  - "[[STL Containers]]"
+---
 The functions associated with stack are:   
 [empty()](https://www.geeksforgeeks.org/stack-empty-and-stack-size-in-c-stl/) – Returns whether the stack is empty – Time Complexity : O(1)   
 [size()](https://www.geeksforgeeks.org/stack-empty-and-stack-size-in-c-stl/) – Returns the size of the stack – Time Complexity : O(1)   

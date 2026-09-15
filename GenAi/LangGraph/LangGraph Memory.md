@@ -1,3 +1,22 @@
+---
+description: "Pasted LangGraph memory code: compiling with InMemorySaver, using thread_id config, and reading conversation state back with get_state."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/langgraph
+  - topic/agent-memory
+aliases:
+  - "InMemorySaver"
+  - "checkpointer"
+  - "get_state"
+hubs:
+  - "[[LangGraph]]"
+  - "[[Agent Memory]]"
+---
 InMemorySaver:
 ```python
 checkpointer = InMemorySaver()

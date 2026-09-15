@@ -1,6 +1,36 @@
 ---
-tags: [fastapi, sqlalchemy, crud, endpoints, pagination, http-404, foreign-key]
-aliases: [API endpoints, CRUD endpoints, create_user, read_users, read_user, create_product_for_user, read_products, read_product, add commit refresh]
+description: "Writes the CRUD endpoints against the database, including where each parameter comes from and the add/commit/refresh dance."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/api-design
+  - fastapi
+  - sqlalchemy
+  - crud
+  - endpoints
+  - pagination
+  - http-404
+  - foreign-key
+aliases:
+  - "CRUD endpoints"
+  - "add commit refresh"
+  - "API endpoints"
+  - "create_user"
+  - "read_users"
+  - "read_user"
+  - "create_product_for_user"
+  - "read_products"
+  - "read_product"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[API Design]]"
 source: https://github.com/h9-tec/AI_deployment#creating-api-endpoints-with-database-operations
 ---
 

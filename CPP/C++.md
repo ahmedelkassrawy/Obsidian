@@ -1,12 +1,27 @@
+---
+description: "Hub page for the CPP folder - a list of links to the other C++ notes plus one setprecision snippet."
+domain: cs
+type: meta
+status: stub
+tags:
+  - domain/cs
+  - type/meta
+  - status/stub
+  - topic/c-language
+aliases:
+  - "C++ index"
+hubs:
+  - "[[C++ Language]]"
+---
 [[Constructor]]
 [[Classes]]
-[[Problem Solving/PS Level 1/Structs]]
+[[Problem Solving/PS Level 1/Struct With Custom Comparator]]
 [[References]]
 [[Pointers]]
-[[CPP/Functions]]
+[[CPP/Lambda And Map]]
 [[CPP/OOP]]
 [[Local and Global Variables]]
-[[Forward deceleration]]
+[[Forward Declaration]]
 [[Header Files]]
 [[Sets]]
 Set precision

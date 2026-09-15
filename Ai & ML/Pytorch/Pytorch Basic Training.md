@@ -1,3 +1,22 @@
+---
+description: "A short, runnable PyTorch training loop on a one-input regression model, with notes on what the loss function and optimizer each do."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/pytorch
+  - topic/optimizers-and-training
+aliases:
+  - "PyTorch training loop"
+  - "nn.Sequential"
+  - "MSELoss"
+hubs:
+  - "[[PyTorch]]"
+  - "[[Optimizers & Training]]"
+---
 ```python
 import torch
 import torch.nn as nn

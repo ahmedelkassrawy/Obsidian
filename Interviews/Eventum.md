@@ -1,1 +1,0 @@
-[Eventum Practice](https://www.notion.so/Eventum-Practice-222f1e2732a080ecadbafc07faf3d47d)

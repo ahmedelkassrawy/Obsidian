@@ -1,3 +1,21 @@
+---
+description: "Explains Random Forest as bagged trees with random feature subsets, its key hyperparameters, Extra-Trees, and how to read feature importances."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+  - topic/feature-engineering-and-pipelines
+aliases:
+  - "Extra-Trees"
+  - "feature importance"
+hubs:
+  - "[[Trees & Boosting]]"
+  - "[[Feature Engineering & Pipelines]]"
+---
 ## Overview
 A Random Forest is an **ensemble learning method** consisting of multiple decision trees. Each tree is trained on a random subset of the data and features, and the final prediction is made by aggregating the predictions of all trees (majority voting for classification, averaging for regression).
 ## Key Mechanisms

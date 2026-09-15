@@ -1,3 +1,19 @@
+---
+description: "Explains why declarations go in a header and get #included, so a multi-file program does not repeat them."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "headers"
+  - "include"
+hubs:
+  - "[[C++ Language]]"
+---
 Header files allow us to put declarations in one location and then import them wherever we need them. This can save a lot of typing in multi-file programs.
 ```C++
 // 1) We really should have a header guard here, but will omit it for simplicity (we'll cover header guards in the next lesson)

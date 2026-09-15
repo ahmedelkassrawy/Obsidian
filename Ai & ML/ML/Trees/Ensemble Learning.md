@@ -1,3 +1,20 @@
+---
+description: "Explains why ensembles beat single models and demonstrates hard vs soft voting classifiers in scikit-learn."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+aliases:
+  - "ensemble learning"
+  - "voting classifier"
+  - "hard vs soft voting"
+hubs:
+  - "[[Trees & Boosting]]"
+---
 As an example of an ensemble method, you can train a group of decision tree classifiers, each on a different random subset of the training set. You can then obtain the predictions of all the individual trees, and the class that gets the most votes is the ensemble’s prediction
 Such an ensemble of decision trees is called a random forest, and despite its simplicity, this is one of the most powerful machine learning algorithms available today
 

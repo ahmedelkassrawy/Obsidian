@@ -1,6 +1,31 @@
 ---
-tags: [fastapi, pydantic, sqlalchemy, backend, deployment, moc]
-aliases: [FastAPI + Pydantic + SQLAlchemy, Integration Index, Full-stack API glue]
+description: "Index for the FastAPI + Pydantic + SQLAlchemy folder: reading order, look-up notes and a 'I want to find' table."
+domain: backend
+type: meta
+status: digested
+tags:
+  - domain/backend
+  - type/meta
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/pydantic
+  - fastapi
+  - pydantic
+  - sqlalchemy
+  - backend
+  - deployment
+  - moc
+aliases:
+  - "FastAPI SQLAlchemy index"
+  - "reading order"
+  - "FastAPI + Pydantic + SQLAlchemy"
+  - "Integration Index"
+  - "Full-stack API glue"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[Pydantic]]"
 source: https://github.com/h9-tec/AI_deployment#6-integrating-fastapi-pydantic-and-sqlalchemy
 ---
 

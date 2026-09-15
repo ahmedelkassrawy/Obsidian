@@ -1,3 +1,19 @@
+---
+description: "std::vector as a dynamic array: declaring one, adding, accessing, changing and deleting elements, how it compares to a raw array, and how it grows."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "dynamic array"
+  - "push_back"
+hubs:
+  - "[[STL Containers]]"
+---
 - are dynamic arrays ==> array that can change its size.
 - vector is a class template.
 ```C++

@@ -1,4 +1,20 @@
-[[Solving Notes]][[Pumbaa]]
+---
+description: "Explains the index-mapping trick for grid problems: keep row_mapping and column_mapping arrays and swap entries there instead of moving the data."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/arrays-and-hashing
+aliases:
+  - "row mapping"
+  - "column mapping"
+hubs:
+  - "[[Arrays & Hashing]]"
+---
+[[C++ Solving Tips - Ternary And Palindrome]][[Arrays - Pumbaa]]
 
 ### Concept of Mapping
 

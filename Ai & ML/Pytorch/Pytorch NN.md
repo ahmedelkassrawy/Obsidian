@@ -1,3 +1,24 @@
+---
+description: "A long pasted PyTorch notebook covering a custom Dataset class, dataloaders, tabular classification, and the training and evaluation loops."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/pytorch
+  - topic/classification
+  - topic/cnn
+aliases:
+  - "PyTorch NN"
+  - "custom Dataset"
+  - "tabular classification"
+hubs:
+  - "[[PyTorch]]"
+  - "[[Classification]]"
+  - "[[CNN]]"
+---
 #### Tabular Classification
 #### Dataset Class
 ```python

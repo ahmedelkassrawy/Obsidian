@@ -1,6 +1,30 @@
 ---
-tags: [sqlalchemy, troubleshooting, errors, debugging]
-aliases: [SQLAlchemy gotchas, SQLAlchemy errors, DetachedInstanceError, MissingGreenlet, PendingRollbackError, check_same_thread, IntegrityError]
+description: "Searchable list of common SQLAlchemy errors and silent failures with their causes and fixes."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/sqlalchemy
+  - topic/sqlite
+  - sqlalchemy
+  - troubleshooting
+  - errors
+  - debugging
+aliases:
+  - "IntegrityError"
+  - "DetachedInstanceError"
+  - "insert not saved"
+  - "SQLAlchemy gotchas"
+  - "SQLAlchemy errors"
+  - "MissingGreenlet"
+  - "PendingRollbackError"
+  - "check_same_thread"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[SQLite]]"
 ---
 
 # 13 — Gotchas and Troubleshooting

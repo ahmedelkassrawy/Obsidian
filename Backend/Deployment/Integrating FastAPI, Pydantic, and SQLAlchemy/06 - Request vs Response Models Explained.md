@@ -1,6 +1,35 @@
 ---
-tags: [pydantic, fastapi, request-model, response-model, serialization, from_attributes, orm_mode, openapi]
-aliases: [Request vs response models, response_model explained, Data filtering, Data transformation, ORM mode explained]
+description: "Explains why request and response models are separate: filtering secrets out, transforming data and better auto-docs."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/pydantic
+  - topic/api-design
+  - topic/fastapi
+  - pydantic
+  - fastapi
+  - request-model
+  - response-model
+  - serialization
+  - from_attributes
+  - orm_mode
+  - openapi
+aliases:
+  - "UserCreate vs UserResponse"
+  - "data filtering"
+  - "Request vs response models"
+  - "response_model explained"
+  - "Data filtering"
+  - "Data transformation"
+  - "ORM mode explained"
+hubs:
+  - "[[Pydantic]]"
+  - "[[API Design]]"
+  - "[[FastAPI]]"
 source: https://github.com/h9-tec/AI_deployment#handling-request-and-response-models-with-pydantic
 ---
 

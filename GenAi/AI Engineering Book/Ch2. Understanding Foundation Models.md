@@ -1,9 +1,26 @@
 ---
+description: "Chip Huyen Ch2: the four choices that make models differ - training data, transformer architecture and size, post-training alignment, and sampling (which is why models hallucinate)."
+domain: ai-eng
+type: book
+status: digested
 tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/llm-internals
+  - topic/transformers
+  - topic/fine-tuning
   - AI-engineering
   - foundation-models
   - research
-type: research
+aliases:
+  - "AI Engineering Ch2"
+  - "scaling laws"
+  - "sampling"
+hubs:
+  - "[[LLM Internals]]"
+  - "[[Transformers]]"
+  - "[[Fine-tuning]]"
 source: "AI Engineering — Chip Huyen, Ch.2 (OReilly_Books/AI Engineering by Chip Huyen.pdf)"
 chapter: 2
 title: "Understanding Foundation Models"

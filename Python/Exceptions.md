@@ -1,3 +1,18 @@
+---
+description: "The try statement's clauses - try, except, else, finally - and what each one is for."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/python-language
+aliases:
+  - "try except finally"
+hubs:
+  - "[[Python Language]]"
+---
 ## Try Statement
 
 We can use `try` statements to handle exceptions. There are four clauses you can use (one more in addition to those shown in the video).

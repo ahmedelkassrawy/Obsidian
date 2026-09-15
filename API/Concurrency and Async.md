@@ -1,3 +1,22 @@
+---
+description: "Walks through sync vs async execution in Python, async/await, coroutines, and how concurrency and parallelism play out in FastAPI path operations."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/concurrency-and-async
+  - topic/fastapi
+aliases:
+  - "asyncio"
+  - "coroutines"
+  - "concurrency vs parallelism"
+hubs:
+  - "[[Concurrency & Async]]"
+  - "[[FastAPI]]"
+---
 1. **Synchronous vs. Asynchronous Execution**:
     - **Synchronous (Sync)**: Code that runs sequentially and blocks the thread until complete (e.g., execute method). Useful for simple scripts or when called from non-async code.
     - **Asynchronous (Async)**: Uses Python's asyncio library for concurrency. Allows multiple tasks (e.g., scraping multiple URLs) to run "in parallel" without blocking, using an **event loop** (a scheduler that manages coroutines). This is ideal for I/O-bound tasks like web scraping, where waiting for HTTP responses is the bottleneck.

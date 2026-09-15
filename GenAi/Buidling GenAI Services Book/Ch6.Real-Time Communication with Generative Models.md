@@ -1,3 +1,22 @@
+---
+description: "Ch6 notes comparing request/response, short polling, long polling, Server-Sent Events and WebSockets for streaming model output."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/fastapi
+  - topic/http-and-networking
+aliases:
+  - "streaming"
+  - "SSE"
+  - "websockets"
+hubs:
+  - "[[FastAPI]]"
+  - "[[HTTP & Networking]]"
+---
 # Chapter 6 — Real-Time Communication with Generative Models
 
 This chapter explores real-time communication techniques for streaming AI model outputs. It focuses on:

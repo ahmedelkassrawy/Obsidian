@@ -1,3 +1,21 @@
+---
+description: "Pasted DSPy code for building Examples with input keys, setting up a reusable evaluator, and launching an evaluation run."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/dspy
+  - topic/ai-evaluation
+aliases:
+  - "DSPy Example"
+  - "dspy evaluate"
+hubs:
+  - "[[DSPy]]"
+  - "[[AI Evaluation]]"
+---
 #### DSPy Examples
 ```python
 qa_pair = dspy.Example(question="This is a question?", answer="This is an answer.")

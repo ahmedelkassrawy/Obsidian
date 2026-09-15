@@ -1,3 +1,22 @@
+---
+description: "Explains PCA as projection onto the maximum-variance hyperplane with scikit-learn code and explained-variance selection, then contrasts it with t-SNE, LLE and other reducers."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+  - topic/feature-engineering-and-pipelines
+aliases:
+  - "PCA"
+  - "t-SNE"
+  - "explained variance"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+  - "[[Feature Engineering & Pipelines]]"
+---
 # Principal Component Analysis (PCA)
 
 ## Overview

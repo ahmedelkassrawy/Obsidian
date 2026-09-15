@@ -1,3 +1,23 @@
+---
+description: "The patterns from Claude Code's architecture that transfer to any agentic system, starting with using an async generator as the agent loop instead of callbacks."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/claude-code
+  - topic/agents
+  - topic/system-design
+aliases:
+  - "generator loop"
+  - "agentic patterns"
+hubs:
+  - "[[Claude Code]]"
+  - "[[Agents]]"
+  - "[[System Design]]"
+---
 ## Apply This
 
 If you are building an agentic system — any system where an LLM decides what actions to take at runtime — here are the patterns from Claude Code’s architecture that transfer.

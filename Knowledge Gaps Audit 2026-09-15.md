@@ -1,8 +1,23 @@
 ---
+description: "Folder-by-folder audit of what the vault actually covers and which concepts are missing entirely, produced by five review agents reading every note."
+domain: career
+type: meta
+status: digested
+tags:
+  - domain/career
+  - type/meta
+  - status/digested
+  - topic/learning-plans
+  - meta
+  - learning-plan
+  - gaps
+aliases:
+  - "Vault Gaps Audit"
+  - "What Is Missing In The Vault"
+  - "Knowledge Audit"
+hubs:
+  - "[[Learning Plans]]"
 date: 2026-09-15
-type: audit
-tags: [meta, learning-plan, gaps]
-description: Per-folder audit of what the vault covers, what is missing, what is weak, and what to write next. Produced by 5 Opus 4.8 review agents reading all 722 notes.
 ---
 
 # Knowledge Gaps Audit — 2026-09-15

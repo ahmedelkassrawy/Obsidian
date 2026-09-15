@@ -1,3 +1,18 @@
+---
+description: "Course notes on JavaScript basics: values and variables, primitives vs objects, dynamic typing, let/const/var, and the operators."
+domain: cs
+type: course
+status: digested
+tags:
+  - domain/cs
+  - type/course
+  - status/digested
+  - topic/typescript-and-javascript
+aliases:
+  - "JS basics"
+hubs:
+  - "[[TypeScript & JavaScript]]"
+---
 ```javascript
 let js = "amazing";
 

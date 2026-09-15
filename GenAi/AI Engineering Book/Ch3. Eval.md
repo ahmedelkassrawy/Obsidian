@@ -1,7 +1,25 @@
 ---
+description: "Chip Huyen Ch3: why evaluation is its own hard problem, the entropy/perplexity metrics, exact vs subjective evaluation, embedding similarity, and AI-as-a-judge."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/ai-evaluation
+  - topic/embeddings-and-semantic-search
+  - ai-engineering
+  - evals
+  - m1
+aliases:
+  - "AI Engineering Ch3"
+  - "perplexity"
+  - "LLM as judge"
+hubs:
+  - "[[AI Evaluation]]"
+  - "[[Embeddings & Semantic Search]]"
 title: "AI Engineering (Chip Huyen) — Ch.3 Evaluation Methodology"
-type: reading-note
-tags: [ai-engineering, evals, m1]
 source: "AI Engineering — Chip Huyen, Ch.3"
 date: 2026-08-20
 ---

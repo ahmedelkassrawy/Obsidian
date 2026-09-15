@@ -1,3 +1,23 @@
+---
+description: "Explains the consistent hashing ring, the rebalancing problem it solves, and how to present it in a system design interview."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/system-design
+  - topic/caching
+  - topic/database-replication-and-sharding
+aliases:
+  - "consistent hashing"
+  - "hash ring"
+hubs:
+  - "[[System Design]]"
+  - "[[Caching]]"
+  - "[[Database Replication & Sharding]]"
+---
 ## Overview
 Consistent hashing is a distributed hashing technique used to distribute data across multiple servers (nodes) in a way that **minimizes data redistribution when nodes are added or removed**. **It’s widely used in distributed systems like caches, databases**, and CDNs to ensure scalability and fault tolerance.
 

@@ -1,3 +1,20 @@
+---
+description: "Arabic-language lecture notes on metaheuristic search: local search and its traps, and how algorithms with an escape step get out of local optima on routing problems."
+domain: ml
+type: concept
+status: raw
+tags:
+  - domain/ml
+  - type/concept
+  - status/raw
+  - topic/optimizers-and-training
+aliases:
+  - "Metaheuristics"
+  - "local search"
+  - "optimization algorithms"
+hubs:
+  - "[[Optimizers & Training]]"
+---
 ### **First Page (Refined based on the "Case Study" slide)**
 
 عندنا **50** عربية هتتوزع على 500 مدينة => عشان الـ agent والـ **Objective** هو الـ max/min والـ approach ده بينتهي بالـ climb process وهو الـ **local search** ممكن يفضل يطبقها لحد ما يكتشف حل بس لو كنا بنستعمل خوارزمي زي MA كان زمانه حالته هنا المميزة هي الـ **Somersault** بيكتشف الـ local traps فيحسب مسار أو route تاني خالص ويستكشف solution جديد والنتيجة انه بيتجاوز كل الزحمة وبيقلل 15% من المسافة الخاصة بيها.

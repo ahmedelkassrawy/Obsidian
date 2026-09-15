@@ -1,6 +1,31 @@
 ---
-tags: [fastapi, uvicorn, swagger, openapi, testing, curl]
-aliases: [Run the integrated app, uvicorn main_integrated, Swagger docs, Test the API]
+description: "Runs the app with uvicorn and walks a full manual curl test of every endpoint, including the expected 404."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/fastapi
+  - topic/testing
+  - fastapi
+  - uvicorn
+  - swagger
+  - openapi
+  - testing
+  - curl
+aliases:
+  - "uvicorn"
+  - "curl test"
+  - "swagger docs"
+  - "Run the integrated app"
+  - "uvicorn main_integrated"
+  - "Swagger docs"
+  - "Test the API"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Testing]]"
 source: https://github.com/h9-tec/AI_deployment#creating-api-endpoints-with-database-operations
 ---
 

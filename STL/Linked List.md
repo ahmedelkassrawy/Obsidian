@@ -1,3 +1,19 @@
+---
+description: "The longest note in this folder: linked list memory layout, singly/doubly/circular types, and the C++ code for traversal plus insertion at the head, middle and tail."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/linked-lists
+aliases:
+  - "singly linked list"
+  - "nodes"
+hubs:
+  - "[[Linked Lists]]"
+---
 ## Key Characteristics of Linked Lists
 
 - **Memory Usage**:

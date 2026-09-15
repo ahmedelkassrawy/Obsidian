@@ -1,3 +1,24 @@
+---
+description: "Very large pasted reference for LangChain v1's create_agent: middleware hooks (before and after model), dynamic prompts, runtime and thread_id, and structured response formats."
+domain: ai-eng
+type: reference
+status: raw
+tags:
+  - domain/ai-eng
+  - type/reference
+  - status/raw
+  - topic/langchain
+  - topic/agents
+  - topic/context-engineering
+aliases:
+  - "langchain v1"
+  - "create_agent"
+  - "middleware"
+hubs:
+  - "[[LangChain]]"
+  - "[[Agents]]"
+  - "[[Context Engineering]]"
+---
 LangChain’s [`create_agent`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent) runs on LangGraph’s runtime under the hood.LangGraph exposes a [`Runtime`](https://reference.langchain.com/python/langgraph/runtime/#langgraph.runtime.Runtime) object with the following information
 1. **Context**: static information like user id, db connections, or other dependencies for an agent invocation
 2. **Store**: a [BaseStore](https://reference.langchain.com/python/langgraph/store/#langgraph.store.base.BaseStore) instance used for [long-term memory](https://docs.langchain.com/oss/python/langchain/long-term-memory)

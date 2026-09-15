@@ -1,3 +1,22 @@
+---
+description: "How Pipecat decides the user has finished speaking: VAD parameters, smart turn detection, handling interruptions, and the performance cost of each setting."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "VAD"
+  - "turn detection"
+  - "interruptions"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 Learn how Pipecat detects user turns using VAD, transcriptions, and turn detection models
 
 - A key to natural conversations is properly detecting when the user starts and stops speaking. 

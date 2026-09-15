@@ -1,6 +1,33 @@
 ---
-tags: [pydantic, schemas, from_attributes, orm_mode, request-model, response-model]
-aliases: [Pydantic schemas, UserCreate, UserResponse, ProductCreate, ProductResponse, from_attributes, orm_mode]
+description: "Defines the Pydantic request and response schemas that sit in front of the ORM models."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/pydantic
+  - topic/fastapi
+  - pydantic
+  - schemas
+  - from_attributes
+  - orm_mode
+  - request-model
+  - response-model
+aliases:
+  - "request schema"
+  - "response schema"
+  - "from_attributes"
+  - "Pydantic schemas"
+  - "UserCreate"
+  - "UserResponse"
+  - "ProductCreate"
+  - "ProductResponse"
+  - "orm_mode"
+hubs:
+  - "[[Pydantic]]"
+  - "[[FastAPI]]"
 source: https://github.com/h9-tec/AI_deployment#database-session-dependency
 ---
 

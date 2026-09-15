@@ -1,5 +1,15 @@
 ---
+description: "How to make scheduled agent work survive crashes on Cloudflare Workers using a sync plus watchdog pattern, state projection, heartbeats and reconciliation."
+domain: ai-eng
+type: concept
+status: digested
 tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/cloudflare-workers
+  - topic/agents
+  - topic/temporal-and-durable-workflows
   - cloudflare
   - workers
   - ai-agents
@@ -7,9 +17,16 @@ tags:
   - state-reconciliation
   - edge-computing
 aliases:
-  - Cloudflare Workers
-  - Worker Sync
-  - Agentic Fault Tolerance
+  - "Workers"
+  - "watchdog"
+  - "fault tolerance"
+  - "Cloudflare Workers"
+  - "Worker Sync"
+  - "Agentic Fault Tolerance"
+hubs:
+  - "[[Cloudflare Workers]]"
+  - "[[Agents]]"
+  - "[[Temporal & Durable Workflows]]"
 created: 2026-07-13
 ---
 

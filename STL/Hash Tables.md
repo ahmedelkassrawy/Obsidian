@@ -1,3 +1,19 @@
+---
+description: "Grokking-style intro to hash tables: a hash function maps strings to positions, so lookups are O(1) instead of a scan."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/arrays-and-hashing
+aliases:
+  - "hash function"
+  - "Grokking"
+hubs:
+  - "[[Arrays & Hashing]]"
+---
 - In technical terminology, we’d say that a hash function “maps strings to numbers.”
 - . Arrays and lists map straight to memory, but hash tables are smarter. They use a hash function to intelligently figure out where to store elements.
 ```Python

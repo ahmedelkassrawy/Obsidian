@@ -1,3 +1,22 @@
+---
+description: "Compares sequential, index and bitmap index scans in PostgreSQL, when the planner picks each, and a worked plan walkthrough."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-indexing
+  - topic/postgres
+aliases:
+  - "seq scan"
+  - "bitmap index scan"
+  - "query plan"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Postgres]]"
+---
 ## Sequential Table Scan (Seq Scan)
 
 - **What it does**: Reads every row in the table sequentially, checking each for the query condition.

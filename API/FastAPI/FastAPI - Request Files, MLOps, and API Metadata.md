@@ -1,3 +1,26 @@
+---
+description: "FastAPI course notes on file uploads, Dockerizing the app, Prometheus metrics and Evidently drift monitoring, plus error handling and OpenAPI metadata."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/fastapi
+  - topic/mlops
+  - topic/observability
+  - topic/docker
+aliases:
+  - "UploadFile"
+  - "Prometheus metrics"
+  - "Evidently drift"
+hubs:
+  - "[[FastAPI]]"
+  - "[[MLOps]]"
+  - "[[Observability]]"
+  - "[[Docker]]"
+---
 # FastAPI Request Files, MLOps, and API Metadata 
 
 This Obsidian Markdown file provides a structured overview of FastAPI's file handling, MLOps integration with Prometheus and Evidently, error handling, HTTP status codes, endpoint tagging, and metadata for API documentation. It is designed for studying and quick reference.

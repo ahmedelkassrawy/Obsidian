@@ -1,3 +1,20 @@
+---
+description: "Pasted PaddleOCR notebook: initializing the detection and recognition models, extracting text with reading-order handling, and layout detection with cropped regions."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/ocr
+aliases:
+  - "PaddleOCR"
+  - "layout detection"
+  - "text extraction"
+hubs:
+  - "[[OCR]]"
+---
 PaddleOCR Basics
 Initialize PaddleOCR with English language support. This loads two models:
 - **_DET**: Text detection model (locates text regions)

@@ -1,3 +1,23 @@
+---
+description: "Why multi-agent exists at all (context management and specialization) and a decision guide for choosing between the router, handoff, skills and subagent patterns."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/multi-agent-systems
+  - topic/langchain
+  - topic/context-engineering
+aliases:
+  - "why multi-agent"
+  - "choosing a pattern"
+hubs:
+  - "[[Multi-Agent Systems]]"
+  - "[[LangChain]]"
+  - "[[Context Engineering]]"
+---
 Why multi-agent?
 - **Context Management**: 
 	- Provide specialized knowledge without overwhelming the model’s context window. 

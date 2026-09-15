@@ -1,3 +1,22 @@
+---
+description: "Code snippets for k-means: sweeping k to build an elbow plot from inertia, and plotting centroid movement across iterations."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/clustering-and-dimensionality-reduction
+  - topic/matplotlib
+aliases:
+  - "elbow method"
+  - "KMeans inertia"
+  - "centroid plot"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+  - "[[Matplotlib]]"
+---
 ```python
 from sklearn.cluster import KMeans
 

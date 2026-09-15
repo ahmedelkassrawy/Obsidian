@@ -1,3 +1,22 @@
+---
+description: "Explains K-Nearest Neighbours from intuition to mechanics, with scikit-learn code, an accuracy-vs-k curve, and the trade-offs of the algorithm."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/classification
+  - topic/evaluation-metrics
+aliases:
+  - "KNN"
+  - "k-nearest neighbours"
+  - "choosing k"
+hubs:
+  - "[[Classification]]"
+  - "[[Evaluation Metrics]]"
+---
 ```python
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np

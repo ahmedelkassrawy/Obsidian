@@ -1,3 +1,26 @@
+---
+description: "A mock Meta ML system design interview: framing Instagram feed ranking, the 3-stage retrieval/ranking/re-rank pipeline, features, offline vs online metrics, and the model architecture."
+domain: ml
+type: interview
+status: digested
+tags:
+  - domain/ml
+  - type/interview
+  - status/digested
+  - topic/ml-system-design
+  - topic/recommender-systems
+  - topic/evaluation-metrics
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "Instagram feed ranking"
+  - "Meta MLE interview"
+  - "recsys system design"
+hubs:
+  - "[[ML System Design]]"
+  - "[[Recommender Systems]]"
+  - "[[Evaluation Metrics]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 
 > [!info] **Interview Context**
 > This note summarizes a mock ML system design interview for a Senior Machine Learning Engineer position at Meta. The problem: design a ranking model for the Instagram feed, specifically focusing on **suggested posts** from non-connected or tangentially connected creators.

@@ -1,3 +1,23 @@
+---
+description: "When to use the deep-agents pattern instead of one big agent, how to manage context and memory across sub-agents, and a tactical checklist of what works and what to avoid."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/multi-agent-systems
+  - topic/context-engineering
+aliases:
+  - "deep agents best practice"
+  - "specialized team"
+hubs:
+  - "[[Agents]]"
+  - "[[Multi-Agent Systems]]"
+  - "[[Context Engineering]]"
+---
 This architecture pattern, **Deep Agents**, moves away from the "single-agent-does-all" model toward a **Specialized Team** approach. It is designed specifically for complex, long-running enterprise tasks (legal, regulatory, or consulting) where context bloat and reasoning drift are the primary failure points.
 
 ---

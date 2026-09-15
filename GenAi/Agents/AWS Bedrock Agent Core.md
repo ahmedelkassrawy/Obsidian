@@ -1,3 +1,23 @@
+---
+description: "Pasted CLI and Python snippets for configuring, launching, and adding memory to an agent on AWS Bedrock AgentCore with LangGraph."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/agents
+  - topic/cloud-deployment
+  - topic/agent-memory
+aliases:
+  - "Bedrock AgentCore"
+  - "agentcore CLI"
+hubs:
+  - "[[Agents]]"
+  - "[[Cloud Deployment]]"
+  - "[[Agent Memory]]"
+---
 ```python
 pip install bedrock-agentcore bedrock-agentcore-starter-toolkit langgraph-checkpoint-aws
 ```

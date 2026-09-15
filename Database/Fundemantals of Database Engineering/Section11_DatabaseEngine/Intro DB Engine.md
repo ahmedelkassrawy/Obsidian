@@ -1,3 +1,20 @@
+---
+description: "Course notes defining a database engine as the library that handles disk storage and indexes, and why DBMS and engine are separated."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/database-internals
+aliases:
+  - "storage engine"
+  - "embedded database"
+  - "LevelDB"
+hubs:
+  - "[[Database Internals]]"
+---
 DB engines sometimes called "Storage engines" sometimes called "Embedded db" are software libraries that DBMS uses to.
 ## Core Concept: What is a Database Engine?
 A **database engine** is essentially a library that handles:

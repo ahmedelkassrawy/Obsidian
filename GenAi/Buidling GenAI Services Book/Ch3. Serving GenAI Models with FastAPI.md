@@ -1,7 +1,32 @@
 ---
+description: "Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/fastapi
+  - topic/transformers
+  - topic/llm-internals
+  - topic/huggingface
+  - genai
+  - fastapi
+  - transformers
+  - diffusion
+  - notes
+aliases:
+  - "serving models FastAPI"
+  - "tokenization"
+  - "diffusion"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Transformers]]"
+  - "[[LLM Internals]]"
+  - "[[HuggingFace]]"
 title: "Ch.3 — Serving GenAI Models with FastAPI"
 book: Building GenAI Services
-tags: [genai, fastapi, transformers, diffusion, notes]
 ---
 
 # Chapter 3 — Serving GenAI Models with FastAPI

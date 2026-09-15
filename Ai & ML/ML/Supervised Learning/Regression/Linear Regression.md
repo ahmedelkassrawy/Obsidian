@@ -1,3 +1,20 @@
+---
+description: "Covers simple and multiple linear regression with scikit-learn code, plotting the fit, and the overfitting risk that comes with adding features."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/regression
+aliases:
+  - "simple linear regression"
+  - "multiple linear regression"
+  - "sklearn LinearRegression"
+hubs:
+  - "[[Regression]]"
+---
 # Linear Regression Notes
 
 ## Simple Linear Regression

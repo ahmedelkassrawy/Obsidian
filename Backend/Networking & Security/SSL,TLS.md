@@ -1,3 +1,22 @@
+---
+description: "Plain-English guide to SSL/TLS: goals, versions, the handshake step by step, the record layer, cipher suites and why TLS 1.3 is better."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/http-and-networking
+  - topic/auth-and-security
+aliases:
+  - "SSL"
+  - "TLS handshake"
+  - "cipher suites"
+hubs:
+  - "[[HTTP & Networking]]"
+  - "[[Auth & Security]]"
+---
 # SSL/TLS Simplified Guide
 
 ## What is SSL/TLS?

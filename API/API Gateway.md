@@ -1,3 +1,23 @@
+---
+description: "Explains what an API gateway does (single entry point, routing, auth, rate limiting) and how it differs from and works alongside a load balancer."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/api-design
+  - topic/system-design
+  - topic/http-and-networking
+aliases:
+  - "API gateway vs load balancer"
+  - "reverse proxy"
+hubs:
+  - "[[API Design]]"
+  - "[[System Design]]"
+  - "[[HTTP & Networking]]"
+---
 ## **1. What Is an API Gateway?**
 
 An **API Gateway** is a **single entry point** for all client requests into your backend system.  

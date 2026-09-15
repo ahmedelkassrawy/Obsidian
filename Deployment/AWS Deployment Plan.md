@@ -1,3 +1,24 @@
+---
+description: "Step-by-step plan to deploy a FastAPI + Nginx docker-compose stack to an AWS EC2 instance, from provisioning to transfer and run."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/cloud-deployment
+  - topic/docker
+  - topic/fastapi
+aliases:
+  - "EC2"
+  - "docker compose deploy"
+  - "nginx"
+hubs:
+  - "[[Cloud Deployment]]"
+  - "[[Docker]]"
+  - "[[FastAPI]]"
+---
 This plan outlines the steps to deploy our FastAPI + Nginx Docker Compose setup to AWS. We will use Amazon Elastic Compute Cloud (EC2) as it is the most straightforward way to run a [docker-compose.yml](file:///d:/Enviroment/PS/docker-compose.yml) file on AWS without needing to restructure the application for managed services like ECS or EKS.
 ## Prerequisites
 - An AWS Account

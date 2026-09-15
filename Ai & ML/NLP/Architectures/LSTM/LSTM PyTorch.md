@@ -1,2 +1,0 @@
-- **Binary Classification (`BCELoss`)** → ✅ Use ' .squeeze( ) '
-- **Multi-Class Classification (`CrossEntropyLoss`)** → ❌ No `.squeeze()`

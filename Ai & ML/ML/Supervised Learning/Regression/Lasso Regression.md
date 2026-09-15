@@ -1,3 +1,22 @@
+---
+description: "Explains Lasso regression: how the L1 penalty shrinks some coefficients to exactly zero, giving regularization and feature selection at once, with scikit-learn code."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/regression
+  - topic/regularization-and-overfitting
+aliases:
+  - "Lasso"
+  - "L1 penalty"
+  - "feature selection"
+hubs:
+  - "[[Regression]]"
+  - "[[Regularization & Overfitting]]"
+---
 ## 📌 1. Intuition
 
 Ordinary Linear Regression tries to fit a line (or hyperplane) that minimizes the sum of squared errors.  

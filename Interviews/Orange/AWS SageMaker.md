@@ -1,3 +1,22 @@
+---
+description: "What SageMaker is as a managed end-to-end ML platform, mapped tool by tool against the open-source stack, and why telecom shops pick it over running their own Kubernetes."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/mlops
+  - topic/cloud-deployment
+aliases:
+  - "SageMaker vs Open Source"
+hubs:
+  - "[[Interviews]]"
+  - "[[MLOps]]"
+  - "[[Cloud Deployment]]"
+---
 But here is the harsh reality of enterprise MLOps: **Managing a massive Kubernetes cluster is exhausting.** If Orange's servers go down, you don't want to be the one waking up at 3:00 AM to fix the cluster architecture. You want to focus on the machine learning.
 
 ### What is AWS SageMaker?

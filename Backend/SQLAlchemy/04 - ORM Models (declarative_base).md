@@ -1,6 +1,33 @@
 ---
-tags: [sqlalchemy, orm, model, DeclarativeBase, Mapped, mapped_column, relationship, foreignkey, declarative_base]
-aliases: [ORM models, DeclarativeBase, Mapped, mapped_column, declarative_base, Base, __tablename__, models.py]
+description: "Defining ORM models 2.0-style with DeclarativeBase, Mapped and mapped_column, plus type-hint to column mapping."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - orm
+  - model
+  - DeclarativeBase
+  - Mapped
+  - mapped_column
+  - relationship
+  - foreignkey
+  - declarative_base
+aliases:
+  - "DeclarativeBase"
+  - "Mapped"
+  - "mapped_column"
+  - "ORM models"
+  - "declarative_base"
+  - "Base"
+  - "__tablename__"
+  - "models.py"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#defining-orm-models
 ---
 

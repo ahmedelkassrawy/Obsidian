@@ -1,3 +1,24 @@
+---
+description: "Book-chapter notes on supervised regression: OLS linear regression, outlier handling, regression variants, parametric vs nonparametric algorithms, and decision trees for regression."
+domain: ml
+type: book
+status: digested
+tags:
+  - domain/ml
+  - type/book
+  - status/digested
+  - topic/regression
+  - topic/trees-and-boosting
+  - topic/evaluation-metrics
+aliases:
+  - "Supervised Regression AI Book"
+  - "OLS"
+  - "parametric vs nonparametric"
+hubs:
+  - "[[Regression]]"
+  - "[[Trees & Boosting]]"
+  - "[[Evaluation Metrics]]"
+---
 # Linear Regression 
 
 ## Overview

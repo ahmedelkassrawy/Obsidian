@@ -1,3 +1,22 @@
+---
+description: "InstaBug follow-up questions on how many index lookups a given SQL query performs, reasoning through clustered vs secondary index seeks."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/database-indexing
+  - topic/sql
+aliases:
+  - "Index Lookup Questions"
+hubs:
+  - "[[Interviews]]"
+  - "[[Database Indexing]]"
+  - "[[SQL]]"
+---
 ### **Q8: How many index lookups will the following query perform?**
 
 **Query**: SELECT * FROM sales WHERE id = 5;

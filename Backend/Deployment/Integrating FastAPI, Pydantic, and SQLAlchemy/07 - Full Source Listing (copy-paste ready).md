@@ -1,6 +1,33 @@
 ---
-tags: [fastapi, pydantic, sqlalchemy, source-code, reference]
-aliases: [Full source, Complete code, models_orm.py, database_orm.py, main_integrated.py, schemas.py]
+description: "The complete working source for the integrated app in two file layouts, ready to copy."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/pydantic
+  - fastapi
+  - pydantic
+  - sqlalchemy
+  - source-code
+  - reference
+aliases:
+  - "full source"
+  - "copy paste app"
+  - "Full source"
+  - "Complete code"
+  - "models_orm.py"
+  - "database_orm.py"
+  - "main_integrated.py"
+  - "schemas.py"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[Pydantic]]"
 source: https://github.com/h9-tec/AI_deployment#6-integrating-fastapi-pydantic-and-sqlalchemy
 ---
 

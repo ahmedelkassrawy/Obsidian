@@ -1,6 +1,33 @@
 ---
-tags: [sqlalchemy, orm, many-to-many, association-object, secondary, composite-primary-key, back_populates, backref]
-aliases: [Many-to-many, Association object, secondary=, TeamPlayer, Composite primary key, back_populates vs backref]
+description: "Many-to-many mapping via a link table, composite primary keys, and when to promote the link to an association object."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - orm
+  - many-to-many
+  - association-object
+  - secondary
+  - composite-primary-key
+  - back_populates
+  - backref
+aliases:
+  - "many-to-many"
+  - "secondary"
+  - "association object"
+  - "Many-to-many"
+  - "Association object"
+  - "secondary="
+  - "TeamPlayer"
+  - "Composite primary key"
+  - "back_populates vs backref"
+hubs:
+  - "[[SQLAlchemy]]"
 ---
 
 # 08 — Many-to-Many and Association Objects

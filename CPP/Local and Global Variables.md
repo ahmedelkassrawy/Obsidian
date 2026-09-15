@@ -1,3 +1,19 @@
+---
+description: "The longest C++ note here: local scope and lifetime, global variables, internal vs external linkage, and why globals are worth avoiding."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "scope"
+  - "linkage"
+hubs:
+  - "[[C++ Language]]"
+---
 local variables are variables inside the body of a function
 ```C++
 int add(int x, int y) //functions parameters are also local.

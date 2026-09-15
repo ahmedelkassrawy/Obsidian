@@ -1,3 +1,22 @@
+---
+description: "The practice side of MCP: transport selection, message handling, security, debugging, prompts in SDK v2, and a worked refactor to thin handlers over pure functions."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/mcp
+  - topic/tool-use-and-function-calling
+aliases:
+  - "MCP best practices"
+  - "thin handler"
+  - "prompts"
+hubs:
+  - "[[MCP]]"
+  - "[[Tool Use & Function Calling]]"
+---
 # MCP best practices & a worked refactor
 
 > Concepts (architecture, message types, lifecycle, capabilities) live in `00 - Concepts`. This note is the practice side: general best practices, prompts in v2, the ten patterns I use, and the task-server refactor.

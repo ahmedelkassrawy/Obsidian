@@ -1,3 +1,19 @@
+---
+description: "Covers `if constexpr` (the compiler drops the dead branch at compile time) and the switch statement, with the compiled-away version shown side by side."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "constexpr if"
+  - "switch"
+hubs:
+  - "[[C++ Language]]"
+---
 ## Constexpr if statement
 
 ```C++

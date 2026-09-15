@@ -1,3 +1,21 @@
+---
+description: "How function calling drives the agent loop - tool definitions, the action/observation cycle, debugging bad tool calls, and rules for writing tool schemas."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/tool-use-and-function-calling
+  - topic/agents
+aliases:
+  - "function calling"
+  - "tool definitions"
+hubs:
+  - "[[Tool Use & Function Calling]]"
+  - "[[Agents]]"
+---
 ## ## How Function Calling Powers AI Agents
 
 ![[Pasted image 20260502134735.png]]

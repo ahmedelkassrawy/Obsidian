@@ -1,3 +1,19 @@
+---
+description: "std::set: unique elements kept sorted ascending by default, how to sort descending with greater<>, and the member functions."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/stl-containers
+aliases:
+  - "ordered set"
+  - "greater"
+hubs:
+  - "[[STL Containers]]"
+---
 ```C++
 std::set <data_type> set_name;
 ```

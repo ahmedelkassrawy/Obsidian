@@ -1,3 +1,21 @@
+---
+description: "Why plain RAG fails on relationship questions and how GraphRAG fixes it, plus the steps to build the knowledge graph: extraction of entities and relationships, and ontology design."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/rag
+  - topic/vector-search
+aliases:
+  - "knowledge graph"
+  - "entity extraction"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+---
 We now turn to an advanced version of RAG that is more complex to incorporate into your solution but capable of correctly handling a wider variety of questions.
 
 **Graph Retrieval-Augmented Generation (GraphRAG)** is an advanced extension of the RAG model that incorporates graph-based data structures to enhance the retrieval process. By utilizing graphs, GraphRAG manages complex interrelationships and dependencies between pieces of information, significantly improving the richness and accuracy of generated content.

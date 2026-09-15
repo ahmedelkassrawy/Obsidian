@@ -1,3 +1,24 @@
+---
+description: "Reading PostgreSQL EXPLAIN ANALYZE output across four example queries, and the performance lessons from each plan."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/database-indexing
+  - topic/postgres
+  - topic/sql
+aliases:
+  - "EXPLAIN ANALYZE"
+  - "query plan"
+  - "cost"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Postgres]]"
+  - "[[SQL]]"
+---
 This document captures key insights into PostgreSQL query performance analysis using `EXPLAIN` and `EXPLAIN ANALYZE`, based on example queries run on `employees` and `grades` tables.
 
 ## Query 1: Selecting `id` with Exact Match

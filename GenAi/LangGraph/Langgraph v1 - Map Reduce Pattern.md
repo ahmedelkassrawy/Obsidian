@@ -1,3 +1,20 @@
+---
+description: "How to fan work out in LangGraph v1 with a map-reduce pattern: a prepare-batches node, parallel worker nodes, and reducing their results back into state."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/langgraph
+aliases:
+  - "map reduce"
+  - "Send API"
+  - "parallel nodes"
+hubs:
+  - "[[LangGraph]]"
+---
 To handle generating large amounts of data (like 50+ high-quality queries) without the LLM getting "tired" or repetitive, we use a **Map-Reduce** pattern. In LangGraph, this is done by sending a list of tasks to a node and having it process them in parallel.
 
 ### 1. The Strategy

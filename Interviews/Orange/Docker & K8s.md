@@ -1,3 +1,22 @@
+---
+description: "The short interview version of containers and orchestration: what a container really is, the three Docker terms and three Kubernetes terms to name, and the two reasons a telecom runs K8s."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/docker
+  - topic/kubernetes
+aliases:
+  - "Containers For Interviews"
+hubs:
+  - "[[Interviews]]"
+  - "[[Docker]]"
+  - "[[Kubernetes]]"
+---
 **Docker is the standardized shipping container for your code.** Instead of just sending your code to the server, you pack your code, the exact version of Python, and every single library into one sealed box.
 
 What is a container?

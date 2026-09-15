@@ -1,3 +1,18 @@
+---
+description: "A refresher sweep over Python basics - containers (lists, dicts) and control flow (if/elif/else, nesting) - written as a quick review."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/python-language
+aliases:
+  - "revision"
+hubs:
+  - "[[Python Language]]"
+---
 ## 1. Data Containers
 
 ### Lists

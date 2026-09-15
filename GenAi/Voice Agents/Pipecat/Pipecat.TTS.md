@@ -1,3 +1,22 @@
+---
+description: "Text-to-speech in Pipecat: the frame flow into the TTS service, pipeline-level audio config, and using a pattern aggregator so the bot never reads JSON out loud."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "TTS"
+  - "pattern aggregator"
+  - "audio config"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
 **Text to Speech (TTS)** services are responsible for converting text into natural-sounding speech audio. They receive text input from LLMs and other sources, then generate audio output that users can hear through their connected devices.
 
 #### Frame processing Flow

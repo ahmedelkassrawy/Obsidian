@@ -1,3 +1,22 @@
+---
+description: "Course notes on MongoDB's architecture and storage engine evolution from MMAPv1 to WiredTiger and clustered collections."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/mongodb
+  - topic/database-internals
+aliases:
+  - "WiredTiger"
+  - "MMAPv1"
+  - "SQL vs NoSQL"
+hubs:
+  - "[[MongoDB]]"
+  - "[[Database Internals]]"
+---
 Every DB contains mainly two things Frontend and Storage Engine
 Frontend
 - API

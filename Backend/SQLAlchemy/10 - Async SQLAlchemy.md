@@ -1,6 +1,40 @@
 ---
-tags: [sqlalchemy, async, asyncio, AsyncSession, async_sessionmaker, fastapi, asyncpg, aiosqlite, asynccontextmanager, ingestion, pgvector]
-aliases: [Async SQLAlchemy, AsyncSession, async_sessionmaker, create_async_engine, await db.execute, await db.commit, expire_on_commit, async get_db, ingest_pdf example]
+description: "The recommended async engine/session setup, what must be awaited, and a worked async ingest example."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - topic/concurrency-and-async
+  - sqlalchemy
+  - async
+  - asyncio
+  - AsyncSession
+  - async_sessionmaker
+  - fastapi
+  - asyncpg
+  - aiosqlite
+  - asynccontextmanager
+  - ingestion
+  - pgvector
+aliases:
+  - "async session"
+  - "asyncpg"
+  - "AsyncSession"
+  - "Async SQLAlchemy"
+  - "async_sessionmaker"
+  - "create_async_engine"
+  - "await db.execute"
+  - "await db.commit"
+  - "expire_on_commit"
+  - "async get_db"
+  - "ingest_pdf example"
+hubs:
+  - "[[SQLAlchemy]]"
+  - "[[Concurrency & Async]]"
 source: https://github.com/h9-tec/AI_deployment#asynchronous-operations-asyncawait
 ---
 

@@ -1,3 +1,23 @@
+---
+description: "Pasted PGVector code: running Postgres with pgvector in Docker, the async PGVector store, the database functions used, and the SQLAlchemy Result methods for reading rows back."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/postgres
+  - topic/vector-search
+  - topic/sqlalchemy
+aliases:
+  - "async SQLAlchemy"
+  - "Result objects"
+hubs:
+  - "[[Postgres]]"
+  - "[[Vector Search]]"
+  - "[[SQLAlchemy]]"
+---
 ```python
 pip install -qU langchain-postgres
 ```

@@ -1,3 +1,24 @@
+---
+description: "Explains autoencoders as learned compression (undercomplete, denoising, variational) and how GANs and diffusion models differ as generative approaches."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/pytorch
+  - topic/clustering-and-dimensionality-reduction
+  - topic/cnn
+aliases:
+  - "Autoencoders"
+  - "GANs"
+  - "Diffusion"
+hubs:
+  - "[[PyTorch]]"
+  - "[[Clustering & Dimensionality Reduction]]"
+  - "[[CNN]]"
+---
 ## Overview
 - **Autoencoders**: Unsupervised neural networks that learn **dense latent representations** (codings) of input data.
   - Lower dimensionality than input → useful for **dimensionality reduction** (esp. visualization).

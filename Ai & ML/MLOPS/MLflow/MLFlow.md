@@ -1,3 +1,22 @@
+---
+description: "A reference of MLflow commands: creating and tagging experiments, starting runs, logging and searching, registering models, custom pyfunc models, and the REST API."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/mlflow-and-dvc
+  - topic/mlops
+aliases:
+  - "MLflow guide"
+  - "experiment tracking"
+  - "model registry"
+hubs:
+  - "[[MLflow & DVC]]"
+  - "[[MLOps]]"
+---
 # MLflow Guide for Experiment Tracking and Model Management
 
 This guide covers key MLflow functionalities for experiment tracking, model logging, and evaluation, tailored for machine learning workflows in Python. It includes code snippets for experiment creation, logging, searching runs, model management, custom models, evaluation, and REST API usage.

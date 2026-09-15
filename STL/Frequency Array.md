@@ -1,3 +1,18 @@
+---
+description: "The frequency-array trick explained in Arabic then in code: index the array by the value itself so counting occurrences is one pass."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/arrays-and-hashing
+aliases:
+  - "counting array"
+hubs:
+  - "[[Arrays & Hashing]]"
+---
 3andi array feha 3dd msln 10  arkam btre2a 34wa2ya 3ayz eny a3rf kol rakm etkarr kam mara w ytb3 bl 3dd frequency da
 
 ```C++

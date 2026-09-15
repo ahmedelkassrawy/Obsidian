@@ -1,3 +1,21 @@
+---
+description: "Plain-English comparison of SGD, momentum, Adam/AdamW and friends: what each update rule does, why it helps, and when to reach for it."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/optimizers-and-training
+aliases:
+  - "SGD"
+  - "Adam"
+  - "AdamW"
+  - "learning rate schedule"
+hubs:
+  - "[[Optimizers & Training]]"
+---
 - SGD, Momentum
 - Adam / AdamW
 - Learning rate scheduling (concept)

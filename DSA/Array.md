@@ -1,3 +1,19 @@
+---
+description: "Defines subarray (contiguous) vs subsequence, gives the n*(n+1)/2 count of subarrays, and shows 2D array declaration."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/arrays-and-hashing
+aliases:
+  - "subarray"
+  - "subsequence"
+hubs:
+  - "[[Arrays & Hashing]]"
+---
 ### Subarray 
 is a contiguous part of an array.
 since [1,2,3,4]

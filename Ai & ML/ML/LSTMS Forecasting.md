@@ -1,3 +1,24 @@
+---
+description: "Walks through an LSTM stock-price forecast on TSLA data: scaling, building 60-step lookback windows, training, and inverse-transforming predictions."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/rnn-and-lstm
+  - topic/time-series
+  - topic/tensorflow-and-keras
+aliases:
+  - "LSTM stock forecasting"
+  - "TSLA forecast"
+  - "MinMaxScaler windows"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[Time Series]]"
+  - "[[TensorFlow & Keras]]"
+---
 ```python
 df = pd.read_csv("/content/TSLA.csv", parse_dates=True, index_col="Date")
 ```

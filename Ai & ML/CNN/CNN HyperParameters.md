@@ -1,3 +1,20 @@
+---
+description: "Short crib sheet on what padding, kernel size, stride and pooling each do to a CNN's activation maps."
+domain: ml
+type: reference
+status: stub
+tags:
+  - domain/ml
+  - type/reference
+  - status/stub
+  - topic/cnn
+aliases:
+  - "conv hyperparameters"
+  - "kernel size"
+  - "padding stride"
+hubs:
+  - "[[CNN]]"
+---
 **Padding**
 	conserves data at the borders of activation maps,it can help preserve the input's spatial size,which leads to better performance
 **Kernel size**

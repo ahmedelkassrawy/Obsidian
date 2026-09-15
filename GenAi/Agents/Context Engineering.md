@@ -1,3 +1,23 @@
+---
+description: "What context engineering is and how to do it: a deep-research-agent case study, layered context architecture, dynamic adjustment, and validation techniques."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/context-engineering
+  - topic/agents
+  - topic/prompting
+aliases:
+  - "context engineering"
+  - "layered context"
+hubs:
+  - "[[Context Engineering]]"
+  - "[[Agents]]"
+  - "[[Prompting]]"
+---
 ## What is Context Engineering?
 
 Context engineering is the process of designing, testing, and iterating on the contextual information provided to AI agents to shape their behavior and improve task performance. Unlike simple prompt engineering for single LLM calls, context engineering for agents involves (but not limited to):

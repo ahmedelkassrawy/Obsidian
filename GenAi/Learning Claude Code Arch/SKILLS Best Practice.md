@@ -1,3 +1,24 @@
+---
+description: "The full Skills authoring guide: keep it concise, set the right degrees of freedom, skill structure and naming, writing descriptions that get discovered, and testing across models."
+domain: ai-eng
+type: reference
+status: digested
+tags:
+  - domain/ai-eng
+  - type/reference
+  - status/digested
+  - topic/claude-code
+  - topic/agents
+  - topic/context-engineering
+aliases:
+  - "SKILL.md"
+  - "skill structure"
+  - "degrees of freedom"
+hubs:
+  - "[[Claude Code]]"
+  - "[[Agents]]"
+  - "[[Context Engineering]]"
+---
 Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write Skills that Claude can discover and use effectively.
 
 For conceptual background on how Skills work, see the [Skills overview](/docs/en/agents-and-tools/agent-skills/overview).

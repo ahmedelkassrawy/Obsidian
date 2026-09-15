@@ -1,3 +1,24 @@
+---
+description: "The production trade-offs in RAG: retrieval and generation metrics, why exact kNN does not scale and how ANN/HNSW replaces it, and chunking choices."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/rag
+  - topic/vector-search
+  - topic/ai-evaluation
+aliases:
+  - "retrieval metrics"
+  - "HNSW"
+  - "ANN"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+  - "[[AI Evaluation]]"
+---
 # Retrieval-Augmented Generation (RAG): Key Concepts & Production Trade-offs
 
 ## 1. Retrieval Evaluation Metrics

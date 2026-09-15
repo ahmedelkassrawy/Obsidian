@@ -1,6 +1,30 @@
 ---
-tags: [fastapi, pydantic, sqlalchemy, cheatsheet, reference]
-aliases: [Integration cheatsheet, FastAPI SQLAlchemy cheatsheet, CRUD cheatsheet]
+description: "One-screen condensed setup, schema and endpoint templates for the FastAPI + SQLAlchemy stack."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/pydantic
+  - fastapi
+  - pydantic
+  - sqlalchemy
+  - cheatsheet
+  - reference
+aliases:
+  - "cheatsheet"
+  - "endpoint template"
+  - "Integration cheatsheet"
+  - "FastAPI SQLAlchemy cheatsheet"
+  - "CRUD cheatsheet"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[Pydantic]]"
 ---
 
 # 09 — Cheatsheet

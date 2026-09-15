@@ -1,3 +1,24 @@
+---
+description: "A reusable PyTorch ModelTrainer class that wraps the train/validate loop, checkpoint saving and loading, and tqdm progress for CNN training."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/cnn
+  - topic/pytorch
+  - topic/optimizers-and-training
+aliases:
+  - "ModelTrainer class"
+  - "PyTorch training loop class"
+  - "checkpointing"
+hubs:
+  - "[[CNN]]"
+  - "[[PyTorch]]"
+  - "[[Optimizers & Training]]"
+---
 ```python
 import torch
 import torch.nn as nn

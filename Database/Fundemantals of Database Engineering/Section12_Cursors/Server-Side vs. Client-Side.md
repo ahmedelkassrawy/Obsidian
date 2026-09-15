@@ -1,3 +1,22 @@
+---
+description: "Course notes comparing server-side and client-side cursors in PostgreSQL from Python, with a one-million-row demo."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/postgres
+  - topic/cursors-and-pagination
+aliases:
+  - "server-side cursor"
+  - "client-side cursor"
+  - "psycopg"
+hubs:
+  - "[[Postgres]]"
+  - "[[Cursors & Pagination]]"
+---
 # Server-Side vs. Client-Side Cursors in PostgreSQL with Python
 
 ## Overview

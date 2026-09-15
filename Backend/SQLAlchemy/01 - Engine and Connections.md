@@ -1,6 +1,31 @@
 ---
-tags: [sqlalchemy, engine, connection, create_engine, text, context-manager, result]
-aliases: [create_engine, engine.connect, text(), Context managers, Result objects, scalar vs fetchone]
+description: "Creating the engine, database URL formats, and opening connections with context managers."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - engine
+  - connection
+  - create_engine
+  - text
+  - context-manager
+  - result
+aliases:
+  - "create_engine"
+  - "database URL"
+  - "connection pool"
+  - "engine.connect"
+  - "text()"
+  - "Context managers"
+  - "Result objects"
+  - "scalar vs fetchone"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#connecting-to-a-database
 ---
 

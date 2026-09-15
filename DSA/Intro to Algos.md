@@ -1,3 +1,19 @@
+---
+description: "One table contrasting priori analysis (language/hardware independent, time and space functions) with posteriori analysis, plus the characteristics an algorithm must have."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/complexity-analysis
+aliases:
+  - "priori analysis"
+  - "posteriori analysis"
+hubs:
+  - "[[Complexity Analysis]]"
+---
 ## Priori And Posteriori Analysis
 
 |  Priori Analysis    | Posterior Analysis  |

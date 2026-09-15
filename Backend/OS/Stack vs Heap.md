@@ -1,3 +1,21 @@
+---
+description: "Bullet notes on what lives on the stack vs the heap and what happens to the stack on each function call."
+domain: backend
+type: concept
+status: stub
+tags:
+  - domain/backend
+  - type/concept
+  - status/stub
+  - topic/operating-systems
+  - topic/c-language
+aliases:
+  - "stack vs heap"
+  - "call stack"
+hubs:
+  - "[[Operating Systems]]"
+  - "[[C++ Language]]"
+---
 - all variables allocated automatically in the stack
 - **vectors headers** are stored in the stack , but **data** at the heap
 - What happens when you call a function?

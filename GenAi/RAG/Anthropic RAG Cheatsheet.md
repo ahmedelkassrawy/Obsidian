@@ -1,3 +1,24 @@
+---
+description: "Anthropic's contextual-retrieval writeup: why embeddings miss exact matches, how prepending context to each chunk fixes it, using prompt caching to make it affordable, and reranking on top."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/rag
+  - topic/vector-search
+  - topic/caching
+aliases:
+  - "contextual retrieval"
+  - "BM25"
+  - "reranking"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+  - "[[Caching]]"
+---
 ## A primer on RAG: scaling to larger knowledge bases
 While embedding models excel at capturing semantic relationships, they can miss crucial exact matches. Fortunately, there’s an older technique that can assist in these situations. BM25 (Best Matching 25) is a ranking function that uses lexical matching to find precise word or phrase matches. It's particularly effective for queries that include unique identifiers or technical terms.
 

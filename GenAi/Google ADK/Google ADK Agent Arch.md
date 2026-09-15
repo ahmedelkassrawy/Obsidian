@@ -1,3 +1,21 @@
+---
+description: "Pasted ADK code building a root coordinator that calls sub-agents as tools, then sequential ('assembly line') and parallel workflow agents."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/google-adk
+  - topic/multi-agent-systems
+aliases:
+  - "ADK agent architecture"
+  - "sequential parallel workflows"
+hubs:
+  - "[[Google ADK]]"
+  - "[[Multi-Agent Systems]]"
+---
 ```python
 import asyncio
 from google.adk.agents.llm_agent import LlmAgent

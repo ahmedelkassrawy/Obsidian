@@ -1,3 +1,20 @@
+---
+description: "Explains exclusive vs shared locks, the compatibility matrix between them, and how they lead to deadlocks."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/transactions-and-concurrency-control
+aliases:
+  - "X lock"
+  - "S lock"
+  - "lock compatibility matrix"
+hubs:
+  - "[[Transactions & Concurrency Control]]"
+---
 ### **Exclusive Lock (X Lock)**
 - **Definition**: Grants exclusive access to a resource (e.g., a table or row) to a single transaction. No other transaction can read or write the locked resource until the lock is released.
 - **Purpose**: Used for operations that modify data (e.g., INSERT, UPDATE, DELETE) to prevent concurrent modifications or reads that could lead to inconsistencies.

@@ -1,3 +1,22 @@
+---
+description: "Explains Ridge regression: the L2 penalty shrinks coefficients without zeroing them, how it differs from Lasso, and scikit-learn code."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/regression
+  - topic/regularization-and-overfitting
+aliases:
+  - "Ridge"
+  - "L2 penalty"
+  - "alpha"
+hubs:
+  - "[[Regression]]"
+  - "[[Regularization & Overfitting]]"
+---
 ## 📌 1. Intuition
 - **Lasso (L1 penalty):** shrinks coefficients, can set some to **exactly zero** → does **feature selection**.
 - **Ridge (L2 penalty):** shrinks coefficients, but they almost never reach exactly zero → keeps **all features**, but makes their impact smaller.

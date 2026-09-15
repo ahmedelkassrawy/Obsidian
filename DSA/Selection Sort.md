@@ -1,3 +1,20 @@
+---
+description: "Grokking-style comparison of arrays and linked lists (contiguous vs pointer-chasing) leading into selection sort and its O(n^2) cost."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/sorting
+  - topic/linked-lists
+aliases:
+  - "arrays vs linked lists"
+hubs:
+  - "[[Sorting]]"
+  - "[[Linked Lists]]"
+---
 - Arrays all your data is stored contiguously (right next to each other) in memory.
 - Linked lists are great if you’re going to read all the items one at a time: you can read one item, follow the address to the next item, and so on. But if you’re going to keep jumping around, linked lists are terrible.
 - Arrays are great if you want to read random elements, because you can look up any element in your array instantly.

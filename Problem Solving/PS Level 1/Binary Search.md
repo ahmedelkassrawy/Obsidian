@@ -1,5 +1,21 @@
 ---
-tags: [problem-solving, binary-search, level-1]
+description: "Binary search from zero: the guess-the-number idea, a hand-traced example, the exists-or-not version, then lower_bound and upper_bound."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/binary-search
+  - problem-solving
+  - binary-search
+  - level-1
+aliases:
+  - "lower bound"
+  - "upper bound"
+hubs:
+  - "[[Binary Search]]"
 difficulty: beginner
 topic: Binary Search
 ---

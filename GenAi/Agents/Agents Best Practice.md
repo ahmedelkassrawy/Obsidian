@@ -1,3 +1,21 @@
+---
+description: "Production rules for agents treated as execution systems, not chat toys: orchestration, reliability handled by architecture, judgment left to the model."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/system-design
+aliases:
+  - "production agents"
+  - "agent reliability"
+hubs:
+  - "[[Agents]]"
+  - "[[System Design]]"
+---
 ### Comprehensive Breakdown of Production-Ready Agents
 
 **The Core Philosophy**

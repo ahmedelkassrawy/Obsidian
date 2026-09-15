@@ -1,3 +1,23 @@
+---
+description: "CI, CD and the MLOps-specific 'CT' (continuous training) explained for an interview answer, including why ML pipelines test data and models and not just code."
+domain: career
+type: interview
+status: digested
+tags:
+  - domain/career
+  - type/interview
+  - status/digested
+  - topic/interviews
+  - topic/mlops
+  - topic/testing
+aliases:
+  - "CI CD CT"
+  - "Continuous Training"
+hubs:
+  - "[[Interviews]]"
+  - "[[MLOps]]"
+  - "[[Testing]]"
+---
 ### CI: Continuous Integration (The Safety Net)
 
 - **The Concept:** Whenever a data scientist writes new code (like tweaking the 5G congestion model) and saves it to a shared repository (like GitHub or GitLab), the system automatically triggers a "build" and runs a battery of automated tests.

@@ -1,6 +1,27 @@
 ---
-aliases: [LLM Post-Training, Fine-Tuning vs RL]
-tags: [LLM, training, fine-tuning, reinforcement-learning]
+description: "Lays out the LLM training stages and contrasts supervised fine-tuning (match a target) with reinforcement learning (score the result), including upsides and downsides of each."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/fine-tuning
+  - topic/llm-internals
+  - LLM
+  - training
+  - fine-tuning
+  - reinforcement-learning
+aliases:
+  - "SFT vs RL"
+  - "post-training"
+  - "pre-training stages"
+  - "LLM Post-Training"
+  - "Fine-Tuning vs RL"
+hubs:
+  - "[[Fine-tuning]]"
+  - "[[LLM Internals]]"
 ---
 > [!info] **LLM Training Stages Overview**
 > LLM training has multiple stages. **Post-training** is just one of the last stages.  

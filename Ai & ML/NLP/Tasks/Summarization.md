@@ -1,3 +1,21 @@
+---
+description: "A minimal HuggingFace summarization pipeline call with bart-large-cnn on a sample passage."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/transformers
+  - topic/huggingface
+aliases:
+  - "summarization pipeline"
+  - "bart-large-cnn"
+hubs:
+  - "[[Transformers]]"
+  - "[[HuggingFace]]"
+---
 ```python
 # Use a pipeline as a high-level helper
 from transformers import pipeline

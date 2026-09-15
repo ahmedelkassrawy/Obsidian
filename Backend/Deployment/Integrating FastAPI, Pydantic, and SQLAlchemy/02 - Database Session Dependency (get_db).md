@@ -1,6 +1,29 @@
 ---
-tags: [fastapi, sqlalchemy, dependency-injection, session, get_db]
-aliases: [get_db, Database session dependency, Depends(get_db), Session per request]
+description: "Builds the get_db dependency: SessionLocal, yielding a session per request and closing it afterwards."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - fastapi
+  - sqlalchemy
+  - dependency-injection
+  - session
+  - get_db
+aliases:
+  - "get_db"
+  - "SessionLocal"
+  - "Depends"
+  - "Database session dependency"
+  - "Depends(get_db)"
+  - "Session per request"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#database-session-dependency
 ---
 

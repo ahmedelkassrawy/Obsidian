@@ -1,3 +1,19 @@
+---
+description: "2D prefix sums built by inclusion-exclusion, how to query any rectangle in O(1), and the 0-indexed vs 1-indexed conventions that cause wrong answers."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/prefix-sums
+aliases:
+  - "rectangle sum"
+  - "inclusion exclusion"
+hubs:
+  - "[[Prefix Sums]]"
+---
 # 2D Prefix Sum
 
 Related: [[2D Partial Sum]] (the inverse operation)
@@ -144,7 +160,7 @@ Sanity check every time: `rect(1,1,n,m)` must equal `P[n][m]`, and `rect(i,j,i,j
 
 - "sum of a subrectangle", "q queries on a grid"
 - Counting on a grid: make a 0/1 grid (`1` if the cell is a wall / is black / satisfies P) → prefix sum now counts *how many* in any rectangle, in O(1). This is the most common contest use, more than plain sums.
-- Fixed k×k square scanning: build the prefix, then slide a k×k window in O(n·m) — the 2D version of [[Sliding window Tips|fixed-size sliding window]].
+- Fixed k×k square scanning: build the prefix, then slide a k×k window in O(n·m) — the 2D version of [[Sliding Window Technique|fixed-size sliding window]].
 
 Example — max sum k×k square:
 

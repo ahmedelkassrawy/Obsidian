@@ -1,3 +1,21 @@
+---
+description: "Implements the handoff/state-machine pattern: tools that set the current step, per-step prompts and tool sets, required state, and a way to go back a step."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+aliases:
+  - "handoffs implementation"
+  - "state machine agent"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+---
 The [state machine pattern](https://docs.langchain.com/oss/python/langchain/multi-agent/handoffs) describes workflows where an agent’s behavior changes as it moves through different states of a task
 
 This tutorial shows how to implement a state machine by using tool calls to dynamically change a single agent’s configuration—updating its available tools and instructions based on the current state. 

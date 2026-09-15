@@ -1,3 +1,22 @@
+---
+description: "How Pipecat's pipeline moves data: system frames processed immediately vs data and control frames that queue in order, chaining processors, and running the pipeline."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+aliases:
+  - "frames"
+  - "frame processors"
+  - "pipeline runner"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+---
  how Pipecat’s pipeline architecture orchestrates frame processing for voice AI applications
 
 The **Pipeline** is the core orchestration component in Pipecat that connects frame processors together, creating a structured path for data to flow through your voice AI application.

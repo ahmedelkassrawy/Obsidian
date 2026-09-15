@@ -1,3 +1,24 @@
+---
+description: "Function calling in a Pipecat voice pipeline: defining functions with the standard schema or as direct functions, building the tools schema, and registering the handler."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/pipecat
+  - topic/voice-agents
+  - topic/tool-use-and-function-calling
+aliases:
+  - "pipecat function calling"
+  - "tools schema"
+  - "direct function"
+hubs:
+  - "[[Pipecat]]"
+  - "[[Voice Agents]]"
+  - "[[Tool Use & Function Calling]]"
+---
 Enable LLMs to interact with external services and APIs in your voice AI pipeline
 - **Function calling** (also known as tool calling) allows LLMs to request information from external services and APIs during conversations. 
 - This extends your voice AI bot’s capabilities beyond its training data to access real-time information and perform actions.

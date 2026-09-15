@@ -1,3 +1,21 @@
+---
+description: "Short explanation of why shallow agents break on long tasks and the four things deep agents add: planning, orchestrator/sub-agents, agentic search, and verification."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/multi-agent-systems
+aliases:
+  - "deep agents"
+  - "orchestrator subagent"
+hubs:
+  - "[[Agents]]"
+  - "[[Multi-Agent Systems]]"
+---
 Most agents today are shallow.
 They easily break down on long, multi-step problems (e.g., deep research or agentic coding).
 

@@ -1,7 +1,25 @@
 ---
+description: "Hands-on Git reference organised as save work, undo, branches, rewrite history, navigate and recover, with the three-places mental model."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/git
+  - git
+  - version-control
+  - rebase
+  - reflog
+aliases:
+  - "Git-Gud"
+  - "git reset"
+  - "rebase"
+  - "reflog"
+hubs:
+  - "[[Git]]"
 title: "Git — hands-on reference (Git-Gud workshop)"
-type: reference-note
-tags: [git, version-control, rebase, reflog]
 source: "Git-Gud workshop (16 exercises), 2026-08"
 date: 2026-08-31
 ---

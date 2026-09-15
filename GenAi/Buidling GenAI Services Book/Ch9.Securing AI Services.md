@@ -1,3 +1,22 @@
+---
+description: "Ch9 notes on I/O guardrails for model inputs and outputs, plus the four rate-limiting algorithms (token bucket, leaky bucket, fixed and sliding window) compared for AI traffic."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/auth-and-security
+  - topic/ai-security
+aliases:
+  - "guardrails"
+  - "rate limiting"
+  - "token bucket"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[AI Security]]"
+---
 Guardrails
 - I/O guardrails are designed to verify data entering a GenAI model and outputs sent to the downstream systems or users
 - Such guardrails can flag inappropriate user queries and validate output content against toxicity, hallucinations, or banned topics

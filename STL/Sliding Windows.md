@@ -1,3 +1,16 @@
+---
+description: "Two code snippets for the fixed-size window: add the incoming element, subtract the outgoing one, track the best sum."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/two-pointers-and-sliding-window
+hubs:
+  - "[[Two Pointers & Sliding Window]]"
+---
 ```C++
 for (int i = k; i < n; i++) 
 { 

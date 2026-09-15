@@ -1,3 +1,18 @@
+---
+description: "The 2D difference array: stamp a rectangle update with four corner marks, then rebuild with a 2D prefix sum."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/prefix-sums
+aliases:
+  - "2D difference array"
+hubs:
+  - "[[Prefix Sums]]"
+---
 # 2D Partial Sum (2D Difference Array)
 
 Related: [[1D Partial Sum]] (read that first) · [[2D Prefix Sum]] (needed for the rebuild)

@@ -1,3 +1,24 @@
+---
+description: "Step-by-step guide to enabling SSL/TLS on a Dockerised PostgreSQL, including generating certs and proving the traffic is encrypted."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/postgres
+  - topic/auth-and-security
+  - topic/docker
+aliases:
+  - "enable SSL Postgres"
+  - "pgAdmin"
+  - "certificates"
+hubs:
+  - "[[Postgres]]"
+  - "[[Auth & Security]]"
+  - "[[Docker]]"
+---
 # Enabling SSL/TLS for PostgreSQL with Docker
 
 ## Why Encrypt Database Connections?

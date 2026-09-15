@@ -1,3 +1,24 @@
+---
+description: "FastAPI course notes on async routes, HTTP methods, path and query parameters, Enum-constrained values and request bodies."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/fastapi
+  - topic/concurrency-and-async
+  - topic/api-design
+aliases:
+  - "path parameters"
+  - "Enum path param"
+  - "query parameters"
+hubs:
+  - "[[FastAPI]]"
+  - "[[Concurrency & Async]]"
+  - "[[API Design]]"
+---
 # FastAPI: Asynchronous Code and Path Parameters
 
 ## Asynchronous Code in FastAPI

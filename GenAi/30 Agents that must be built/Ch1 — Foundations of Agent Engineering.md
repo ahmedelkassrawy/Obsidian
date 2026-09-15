@@ -1,3 +1,19 @@
+---
+description: "Book chapter defining an AI agent and its cognitive loop (perceive, reason, plan, act, learn) plus agent communication patterns."
+domain: ai-eng
+type: book
+status: digested
+tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/agents
+aliases:
+  - "agent engineering foundations"
+  - "cognitive loop"
+hubs:
+  - "[[Agents]]"
+---
 
 > The future belongs to organizations that can harness AI not as a replacement for human intelligence, but as an amplification of it.
 > — Andrew Ng

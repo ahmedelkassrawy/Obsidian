@@ -1,6 +1,36 @@
 ---
-tags: [fastapi, pydantic, sqlalchemy, troubleshooting, errors, debugging]
-aliases: [Gotchas, Troubleshooting, Common errors, DetachedInstanceError, check_same_thread, IntegrityError, orm_mode deprecated]
+description: "Catalogue of the real errors you hit wiring FastAPI, Pydantic and SQLAlchemy, each with cause and fix, searchable by error text."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/fastapi
+  - topic/sqlalchemy
+  - topic/sqlite
+  - fastapi
+  - pydantic
+  - sqlalchemy
+  - troubleshooting
+  - errors
+  - debugging
+aliases:
+  - "ImportError get_db"
+  - "SQLite thread error"
+  - "422"
+  - "Gotchas"
+  - "Troubleshooting"
+  - "Common errors"
+  - "DetachedInstanceError"
+  - "check_same_thread"
+  - "IntegrityError"
+  - "orm_mode deprecated"
+hubs:
+  - "[[FastAPI]]"
+  - "[[SQLAlchemy]]"
+  - "[[SQLite]]"
 ---
 
 # 08 — Gotchas and Troubleshooting

@@ -1,3 +1,20 @@
+---
+description: "Explains that a constructor runs automatically when an object is declared, must share the class name, has no return type, and is where member variables get initialised."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+  - topic/oop
+aliases:
+  - "constructors"
+hubs:
+  - "[[C++ Language]]"
+  - "[[OOP]]"
+---
 A _constructor_ is automatically called when an _object_ of the _class_ is declared.
 
 - A _constructor_ is a _member_ function that is usually `public`.

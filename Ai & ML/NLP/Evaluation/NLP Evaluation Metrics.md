@@ -1,3 +1,23 @@
+---
+description: "Explains the evaluation metrics for generative NLP - perplexity, ROUGE variants, BLEU and METEOR - with formulas, examples and when each applies."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/evaluation-metrics
+  - topic/transformers
+aliases:
+  - "perplexity"
+  - "ROUGE"
+  - "BLEU"
+  - "METEOR"
+hubs:
+  - "[[Evaluation Metrics]]"
+  - "[[Transformers]]"
+---
 
 This guide covers key evaluation metrics for generative NLP models: [[#Perplexity]], [[#ROUGE]], [[#BLEU]], and [[#METEOR]]. Use the sections below to study definitions, formulas, examples, and add your own notes.
 ## Overview Table

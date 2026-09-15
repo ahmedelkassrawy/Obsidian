@@ -1,3 +1,22 @@
+---
+description: "Explains model serialization and shows saving and reloading a trained scikit-learn model with pickle and with joblib, plus why joblib is usually preferred."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/mlops
+  - topic/mlflow-and-dvc
+aliases:
+  - "model serialization"
+  - "pickle"
+  - "joblib"
+hubs:
+  - "[[MLOps]]"
+  - "[[MLflow & DVC]]"
+---
 ### 🔑 What is model serialization?
 
 Think of it like **saving your trained model to a file**, so you don’t have to retrain it every time. Later, you can just load it back and use it for predictions.

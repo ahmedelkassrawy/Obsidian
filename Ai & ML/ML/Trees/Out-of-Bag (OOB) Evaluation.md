@@ -1,3 +1,22 @@
+---
+description: "Explains out-of-bag evaluation: the samples a bootstrap draw leaves out act as a free validation set, and how the OOB score compares to a held-out test score."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/trees-and-boosting
+  - topic/evaluation-metrics
+aliases:
+  - "OOB"
+  - "out-of-bag score"
+  - "bootstrap validation"
+hubs:
+  - "[[Trees & Boosting]]"
+  - "[[Evaluation Metrics]]"
+---
 - In **bagging**, each model is trained on a **bootstrap sample** (random subset with replacement). 
 - Data points not included in a model’s bootstrap sample are called **out-of-bag (OOB)** samples.
 - OOB evaluation uses these samples to estimate the ensemble’s generalization performance.

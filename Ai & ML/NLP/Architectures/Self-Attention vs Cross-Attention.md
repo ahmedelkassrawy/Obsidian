@@ -1,7 +1,24 @@
 ---
+description: "Explains Q/K/V with a library analogy, where self-attention and cross-attention each sit in a transformer, the PyTorch call patterns, and how masking differs between them."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/transformers
+  - topic/pytorch
+aliases:
+  - "self attention"
+  - "cross attention"
+  - "Q K V"
+  - "masking"
+hubs:
+  - "[[Transformers]]"
+  - "[[PyTorch]]"
 ## 1. Core Concepts & Differences
 Both mechanisms calculate relevance (weights) between tokens, but they differ in **where** the information comes from.
-
 | Feature | Self-Attention (Intra-Attention) | Cross-Attention (Encoder-Decoder) |
 | :--- | :--- | :--- |
 | **Definition** | The model looks at other words within the **same** sequence to understand context. | The model looks at a **different** sequence to gather information. |

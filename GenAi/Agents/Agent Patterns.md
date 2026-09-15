@@ -1,3 +1,20 @@
+---
+description: "Compares six agent architectures - reactive, deliberative, hybrid, ReAct, plan-and-execute, and tree/graph of thoughts - with a summary table."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+aliases:
+  - "ReAct"
+  - "plan and execute"
+  - "tree of thoughts"
+hubs:
+  - "[[Agents]]"
+---
 ## . Reactive Agents
 **Concept:** These agents follow a direct mapping from states to actions. They do not maintain an internal "memory" or "world model"; they simply respond to the current input or environment immediately.
 

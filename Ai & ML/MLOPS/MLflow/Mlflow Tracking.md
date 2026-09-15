@@ -1,3 +1,23 @@
+---
+description: "Step-by-step MLflow tracking code: set the tracking URI, start a run, log params and metrics, log a model with a signature, and switch on autolog."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/mlflow-and-dvc
+  - topic/mlops
+aliases:
+  - "MLflow tracking"
+  - "autolog"
+  - "log_model"
+  - "infer_signature"
+hubs:
+  - "[[MLflow & DVC]]"
+  - "[[MLOps]]"
+---
 #### Step1.Setup
 ```python
 import pandas as pd

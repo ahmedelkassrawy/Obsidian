@@ -1,3 +1,24 @@
+---
+description: "Course notes tracing a Node.js to PostgreSQL connection in Wireshark: TCP handshake, startup message, auth request, query and teardown."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/postgres
+  - topic/http-and-networking
+  - topic/auth-and-security
+aliases:
+  - "wire protocol"
+  - "Wireshark"
+  - "startup message"
+hubs:
+  - "[[Postgres]]"
+  - "[[HTTP & Networking]]"
+  - "[[Auth & Security]]"
+---
 # Wiresharking PostgreSQL: Behind the Scenes of a Node.js Client Connection
 
 ## Episode Overview

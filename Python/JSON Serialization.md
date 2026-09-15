@@ -1,5 +1,23 @@
 ---
-tags: [python, json, serialization, pydantic, files]
+description: "Serialization as two arrows - object to text when saving, text to object when loading - with the real output shown at each step and how enums and datetimes have to be converted."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/python-language
+  - python
+  - json
+  - serialization
+  - pydantic
+  - files
+aliases:
+  - "json.dumps"
+  - "serialization"
+hubs:
+  - "[[Python Language]]"
 source: Track A · postqueue · Lesson 4 (saving & loading)
 updated: 2026-08-17
 ---

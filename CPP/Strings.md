@@ -1,3 +1,21 @@
+---
+description: "Two snippets: reading a whole line with getline, and checking whether a character is a digit."
+domain: cs
+type: concept
+status: stub
+tags:
+  - domain/cs
+  - type/concept
+  - status/stub
+  - topic/c-language
+  - topic/string-algorithms
+aliases:
+  - "getline"
+  - "isdigit"
+hubs:
+  - "[[C++ Language]]"
+  - "[[String Algorithms]]"
+---
 ```C++
 #include <iostream>
 #include <string>

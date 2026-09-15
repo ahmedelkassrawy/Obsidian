@@ -1,3 +1,22 @@
+---
+description: "Large pasted code reference for programming in DSPy: calling the LM directly, modules, custom types, usage tracking and caching, and where adapters fit."
+domain: ai-eng
+type: reference
+status: raw
+tags:
+  - domain/ai-eng
+  - type/reference
+  - status/raw
+  - topic/dspy
+  - topic/prompting
+aliases:
+  - "dspy modules"
+  - "adapters"
+  - "dspy.LM"
+hubs:
+  - "[[DSPy]]"
+  - "[[Prompting]]"
+---
 ## Calling the LM directly
 ```python
 lm = dspy.LM('gemini/gemini-2.5-flash', api_key= os.getenv("GEMINI_API_KEY"))

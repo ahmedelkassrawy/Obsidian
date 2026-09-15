@@ -1,0 +1,54 @@
+---
+description: "Mounting the FastAPI Users users router for reading and updating user records."
+domain: backend
+type: reference
+status: raw
+tags:
+  - domain/backend
+  - type/reference
+  - status/raw
+  - topic/auth-and-security
+  - topic/fastapi
+aliases:
+  - "User Router"
+  - "user management routes"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[FastAPI]]"
+---
+This router provides routes to manage users
+
+```python
+import uuid
+
+from fastapi import FastAPI
+from fastapi_users import FastAPIUsers
+
+from .db import User
+from .schemas import UserRead, UserUpdate
+
+fastapi_users = FastAPIUsers[User, uuid.UUID](
+    get_user_manager,
+    [auth_backend],
+)
+
+app = FastAPI()
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+```
+
+### Optional: user verification
+You can require the user to be **verified** (i.e. `is_verified` property set to `True`) to access those routes
+
+You have to set the `requires_verification` parameter to `True` on the router instantiation method
+
+```python
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate, requires_verification=True),
+    prefix="/users",
+    tags=["users"],
+)
+```

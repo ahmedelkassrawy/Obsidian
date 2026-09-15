@@ -1,3 +1,20 @@
+---
+description: "Book-chapter notes on unsupervised learning: what clustering is for, how k-means iterates centroids, and how to pick the number of clusters."
+domain: ml
+type: book
+status: digested
+tags:
+  - domain/ml
+  - type/book
+  - status/digested
+  - topic/clustering-and-dimensionality-reduction
+aliases:
+  - "Unsupervised AI Book"
+  - "k-means"
+  - "PCA book notes"
+hubs:
+  - "[[Clustering & Dimensionality Reduction]]"
+---
 Unsupervised learning frequently employs a technique called clustering . The purpose of clustering is to group data by similarity. The most popular clustering algorithm is k-means clustering, which takes n data samples and groups them into m clusters, where m is a number you specify. Grouping is performed using an iterative process that computes a centroid for each cluster and assigns samples to clusters based on their proximity to the cluster centroids. If the distance from a particular sample to the centroid of cluster 1 is 2.0 and the distance from the same sample to the 34 center of cluster 2 is 3.0, then the sample is assigned to cluster 1. In Figure 1-6, 200 samples are loosely arranged in three clusters. The diagram on the left shows the raw, ungrouped samples. The diagram on the right shows the cluster centroids (the red dots) with the samples colored by cluster.
 ![[Pasted image 20251016131205.png]]
 

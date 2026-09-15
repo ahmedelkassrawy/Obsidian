@@ -1,3 +1,24 @@
+---
+description: "Pasted code for a Redis semantic cache: a cache-optimized embedding model, loading FAQ data into the cache, and a TTL policy to keep it fresh."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/caching
+  - topic/redis
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "semantic cache"
+  - "langcache-embed"
+  - "TTL"
+hubs:
+  - "[[Caching]]"
+  - "[[Redis]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 ```python
 from sentence_transformers import SentenceTransformer
 

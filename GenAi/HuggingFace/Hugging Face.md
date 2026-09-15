@@ -1,3 +1,21 @@
+---
+description: "Short pasted code for two HuggingFace tasks: text classification with DistilBERT and basic text generation."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/huggingface
+  - topic/transformers
+aliases:
+  - "transformers pipeline"
+  - "DistilBERT"
+hubs:
+  - "[[HuggingFace]]"
+  - "[[Transformers]]"
+---
 ## Text Classification
 1. Load the tokenizer, model
 ```python

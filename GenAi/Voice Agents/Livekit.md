@@ -1,3 +1,20 @@
+---
+description: "LiveKit agents end to end: the component table, server pre-warming, the connection entrypoint, assembling the AgentSession pipeline, usage metrics and starting the session."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/voice-agents
+aliases:
+  - "LiveKit"
+  - "AgentSession"
+  - "prewarming"
+hubs:
+  - "[[Voice Agents]]"
+---
 |Component|Description|Use cases|
 |---|---|---|
 |**Agent sessions**|Orchestrate input collection, pipeline management, and output delivery. The main orchestrator for your voice AI app.|Single-agent apps, session lifecycle management, and room I/O configuration.|

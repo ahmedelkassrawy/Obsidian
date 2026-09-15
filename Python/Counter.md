@@ -1,3 +1,19 @@
+---
+description: "One snippet using collections.Counter and most_common(1) to get the mode of a list."
+domain: cs
+type: reference
+status: stub
+tags:
+  - domain/cs
+  - type/reference
+  - status/stub
+  - topic/python-language
+aliases:
+  - "mode"
+  - "collections"
+hubs:
+  - "[[Python Language]]"
+---
 ```python
 from collections import Counter
 

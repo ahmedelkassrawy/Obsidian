@@ -1,3 +1,21 @@
+---
+description: "What std::lower_bound and std::upper_bound return on a sorted range, how to turn the iterator into an index, and the edge cases."
+domain: cs
+type: reference
+status: digested
+tags:
+  - domain/cs
+  - type/reference
+  - status/digested
+  - topic/binary-search
+  - topic/stl-containers
+aliases:
+  - "lower_bound"
+  - "upper_bound"
+hubs:
+  - "[[Binary Search]]"
+  - "[[STL Containers]]"
+---
 ## Overview
 
 In C++, `lower_bound` and `upper_bound` are algorithms from the `<algorithm>` library used to find positions of elements in a sorted range (e.g., a vector). They are particularly useful for binary search operations on sorted data.

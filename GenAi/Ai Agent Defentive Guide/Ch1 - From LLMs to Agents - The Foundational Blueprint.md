@@ -1,9 +1,25 @@
 ---
+description: "Book chapter showing how a static LLM becomes an agent through a reason-act-observe loop, modelled as finite and hierarchical state machines and mapped onto LangGraph."
+domain: ai-eng
+type: book
+status: digested
 tags:
+  - domain/ai-eng
+  - type/book
+  - status/digested
+  - topic/agents
+  - topic/langgraph
   - ai-agents
   - llm
   - chapter-summary
   - foundational
+aliases:
+  - "LLM to agent"
+  - "state machines"
+  - "bounded autonomy"
+hubs:
+  - "[[Agents]]"
+  - "[[LangGraph]]"
 ---
 
 # Ch1 — From LLMs to Agents: The Foundational Blueprint

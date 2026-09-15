@@ -1,3 +1,23 @@
+---
+description: "Course notes on MongoDB 5.3+ clustered collections: storing documents inline with the clustered index, the benefits and the limits."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/mongodb
+  - topic/database-internals
+  - topic/database-indexing
+aliases:
+  - "clustered collection"
+  - "clustered index"
+hubs:
+  - "[[MongoDB]]"
+  - "[[Database Internals]]"
+  - "[[Database Indexing]]"
+---
 # MongoDB Clustered Collections (v5.3+)
 
 ## Overview

@@ -1,3 +1,26 @@
+---
+description: "A very long single-file NLP walkthrough from Bag of Words and TF-IDF through embeddings, RNNs and attention to BERT's encoder internals, with formulas and mermaid diagrams."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/transformers
+  - topic/embeddings-and-semantic-search
+  - topic/rnn-and-lstm
+aliases:
+  - "CS224n"
+  - "NLP mega guide"
+  - "BoW to BERT"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[Transformers]]"
+  - "[[Embeddings & Semantic Search]]"
+  - "[[RNN & LSTM]]"
+---
 
 
 ## **Bag of Words (BoW) in NLP**

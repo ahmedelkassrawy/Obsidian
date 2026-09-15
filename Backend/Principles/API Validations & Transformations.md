@@ -1,3 +1,22 @@
+---
+description: "Why you validate and transform every incoming payload at the controller layer, with the syntactic/semantic/type validation split and a pipeline example."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/api-design
+  - topic/pydantic
+aliases:
+  - "validation"
+  - "syntactic semantic validation"
+  - "sanitization"
+hubs:
+  - "[[API Design]]"
+  - "[[Pydantic]]"
+---
 ## Core Idea
 Validate and transform **all incoming data** (JSON payload, query parameters, path parameters, headers) **at the entry point** of your server (Controller layer) **before** any business logic or database operations.
 

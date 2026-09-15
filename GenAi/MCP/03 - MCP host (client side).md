@@ -1,3 +1,22 @@
+---
+description: "Building the other end of MCP - a Gemini-backed host that connects to servers, manages connections, keeps a tool registry, and exposes a webhook."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/mcp
+  - topic/agents
+aliases:
+  - "MCP host"
+  - "MCP client"
+  - "tool registry"
+hubs:
+  - "[[MCP]]"
+  - "[[Agents]]"
+---
 # Building an MCP host (the client side)
 
 > The other notes build MCP *servers*. This one is the other end: an MCP **host/client** that consumes servers, a Gemini-backed host with a connection manager, a tool registry, and a webhook. This is how a model actually discovers tools, calls them, and loops on the results.

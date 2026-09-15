@@ -1,3 +1,22 @@
+---
+description: "Pasted Keras code for building, compiling and training MLPs for image classification and regression, with brief notes on activations and output layers."
+domain: ml
+type: howto
+status: raw
+tags:
+  - domain/ml
+  - type/howto
+  - status/raw
+  - topic/tensorflow-and-keras
+  - topic/optimizers-and-training
+aliases:
+  - "MLP Keras code"
+  - "Sequential model"
+  - "image normalization"
+hubs:
+  - "[[TensorFlow & Keras]]"
+  - "[[Optimizers & Training]]"
+---
 #### Classification
 Normalization of images : / 255.
 

@@ -1,3 +1,24 @@
+---
+description: "End-to-end RAG guide: loading and splitting documents, embeddings and a vector store, retrieval, and generation."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/rag
+  - topic/vector-search
+  - topic/langchain
+aliases:
+  - "RAG guide"
+  - "chunking"
+  - "vector store"
+hubs:
+  - "[[RAG]]"
+  - "[[Vector Search]]"
+  - "[[LangChain]]"
+---
 # Retrieval-Augmented Generation (RAG) Guide
 
 1. Chunking

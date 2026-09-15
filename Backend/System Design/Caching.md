@@ -1,3 +1,22 @@
+---
+description: "Introduction to caching: why it matters, cache types, read and write strategies, hit/miss, and invalidation problems."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/caching
+  - topic/system-design
+aliases:
+  - "cache hit miss"
+  - "read-through write-back"
+  - "invalidation"
+hubs:
+  - "[[Caching]]"
+  - "[[System Design]]"
+---
 # Introduction to Caching
 
 In today's fast-paced world, speed is everything. For example, when we open a website or an app, if it takes just a few extra seconds to load, we instinctively hit the refresh button. Most of the applications we use daily handle massive amounts of data and high user traffic, yet they respond quickly. The solution isn't magic—it's **caching**, a technique that has been around for ages. In this guide, we'll explore what caching is, its importance, various caching strategies, their trade-offs, and challenges like cache invalidation and eviction policies.

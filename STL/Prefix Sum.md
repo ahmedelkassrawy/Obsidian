@@ -1,3 +1,18 @@
+---
+description: "Prefix sums worked through one Codeforces problem, with the Arabic explanation of why the array is sized n+1, then the 2D version."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/prefix-sums
+aliases:
+  - "partial sum"
+hubs:
+  - "[[Prefix Sums]]"
+---
 The problem we are looking into:
 [Problem - A - Codeforces](https://codeforces.com/group/isP4JMZTix/contest/386415/problem/A)
 ```C++

@@ -1,3 +1,20 @@
+---
+description: "Short pasted patterns for LangGraph: with_structured_output, bind_tools, and a conditional-edge gate function that routes between nodes."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/langgraph
+aliases:
+  - "langgraph routing"
+  - "structured output"
+  - "bind_tools"
+hubs:
+  - "[[LangGraph]]"
+---
 ```python
 structured_llm = llm.with_structured_output(SearchQuery)
 llm_with_tools = llm.bind_tools([multiply])

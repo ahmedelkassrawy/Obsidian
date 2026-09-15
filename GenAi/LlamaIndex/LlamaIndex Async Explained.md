@@ -1,3 +1,22 @@
+---
+description: "Explains the asyncio basics LlamaIndex relies on: the single event loop per thread, asyncio.run, coroutines and awaiting tasks."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/llamaindex
+  - topic/concurrency-and-async
+aliases:
+  - "asyncio"
+  - "event loop"
+  - "await"
+hubs:
+  - "[[LlamaIndex]]"
+  - "[[Concurrency & Async]]"
+---
 #### Basics of asyncio
 - Event loop : The event loop handles the scheduling and execution of sync operations. It countinously checks for and executes tasks(coroutines). All async operations run by this loop, THERE can be only one event loop per thread.
 -  **`asyncio.run()`**: This function is the entry point for running an asynchronous program. It creates and manages the event loop and cleans up after it completes. Remember that it is designed to be called once per thread. Some frameworks like FastAPI will run the event loop for you, others will require you to run it yourself.

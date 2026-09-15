@@ -1,3 +1,19 @@
+---
+description: "Binary search trees end to end: preorder/inorder/postorder traversal, insert, search and delete in C++, and the time complexity of each."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/trees-and-bst
+aliases:
+  - "binary search tree"
+  - "traversal"
+hubs:
+  - "[[Trees & BST]]"
+---
 ## Traversal Node
 
 - Preorder = (root -> left -> right)

@@ -1,6 +1,34 @@
 ---
-tags: [sqlalchemy, orm, relationship, one-to-many, many-to-one, back_populates, lazy-loading, n+1]
-aliases: [One-to-many, Many-to-one, relationship(), back_populates, Lazy loading, N+1, selectinload, joinedload]
+description: "Declaring and navigating one-to-many relationships, and the difference between setting the FK and setting the relationship."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/sqlalchemy
+  - sqlalchemy
+  - orm
+  - relationship
+  - one-to-many
+  - many-to-one
+  - back_populates
+  - lazy-loading
+  - n+1
+aliases:
+  - "relationship"
+  - "back_populates"
+  - "foreign key"
+  - "One-to-many"
+  - "Many-to-one"
+  - "relationship()"
+  - "Lazy loading"
+  - "N+1"
+  - "selectinload"
+  - "joinedload"
+hubs:
+  - "[[SQLAlchemy]]"
 source: https://github.com/h9-tec/AI_deployment#relationships-one-to-many-many-to-many
 ---
 

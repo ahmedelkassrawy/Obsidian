@@ -1,3 +1,22 @@
+---
+description: "Explains why JWT exists, its header/payload/signature parts, and how the signature makes stateless authentication possible."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/auth-and-security
+  - topic/api-design
+aliases:
+  - "JWT"
+  - "JSON Web Token"
+  - "stateless auth"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[API Design]]"
+---
 ![[Pasted image 20250218033401.png]]
  it’s a standardized security token format
 # **Why we need it?**

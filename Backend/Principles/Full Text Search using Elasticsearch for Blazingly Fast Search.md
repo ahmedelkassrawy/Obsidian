@@ -1,3 +1,24 @@
+---
+description: "Why LIKE queries stop scaling and how an inverted index plus Elasticsearch relevance scoring solves search at size."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/database-indexing
+  - topic/system-design
+  - topic/caching
+aliases:
+  - "Elasticsearch"
+  - "inverted index"
+  - "full text search"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[System Design]]"
+  - "[[Caching]]"
+---
 ## 1. The Problem: Searching in a Relational Database
 
 Imagine it’s 2005. You work at a rapidly growing e‑commerce company. You have just 5,000 products and a simple task: let customers search for products by name or description.

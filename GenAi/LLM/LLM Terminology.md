@@ -1,3 +1,23 @@
+---
+description: "Plain-English glossary of the fine-tuning and inference terms that keep coming up: PEFT, LoRA, QLoRA, adapters, instruction tuning, SFT and the KV cache."
+domain: ai-eng
+type: reference
+status: digested
+tags:
+  - domain/ai-eng
+  - type/reference
+  - status/digested
+  - topic/fine-tuning
+  - topic/llm-internals
+aliases:
+  - "LoRA"
+  - "QLoRA"
+  - "adapters"
+  - "SFT"
+hubs:
+  - "[[Fine-tuning]]"
+  - "[[LLM Internals]]"
+---
 Parameter-Efficient Fine-Tuning (PEFT)
 PEFT methods are techniques used to adapt a massive pre-trained model to a specific task without retraining all billions of its parameters.
 ### **LoRA (Low-Rank Adaptation)**

@@ -1,8 +1,23 @@
 ---
+description: "What was disabled at Windows startup on the Dell laptop to cut RAM pressure, why it was RAM and not failing hardware, and the exact steps to undo each change."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/operating-systems
+  - windows
+  - performance
+  - maintenance
+aliases:
+  - "Windows Startup Cleanup"
+  - "RAM Cleanup"
+  - "Laptop Performance Fix"
+hubs:
+  - "[[Operating Systems]]"
 date: 2026-08-28
-type: note
-tags: [windows, performance, maintenance]
-description: Startup/RAM cleanup on the Dell laptop — what was disabled and how to reverse it
 ---
 # Laptop Startup + RAM Cleanup — 2026-08-28
 

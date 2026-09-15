@@ -1,3 +1,23 @@
+---
+description: "A worked multi-agent build: HITL middleware on the subgraphs, a checkpointer on the supervisor, and a three-layer tools/subagents/supervisor architecture with controlled information flow."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/langchain
+  - topic/multi-agent-systems
+  - topic/langgraph
+aliases:
+  - "multi agent example"
+  - "three layer architecture"
+hubs:
+  - "[[LangChain]]"
+  - "[[Multi-Agent Systems]]"
+  - "[[LangGraph]]"
+---
 I added HITL middleware to the subgraphs
 Added checkpointer to the top level agent (supervisor agent) which is required to pause and resume execution
 

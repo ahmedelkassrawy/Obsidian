@@ -1,3 +1,22 @@
+---
+description: "Separates fixed-code AI workflows (chaining, routing, parallelization) from autonomous agents, and gives rules for choosing or combining them."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/agents
+  - topic/system-design
+aliases:
+  - "workflow vs agent"
+  - "prompt chaining"
+  - "routing"
+hubs:
+  - "[[Agents]]"
+  - "[[System Design]]"
+---
 ### 1. AI Workflows
 
 **AI workflows** are systems where LLMs and tools are orchestrated through **predefined code paths**. These systems follow a structured sequence of operations with explicit control flow.

@@ -1,3 +1,23 @@
+---
+description: "Why agent cost and latency grow every turn, and how prompt caching plus context trimming fix it - with a turn-by-turn breakdown of cached vs uncached prefill."
+domain: ai-eng
+type: concept
+status: digested
+tags:
+  - domain/ai-eng
+  - type/concept
+  - status/digested
+  - topic/context-engineering
+  - topic/caching
+  - topic/llm-internals
+aliases:
+  - "prompt caching"
+  - "cache breakpoints"
+hubs:
+  - "[[Context Engineering]]"
+  - "[[Caching]]"
+  - "[[LLM Internals]]"
+---
 # AI Agent Optimization: Prompt Caching & Context Management
 
 If you are building an AI Agent, the biggest challenge you will face is **Cost** and **Latency**, both of which increase with every Turn. In this video, I explained in detail how to properly utilize Prompt Caching to save over 80% of your costs.

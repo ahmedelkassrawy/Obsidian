@@ -1,3 +1,20 @@
+---
+description: "Course notes on two-phase locking: growing and shrinking phases, how it guarantees serializability, and a SQL double-booking walkthrough."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/transactions-and-concurrency-control
+aliases:
+  - "2PL"
+  - "growing shrinking phase"
+  - "serializability"
+hubs:
+  - "[[Transactions & Concurrency Control]]"
+---
 **Two-Phase Locking (2PL)** is a concurrency control mechanism used in database systems to ensure serializability of transactions. It consists of two phases:
 
 1. **Growing Phase**: A transaction acquires all the locks it needs without releasing any.

@@ -1,3 +1,24 @@
+---
+description: "Shows the Keras text pipeline end to end: Tokenizer to sequences, stop-word removal, padding, an Embedding layer, and a TextVectorization-based classification model."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/nlp-preprocessing
+  - topic/tensorflow-and-keras
+  - topic/embeddings-and-semantic-search
+aliases:
+  - "NLP AI Book"
+  - "Keras Tokenizer"
+  - "TextVectorization"
+hubs:
+  - "[[NLP Preprocessing]]"
+  - "[[TensorFlow & Keras]]"
+  - "[[Embeddings & Semantic Search]]"
+---
 # Text Preprocessing and Neural Networks for NLP
 
 ## Tokenizer and Sequence Conversion

@@ -1,3 +1,26 @@
+---
+description: "A condensed fine-tuning recipe: add a classification head to a pretrained transformer, tokenize, define metrics, and run the HuggingFace Trainer, plus tricks to improve results."
+domain: ml
+type: reference
+status: digested
+tags:
+  - domain/ml
+  - type/reference
+  - status/digested
+  - topic/transformers
+  - topic/fine-tuning
+  - topic/huggingface
+  - topic/nlp-preprocessing
+aliases:
+  - "fine-tuning cheatsheet"
+  - "Trainer API"
+  - "classification head"
+hubs:
+  - "[[Transformers]]"
+  - "[[Fine-tuning]]"
+  - "[[HuggingFace]]"
+  - "[[NLP Preprocessing]]"
+---
 ### **Architecture tweak**
 - Start with the pretrained transformer (e.g., `bert-base-uncased`).
 - Add a **classification head** (usually: a dense layer + softmax) on top of the `[CLS]` token’s hidden state.

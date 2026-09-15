@@ -1,7 +1,28 @@
 ---
+description: "Hands-on notes from serving Qwen2.5-1.5B on a Colab T4 with vLLM: what serving means, KV cache, continuous batching, prefix caching, and latency vs throughput with real measurements."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/llm-serving-and-vllm
+  - topic/llm-internals
+  - vllm
+  - serving
+  - mlops
+  - m2
+  - kv-cache
+  - batching
+aliases:
+  - "vLLM"
+  - "serving a model"
+  - "KV cache"
+hubs:
+  - "[[LLM Serving & vLLM]]"
+  - "[[LLM Internals]]"
 title: "vLLM — serving a model yourself (KV cache, batching, best practices)"
-type: reading-note
-tags: [vllm, serving, mlops, m2, kv-cache, batching]
 source: "Hands-on Colab session (T4 GPU, Qwen2.5-1.5B-Instruct), 2026-08-25"
 date: 2026-08-25
 ---

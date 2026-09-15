@@ -1,0 +1,47 @@
+---
+description: "Mounting the FastAPI Users auth router to get /login and /logout for a given backend."
+domain: backend
+type: reference
+status: raw
+tags:
+  - domain/backend
+  - type/reference
+  - status/raw
+  - topic/auth-and-security
+  - topic/fastapi
+aliases:
+  - "Auth Router"
+  - "login logout routes"
+hubs:
+  - "[[Auth & Security]]"
+  - "[[FastAPI]]"
+---
+The auth router will generate /login and /logout routes for a given authentication backend.
+
+```python
+import uuid
+
+from fastapi import FastAPI
+from fastapi_users import FastAPIUsers
+
+from .db import User
+
+fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager,[auth_backend])
+
+app = FastAPI()
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix = "/auth/jwt",
+    tags = ["auth"],
+)
+```
+### Optional: user verification
+- You can require the user to be **verified** (i.e. `is_verified` property set to `True`) to allow login
+- You have to set the `requires_verification` parameter to `True` on the router instantiation
+```python
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend, requires_verification=True),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+```

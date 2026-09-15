@@ -1,3 +1,24 @@
+---
+description: "Builds an RNN part-of-speech tagger in Keras on NLTK corpora: data prep, splits, tokenization, padding, one-hot labels, model, training and inference."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/rnn-and-lstm
+  - topic/nlp-preprocessing
+  - topic/tensorflow-and-keras
+aliases:
+  - "POS tagging"
+  - "part of speech RNN"
+  - "NLTK treebank"
+hubs:
+  - "[[RNN & LSTM]]"
+  - "[[NLP Preprocessing]]"
+  - "[[TensorFlow & Keras]]"
+---
 # NLP RNN
 
 This document outlines the process of building a Recurrent Neural Network (RNN) for Part-of-Speech (PoS) tagging using TensorFlow and NLTK corpora.

@@ -1,3 +1,18 @@
+---
+description: "Explains why templates exist - one function or class that works for many types instead of near-identical copies - and how the compiler instantiates them."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/c-language
+aliases:
+  - "generics"
+hubs:
+  - "[[C++ Language]]"
+---
 In C++, the template system was designed to simplify the process of creating functions (or classes) that are able to work with different data types.
 
 Instead of manually creating a bunch of mostly-identical functions or classes (one for each set of different types), we instead create a single _template_. Just like a normal definition, a **template** describes what a function or class looks like.

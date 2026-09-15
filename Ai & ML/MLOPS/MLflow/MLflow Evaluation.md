@@ -1,3 +1,23 @@
+---
+description: "Shows what mlflow.evaluate generates automatically - classification and regression metrics, ROC and residual plots, custom metrics - and how to evaluate a plain prediction function."
+domain: ml
+type: howto
+status: digested
+tags:
+  - domain/ml
+  - type/howto
+  - status/digested
+  - topic/mlflow-and-dvc
+  - topic/evaluation-metrics
+  - topic/mlops
+aliases:
+  - "mlflow.evaluate"
+  - "model evaluation MLflow"
+hubs:
+  - "[[MLflow & DVC]]"
+  - "[[Evaluation Metrics]]"
+  - "[[MLOps]]"
+---
 What Gets Automatically Generated
 #### Performance Metrics
 - 📊 **Classification**: Accuracy, precision, recall, F1-score, ROC-AUC, confusion matrices

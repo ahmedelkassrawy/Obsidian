@@ -1,3 +1,22 @@
+---
+description: "What a Bloom filter is, how the bit array and hash functions work, why false positives happen and where to use one."
+domain: backend
+type: concept
+status: digested
+tags:
+  - domain/backend
+  - type/concept
+  - status/digested
+  - topic/database-indexing
+  - topic/database-internals
+aliases:
+  - "bloom filter"
+  - "probabilistic data structure"
+  - "false positive"
+hubs:
+  - "[[Database Indexing]]"
+  - "[[Database Internals]]"
+---
 ## What is a Bloom Filter?
 
 A **Bloom Filter** is a probabilistic data structure used to test whether an element is a member of a set. It’s fast, memory-efficient, but allows for **false positives** (might say an element exists when it doesn’t). It never gives **false negatives** (if it says an element doesn’t exist, it definitely doesn’t).

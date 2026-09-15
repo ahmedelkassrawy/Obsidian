@@ -1,3 +1,24 @@
+---
+description: "Lessons from a Node.js/PostgreSQL to-do app on connection pooling and database permissions, with the problems hit and the fixes applied."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/postgres
+  - topic/auth-and-security
+  - topic/system-design
+aliases:
+  - "connection pooling"
+  - "least privilege"
+  - "pg pool"
+hubs:
+  - "[[Postgres]]"
+  - "[[Auth & Security]]"
+  - "[[System Design]]"
+---
 ## Best Practices for SQL Connection Pooling and Permissions in a Node.js/PostgreSQL To-Do App
 
 ## Overview

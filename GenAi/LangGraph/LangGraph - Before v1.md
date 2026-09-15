@@ -1,3 +1,20 @@
+---
+description: "Older LangGraph reference: reducers and add_messages, routers, Command vs conditional edges, and binding tools to the model."
+domain: ai-eng
+type: reference
+status: stale
+tags:
+  - domain/ai-eng
+  - type/reference
+  - status/stale
+  - topic/langgraph
+aliases:
+  - "LangGraph before v1"
+  - "reducers"
+  - "Command"
+hubs:
+  - "[[LangGraph]]"
+---
  If you don't specify  a reducer, every state update will overwrite the list of messages with the most recently provided value. If you wanted to simply append messages to the existing list, you could use `operator.add` as a reducer.
  
 state["messages"][-1].content

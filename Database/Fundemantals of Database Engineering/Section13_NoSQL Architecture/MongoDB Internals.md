@@ -1,3 +1,21 @@
+---
+description: "Course notes arguing all databases share a frontend/storage-engine split, applied to MongoDB's internals."
+domain: backend
+type: course
+status: digested
+tags:
+  - domain/backend
+  - type/course
+  - status/digested
+  - topic/mongodb
+  - topic/database-internals
+aliases:
+  - "MongoDB storage layer"
+  - "frontend vs storage engine"
+hubs:
+  - "[[MongoDB]]"
+  - "[[Database Internals]]"
+---
 #### MongoDB internal Architecture
 ![](https://www.udemy.com/course/database-engines-crash-course/learn/)
 

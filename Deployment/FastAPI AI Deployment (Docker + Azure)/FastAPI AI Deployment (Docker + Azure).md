@@ -1,3 +1,24 @@
+---
+description: "Guide to shipping a heavy-dependency FastAPI service to Azure App Service via Docker Hub, with GitHub Actions automation."
+domain: backend
+type: howto
+status: digested
+tags:
+  - domain/backend
+  - type/howto
+  - status/digested
+  - topic/cloud-deployment
+  - topic/docker
+  - topic/fastapi
+aliases:
+  - "Azure App Service"
+  - "Docker Hub"
+  - "GitHub Actions"
+hubs:
+  - "[[Cloud Deployment]]"
+  - "[[Docker]]"
+  - "[[FastAPI]]"
+---
 ## **Overview**
 Deploying a Python FastAPI service with heavy AI dependencies is most stable when **containerized**. This guide uses Docker Hub and Azure App Service.
 ## **Step 1: Resource Group & Infrastructure**

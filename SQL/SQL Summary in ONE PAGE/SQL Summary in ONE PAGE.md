@@ -1,3 +1,20 @@
+---
+description: "A single-page condensed T-SQL reference covering DDL, DML, DQL, wildcards, ordering, subqueries and SSMS tips."
+domain: backend
+type: reference
+status: digested
+tags:
+  - domain/backend
+  - type/reference
+  - status/digested
+  - topic/sql
+aliases:
+  - "T-SQL summary"
+  - "SQL one page"
+  - "SSMS"
+hubs:
+  - "[[SQL]]"
+---
 common problems in ssms
 
 - to avoid alter table columns problem

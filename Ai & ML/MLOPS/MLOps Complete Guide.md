@@ -1,3 +1,24 @@
+---
+description: "A long guide to MLOps: decomposing a business problem with the AI/ML Canvas, then the scoping, data, modelling and deployment phases of the pipeline."
+domain: ml
+type: concept
+status: digested
+tags:
+  - domain/ml
+  - type/concept
+  - status/digested
+  - topic/mlops
+  - topic/ml-system-design
+  - topic/mlflow-and-dvc
+aliases:
+  - "MLOps guide"
+  - "ML Canvas"
+  - "AI Canvas"
+hubs:
+  - "[[MLOps]]"
+  - "[[ML System Design]]"
+  - "[[MLflow & DVC]]"
+---
 # MLOps Complete Guide
 
 ## Introduction: Understanding Business Problems in ML Projects

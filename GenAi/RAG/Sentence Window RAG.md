@@ -1,3 +1,20 @@
+---
+description: "Sentence-window retrieval: match on single sentences, then expand a window of neighbours around each hit so the model gets continuous context."
+domain: ai-eng
+type: howto
+status: stale
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/stale
+  - topic/rag
+  - topic/langchain
+aliases:
+  - "sentence window retrieval"
+hubs:
+  - "[[RAG]]"
+  - "[[LangChain]]"
+---
 ### Sentence Window RAG Solution
 Instead of fixed-size chunks, it retrieves **individual sentences** and then **expands around them** by adding a small _window_ of neighboring sentences — giving the retriever **semantic continuity**.
 

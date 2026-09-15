@@ -1,3 +1,21 @@
+---
+description: "Pasted PEFT code fine-tuning flan-t5-base on a summarization dataset: tokenize function across splits, device handling, and the training setup."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/fine-tuning
+  - topic/huggingface
+aliases:
+  - "flan-t5"
+  - "LoRA code"
+hubs:
+  - "[[Fine-tuning]]"
+  - "[[HuggingFace]]"
+---
 ```python
 model_name='google/flan-t5-base'
 

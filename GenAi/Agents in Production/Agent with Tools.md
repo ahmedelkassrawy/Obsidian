@@ -1,3 +1,24 @@
+---
+description: "Tutorial notes on building a secure multi-user agent with Arcade.dev and LangGraph: per-user identity, authorized tool calls, and human-in-the-loop approval."
+domain: ai-eng
+type: howto
+status: digested
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/digested
+  - topic/agents
+  - topic/tool-use-and-function-calling
+  - topic/auth-and-security
+aliases:
+  - "Arcade.dev"
+  - "multi-user agent"
+  - "HITL"
+hubs:
+  - "[[Agents]]"
+  - "[[Tool Use & Function Calling]]"
+  - "[[Auth & Security]]"
+---
 # Multi-User Agent Arcade Tutorial Study Guide
 
 > **Source**: `multiuser-agent-arcade.ipynb`  

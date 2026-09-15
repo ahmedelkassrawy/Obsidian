@@ -1,3 +1,21 @@
+---
+description: "Two pasted REPL loops - one LangChain, one LangGraph - for chatting with an agent from the terminal with a per-conversation thread_id."
+domain: ai-eng
+type: howto
+status: raw
+tags:
+  - domain/ai-eng
+  - type/howto
+  - status/raw
+  - topic/langchain
+  - topic/langgraph
+aliases:
+  - "run agent loop"
+  - "chat REPL"
+hubs:
+  - "[[LangChain]]"
+  - "[[LangGraph]]"
+---
 #### Langchain
 ```python
 def run_agent():

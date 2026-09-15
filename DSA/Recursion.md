@@ -1,3 +1,19 @@
+---
+description: "Recursion from the ground up in Python: what happens with and without a base case, how the call stack drives the order of execution, and Collatz-style conditional recursion."
+domain: cs
+type: concept
+status: digested
+tags:
+  - domain/cs
+  - type/concept
+  - status/digested
+  - topic/recursion-and-backtracking
+aliases:
+  - "base case"
+  - "call stack"
+hubs:
+  - "[[Recursion & Backtracking]]"
+---
 ## 1. Understanding Recursion Basics
 
 ### Example 1: Countdown (No Base Case)
