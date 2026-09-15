@@ -1,4 +1,14 @@
+---
+tags: [backend, sqlalchemy, fastapi, orm, sqlite, pytest, hands-on-api]
+---
 ![[Pasted image 20260915145445.png]]
+
+> [!info] Related notes
+> This chapter puts the SQLAlchemy pieces together. For each piece on its own, see
+> [[04 - ORM Models (declarative_base)]], [[05 - Sessions and sessionmaker]],
+> [[06 - ORM CRUD]], [[07 - Relationships One-to-Many]],
+> [[08 - Many-to-Many and Association Objects]], and [[09 - Querying Data]].
+> Full list at the bottom under [Resources](#resources).
 
 ## The Three Layers
 
@@ -101,7 +111,7 @@ At the top of most Python files you find import statements. The power of the Pyt
 
 You import SQLAlchemy's `relationship` functionality, which enables foreign key relationships between tables.
 
-The `database` import refers to the `database.py` file with the SQLAlchemy configuration. You use the `Base` class, a standard template you'll use for the classes in `models.py`.
+The `database` import refers to the `database.py` file with the SQLAlchemy configuration. You use the `Base` class, a standard template you'll use for the classes in `models.py`. See [[04 - ORM Models (declarative_base)]] for the `Base` / `declarative_base` pattern on its own.
 
 ### The Player Class
 
@@ -135,9 +145,9 @@ A few things to notice:
 
 ### Relationships
 
-You define the foreign key relationship between tables with the `relationship()` function. This gives you a `Player.performances` attribute that returns all related rows from the `performance` table for each row in the `player` table.
+You define the foreign key relationship between tables with the `relationship()` function. This gives you a `Player.performances` attribute that returns all related rows from the `performance` table for each row in the `player` table. See [[07 - Relationships One-to-Many]] for this pattern on its own.
 
-There is another kind of relationship that uses the `team_player` association table to connect `player` to `team`. By defining `secondary="team_player"`, this relationship gives a `Player` record a `Player.teams` attribute. This is the many-to-many relationship discussed when creating the database tables.
+There is another kind of relationship that uses the `team_player` association table to connect `player` to `team`. By defining `secondary="team_player"`, this relationship gives a `Player` record a `Player.teams` attribute. This is the many-to-many relationship discussed when creating the database tables — see [[08 - Many-to-Many and Association Objects]].
 
 ### The Performance Class
 
@@ -254,7 +264,7 @@ from sqlalchemy.orm import sessionmaker
 
 ### Getting the Session
 
-The next three steps work together to get the session — the SQLAlchemy object that manages the conversation with the database.
+The next three steps work together to get the session — the SQLAlchemy object that manages the conversation with the database. See [[01 - Engine and Connections]] for the engine and [[05 - Sessions and sessionmaker]] for the session on their own.
 
 First, create a database URL that tells SQLAlchemy the database type (SQLite) and where to find the file (the same folder as this file, named `fantasy_data.db`):
 
@@ -283,6 +293,58 @@ The last command creates a `Base` class. This is the standard template SQLAlchem
 ```python
 Base = declarative_base()
 ```
+
+### Aside: the `get_db` Dependency (forward reference)
+
+> [!note] This is ahead of the book
+> The chapter's `database.py` stops at `engine` + `SessionLocal` + `Base`. The `get_db` function below is the FastAPI pattern you'll use later, added here for reference.
+
+When you wire up FastAPI routes, `database.py` usually also holds a **dependency** function called `get_db`. It creates a session, hands it to the request, and closes it when the request finishes (full walkthrough in [[02 - Database Session Dependency (get_db)]]):
+
+```python
+def get_db():
+    """Yields a database session and closes it when the request is done"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+```
+
+This is the same yield/close idea as the `db_session` **pytest fixture** in `test_crud.py`, just without the `@pytest.fixture` decorator. The fixture serves tests; `get_db` serves live API requests.
+
+> [!tip] `get_db` is a dependency, not a fixture
+> Don't put the pytest fixture (`db_session`) into `database.py` — it only works because of its decorator, and it belongs in the test file. `get_db` is the non-test twin that lives in `database.py`.
+
+#### It does not change `crud.py`
+
+Adding `get_db` does **not** change any function in `crud.py`. The `db: Session` parameter stays exactly the same.
+
+The crud functions only *receive* a session — they don't care where it came from (a fixture, `get_db`, or a manual `SessionLocal()`). The type hint `db: Session` just says "hand me a SQLAlchemy session."
+
+`get_db` is used one layer up, in the FastAPI **route**, which creates the session and passes it into the crud call:
+
+```python
+# in your FastAPI routes file (e.g. main.py)
+from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from database import get_db
+import crud
+
+
+@app.get("/players/{player_id}")
+def read_player(player_id: int, db: Session = Depends(get_db)):
+    return crud.get_player(db, player_id=player_id)  # crud unchanged
+```
+
+So the flow is:
+
+- `get_db` (in `database.py`) — makes the session, yields it, closes it.
+- The route (in `main.py`) — `Depends(get_db)` grabs that session as `db`.
+- `crud.get_player(db, ...)` — receives it, with the same signature as always.
+
+This mirrors how `test_crud.py` passes the `db_session` fixture into `crud.get_player(db_session, ...)`. Different session source, identical crud code.
 
 ## Creating SQLAlchemy Helper Functions
 
@@ -413,7 +475,7 @@ import models
 
 `Session` and `joinedload` are used by the query functions. `date` is an important data type that lets you filter by date. The `import models` line lets you reference the model file you created.
 
-These functions reference the classes in `models.py` and use SQLAlchemy built-in functions to retrieve data with prepared SQL statements.
+These functions reference the classes in `models.py` and use SQLAlchemy built-in functions to retrieve data with prepared SQL statements. See [[06 - ORM CRUD]] and [[09 - Querying Data]] for these query patterns on their own.
 
 ### get_player
 
@@ -527,7 +589,7 @@ If you were building an API that allowed creating, updating, or deleting records
 
 ## Installing pytest in Your Environment
 
-Now that the database code is written, you're ready to test it with pytest.
+Now that the database code is written, you're ready to test it with pytest. For pytest on its own — fixtures, `assert`, conventions — see [[Testing with pytest]].
 
 First, add an entry for pytest to `requirements.txt`. The updated file should look like this:
 
@@ -712,3 +774,23 @@ test_crud.py .....                                     [100%]
 ```
 
 You have verified that your SQLAlchemy classes and helper functions work correctly. The database work is done.
+
+## Resources
+
+The dedicated SQLAlchemy note series (each concept from this chapter on its own):
+
+- [[Backend/SQLAlchemy/00 - Index|SQLAlchemy — Index]] — SQLAlchemy series hub
+- [[01 - Engine and Connections]] — `create_engine`, the database URL
+- [[04 - ORM Models (declarative_base)]] — `Base`, model classes, `Column`
+- [[05 - Sessions and sessionmaker]] — `SessionLocal`, the session lifecycle
+- [[06 - ORM CRUD]] — insert / read / update / delete with the ORM
+- [[07 - Relationships One-to-Many]] — `relationship()`, `back_populates`
+- [[08 - Many-to-Many and Association Objects]] — the `team_player` pattern
+- [[09 - Querying Data]] — `.query()`, `.filter()`, `joinedload`, pagination
+- [[13 - Gotchas and Troubleshooting]] — common SQLAlchemy pitfalls
+
+FastAPI integration and testing:
+
+- [[02 - Database Session Dependency (get_db)]] — the `get_db` dependency in depth
+- [[Testing with pytest]] — fixtures, `assert`, test conventions
+- [[SQLite]] — the database engine this chapter uses
