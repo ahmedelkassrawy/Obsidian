@@ -344,25 +344,25 @@ An AI Engineer is judged on four things: (1) can you reason about the model, (2)
 ### Learning schedule — all three tiers, Tier 1 first
 The objective each week is **learn the topic, then write the note from understanding** (not copy a tutorial). The note is the proof you learned it. Each note links into a new `AI Engineering MOC.md`.
 
-| Wk | Tier | Learn | Then write |
-|---|---|---|---|
-| 1 | 1 | Attention math, √d, multi-head → GQA/MQA, RoPE, KV cache, why decode is memory-bound | `LLM/Transformer Internals.md` |
-| 2 | 1 | Embedding training (contrastive, in-batch negatives), cosine, Matryoshka, when to fine-tune | `RAG/Embeddings Internals.md` |
-| 3 | 1 | HNSW (`ef`, `M`), IVF-PQ, recall vs latency, filtered-search recall collapse | `RAG/Vector Index Internals.md` |
-| 4 | 1 | Golden sets, LLM-judge calibration, trajectory eval, retrieval-vs-generation triage, CI gates | `AI Engineering Book/Ch4. Evaluation.md` (fill the empty file) |
-| 5 | 1 | Indirect injection, tool poisoning, confused deputy, least privilege, HITL as control; MCP OAuth 2.1 + annotations | `Agents/Agent Security.md` + `MCP/MCP Authorization & Threat Model.md` |
-| 6 | 1 | SFT vs DPO vs RLHF/GRPO, reward models, preference data, fine-tune vs prompt vs RAG | `Finetune/Post-Training Methods.md` |
-| 7 | 2 | The bare agent loop; where LangGraph/ADK/CrewAI/DeepAgents put state, retries, interrupts | `Agents/The Agent Loop (framework-agnostic).md` |
-| 8 | 2 | BPE merge loop, WordPiece, SentencePiece; Arabic token cost | `LLM/Tokenization.md` |
-| 9 | 2 | Token accounting, cache economics, model routing, p95 budgets | `Agents/Cost & Latency Engineering.md` |
-| 10 | 2 | vLLM, PagedAttention, continuous batching, GPTQ/AWQ/FP8, speculative decoding | `vLLM/Serving & Quantization.md` (replace empty Lesson.md) |
-| 11 | 2 | Backprop through a 2-layer net by hand; autograd, `zero_grad`, `no_grad`, `detach` | `DL/Backprop & Autograd.md` |
-| 12 | 2 | Memory types (episodic/semantic/procedural), write/read policy, decay, vs RAG | `Agents/Agent Memory Design.md` |
-| 13 | 2 | Structured logs, correlation IDs, trace propagation agent→tool→model, cost per trace | `Backend/Observability/Observability Pt.2 — LLM Systems.md` |
-| 14 | 3 | TS types/generics/narrowing, zod schemas, ESM vs CJS, Node stdio, vitest | `JS/TypeScript for MCP Servers.md` |
-| 15 | 3 | pytest fixtures/parametrize/monkeypatch/mock, TestClient, transactional test DB, testing non-deterministic outputs | `Python/Testing Deep Dive.md` |
-| 16 | 3 | Event loop, what blocks it, TaskGroup, cancellation, GIL, threads vs processes | `Python/Async Internals & GIL.md` |
-| 17 | 3 | XGBoost second-order gain, calibration, PR-AUC, CV theory, training-serving skew | `ML/Boosting Internals.md` + `MLOPS/Training-Serving Skew.md` |
-| 18 | 3 | Docker layers/multi-stage/healthchecks, GitHub Actions anatomy, launchd | `Deployment/Docker Internals & CI-CD.md` |
+| Wk  | Tier | Learn                                                                                                              | Then write                                                             |
+| --- | ---- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| 1   | 1    | Attention math, √d, multi-head → GQA/MQA, RoPE, KV cache, why decode is memory-bound                               | `LLM/Transformer Internals.md`                                         |
+| 2   | 1    | Embedding training (contrastive, in-batch negatives), cosine, Matryoshka, when to fine-tune                        | `RAG/Embeddings Internals.md`                                          |
+| 3   | 1    | HNSW (`ef`, `M`), IVF-PQ, recall vs latency, filtered-search recall collapse                                       | `RAG/Vector Index Internals.md`                                        |
+| 4   | 1    | Golden sets, LLM-judge calibration, trajectory eval, retrieval-vs-generation triage, CI gates                      | `AI Engineering Book/Ch4. Evaluation.md` (fill the empty file)         |
+| 5   | 1    | Indirect injection, tool poisoning, confused deputy, least privilege, HITL as control; MCP OAuth 2.1 + annotations | `Agents/Agent Security.md` + `MCP/MCP Authorization & Threat Model.md` |
+| 6   | 1    | SFT vs DPO vs RLHF/GRPO, reward models, preference data, fine-tune vs prompt vs RAG                                | `Finetune/Post-Training Methods.md`                                    |
+| 7   | 2    | The bare agent loop; where LangGraph/ADK/CrewAI/DeepAgents put state, retries, interrupts                          | `Agents/The Agent Loop (framework-agnostic).md`                        |
+| 8   | 2    | BPE merge loop, WordPiece, SentencePiece; Arabic token cost                                                        | `LLM/Tokenization.md`                                                  |
+| 9   | 2    | Token accounting, cache economics, model routing, p95 budgets                                                      | `Agents/Cost & Latency Engineering.md`                                 |
+| 10  | 2    | vLLM, PagedAttention, continuous batching, GPTQ/AWQ/FP8, speculative decoding                                      | `vLLM/Serving & Quantization.md` (replace empty Lesson.md)             |
+| 11  | 2    | Backprop through a 2-layer net by hand; autograd, `zero_grad`, `no_grad`, `detach`                                 | `DL/Backprop & Autograd.md`                                            |
+| 12  | 2    | Memory types (episodic/semantic/procedural), write/read policy, decay, vs RAG                                      | `Agents/Agent Memory Design.md`                                        |
+| 13  | 2    | Structured logs, correlation IDs, trace propagation agent→tool→model, cost per trace                               | `Backend/Observability/Observability Pt.2 — LLM Systems.md`            |
+| 14  | 3    | TS types/generics/narrowing, zod schemas, ESM vs CJS, Node stdio, vitest                                           | `JS/TypeScript for MCP Servers.md`                                     |
+| 15  | 3    | pytest fixtures/parametrize/monkeypatch/mock, TestClient, transactional test DB, testing non-deterministic outputs | `Python/Testing Deep Dive.md`                                          |
+| 16  | 3    | Event loop, what blocks it, TaskGroup, cancellation, GIL, threads vs processes                                     | `Python/Async Internals & GIL.md`                                      |
+| 17  | 3    | XGBoost second-order gain, calibration, PR-AUC, CV theory, training-serving skew                                   | `ML/Boosting Internals.md` + `MLOPS/Training-Serving Skew.md`          |
+| 18  | 3    | Docker layers/multi-stage/healthchecks, GitHub Actions anatomy, launchd                                            | `Deployment/Docker Internals & CI-CD.md`                               |
 
 Rule for every note: no copying. Write it closed-book after learning, then reopen sources only to fix what you got wrong. If you can't write it closed-book, you haven't learned it yet.
