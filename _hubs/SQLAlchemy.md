@@ -41,7 +41,7 @@ tags:
 
 ## Book notes
 - [[Ch7.Integrating DB in AI services]] — Ch7 notes on wiring a database into a FastAPI AI service: SQLAlchemy ORM models, the engine as a connection pool, session dependency injection, and Alembic migrations.
-- [[Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
+- [[Ch3. Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
 - [[SQLAlchemy CRUD And Relationships Recap]] — Closing recap of the API book's CRUD layer: SQLAlchemy read queries, pagination and filtering, eager loading, and many-to-many relationships with composite keys.
 
 ## Project notes

@@ -15,7 +15,7 @@ tags:
 - [[gRPC and Protocol Buffers]] — Deep dive from HTTP/1 vs HTTP/2 fundamentals through Protocol Buffers and a hands-on gRPC service implementation.
 
 ## Book notes
-- [[Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
+- [[Ch2. Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
 
 ## Related hubs
 [[HTTP & Networking]], [[API Design]]

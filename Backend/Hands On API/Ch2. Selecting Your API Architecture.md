@@ -1,5 +1,5 @@
 ---
-description: "Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits."
+description: Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
 domain: backend
 type: book
 status: digested
@@ -11,8 +11,8 @@ tags:
   - topic/grpc
   - topic/http-and-networking
 aliases:
-  - "Ch2. Selecting Your API  Architecture"
-  - "REST vs GraphQL vs gRPC"
+  - Ch2. Selecting Your API  Architecture
+  - REST vs GraphQL vs gRPC
 hubs:
   - "[[API Design]]"
   - "[[gRPC]]"

@@ -61,7 +61,7 @@ tags:
 - [[Ch6.Real-Time Communication with Generative Models]] — Ch6 notes comparing request/response, short polling, long polling, Server-Sent Events and WebSockets for streaming model output.
 - [[Ch7.Integrating DB in AI services]] — Ch7 notes on wiring a database into a FastAPI AI service: SQLAlchemy ORM models, the engine as a connection pool, session dependency injection, and Alembic migrations.
 - [[Ch8.Authentication and Authorization]] — Ch8 notes on auth for AI services: registration and login flows, password hashing, JWT access and refresh tokens, logout, and role-based authorization.
-- [[Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
+- [[Ch3. Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
 
 ## Course notes
 - [[FastAPI - Asynchronous Code and Path Parameters]] — FastAPI course notes on async routes, HTTP methods, path and query parameters, Enum-constrained values and request bodies.

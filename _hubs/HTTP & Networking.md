@@ -29,7 +29,7 @@ tags:
 
 ## Book notes
 - [[Ch6.Real-Time Communication with Generative Models]] — Ch6 notes comparing request/response, short polling, long polling, Server-Sent Events and WebSockets for streaming model output.
-- [[Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
+- [[Ch2. Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
 
 ## Course notes
 - [[Deep Look into Postgres Wire Protocol with Wireshark]] — Course notes tracing a Node.js to PostgreSQL connection in Wireshark: TCP handshake, startup message, auth request, query and teardown.

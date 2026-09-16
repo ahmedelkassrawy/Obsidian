@@ -23,7 +23,7 @@ tags:
 - [[SQL]] `raw` — A long unsectioned dump of SQL fundamentals - statement categories, schemas, joins, constraints and related concepts - in one flat run of bullets.
 
 ## Book notes
-- [[Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
+- [[Ch3. Creating the Database Layer]] — Book chapter building the data layer: the three layers, the models file with Player/Performance/League/Team relationships, and the database config.
 - [[SQLAlchemy CRUD And Relationships Recap]] — Closing recap of the API book's CRUD layer: SQLAlchemy read queries, pagination and filtering, eager loading, and many-to-many relationships with composite keys.
 
 ## Course notes

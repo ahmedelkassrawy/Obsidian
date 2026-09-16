@@ -30,7 +30,7 @@ tags:
 
 ## Book notes
 - [[Ch2.Getting Started with FastAPI]] — Ch2 notes on FastAPI: first server setup, dependency injection, Pydantic v2 validation, auto docs, project structure and onion architecture.
-- [[Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
+- [[Ch2. Selecting Your API Architecture]] — Book chapter comparing REST, webhooks, GraphQL, SOAP, WebSockets and gRPC with adoption numbers and when each architecture fits.
 
 ## Course notes
 - [[FastAPI - Asynchronous Code and Path Parameters]] — FastAPI course notes on async routes, HTTP methods, path and query parameters, Enum-constrained values and request bodies.
