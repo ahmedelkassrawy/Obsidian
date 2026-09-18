@@ -3,9 +3,11 @@ tags: [ai-ml, transformers, attention, llm, foundations]
 domain: ai-ml
 type: lesson-note
 status: digested
-source: Transformers lesson (session 2026-09-18) + "Attention is all you need" walkthrough; math dropped for now
+source: Transformers lesson (session 2026-09-18) + "Attention is all you need" walkthrough
 ---
-# Transformers — Phase 0 (the whole picture, no math)
+# Transformers — Phase 0 (foundations)
+
+> The internals (÷√d, GQA/MQA, RoPE, KV cache, memory-bound decode) live in [[Phase1 — Internals]].
 
 > One line: a transformer turns words into meaning-vectors, lets them **look at each other** (attention) so each becomes context-aware, then predicts the next word — and repeats.
 
@@ -103,7 +105,7 @@ same word, different slot → different final vector → order is preserved
 ```
 
 > [!definition] Positional encoding
-> Extra numbers added to each token's vector encoding *where* it sits. Without it a transformer is order-blind. (The modern version is RoPE — a later step.)
+> Extra numbers added to each token's vector encoding *where* it sits. Without it a transformer is order-blind. (The modern version is RoPE — see the internals below.)
 
 > [!abstract] Checkpoint
 > - **Have:** meaning + order in every vector; still a `4 × 1536` grid.
@@ -153,7 +155,7 @@ weights × V      → new context-mixed vectors (same 4 × 1536 shape)
 > Three learned projections of the same token vector — request, label, payload. Attention matches Q against K to decide how much of each V to take. Because Wq/Wk/Wv are learned, the model discovers what makes a good question, label, and payload.
 
 > [!note] The scores get scaled
-> Before softmax, scores are divided by √d to stop them blowing up as vectors get long — otherwise attention collapses onto a single word instead of blending. *(The math for why is a later step; for now: scaling keeps the blend soft.)*
+> Before softmax, scores are divided by √d to stop them blowing up as vectors get long — otherwise attention collapses onto a single word instead of blending. (The full reason is in the internals below.)
 
 > [!abstract] Checkpoint
 > - **Have:** context-aware vectors — each token has absorbed the ones it attended to. Still `4 × 1536`.
@@ -235,7 +237,7 @@ final vector ── linear + softmax ──▶  " you" 12%
                           pick one → append → run the whole pipeline again
 ```
 
-This one-word-at-a-time loop is **autoregressive generation** — and it's why generation is slower than training (a later step: the KV cache exists to speed this up).
+This one-word-at-a-time loop is **autoregressive generation** — and it's why generation is slower than training (the KV cache in the internals exists to speed this up).
 
 ## 8. Encoder / decoder (the original architecture)
 The original transformer had two halves. Modern LLMs (GPT, Llama) are usually **decoder-only**, but both are worth knowing.
@@ -258,9 +260,5 @@ The original transformer had two halves. Modern LLMs (GPT, Llama) are usually **
 > [!tip] The whole model in one breath
 > Words → meaning vectors + position → then, N times: **attention (tokens share context) → add & norm → feed-forward (each token digests) → add & norm** → final softmax → next word → append and repeat.
 
-## What's next (the internals, with math)
-- **Why ÷√d** (the scaling, derived)
-- **GQA/MQA** — fewer K/V heads to save memory
-- **RoPE** — how position is really injected
-- **KV cache** — don't recompute past tokens when generating
-- **Memory-bound decode** — why generation is slow, and the fix
+## What's next
+The five internals — **÷√d · GQA/MQA · RoPE · KV cache · memory-bound decode** — are in [[Phase1 — Internals]], plus **KV cache vs GQA/MQA**.
