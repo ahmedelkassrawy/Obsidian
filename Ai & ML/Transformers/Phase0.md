@@ -1,257 +1,266 @@
-a transformer takes a sequence of words and for each position it predicts what comes next by letting every word look at every other word and mix in the relevant information
+---
+tags: [ai-ml, transformers, attention, llm, foundations]
+domain: ai-ml
+type: lesson-note
+status: digested
+source: Transformers lesson (session 2026-09-18) + "Attention is all you need" walkthrough; math dropped for now
+---
+# Transformers — Phase 0 (the whole picture, no math)
 
-That "look at each other" step is **attention**
+> One line: a transformer turns words into meaning-vectors, lets them **look at each other** (attention) so each becomes context-aware, then predicts the next word — and repeats.
 
-Let's build the pipeline in order.
-#### 1. Text → tokens
-
-A model can't read letters. 
-First the text is chopped into **tokens** — chunks that are usually a word or word-piece.
-
+The whole pipeline at a glance:
+```text
+text → tokens → embeddings → [+ position]
+     → ATTENTION (tokens mix) → ADD&NORM → FEED-FORWARD → ADD&NORM   ┐
+                                                                     │ ×N blocks
+     ← output of one block feeds the next ─────────────────────────┘
+     → final linear + softmax → next token → append → repeat
 ```
-"I love RAG"  →  ["I", " love", " R", "AG"]  →  [40, 1842, 431, 6438]
-```
+Each stage below ends with a **Checkpoint**: what we have, what we still need, and why the next layer exists. The "what's still missing" is what forces the next piece.
 
-[!definition] Token  
-- The smallest unit of text the model reads.
-- Each maps to an integer ID from a fixed vocabulary (e.g. ~50k–100k entries). 
-- Not always a whole word — "RAG" might split into "R"+"AG".
+## Why transformers exist (what RNN/LSTM couldn't do)
+Before transformers, sequences were read one word at a time. Three problems killed that approach:
 
-2. Token → embedding (a vector)
-- Each token ID is looked up in a big table and turned into a vector
-- a list of numbers (say 1536 of them) that represents the token's _meaning_ as a point in space.
+- **No parallelism.** An RNN reads word 2 only after word 1, word 3 only after word 2. A GPU has thousands of cores meant to work at once — sequential reading wastes almost all of them, so training is slow.
+- **Long-range memory fades.** Information from an early word has to survive being passed through every step to reach a late word. Over long sentences it decays (the vanishing-gradient problem). LSTMs helped but still struggle when sequences get long.
+- **Information bottleneck.** The old encoder–decoder squeezed the *entire* input into one fixed-size vector. The longer the input, the more gets lost through that one narrow pipe.
 
-```
-40  →  [0.2, -1.1, 0.7, ...]   (1536 numbers)
-```
-
-[!definition] Embedding  
-- A vector that encodes a token's meaning.
-- Similar meanings sit near each other in this space ("king" near "queen").
-- The model _learns_ these numbers during training. 
-- `d_model` = the length of this vector (1536 here).
-
-So your sentence is now a **matrix**:
-`[sequence_length × d_model]` — one row per token, 
-- each row a meaning-vector.
-
-3. The problem embeddings alone can't solve
-The embedding for " love" is the **same vector** no matter where it appears or what surrounds it.
-
-But meaning depends on context:
-- "river **bank**" vs "money **bank**" — same token, different meaning.
-- The model needs each word's vector to _absorb_ meaning from its neighbors.
-
-**That's what attention does:** it rewrites each token's vector by pulling in information from the other tokens that matter.
-
-After attention, the "bank" vector in "river bank" has soaked up "river" and now means the right thing.
-
-- so now text -> tokens -> embeddings
-- after this step your sentence is a **matrix of numbers** — a grid
-- If the sentence is 4 tokens and each embedding is 1536 long, you have a `4 × 1536` grid. 
-- 4 rows (one per token), 1536 columns (the meaning-numbers).
-
-[ + position info ]
-The problem:
-	attention (next box) looks at all tokens _at once_, with no built-in sense of order.
-	
-"dog bites man" and "man bites dog" look identical — same tokens, same vectors. But order changes meaning completely.
-
-**The fix:** add **position information** to each embedding so the model knows _where_ each token sits.
-
-```
-embedding of "dog" at position 0 = meaning("dog") + position(0)
-
-embedding of "dog" at position 5 = meaning("dog") + position(5) ← now distinguishable
+```text
+RNN (sequential):   w1 → w2 → w3 → w4     each waits for the previous
+Transformer:        w1 ─┐
+                    w2 ─┼─ all attend to all, in ONE parallel step
+                    w3 ─┤
+                    w4 ─┘
 ```
 
-[!definition] Positional encoding  
-Extra numbers added to each token's vector that encode its position in the sequence.
-Without it, a transformer is "order-blind."
+> [!abstract] Checkpoint
+> - **Have:** the task — read a sequence, predict the next token.
+> - **Need:** something parallel, that links far-apart words directly, with no single bottleneck.
+> - **Why the next parts exist:** attention gives all three — every word reaches every other in one parallel step.
 
-#### `ATTENTION (mix across tokens)` — the core
+## 1. Text → tokens
+A model can't read letters, only numbers. So text is first **tokenized** — chopped into small pieces (a word or word-piece), each mapped to an integer ID from a fixed vocabulary. One token is not always a full word; rare words split into pieces.
 
-This is the "let words look at each other" step. 
-Each token's vector gets **rewritten** by pulling in information from other tokens.
+```text
+"I love RAG"
+   │  tokenizer splits into pieces
+   ▼
+["I"] [" love"] [" R"] ["AG"]
+   │  each piece → its vocab ID
+   ▼
+[ 40 ] [ 1842 ] [ 431 ] [ 6438 ]
+```
 
-what happens for one word:
+> [!definition] Token
+> The smallest unit of text the model reads — an integer ID from the vocab (~50k–100k entries). "RAG" here splits into "R" + "AG".
 
-1. The word asks a question: _"which other words are relevant to me?"_
-2. It compares itself against every other word to get a **relevance score** for each.
-3. It builds its new vector as a **weighted blend** of the other words' info — more from the relevant ones, less from the rest.
+> [!abstract] Checkpoint
+> - **Have:** the sentence as a list of integer IDs.
+> - **Need:** numbers that carry *meaning* — an ID like `431` is just a name, it says nothing about what the word means.
+> - **Why the next layer exists:** embeddings turn each ID into a meaning-vector.
 
-So "bank" in "river bank" scores "river" as highly relevant, blends it in, and its vector shifts toward the water meaning.
+## 2. Token → embedding (a vector)
+Each ID is looked up in a big learned table and replaced by a **vector** — a list of numbers (say 1536) that places the word's *meaning* as a point in space. Words with similar meaning end up near each other. The model **learns** these numbers during training; nobody sets them by hand.
 
-**That's the whole point of the model** — the Q/K/V math in Step 1 is just _how_ those relevance scores and blending are computed.
+```text
+ID 40   →  [ 0.2, -1.1,  0.7,  0.9, ... ]   1536 numbers
+ID 1842 →  [-0.4,  0.8,  0.1, -0.2, ... ]
+ID 431  →  [ 0.6,  0.3, -0.9,  0.5, ... ]
+ID 6438 →  [ 0.1, -0.7,  0.4,  0.8, ... ]
 
-[!definition] Attention  
-The step where each token updates its own vector by mixing in information from other tokens, weighted by how relevant each other token is to it.
+stacked = the sentence as a grid:
 
-#### `feed-forward (think per-token)`
+              1536 columns (meaning)
+            ┌───────────────────────────┐
+     I      │ 0.2  -1.1  0.7  0.9  ...   │
+     love   │-0.4   0.8  0.1 -0.2  ...   │  4 rows
+     R      │ 0.6   0.3 -0.9  0.5  ...   │  (one per token)
+     AG     │ 0.1  -0.7  0.4  0.8  ...   │
+            └───────────────────────────┘
+```
 
-After attention, each token has gathered context from its neighbors. Now the **feed-forward** network processes **each token on its own** — no more looking around — to "digest" what it just gathered.
+Why not the simple approach (**one-hot**: a 1 at the word's index, 0 everywhere else)? Two killers: it's huge and mostly zeros (a 50k-long vector per word), and every word is *equally far* from every other — "king" is as unrelated to "queen" as to "cat". Embeddings are dense and actually encode relationships.
 
-- **Attention = tokens talk to each other** (mixing across positions).
-- **Feed-forward = each token thinks alone** (a small neural net applied to each row independently).
+> [!definition] Embedding
+> A learned vector encoding a token's meaning. `d_model` = its length (1536 here). After this step the sentence is a **matrix**: `[tokens × d_model]`.
 
-[!definition] Feed-forward network (FFN)  
-- A small 2-layer neural net applied to each token's vector separately. 
-- It's where a lot of the model's learned "knowledge" is stored. 
-- Attention _moves_ information between tokens; 
-- the FFN _transforms_ it within each token.
+> [!abstract] Checkpoint
+> - **Have:** each token as a meaning-vector; a `4 × 1536` grid.
+> - **Need:** the vector to change with *context* — "bank" is one fixed vector today, but means different things in "river bank" vs "money bank" (a **static** embedding).
+> - **Why the next layer exists:** attention makes the vector context-aware — but first it needs to know word order.
 
-Think of one layer as: **gather (attention) → digest (feed-forward).**
+## 3. `+` position info
+Attention (next) looks at all tokens **at the same time**, so on its own it has no idea of order — "dog bites man" and "man bites dog" would look identical. Fix: add **position information** to each token's vector so order is baked in before attention runs.
 
-#### `repeat N times (N layers)`
+```text
+                meaning            position          goes into attention
+     dog  →  [meaning of dog]  +  [pos 0]  =  [dog-here-at-0]
+     bites →  [meaning ...   ]  +  [pos 1]  =  [bites-at-1]
+     man  →  [meaning ...   ]  +  [pos 2]  =  [man-at-2]
 
-One round of "gather → digest" is **one layer**. A real model stacks many (GPT-3 = 96 layers).
+same word, different slot → different final vector → order is preserved
+```
 
-- Early layers catch simple patterns (grammar, which word refers to which).
-- Later layers build abstract meaning (tone, logic, facts).
-- Each layer's output feeds the next, so understanding gets deeper with depth.
+> [!definition] Positional encoding
+> Extra numbers added to each token's vector encoding *where* it sits. Without it a transformer is order-blind. (The modern version is RoPE — a later step.)
 
-[!definition] Layer / depth  
-- One attention + feed-forward block. 
-- "N layers" = stacking N of them. 
-- More layers = more capacity to build abstract understanding, but more compute.
+> [!abstract] Checkpoint
+> - **Have:** meaning + order in every vector; still a `4 × 1536` grid.
+> - **Need:** tokens to actually **share** information with each other.
+> - **Why the next layer exists:** that sharing is attention.
 
-#### `predict the next token`
+## 4. Attention — the core
+This is the whole invention. Each token's vector is **rewritten** by pulling in information from the tokens that matter to it. For one word:
 
-After the last layer, each position's final vector is turned back into a **probability over the whole vocabulary** — "what word comes next?"
+1. it asks *"which other words are relevant to me?"*
+2. it scores every other word for relevance,
+3. it rebuilds itself as a **weighted blend** — more from relevant words, less from the rest.
 
-"I love" →  next-token probabilities:  " you" 12%, " it" 9%, " RAG" 3%, ...
+```text
+"river bank" — rebuilding the "bank" vector:
 
-The model picks from that distribution → that's the generated word.
-Then it appends that word and runs the whole pipeline again for the next one.
-
-(This repeat-with-each-new-word is exactly what makes generation slow — and why the **KV cache**, Step 5, exists.)
-
-[!tip] The rhythm of the whole thing  
-**embeddings** (meaning) **+ position** (order) → then per layer: **attention** (tokens share info) → **feed-forward** (each token digests) → stack that N times → **predict next word** → append it → do it all again.
+   bank looks at →  river   the   bank
+   relevance     →   0.7    0.1   0.2
+                      │      │     │
+   new bank = 0.7·river + 0.1·the + 0.2·bank
+            → shifts toward the WATER meaning
+```
 
 ![[Pasted image 20260917204215.png]]
 
 ![[Pasted image 20260917204710.png]]
 
-Query (Q)
-What do I look for?
+**Q, K, V — why three copies.** A single token has to play three different jobs at once, and one vector can't do all three well. So we multiply its embedding by three **learned** matrices (Wq, Wk, Wv) to get three specialized views:
 
-Key (K)
-what do I offer?
-
-Value (V)
-what I pass on
-
-each = input × a learned weight matrix (Wq, Wk, Wv)
-
-Why three copies (Q, K, V)? Why not compare embeddings directly?
-**The naive idea:** just dot each token's embedding with every other token's embedding to get similarity. Skip Q/K/V.
-
-Why that fails
-a token needs to play **three different roles** at once, and one vector can't do all three:
-- When it's the one **asking** ("what am I looking for?") — that's a different question than
-- when it's being **searched** ("do I match what you're looking for?") — which is different again from
-- **what it actually contributes** once matched ("here's my information")
-
-**The fix:** multiply the embedding by three separate **learned** matrices to get three specialized views:
-
-```
-Q = embedding × Wq   ("what I'm looking for")
-K = embedding × Wk   ("what I offer to matchers")
-V = embedding × Wv   ("what I pass on if matched")
+```text
+                   ┌── × Wq → Q  "what am I looking for?"   (the question)
+ token vector ─────┼── × Wk → K  "what do I offer?"         (the label)
+                   └── × Wv → V  "what do I pass on?"       (the payload)
 ```
 
-[!definition] Q, K, V  
-Three learned projections of the same token vector. 
-- **Query** = the search request. 
-- **Key** = the searchable label. 
-- **Value** = the payload delivered. 
+Library analogy: you have a **search request** (Q). Every book has a **spine label** (K). You match your request against the labels, and from the best matches you take the **book's contents** (V). You'd never make the request and the contents the same object — that's why Q, K, V are separate.
 
-- Attention matches Q against K to decide how much of each V to take.
+How they combine into the blend:
+```text
+Q · Kᵀ           → scores  (how much each token matches each other)
+  │ ÷ √d, softmax → weights (each row sums to 1)
+  ▼
+weights × V      → new context-mixed vectors (same 4 × 1536 shape)
+```
 
-**The library analogy:** 
-- you have a **search request** (Q). 
-- Every book has a **spine label** (K). 
-- You match your request against the labels, and from the best matches you take the **book's actual contents** (V).
+> [!definition] Q, K, V
+> Three learned projections of the same token vector — request, label, payload. Attention matches Q against K to decide how much of each V to take. Because Wq/Wk/Wv are learned, the model discovers what makes a good question, label, and payload.
 
-Because Wq, Wk, Wv are _learned_, the model figures out on its own what makes a good question, a good label, and a good payload.
+> [!note] The scores get scaled
+> Before softmax, scores are divided by √d to stop them blowing up as vectors get long — otherwise attention collapses onto a single word instead of blending. *(The math for why is a later step; for now: scaling keeps the blend soft.)*
 
-### 2. Why ÷√d?
+> [!abstract] Checkpoint
+> - **Have:** context-aware vectors — each token has absorbed the ones it attended to. Still `4 × 1536`.
+> - **Need:** to catch **several kinds** of relationship at once (grammar, reference, nearby words) — one attention pattern is a blur.
+> - **Why the next layer exists:** multi-head runs attention many times in parallel.
 
-### 2. Why ÷√d?
+## 5. Multi-head — and what a "head" is
+One attention pass can only learn **one** kind of relevance. Language has many at once ("who does this pronoun refer to?", "what's the subject?", "which words modify me?"). So we run several attention passes in parallel — each is a **head**.
 
-**What the dot product gives you:** `Q · K` sums up `d` multiplied pairs (d = the vector length per head, e.g. 128). Add up 128 random-ish products and the total **grows with d** — more terms, bigger sum. The bigger d is, the larger the raw scores get.
+```text
+       token vector (1536)
+   ┌────────┬────────┬─────── … ──────┐   split into H slices
+ slice1   slice2   slice3          sliceH   (e.g. 12 × 128)
+   │        │        │                │
+ head1    head2    head3    …       headH    each does FULL attention
+   │        │        │                │      on its own slice, own Q/K/V
+   └────────┴────────┴─────── … ──────┘
+                   │  concat back to 1536
+                   ▼
+              × Wo (mix)  →  output (4 × 1536)
+```
 
-**Why big scores are a problem:** those scores go straight into **softmax**. Softmax turns numbers into probabilities, but it's _sharp_ — if one input is much bigger than the others, softmax pushes almost all the weight onto that one and ~0 on the rest.
+> [!definition] Head
+> One complete attention computation with its **own** Q/K/V, running on a **slice** of each token's vector.
 
-softmax([2, 1, 0])      → [0.67, 0.24, 0.09]   (soft, spread)
-softmax([20, 10, 0])    → [~1.0, ~0.00, ~0.00] (spiky, winner-take-all)
+Why slice instead of 12 full copies:
+- **Cost stays flat** — 12 heads × 128 = 1536, the same total work as one big head. Twelve specialists for the price of one generalist.
+- **Specialization** — one head tracks grammar, another tracks pronoun reference, etc. The model decides what each learns.
 
-So if d is large, raw scores blow up → softmax goes spiky → each token attends to **exactly one** other token and ignores everything else. That kills the "blend from several tokens" behavior, and during training it makes gradients tiny (the flat regions of softmax) → the model barely learns.
+> [!abstract] Checkpoint
+> - **Have:** rich context from many relationship types, back to a `4 × 1536` grid.
+> - **Need:** to keep training stable across a deep stack, and to *transform* (not just move) the gathered info.
+> - **Why the next parts exist:** Add & Norm stabilize; feed-forward digests.
 
-**The fix — scale the scores back down:** divide by √d.
+## 6. The block — 4 steps, repeated ×N
+Every transformer block runs the same four steps in order:
 
-scores = (Q · Kᵀ) / √d
+```text
+        input (4 × 1536)
+          │
+   ┌──────▼──────────────┐
+   │ 1. Multi-head attn  │  tokens SHARE context
+   └──────┬──────────────┘
+   ┌──────▼──────────────┐
+   │ 2. Add & Norm       │  + input (residual), then normalize
+   └──────┬──────────────┘
+   ┌──────▼──────────────┐
+   │ 3. Feed-forward     │  each token DIGESTS alone
+   └──────┬──────────────┘
+   ┌──────▼──────────────┐
+   │ 4. Add & Norm       │  + input again, normalize
+   └──────┬──────────────┘
+          ▼  output → becomes the next block's input   (×N)
+```
 
-> [!definition] The √d scaling  
-> As vectors get longer (d), dot-product scores grow proportionally to d, and their spread (standard deviation) grows like √d. Dividing by √d cancels that growth, keeping scores in a sane range so softmax stays soft and gradients stay healthy — no matter how big d is.
+- **Step 1 — Multi-head attention:** tokens talk to each other (share context). Everything above happens here.
+- **Step 2 — Add & Norm:** *Add (residual)* = add the block's input back to its output, so nothing important is lost and gradients flow through deep stacks. *Norm* = rescale each vector to a healthy range.
+- **Step 3 — Feed-forward:** each token is processed **alone** (a small 2-layer net per row). Attention *moves* info between tokens; the feed-forward *transforms* it inside each token. A lot of the model's learned facts live here.
+- **Step 4 — Add & Norm again:** same residual + normalize around the feed-forward.
 
-**Why √d and not d?** Because the _spread_ of the sum grows like **√d**, not d. (Variance adds up linearly across the d terms → variance ∝ d → standard deviation ∝ √d.) You divide by the standard deviation to normalize, so you divide by √d. Dividing by d would over-shrink and flatten the scores too much. **This is the "why √d not d" gate in your roadmap** — the answer is "variance is proportional to d, so std-dev is √d."
+The block repeats **×N** (the original paper used 6; GPT-3 used 96). Early layers catch simple patterns; later layers build abstract meaning.
 
-### 3. Multi-head — why run it several times in parallel
+> [!definition] Residual + LayerNorm
+> **Residual** = output + input (protects the signal, lets gradients flow through deep networks). **LayerNorm** = normalize each vector to a stable range. Together = what makes stacking N layers trainable.
 
-**The limit of one attention grid:** a single Q/K/V set can only learn **one kind** of "what's relevant." But relevance has many flavors at once:
+> [!abstract] Checkpoint
+> - **Have:** after N blocks, deeply context-aware vectors.
+> - **Need:** turn the final vector into an actual next-word choice.
+> - **Why the next layer exists:** the final linear + softmax does that.
 
-- one pattern = "which word does this pronoun refer to?"
-- another = "what's the grammatical subject?"
-- another = "which nearby words modify me?"
+## 7. Predict the next token
+The last block's vector for the final position is turned into a **probability over the whole vocabulary**.
 
-One head must average all these into a single attention pattern — a blur.
+```text
+final vector ── linear + softmax ──▶  " you" 12%
+                                       " it"   9%
+                                       " RAG"  3%
+                                        ...
+                          pick one → append → run the whole pipeline again
+```
 
-**The fix:** run several attention operations **in parallel**, each with its _own_ Wq/Wk/Wv. Each is a **head**, and each learns a different relevance pattern.
+This one-word-at-a-time loop is **autoregressive generation** — and it's why generation is slower than training (a later step: the KV cache exists to speed this up).
 
-[!definition] Multi-head attention (MHA)  
-The attention computation run H times in parallel, each head on a `d_model/H`-sized slice, each with its own learned Q/K/V matrices. The heads' outputs are concatenated back to `d_model` and mixed by one more matrix. Different heads specialize in different kinds of relationships.
+## 8. Encoder / decoder (the original architecture)
+The original transformer had two halves. Modern LLMs (GPT, Llama) are usually **decoder-only**, but both are worth knowing.
 
-**Key mechanics:**
+```text
+   INPUT ─▶ ENCODER (reads all at once) ─┐
+                                         │ K,V
+   OUTPUT so far ─▶ DECODER ─────────────┘
+        (masked self-attn → cross-attn → FFN) ─▶ next token
+```
 
-- The vector is _split_ across heads (1536 → 12 × 128), so multi-head costs about the **same** as single-head — you're not doing 12× the work, you're slicing the same budget 12 ways.
-- Each head produces its own `4×128` output; you **concatenate** them back to `4×1536`, then apply a final "mixing" matrix (Wo) so the heads can combine.
+- **Encoder** — reads the whole input in parallel; every token attends to every other.
+- **Decoder** — generates output one token at a time, with two twists:
+  - **Masked attention** — a token may only attend to tokens **before** it, never the future (during generation the future doesn't exist yet). Done by setting future scores to −∞ so softmax makes them 0.
+  - **Cross-attention** — the decoder's Q looks at the encoder's K and V, so the output can attend to the input (e.g. translation).
 
-[!tip] The three answers in one line each  
-**Q/K/V** = one token plays 3 jobs (ask / advertise / deliver), so it needs 3 learned views. **÷√d** = keeps scores from blowing up as d grows (spread ∝ √d), so softmax stays soft. **Multi-head** = run attention many times in parallel so each head learns a different kind of relevance, at the same total cost.
+> [!tip] Training vs inference
+> **Training:** both halves run fully in parallel (the target is known; masking enforces left-to-right learning). **Inference:** the encoder still runs in parallel, but the decoder generates **one token at a time**, feeding each new token back in. Sequential at the token level, parallel inside each step.
 
-### What is a "head"?
+> [!tip] The whole model in one breath
+> Words → meaning vectors + position → then, N times: **attention (tokens share context) → add & norm → feed-forward (each token digests) → add & norm** → final softmax → next word → append and repeat.
 
-> [!definition] Head  
-> One complete attention computation — its **own** Q, K, and V matrices — running on a **slice** of each token's vector. A model runs many heads side by side (H of them); each learns to look for a _different kind_ of relationship.
-
-The plain picture: take each token's 1536-number vector and **cut it into H slices** (say 12 slices of 128 each). Give each slice to its own head. Each head does the _full_ attention dance you saw (Q·Kᵀ → ÷√d → softmax → ×V) but only on its 128-wide slice. Then you **glue the slices back together** into 1536 and mix them with one final matrix (Wo).
-
-**Why slice instead of just running 12 full copies?**
-
-- **Cost stays flat.** 12 heads × 128 dims = 1536 — the same total work as one 1536-wide head. You get 12 specialists for the price of one generalist.
-- **Specialization.** One big head must blur all relationship types into a single attention pattern. Twelve small heads each get to specialize — head 2 tracks grammar, head 5 tracks which noun a pronoun refers to, etc. The model decides what each head learns.
-
-**The one-line version:** a head is a mini-attention with its own Q/K/V on a slice of the vector; multi-head = many of them in parallel, each catching a different pattern, glued back together.
-
-### The 4 steps inside every block (what the diagram shows)
-
-**Step 1 — Multi-head attention.** Tokens _talk to each other_. Each head compares queries to keys, blends values, and the token vectors absorb context. (Everything in the previous two visuals happens here, ×H heads.)
-
-**Step 2 — Add & Norm.** Two safety mechanisms bolted on:
-
-- **Add (residual):** take attention's output and _add back the original input_ (`output + input`). This lets information skip the layer if it wants — critical for training deep stacks (96 layers) without the signal getting lost or scrambled.
-- **Norm (layer normalization):** rescale each vector to a stable range so numbers don't blow up or vanish as they pass through many layers.
-
-> [!definition] Residual + LayerNorm  
-> **Residual** = add the block's input to its output, so nothing important gets destroyed and gradients flow cleanly through deep networks. **LayerNorm** = normalize each token vector to keep its numbers in a healthy range. Together they're what make stacking N layers actually trainable.
-
-**Step 3 — Feed-forward.** Now each token is processed **alone** — a small 2-layer network applied to each row. Attention _moved_ information between tokens; the feed-forward _transforms_ it inside each token. This is where a lot of the model's learned facts live.
-
-**Step 4 — Add & Norm again.** Same residual + normalize, this time around the feed-forward.
-  
-Then the block's output becomes the next block's input — **×N times**. After the last block, the **final linear + softmax** turns each vector into next-token probabilities.
-
-> [!tip] The whole model in one breath  
-> Words → meaning vectors + position → then, N times: **heads let tokens share context (attention) → add & norm → each token digests alone (feed-forward) → add & norm** → final softmax → next word → append and repeat.
+## What's next (the internals, with math)
+- **Why ÷√d** (the scaling, derived)
+- **GQA/MQA** — fewer K/V heads to save memory
+- **RoPE** — how position is really injected
+- **KV cache** — don't recompute past tokens when generating
+- **Memory-bound decode** — why generation is slow, and the fix
