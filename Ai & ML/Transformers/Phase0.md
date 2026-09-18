@@ -22,11 +22,21 @@ text → tokens → embeddings → [+ position]
 Each stage below ends with a **Checkpoint**: what we have, what we still need, and why the next layer exists. The "what's still missing" is what forces the next piece.
 
 ## Why transformers exist (what RNN/LSTM couldn't do)
-Before transformers, sequences were read one word at a time. Three problems killed that approach:
+Before transformers, sequences were read one word at a time. 
 
-- **No parallelism.** An RNN reads word 2 only after word 1, word 3 only after word 2. A GPU has thousands of cores meant to work at once — sequential reading wastes almost all of them, so training is slow.
-- **Long-range memory fades.** Information from an early word has to survive being passed through every step to reach a late word. Over long sentences it decays (the vanishing-gradient problem). LSTMs helped but still struggle when sequences get long.
-- **Information bottleneck.** The old encoder–decoder squeezed the *entire* input into one fixed-size vector. The longer the input, the more gets lost through that one narrow pipe.
+Three problems killed that approach:
+
+- **No parallelism.** 
+	An RNN reads word 2 only after word 1, word 3 only after word 2. 
+	A GPU has thousands of cores meant to work at once — sequential reading wastes almost all of them, so training is slow.
+
+- **Long-range memory fades.** 
+	Information from an early word has to survive being passed through every step to reach a late word. 
+	Over long sentences it decays (the vanishing-gradient problem). 
+	LSTMs helped but still struggle when sequences get long.
+
+- **Information bottleneck.** 
+	The old encoder–decoder squeezed the *entire* input into one fixed-size vector. The longer the input, the more gets lost through that one narrow pipe.
 
 ```text
 RNN (sequential):   w1 → w2 → w3 → w4     each waits for the previous
@@ -42,7 +52,11 @@ Transformer:        w1 ─┐
 > - **Why the next parts exist:** attention gives all three — every word reaches every other in one parallel step.
 
 ## 1. Text → tokens
-A model can't read letters, only numbers. So text is first **tokenized** — chopped into small pieces (a word or word-piece), each mapped to an integer ID from a fixed vocabulary. One token is not always a full word; rare words split into pieces.
+A model can't read letters, only numbers. 
+
+So text is first **tokenized** — chopped into small pieces (a word or word-piece), each mapped to an integer ID from a fixed vocabulary. 
+
+One token is not always a full word; rare words split into pieces.
 
 ```text
 "I love RAG"
@@ -63,7 +77,10 @@ A model can't read letters, only numbers. So text is first **tokenized** — cho
 > - **Why the next layer exists:** embeddings turn each ID into a meaning-vector.
 
 ## 2. Token → embedding (a vector)
-Each ID is looked up in a big learned table and replaced by a **vector** — a list of numbers (say 1536) that places the word's *meaning* as a point in space. Words with similar meaning end up near each other. The model **learns** these numbers during training; nobody sets them by hand.
+Each ID is looked up in a big learned table and replaced by a **vector** — a list of numbers (say 1536) that places the word's *meaning* as a point in space. 
+
+Words with similar meaning end up near each other. 
+The model **learns** these numbers during training; nobody sets them by hand.
 
 ```text
 ID 40   →  [ 0.2, -1.1,  0.7,  0.9, ... ]   1536 numbers
@@ -75,14 +92,20 @@ stacked = the sentence as a grid:
 
               1536 columns (meaning)
             ┌───────────────────────────┐
-     I      │ 0.2  -1.1  0.7  0.9  ...   │
-     love   │-0.4   0.8  0.1 -0.2  ...   │  4 rows
-     R      │ 0.6   0.3 -0.9  0.5  ...   │  (one per token)
-     AG     │ 0.1  -0.7  0.4  0.8  ...   │
+     I      │ 0.2  -1.1  0.7  0.9  ...  │
+     love   │-0.4   0.8  0.1 -0.2  ...  │  4 rows
+     R      │ 0.6   0.3 -0.9  0.5  ...  │  (one per token)
+     AG     │ 0.1  -0.7  0.4  0.8  ...  │
             └───────────────────────────┘
 ```
 
-Why not the simple approach (**one-hot**: a 1 at the word's index, 0 everywhere else)? Two killers: it's huge and mostly zeros (a 50k-long vector per word), and every word is *equally far* from every other — "king" is as unrelated to "queen" as to "cat". Embeddings are dense and actually encode relationships.
+Why not the simple approach 
+(**one-hot**: a 1 at the word's index, 0 everywhere else)? 
+
+Two killers: 
+	it's huge and mostly zeros (a 50k-long vector per word), and every word is *equally far* from every other — "king" is as unrelated to "queen" as to "cat". 
+	
+Embeddings are dense and actually encode relationships.
 
 > [!definition] Embedding
 > A learned vector encoding a token's meaning. `d_model` = its length (1536 here). After this step the sentence is a **matrix**: `[tokens × d_model]`.
