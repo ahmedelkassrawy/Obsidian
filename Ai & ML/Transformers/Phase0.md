@@ -250,7 +250,7 @@ The plain picture: take each token's 1536-number vector and **cut it into H slic
 **Step 3 — Feed-forward.** Now each token is processed **alone** — a small 2-layer network applied to each row. Attention _moved_ information between tokens; the feed-forward _transforms_ it inside each token. This is where a lot of the model's learned facts live.
 
 **Step 4 — Add & Norm again.** Same residual + normalize, this time around the feed-forward.
-
+  
 Then the block's output becomes the next block's input — **×N times**. After the last block, the **final linear + softmax** turns each vector into next-token probabilities.
 
 > [!tip] The whole model in one breath  
