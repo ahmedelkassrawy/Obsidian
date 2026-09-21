@@ -454,3 +454,76 @@ Context engineering is a critical practice for building reliable AI agents that 
 - **Explicit instructions** that eliminate assumptions
 - **Continuous refinement** based on observed behavior
 - **Balance between flexibility and control**
+---
+
+# The Write / Select / Compress / Isolate toolkit (session 2026-09-21)
+
+> Complements the case study above with the systematic framing. Related: [[LangGraph Short-Term & Long-Term Memory]] (Write) · [[Agent Handoffs And Tool Design]] (Select/Isolate) · [[LLM Caching]] (ordering).
+
+The window is finite and, past a point, **more context makes agents worse, not better**. Context engineering = curating the tokens the model sees each call — right info, right amount, right order.
+
+## The failure modes (why "stuff it all in" fails)
+| Failure | What happens |
+|---|---|
+| Overflow | exceed the window → truncation → lose the start (often the task) |
+| Context rot / lost-in-the-middle | models attend best to **start and end**; middle gets ignored |
+| Distraction | too many tools/docs → wrong pick, confusion |
+| Poisoning | a wrong fact/tool-result lingers and misleads later turns |
+| Cost/latency | every extra token is paid on **every** turn |
+
+**Relevance beats volume** — a tight 4k context often beats a sprawling 100k one.
+
+## The four moves
+```text
+WRITE    -> push info OUT of the window (save it, recall later)
+SELECT   -> pull IN only what's relevant right now
+COMPRESS -> shrink what's in the window (summarize, trim)
+ISOLATE  -> split context across agents so each stays small
+```
+- **Write** — offload to a store/scratchpad; recall later. The long-term memory store *is* this move.
+- **Select** — the biggest lever. Retrieve the subset: docs -> RAG; tools -> grouping/routing; memory -> semantic search. Don't stuff.
+- **Compress** — summarize old turns, keep recent verbatim.
+- **Isolate** — give each sub-agent its own small context (the multi-agent split as a context strategy); it returns only a summary.
+
+## Compress — code
+```python
+from langchain_core.messages import RemoveMessage, SystemMessage
+
+def compress(state):
+    msgs = state["messages"]
+    if len(msgs) <= 10:
+        return {}
+    old, recent = msgs[:-6], msgs[-6:]
+    summary = llm.invoke(f"Summarize this conversation briefly:\n{old}").content
+    return {"messages": [RemoveMessage(id=m.id) for m in old]
+                        + [SystemMessage(content=f"Summary so far: {summary}")]}
+```
+```python
+# simpler - trim to a token window
+from langchain_core.messages import trim_messages
+trimmed = trim_messages(state["messages"], max_tokens=4000,
+                        strategy="last", token_counter=llm)
+```
+
+## Ordering (a free win)
+```text
+[ system + tools + docs ]   <- static, FIRST (cache-friendly, high attention)
+[ summary of old turns  ]   <- middle
+[ recent turns + question]  <- current task LAST (high attention)
+```
+Static-first helps attention **and** makes prompt caching bite ([[LLM Caching]]).
+
+## Best practices
+- Relevance over volume — retrieve, don't stuff.
+- Current question/instruction **last** (high-attention zone).
+- Summarize long history, keep recent verbatim.
+- Group/route tools so the model sees a handful, not 40.
+- Isolate with sub-agents when one context would hold too much.
+- Static content first (attention + caching).
+- Budget the window (token shares per section) and enforce it.
+- Watch for poisoning — drop/correct bad tool results.
+
+> [!tip] The through-line
+> Context engineering is **curation, not accumulation.** The four moves keep the window small, relevant, and well-ordered. Everything this session feeds it: memory = Write, RAG + tool grouping = Select, summarization = Compress, handoffs = Isolate, caching rewards good ordering.
+
+**Fits:** raaaaag does Select (top-k) + Compress (rerank to the best few); a long agent chat needs Compress (summarize old turns); Shutterabia MCP surfaces = Isolate/Select (route to one surface's tools).
