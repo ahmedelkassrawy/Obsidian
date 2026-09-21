@@ -11,6 +11,9 @@ tags:
 > [!info] The largest agent collection in the vault: patterns, agency levels, workflows vs agents, production best practice, two case studies and a system-design note. Well digested.
 > Part of [[MOC - AI Engineering]]. Also try the tag `#topic/agents`.
 
+> [!abstract] Start here: [[Agent Engineering MOC]]
+> A guided map of the 13-note agent-engineering cluster (mechanics → state → control → safety → scale → infra → eval), most with runnable code and a suggested learning order.
+
 ## Concepts
 - [[AI Workflows VS AI Agent]] — Separates fixed-code AI workflows (chaining, routing, parallelization) from autonomous agents, and gives rules for choosing or combining them.
 - [[Agent Agency Levels And Reflection Pattern]] — A table of agency levels (from output-only to fully autonomous) plus the types of agent actions and the reflection pattern.
