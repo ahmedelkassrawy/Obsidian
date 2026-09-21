@@ -88,15 +88,14 @@ ID 1842 →  [-0.4,  0.8,  0.1, -0.2, ... ]
 ID 431  →  [ 0.6,  0.3, -0.9,  0.5, ... ]
 ID 6438 →  [ 0.1, -0.7,  0.4,  0.8, ... ]
 
-stacked = the sentence as a grid:
+stacked = the sentence as a grid (one row per token):
 
-              1536 columns (meaning)
-            ┌───────────────────────────┐
-     I      │ 0.2  -1.1  0.7  0.9  ...  │
-     love   │-0.4   0.8  0.1 -0.2  ...  │  4 rows
-     R      │ 0.6   0.3 -0.9  0.5  ...  │  (one per token)
-     AG     │ 0.1  -0.7  0.4  0.8  ...  │
-            └───────────────────────────┘
+ I     [ 0.2  -1.1   0.7   0.9  ... ]  ┐
+ love  [-0.4   0.8   0.1  -0.2  ... ]  │  4 rows
+ R     [ 0.6   0.3  -0.9   0.5  ... ]  │  (one per token)
+ AG    [ 0.1  -0.7   0.4   0.8  ... ]  ┘
+        └──────── 1536 numbers ───────┘
+              (meaning of the word)
 ```
 
 Why not the simple approach 
@@ -110,19 +109,69 @@ Embeddings are dense and actually encode relationships.
 > [!definition] Embedding
 > A learned vector encoding a token's meaning. `d_model` = its length (1536 here). After this step the sentence is a **matrix**: `[tokens × d_model]`.
 
+### How it actually works
+
+**Step 1 — start random.** 
+The embedding table (one row per vocab word) is filled with **random numbers**. 
+	At this point "king" and "queen" are just as unrelated as "king" and "banana". 
+	No meaning at all.
+
+**Step 2 — training nudges them.** 
+The model is trained on tons of text with one job: **predict the next word**. 
+	Every time it guesses, it checks how wrong it was and nudges its numbers — including the embedding vectors — to be a little less wrong next time.
+
+**Step 3 — meaning emerges as a side effect.** Here's the key idea:
+
+> Words that appear in **similar contexts** get **nudged in similar directions**, so they drift close together in the space.
+
+"king" and "queen" show up around the same words (throne, royal, rule, crown), so training keeps pushing their vectors the same way → they end up near each other.
+
+"banana" shows up around totally different words → it drifts far away. 
+The model never "knows" what royal means; it just learns _these words behave alike_, and that **is** the meaning.
+
+```text
+before training (random):        after training (learned):
+   king   •                        king •  • queen   ← used in similar
+   banana •      • queen          apple •  • banana    contexts → close
+   apple  •                       (unrelated words end up far apart)
+```
+
+> [!definition] Learned embeddings
+> The embedding table is **parameters** — numbers the model adjusts during training, exactly like every other weight. 
+> They begin random; the next-word prediction task pulls similar-context words together. 
+> Meaning isn't designed in, it's a **byproduct** of getting good at prediction.
+
+> [!definition] Embedding table
+> The big lookup table the model learns: 
+> `vocab_size × d_model` (e.g. 50,000 × 1536) — one vector per possible word. 
+> 
+> Tokenizing gives IDs; you look each ID up in this table to build the sentence matrix. 
+> 
+> Three uses of "embedding": 
+> **one word → a vector**, **a sentence → a matrix of those vectors**, **the whole dictionary → the embedding table**.
+
+> [!warning] "Property" columns are just a teaching picture
+> Diagrams that label the numbers "royal 0.9, gender 0.8, animal 0" are illustration, not reality. 
+> 
+> Real embeddings have no clean "royalty column" — the 1536 numbers are a tangled learned code, and no single slot maps to one human concept. 
+> 
+> *Directions* in the space carry meaning (why king − man + woman ≈ queen works), not individual slots.
+
 > [!abstract] Checkpoint
 > - **Have:** each token as a meaning-vector; a `4 × 1536` grid.
 > - **Need:** the vector to change with *context* — "bank" is one fixed vector today, but means different things in "river bank" vs "money bank" (a **static** embedding).
 > - **Why the next layer exists:** attention makes the vector context-aware — but first it needs to know word order.
 
 ## 3. `+` position info
-Attention (next) looks at all tokens **at the same time**, so on its own it has no idea of order — "dog bites man" and "man bites dog" would look identical. Fix: add **position information** to each token's vector so order is baked in before attention runs.
+Attention (next) looks at all tokens **at the same time**, so on its own it has no idea of order — "dog bites man" and "man bites dog" would look identical. 
+
+Fix: add **position information** to each token's vector so order is baked in before attention runs.
 
 ```text
-                meaning            position          goes into attention
-     dog  →  [meaning of dog]  +  [pos 0]  =  [dog-here-at-0]
-     bites →  [meaning ...   ]  +  [pos 1]  =  [bites-at-1]
-     man  →  [meaning ...   ]  +  [pos 2]  =  [man-at-2]
+			meaning                position       goes into attention
+	 dog  →  [meaning of dog]    +  [pos 0]    =   [dog-here-at-0]
+	 bites →  [meaning ...  ]    +  [pos 1]    =    [bites-at-1]
+	 man  →  [meaning ...  ]     +  [pos 2]    =     [man-at-2]
 
 same word, different slot → different final vector → order is preserved
 ```
@@ -136,8 +185,11 @@ same word, different slot → different final vector → order is preserved
 > - **Why the next layer exists:** that sharing is attention.
 
 ## 4. Attention — the core
-This is the whole invention. Each token's vector is **rewritten** by pulling in information from the tokens that matter to it. For one word:
+This is the whole invention. 
 
+Each token's vector is **rewritten** by pulling in information from the tokens that matter to it. 
+
+For one word:
 1. it asks *"which other words are relevant to me?"*
 2. it scores every other word for relevance,
 3. it rebuilds itself as a **weighted blend** — more from relevant words, less from the rest.
@@ -156,7 +208,9 @@ This is the whole invention. Each token's vector is **rewritten** by pulling in 
 
 ![[Pasted image 20260917204710.png]]
 
-**Q, K, V — why three copies.** A single token has to play three different jobs at once, and one vector can't do all three well. So we multiply its embedding by three **learned** matrices (Wq, Wk, Wv) to get three specialized views:
+**Q, K, V — why three copies.**
+
+A single token has to play three different jobs at once, and one vector can't do all three well. So we multiply its embedding by three **learned** matrices (Wq, Wk, Wv) to get three specialized views:
 
 ```text
                    ┌── × Wq → Q  "what am I looking for?"   (the question)
@@ -164,7 +218,12 @@ This is the whole invention. Each token's vector is **rewritten** by pulling in 
                    └── × Wv → V  "what do I pass on?"       (the payload)
 ```
 
-Library analogy: you have a **search request** (Q). Every book has a **spine label** (K). You match your request against the labels, and from the best matches you take the **book's contents** (V). You'd never make the request and the contents the same object — that's why Q, K, V are separate.
+Library analogy: 
+- you have a **search request** (Q). 
+- Every book has a **spine label** (K). 
+- You match your request against the labels, and from the best matches you take the **book's contents** (V). 
+
+You'd never make the request and the contents the same object — that's why Q, K, V are separate.
 
 How they combine into the blend:
 ```text
@@ -186,7 +245,11 @@ weights × V      → new context-mixed vectors (same 4 × 1536 shape)
 > - **Why the next layer exists:** multi-head runs attention many times in parallel.
 
 ## 5. Multi-head — and what a "head" is
-One attention pass can only learn **one** kind of relevance. Language has many at once ("who does this pronoun refer to?", "what's the subject?", "which words modify me?"). So we run several attention passes in parallel — each is a **head**.
+One attention pass can only learn **one** kind of relevance. 
+
+Language has many at once ("who does this pronoun refer to?", "what's the subject?", "which words modify me?"). 
+
+So we run several attention passes in parallel — each is a **head**.
 
 ```text
        token vector (1536)
@@ -235,14 +298,23 @@ Every transformer block runs the same four steps in order:
 ```
 
 - **Step 1 — Multi-head attention:** tokens talk to each other (share context). Everything above happens here.
-- **Step 2 — Add & Norm:** *Add (residual)* = add the block's input back to its output, so nothing important is lost and gradients flow through deep stacks. *Norm* = rescale each vector to a healthy range.
-- **Step 3 — Feed-forward:** each token is processed **alone** (a small 2-layer net per row). Attention *moves* info between tokens; the feed-forward *transforms* it inside each token. A lot of the model's learned facts live here.
-- **Step 4 — Add & Norm again:** same residual + normalize around the feed-forward.
+- **Step 2 — Add & Norm:** 
+	- *Add (residual)* = add the block's input back to its output, so nothing important is lost and gradients flow through deep stacks. 
+	- *Norm* = rescale each vector to a healthy range.
+- **Step 3 — Feed-forward:** 
+	- each token is processed **alone** (a small 2-layer net per row). 
+	- Attention *moves* info between tokens; 
+	- the feed-forward *transforms* it inside each token. 
+	- A lot of the model's learned facts live here.
+- **Step 4 — Add & Norm again:** 
+	- same residual + normalize around the feed-forward.
 
-The block repeats **×N** (the original paper used 6; GPT-3 used 96). Early layers catch simple patterns; later layers build abstract meaning.
+The block repeats **× N** (the original paper used 6; GPT-3 used 96). Early layers catch simple patterns; later layers build abstract meaning.
 
 > [!definition] Residual + LayerNorm
-> **Residual** = output + input (protects the signal, lets gradients flow through deep networks). **LayerNorm** = normalize each vector to a stable range. Together = what makes stacking N layers trainable.
+> **Residual** = output + input (protects the signal, lets gradients flow through deep networks). 
+> **LayerNorm** = normalize each vector to a stable range. 
+> Together = what makes stacking N layers trainable.
 
 > [!abstract] Checkpoint
 > - **Have:** after N blocks, deeply context-aware vectors.
@@ -254,8 +326,8 @@ The last block's vector for the final position is turned into a **probability ov
 
 ```text
 final vector ── linear + softmax ──▶  " you" 12%
-                                       " it"   9%
-                                       " RAG"  3%
+	                                  " it"   9%
+                                      " RAG"  3%
                                         ...
                           pick one → append → run the whole pipeline again
 ```
@@ -263,7 +335,9 @@ final vector ── linear + softmax ──▶  " you" 12%
 This one-word-at-a-time loop is **autoregressive generation** — and it's why generation is slower than training (the KV cache in the internals exists to speed this up).
 
 ## 8. Encoder / decoder (the original architecture)
-The original transformer had two halves. Modern LLMs (GPT, Llama) are usually **decoder-only**, but both are worth knowing.
+The original transformer had two halves.
+
+Modern LLMs (GPT, Llama) are usually **decoder-only**, but both are worth knowing.
 
 ```text
    INPUT ─▶ ENCODER (reads all at once) ─┐
@@ -273,12 +347,17 @@ The original transformer had two halves. Modern LLMs (GPT, Llama) are usually **
 ```
 
 - **Encoder** — reads the whole input in parallel; every token attends to every other.
+
 - **Decoder** — generates output one token at a time, with two twists:
-  - **Masked attention** — a token may only attend to tokens **before** it, never the future (during generation the future doesn't exist yet). Done by setting future scores to −∞ so softmax makes them 0.
+	- **Masked attention** — a token may only attend to tokens **before** it, never the future (during generation the future doesn't exist yet).
+	- Done by setting future scores to −∞ so softmax makes them 0.
+	
   - **Cross-attention** — the decoder's Q looks at the encoder's K and V, so the output can attend to the input (e.g. translation).
 
 > [!tip] Training vs inference
-> **Training:** both halves run fully in parallel (the target is known; masking enforces left-to-right learning). **Inference:** the encoder still runs in parallel, but the decoder generates **one token at a time**, feeding each new token back in. Sequential at the token level, parallel inside each step.
+> **Training:** both halves run fully in parallel (the target is known; masking enforces left-to-right learning). 
+> 
+> **Inference:** the encoder still runs in parallel, but the decoder generates **one token at a time**, feeding each new token back in. Sequential at the token level, parallel inside each step.
 
 > [!tip] The whole model in one breath
 > Words → meaning vectors + position → then, N times: **attention (tokens share context) → add & norm → feed-forward (each token digests) → add & norm** → final softmax → next word → append and repeat.
