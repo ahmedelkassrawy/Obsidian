@@ -44,16 +44,19 @@ one API      │ routing · fallback · retry │ ──▶ Anthropic
 | Unified API | swap GPT-4o ↔ Claude ↔ your vLLM by changing a string, not code |
 | Fallback / failover | provider down or rate-limited → auto-retry on another model |
 | Retries + backoff | transient 500s/timeouts handled once, centrally (+ jitter) |
-| Caching | identical prompt → cached response, skip the paid call |
+| Caching | identical prompt → cached response, skip the paid call (see [[LLM Caching]]) |
 | Cost tracking + budgets | count tokens/spend per app/user; hard-cap runaway usage |
 | Rate limiting | per-key/per-tenant caps (the sliding-window limiter, here) |
 | Key management | provider keys live in the gateway, not scattered in apps |
 | Observability | one place logging every call (latency, tokens, errors) |
 
 ## Minimal gateway — the core ideas in code
+Cache lives in **Redis** (shared across every app instance + survives restarts), not an in-memory dict — see [[LLM Caching]] for the cache details.
 ```python
-import hashlib
+import hashlib, redis
 from langchain_openai import ChatOpenAI
+
+r = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
 MODELS = {   # one string picks provider + model
     "fast":  ChatOpenAI(model="openai/gpt-4o-mini",
@@ -63,18 +66,19 @@ MODELS = {   # one string picks provider + model
     "local": ChatOpenAI(model="qwen", base_url="http://localhost:8000/v1", api_key="x"),
 }
 FALLBACK = {"smart": "fast", "fast": "local"}   # who to try if one fails
-_cache: dict[str, str] = {}
 
-def gateway(prompt: str, tier: str = "fast") -> str:
-    key = hashlib.sha256(f"{tier}:{prompt}".encode()).hexdigest()
-    if key in _cache:                       # 1. CACHE
-        return _cache[key]
+def gateway(prompt: str, tier: str = "fast", ttl: int = 3600) -> str:
+    key = "llm:" + hashlib.sha256(f"{tier}:{prompt}".encode()).hexdigest()
+
+    hit = r.get(key)                        # 1. CACHE (Redis)
+    if hit is not None:
+        return hit
 
     tried, name = [], tier
     while name:                             # 2. FALLBACK CHAIN
         try:
             resp = MODELS[name].invoke(prompt)   # (retries/backoff go here)
-            _cache[key] = resp.content           # 3. store
+            r.set(key, resp.content, ex=ttl)     # 3. store in Redis with TTL
             log(name, prompt, resp)              # 4. OBSERVABILITY + cost
             return resp.content
         except Exception as e:
@@ -82,7 +86,7 @@ def gateway(prompt: str, tier: str = "fast") -> str:
             name = FALLBACK.get(name)            # try the next model
     raise RuntimeError(f"all models failed: {tried}")
 ```
-Four gateway jobs visible: **cache → fallback chain → logging/cost → unified invoke.** The app calls `gateway(prompt, "smart")` and never knows which provider answered.
+Four gateway jobs visible: **Redis cache → fallback chain → logging/cost → unified invoke.** The app calls `gateway(prompt, "smart")` and never knows which provider answered — and any instance shares the same cache. (Swap the exact-match `r.get/r.set` for the `RedisVL SemanticCache` from [[LLM Caching]] to also catch paraphrased prompts.)
 
 ## Don't build it — use one (usually)
 | Option | What it is |
