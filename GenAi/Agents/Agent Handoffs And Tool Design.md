@@ -161,6 +161,77 @@ def search_docs(query: str, top_k: int = 5) -> str:
 ## When you have many tools
 Don't give one agent 40 tools — **route or hand off**. Group tools by domain, give each specialist its handful. Tool sprawl is *why* you split into multi-agent (back to Part 1).
 
+### Grouping tools by domain — in code
+**1. Define tools in domain buckets** — a dict of domain → its tools *is* the grouping:
+```python
+from langchain_core.tools import tool
+
+@tool
+def create_draft(text: str) -> str:
+    """Create a draft post from caption text."""; ...
+@tool
+def schedule_post(draft_id: str, when: str) -> str:
+    """Schedule an approved draft for a given time."""; ...
+@tool
+def get_post_insights(post_id: str) -> str:
+    """Fetch reach/engagement for a published post."""; ...
+
+TOOL_GROUPS = {
+    "publishing": [create_draft, schedule_post],
+    "analytics":  [get_post_insights, top_posts],
+    "ads":        [create_campaign, set_budget],
+}
+```
+
+**2. Each specialist gets only its group** (`bind_tools` with one bucket — it can't see the others):
+```python
+def make_specialist(domain: str):
+    llm_with_tools = llm.bind_tools(TOOL_GROUPS[domain])   # ONLY this domain's tools
+    def node(state):
+        return {"messages": [llm_with_tools.invoke(state["messages"])]}
+    return node
+
+publishing_agent = make_specialist("publishing")   # sees 2 tools, not 6
+analytics_agent  = make_specialist("analytics")
+```
+
+**3. Supervisor routes to the domain** (a small, reliable decision — a name, not a tool):
+```python
+def route(state) -> str:
+    d = router_llm.invoke(
+        f"Which domain handles this? {list(TOOL_GROUPS)} or DONE:\n"
+        f"{state['messages'][-1].content}").content.strip().lower()
+    return d if d in TOOL_GROUPS else "done"
+
+g.add_conditional_edges("supervisor", route, {
+    "publishing": "publishing_agent",
+    "analytics":  "analytics_agent",
+    "ads":        "ads_agent",
+    "done":       END,
+})
+```
+```text
+                 ┌ publishing_agent → [create_draft, schedule_post]
+supervisor ─route─┼ analytics_agent  → [get_post_insights, top_posts]
+(picks domain)   └ ads_agent        → [create_campaign, set_budget]
+```
+
+**File-structure version** (cleaner as it grows) — one module per domain exporting its `TOOLS`:
+```python
+# tools/publishing.py →  TOOLS = [create_draft, schedule_post]
+# tools/analytics.py  →  TOOLS = [get_post_insights, top_posts]
+
+# registry.py
+from tools import publishing, analytics, ads
+TOOL_GROUPS = {"publishing": publishing.TOOLS,
+               "analytics":  analytics.TOOLS,
+               "ads":        ads.TOOLS}
+```
+
+> [!tip] Two ways to use the grouping
+> **Single agent, dynamic subset** (not full multi-agent yet): classify the request, then `llm.bind_tools(TOOL_GROUPS[domain])` for *that one call* — model sees few tools, no separate agent nodes.
+> **Multi-agent**: a specialist node per group (above). Use once domains need their own prompts/memory.
+
 > [!tip] The unifying idea
 > **Tool descriptions and agent descriptions are prompts the model reads to make decisions.** The quality of your names, docstrings, and arg schemas *is* the routing quality. Write them for the model like instructions for a new hire: what it does, when to use it, when not to, what it returns.
 
