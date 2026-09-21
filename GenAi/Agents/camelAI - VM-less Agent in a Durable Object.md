@@ -293,7 +293,7 @@ If you forget everything else, keep these:
 - **pi** — the open-source, layered coding-agent toolkit camelAI built its harness on.
 
 ## Related notes
-- [[Deep Agents]] · [[Agent Patterns]] · [[AI Workflows VS AI Agent]]
+- [[Deep Agents]] · [[Agent Reasoning Patterns]] · [[AI Workflows VS AI Agent]]
 - [[Function Calling]] (methods ≈ tools) · [[MCP Arch]] (another "expose safe capabilities" model)
 - [[Claude Code Core Architecture]] (the Claude Code harness camelAI started on) · [[AWS Bedrock Agent Core]] (another brain/hands split)
 - [[Context Engineering]] · [[Agents Best Practice]] (why fewer choices can beat more freedom)

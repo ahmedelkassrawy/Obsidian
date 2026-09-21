@@ -16,7 +16,6 @@ tags:
 - [[Google ADK]] `raw` — Long compiled ADK tutorial: creating and running an agent project, building a multi-tool agent, agent teams, and adding memory.
 - [[Google ADK Agent Arch]] `raw` — Pasted ADK code building a root coordinator that calls sub-agents as tools, then sequential ('assembly line') and parallel workflow agents.
 - [[Google ADK Deployment And A2A]] `raw` — How ADK's to_a2a() wraps an agent in an A2A server with an auto-generated agent card, and how to serve and call it from another agent.
-- [[Google ADK Memory,Sessions]] `raw` — Shorter copy of the ADK sessions and memory notes - persistent sessions, context compaction and session state.
 - [[Google ADK Observability And Eval]] `raw` — Short pasted snippet showing how to attach ADK's LoggingPlugin to an InMemoryRunner for agent observability.
 - [[Google ADK Sessions And Memory]] `raw` — Pasted ADK code for persistent sessions, context compaction, session state, and custom tools that read and write that state.
 
@@ -25,8 +24,7 @@ tags:
 
 ## Notes to self (from the audit)
 - [[Google ADK Agent Arch]]: Contains a hardcoded Google API key - rotate it and use an env var.
-- [[Google ADK Sessions And Memory]]: Fuller of two near-identical copies (the other is 'Google ADK Memory,Sessions'); also has a hardcoded Google API key to rotate.
-- [[Google ADK Memory,Sessions]]: Near-duplicate subset of 'Google ADK Memory,Sessions 1' (same opening, ~3k fewer characters); keep the longer one.
+- [[Google ADK Sessions And Memory]]: Has a hardcoded Google API key to rotate.
 - [[Google ADK Observability And Eval]]: Barely started - add the eval half that the title promises.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.

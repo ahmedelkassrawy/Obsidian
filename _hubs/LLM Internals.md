@@ -15,8 +15,7 @@ tags:
 - [[AI Agent Prompt Caching and Context Management]] — Why agent cost and latency grow every turn, and how prompt caching plus context trimming fix it - with a turn-by-turn breakdown of cached vs uncached prefill.
 - [[Embeddings Representations And Latent Space]] — Answers what embeddings, representations and latent space have in common and how they differ, from the Machine Learning Q and AI book.
 - [[Fine-Tuning vs Reinforcement Learning]] — Lays out the LLM training stages and contrasts supervised fine-tuning (match a target) with reinforcement learning (score the result), including upsides and downsides of each.
-- [[How KV Cache speed up LLM Inference]] — Why a model that is fast for one user crawls for a hundred, and the two fixes: KV cache to stop redoing attention maths, and paged attention to stop wasting GPU memory.
-- [[LLM Inference From Prefill To Batching]] — The two phases of inference - prefill reads the whole prompt, decode writes one token at a time - plus KV cache and static vs continuous batching.
+- [[LLM Inference Internals]] — prefill/decode, KV cache, paged attention, static vs continuous batching, vLLM tuning.
 
 ## How-tos & recipes
 - [[vLLM Serving]] — Hands-on notes from serving Qwen2.5-1.5B on a Colab T4 with vLLM: what serving means, KV cache, continuous batching, prefix caching, and latency vs throughput with real measurements.
@@ -33,12 +32,12 @@ tags:
 - [[Encoder Vs Decoder Models]] `stub` — Short comparison of encoder models (representation, e.g. BERT) and decoder models (generation) by purpose, input and output.
 
 ## Clippings (raw)
-- [[Sorting - Sort Three Numbers]] `raw` — Clipped handbook section on context-window pitfalls: the lost-in-the-middle effect and context compression with LLMLingua.
+- [[Context Window Pitfalls - Lost in the Middle and LLMLingua]] `raw` — Clipped handbook section on context-window pitfalls: the lost-in-the-middle effect and context compression with LLMLingua.
 
 ## Related hubs
 [[LLM Serving & vLLM]], [[Transformers]], [[Fine-tuning]], [[Context Engineering]], [[Embeddings & Semantic Search]], [[Caching]]
 
 ## Notes to self (from the audit)
-- [[Sorting - Sort Three Numbers]]: Verbatim clip from handbook.exemplar.dev (anchor links still in the headings) - rewrite in your own words to pull it back out of _inbox.
+- [[Context Window Pitfalls - Lost in the Middle and LLMLingua]]: Verbatim clip from handbook.exemplar.dev (anchor links still in the headings) - rewrite in your own words to pull it back out of _inbox.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.

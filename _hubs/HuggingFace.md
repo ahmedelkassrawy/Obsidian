@@ -18,7 +18,7 @@ tags:
 - [[Hugging Face]] `raw` — Short pasted code for two HuggingFace tasks: text classification with DistilBERT and basic text generation.
 - [[NLP Eval Code]] `raw` — Code for computing NLP metrics with the HuggingFace evaluate library: BLEU for translation, ROUGE for summarization and seqeval for NER, wired into a training loop.
 - [[PEFT]] `raw` — Pasted PEFT code fine-tuning flan-t5-base on a summarization dataset: tokenize function across splits, device handling, and the training setup.
-- [[Sorting - Sort Three Numbers]] `raw` — Pasted tokenizer code covering encoding text, every padding option, truncation to model max length, and what input_ids and attention masks look like.
+- [[HF Tokenizer - Encoding Padding Truncation]] `raw` — Pasted tokenizer code covering encoding text, every padding option, truncation to model max length, and what input_ids and attention masks look like.
 - [[Summarization]] `raw` — A minimal HuggingFace summarization pipeline call with bart-large-cnn on a sample passage.
 
 ## References & cheat sheets

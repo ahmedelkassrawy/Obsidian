@@ -29,7 +29,7 @@ source: "Kassra growth-track session 2026-09-21"
 ---
 # LangGraph Short-Term & Long-Term Memory
 
-> Related: [[LangGraph Human In The Loop And Checkpointers]] · [[LangGraph Memory]] · [[LangGraph Long-Term Memory With Trustcall]] · [[Mem0.Agents Memory]] · [[Agent Memory with Redis]].
+> Related: [[LangGraph Human In The Loop And Checkpointers]] · [[LangGraph Long-Term Memory With Trustcall]] · [[Mem0.Agents Memory]] · [[Agent Memory with Redis]].
 
 Two different mechanisms, often confused:
 
@@ -188,3 +188,94 @@ agent.invoke({"messages": [...], "user_id": "kassra"}, cfg)
 ```
 
 **In raaaaag (M5 W1):** the checkpointer made the answer loop **durable** (state saved each step → crash resumes mid-flow) — same short-term machinery, framed as durability. Long-term (a per-user store) would be the next layer if the agent needed to remember a user across sessions.
+
+---
+
+## Salvaged from LangGraph Memory (raw)
+
+Raw code pasted from the old `LangGraph Memory` note. The checkpointer/`get_state`/`get_state_history` mechanics above already cover its memory bits; kept below are the graph examples it uniquely had.
+
+Basic ReAct graph with `ToolNode` + `tools_condition`:
+```python
+from langchain_core.tools import tool
+from langgraph.prebuilt import ToolNode, tools_condition
+from typing import Annotated
+from langchain_core.messages import BaseMessage, HumanMessage
+from langgraph.graph.message import add_messages
+
+class ChatState(TypedDict):
+    messages: Annotated[list[BaseMessage], add_messages]
+
+@tool
+def add(a:int,b:int) -> int:
+	"""Perform a basic add"""
+	return a * b
+
+tools = [add]
+llm_with_tools = llm.bind_tools(tools)
+
+def chat_node(state: ChatState):
+    """LLM node that may answer or request a tool call."""
+    messages = state['messages']
+    response = llm_with_tools.invoke(messages)
+    return {"messages": [response]}
+
+tool_node = ToolNode(tools)
+
+graph = StateGraph(ChatState)
+graph.add_node("chat_node", chat_node)
+graph.add_node("tools", tool_node)
+graph.add_edge(START,"chat_node")
+graph.add_conditional_edges("chat_node",tools_condition)
+graph.add_edge("tools","chat_node")
+agent = graph.compile()
+```
+
+Same wiring, but the tool is a RAG retriever:
+```python
+loader = PyPDFLoader("intro-to-ml.pdf")
+docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)
+embeddings = OpenAIEmbeddings(model='text-embedding-3-small')
+vector_store = FAISS.from_documents(chunks, embeddings)
+retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k':4})
+
+@tool
+def rag_tool(query):
+  """Retrieve relevant information from the pdf document."""
+  result = retriever.invoke(query)
+  return {
+      'query': query,
+      'context': [doc.page_content for doc in result],
+      'metadata': [doc.metadata for doc in result],
+  }
+
+tools = [rag_tool]
+llm_with_tools = llm.bind_tools(tools)
+# ... same StateGraph(chat_node + ToolNode) as above ...
+```
+
+HITL approval loop with `Command(resume=...)`:
+```python
+from langgraph.types import Command
+
+def run_agent_with_approval(agent, input_data, config):
+  response = agent.invoke(input_data, config = config)
+  while response.get("__interrupt__"):
+    interrupt = response["__interrupt__"][0]
+    details = interrupt.value
+    print(f"\n[INTERRUPT]: {details.get('reason', 'Approval Required')}")
+    print(f"Question: {details.get('question', '')}")
+    user_input = input(f"{details.get('instruction', 'Approve? (yes/no): ')} ")
+    response = agent.invoke(
+        Command(resume = {"approved":user_input}),
+        config = config
+    )
+    return response
+
+config = {"configurable": {"thread_id": "1234"}}
+initial_input = {"messages": [("user", "Explain gradient descent.")]}
+response = run_agent_with_approval(agent, initial_input, config)
+response["messages"][-1].content
+```

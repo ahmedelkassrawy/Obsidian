@@ -18,7 +18,6 @@ tags:
 - [[AI Workflows VS AI Agent]] — Separates fixed-code AI workflows (chaining, routing, parallelization) from autonomous agents, and gives rules for choosing or combining them.
 - [[Agent Agency Levels And Reflection Pattern]] — A table of agency levels (from output-only to fully autonomous) plus the types of agent actions and the reflection pattern.
 - [[Agent Evaluation]] — Argues that one-run accuracy or LLM-as-judge is not agent evaluation, and lists what a production eval harness must collect across repeated non-deterministic runs.
-- [[Agent Patterns]] — Compares six agent architectures - reactive, deliberative, hybrid, ReAct, plan-and-execute, and tree/graph of thoughts - with a summary table.
 - [[Agentic System Best Practices]] — The patterns from Claude Code's architecture that transfer to any agentic system, starting with using an async generator as the agent loop instead of callbacks.
 - [[Agents Best Practice]] — Production rules for agents treated as execution systems, not chat toys: orchestration, reliability handled by architecture, judgment left to the model.
 - [[Claude Code Core Architecture]] — Deep dive into Claude Code's architecture: what separates an agent from a chatbot, the tech stack and scale, the execution flow, core components and the key design patterns.
@@ -42,7 +41,6 @@ tags:
 - [[DeepAgents]] `raw` — Notes and code for the deepagents library: built-in planning with write_todos, streaming, the default StateBackend, and why a checkpointer is required for human-in-the-loop.
 - [[Google ADK]] `raw` — Long compiled ADK tutorial: creating and running an agent project, building a multi-tool agent, agent teams, and adding memory.
 - [[LlamaIndex Agents And Multi-Agent Workflows]] `raw` — Pasted LlamaIndex agent code: a basic FunctionAgent, running with a Context for state, setting Settings for LLM and embeddings, and defining a multi-agent workflow.
-- [[LlamaIndex Agents And Workflows Notes]] `raw` — Scratch notes plus code on combining LlamaIndex agents, workflows and AgentWorkflows, and on specifying tool parameters and outputs.
 - [[Mem0.Agents Memory]] `raw` — Pasted Mem0 code for giving an agent long-term memory with Gemini models: init, add, search, and use memories in a chat loop.
 - [[PydanticAi]] `raw` — Pasted PydanticAI starter code: creating an Agent with a Gemini model, running it, and carrying message history between runs.
 

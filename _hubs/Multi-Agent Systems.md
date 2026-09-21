@@ -28,7 +28,6 @@ tags:
 - [[Langchain.Multi Agent Example]] — A worked multi-agent build: HITL middleware on the subgraphs, a checkpointer on the supervisor, and a three-layer tools/subagents/supervisor architecture with controlled information flow.
 - [[Google ADK Agent Arch]] `raw` — Pasted ADK code building a root coordinator that calls sub-agents as tools, then sequential ('assembly line') and parallel workflow agents.
 - [[Google ADK Deployment And A2A]] `raw` — How ADK's to_a2a() wraps an agent in an A2A server with an auto-generated agent card, and how to serve and call it from another agent.
-- [[Langchain.Multi Agent - Router Implementation]] `empty` — Empty placeholder for the code version of the multi-agent router pattern.
 - [[LlamaIndex Agents And Multi-Agent Workflows]] `raw` — Pasted LlamaIndex agent code: a basic FunctionAgent, running with a Context for state, setting Settings for LLM and embeddings, and defining a multi-agent workflow.
 
 ## Book notes
@@ -42,7 +41,6 @@ tags:
 
 ## Notes to self (from the audit)
 - [[Google ADK Agent Arch]]: Contains a hardcoded Google API key - rotate it and use an env var.
-- [[Langchain.Multi Agent - Router Implementation]]: Zero words - the concept note 'Langchain.Multi Agent - Router' exists; fill in the implementation or delete.
 - [[Langchain.Multi Agent Example]]: Contains a hardcoded API key - rotate it.
 - [[LlamaIndex Agents And Multi-Agent Workflows]]: Contains a hardcoded Google API key - rotate it.
 - [[Clipping - Building Reliable Agentic AI Systems (Article)]]: Digest into AI-Eng/Agents - it is the only production multi-agent case study in the vault.

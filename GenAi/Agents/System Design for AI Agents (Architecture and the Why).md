@@ -27,7 +27,7 @@ created: 2026-07-31
 # System Design for AI Agents — Architecture & the "Why"
 
 > [!abstract] Why this note exists
-> My gap isn't *building* correct agent architectures — it's **defending every knob**. This note trains that: for each design decision, it states the **choice → the forces → why → what breaks if you go the other way.** Companion to [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]] (that one = *how to eval*; this one = *how to architect*). See also [[Agent Patterns]], [[AI Workflows VS AI Agent]].
+> My gap isn't *building* correct agent architectures — it's **defending every knob**. This note trains that: for each design decision, it states the **choice → the forces → why → what breaks if you go the other way.** Companion to [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]] (that one = *how to eval*; this one = *how to architect*). See also [[Agent Reasoning Patterns]], [[AI Workflows VS AI Agent]].
 
 ---
 
@@ -312,5 +312,5 @@ The outermost loop optimizes **conversion / add-to-cart / order completion**, no
 
 ## Related
 - [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]] — the eval side of the same system
-- [[Agent Patterns]] · [[AI Workflows VS AI Agent]] · [[Agents Best Practice]]
+- [[Agent Reasoning Patterns]] · [[AI Workflows VS AI Agent]] · [[Agents Best Practice]]
 - [[Context Engineering]] · [[Optimizing GenAI Services for Multiple Users]]

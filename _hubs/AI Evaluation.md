@@ -25,13 +25,11 @@ tags:
 
 ## Book notes
 - [[Ch3. Eval]] — Chip Huyen Ch3: why evaluation is its own hard problem, the entropy/perplexity metrics, exact vs subjective evaluation, embedding similarity, and AI-as-a-judge.
-- [[Ch4. Evaluating AI Systems]] `empty` — Empty placeholder for the AI Engineering chapter on evaluating whole AI systems.
 
 ## Related hubs
 [[Agents]], [[System Design]], [[DSPy]], [[Observability]], [[Embeddings & Semantic Search]], [[Prompting]]
 
 ## Notes to self (from the audit)
-- [[Ch4. Evaluating AI Systems]]: Zero words and the old filename misspelled 'Evaluation' - fill from the book or delete.
 - [[Google ADK Observability And Eval]]: Barely started - add the eval half that the title promises.
 - [[LangSmith]]: Contains a real LANGSMITH_API_KEY in plain text - revoke and rotate that key now.
 

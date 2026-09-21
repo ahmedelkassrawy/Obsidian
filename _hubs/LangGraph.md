@@ -21,9 +21,7 @@ tags:
 - [[DeepAgents]] `raw` — Notes and code for the deepagents library: built-in planning with write_todos, streaming, the default StateBackend, and why a checkpointer is required for human-in-the-loop.
 - [[LangGraph Human In The Loop And Checkpointers]] `raw` — Pasted human-in-the-loop code: a graph that interrupts for approval, the resume path after approve or reject, and checkpointer setup.
 - [[LangGraph Long-Term Memory With Trustcall]] `raw` — Pasted code for long-term memory in LangGraph: a Memory schema, Trustcall extractor, a store for across-thread memory alongside a checkpointer, and a spy to inspect the tool calls.
-- [[LangGraph Memory]] `raw` — Pasted LangGraph memory code: compiling with InMemorySaver, using thread_id config, and reading conversation state back with get_state.
 - [[LangGraph Routing And Path Maps]] `raw` — Scratch notes on the coordinator/router shape in LangGraph: keeping next_step in state and using add_conditional_edges with a path map or Literal.
-- [[LangGraph Tool Node Basics]] `stub` — One short tip plus snippet: do not pass state into tools, use ToolNode and bind the tools to the model, with a should_continue router.
 - [[LangSmith]] `stub` — The .env variables that turn LangSmith tracing on and the two lines of Python that load them.
 - [[Langgraph Best Practices]] `raw` — Short pasted patterns for LangGraph: with_structured_output, bind_tools, and a conditional-edge gate function that routes between nodes.
 - [[Langgraphics Graph Visualizer]] `stub` — A single snippet showing how to wrap a compiled LangGraph with langgraphics' watch() to visualize a run.

@@ -21,7 +21,6 @@ tags:
 - [[Google ADK Agent Tools]] — ADK tool best practices: what the ToolContext parameter gives you (approval requests and state), and how to process the event stream a tool run produces.
 - [[MCPs]] — Explains what MCP is, how transports and tool discovery work, and gives a 3-step playbook for adding a new tool to an MCP server.
 - [[Pipecat.Function Calling]] — Function calling in a Pipecat voice pipeline: defining functions with the standard schema or as direct functions, building the tools schema, and registering the handler.
-- [[LangGraph Tool Node Basics]] `stub` — One short tip plus snippet: do not pass state into tools, use ToolNode and bind the tools to the model, with a should_continue router.
 
 ## References & cheat sheets
 - [[Agent Tool Schema Best Practices]] — A do/don't table for tool schemas: describe every field, give examples, mark optional fields properly, and avoid over-strict constraints.

@@ -30,7 +30,7 @@ tags:
 - [[RAG]] `stale` — End-to-end RAG guide: loading and splitting documents, embeddings and a vector store, retrieval, and generation.
 - [[RAG Hybrid Search & Reranking]] `stale` — Hybrid retrieval explained and implemented: dense embeddings plus BM25 keyword search, merged and then reranked before the model sees the chunks.
 - [[Sentence Window RAG]] `stale` — Sentence-window retrieval: match on single sentences, then expand a window of neighbours around each hit so the model gets continuous context.
-- [[Sorting - Sort Three Numbers]] `raw` — Code snippets lifted from the RAG proof of concept: content hashing for duplicate detection, a global model cache, and the async document-processing function.
+- [[RAG POC Snippets - Hashing Cache Async Ingest]] `raw` — Code snippets lifted from the RAG proof of concept: content hashing for duplicate detection, a global model cache, and the async document-processing function.
 
 ## Book notes
 - [[FastAPI Users - Router Setup]] — The book's opening definition of RAG, spelling out what retrieve, augment and generate each mean.
@@ -44,7 +44,6 @@ tags:
 
 ## Clippings (raw)
 - [[Clipping - Building Reliable Agentic AI Systems (Article)]] `raw` — Clipped case-study article on PRINCE, a production agentic RAG system for preclinical drug research: intent clarification, a planning step, researcher, reflection and writer agents, and how they built trust in it.
-- [[RAG Cheatsheet]] `empty` — A note that contains nothing but an embedded PDF cheatsheet.
 
 ## Related hubs
 [[Vector Search]], [[LangChain]], [[Embeddings & Semantic Search]], [[FastAPI]], [[Agents]], [[Fine-tuning]]
@@ -53,7 +52,6 @@ tags:
 - [[LlamaIndex RAG Pipeline]]: Contains a hardcoded API key - rotate it.
 - [[Advanced RAG]]: Uses pre-1.0 langchain.llms / langchain.vectorstores / langchain.chains imports - port before reusing.
 - [[Hyde RAG]]: Implementation uses pre-1.0 RetrievalQA and langchain.vectorstores - the idea still holds, the code does not.
-- [[RAG Cheatsheet]]: Two words plus a PDF embed - write out the parts of the cheatsheet you actually use.
 - [[RAG Hybrid Search & Reranking]]: Implementation uses pre-1.0 RetrievalQA and langchain.vectorstores - port before reusing.
 - [[RAG]]: Uses pre-1.0 langchain.embeddings / vectorstores / chains imports and has a hardcoded API key - port the code and rotate the key.
 - [[Sentence Window RAG]]: Implementation uses pre-1.0 RetrievalQA and langchain.vectorstores - the technique is fine, the code is not.

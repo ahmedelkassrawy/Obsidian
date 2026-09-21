@@ -32,13 +32,11 @@ tags:
 
 ## Clippings (raw)
 - [[Clipping - LLM Fine-Tuning Crash Course (YouTube)]] `raw` — Raw YouTube transcript of a one-hour end-to-end fine-tuning walkthrough: preparing a custom dataset and fine-tuning an LLM on it.
-- [[LLM Finetuning & Deployment Notes]] `empty` — A bare Notion link with no content - the actual fine-tuning and deployment notes live outside the vault.
 
 ## Related hubs
 [[HuggingFace]], [[Transformers]], [[LLM Internals]], [[RAG]], [[NLP Preprocessing]], [[Classification]]
 
 ## Notes to self (from the audit)
-- [[LLM Finetuning & Deployment Notes]]: Nine words, just a Notion URL - pull the content in or delete.
 - [[Clipping - LLM Fine-Tuning Crash Course (YouTube)]]: Digest into AI-Eng/Fine-tuning. Vault has almost no hands-on fine-tuning note, so this one is worth the time.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.

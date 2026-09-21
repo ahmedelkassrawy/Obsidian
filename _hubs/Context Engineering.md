@@ -31,12 +31,12 @@ tags:
 - [[Langchain v1]] `raw` — Very large pasted reference for LangChain v1's create_agent: middleware hooks (before and after model), dynamic prompts, runtime and thread_id, and structured response formats.
 
 ## Clippings (raw)
-- [[Sorting - Sort Three Numbers]] `raw` — Clipped handbook section on context-window pitfalls: the lost-in-the-middle effect and context compression with LLMLingua.
+- [[Context Window Pitfalls - Lost in the Middle and LLMLingua]] `raw` — Clipped handbook section on context-window pitfalls: the lost-in-the-middle effect and context compression with LLMLingua.
 
 ## Related hubs
 [[Agents]], [[Claude Code]], [[Multi-Agent Systems]], [[LangChain]], [[LLM Internals]], [[LangGraph]]
 
 ## Notes to self (from the audit)
-- [[Sorting - Sort Three Numbers]]: Verbatim clip from handbook.exemplar.dev (anchor links still in the headings) - rewrite in your own words to pull it back out of _inbox.
+- [[Context Window Pitfalls - Lost in the Middle and LLMLingua]]: Verbatim clip from handbook.exemplar.dev (anchor links still in the headings) - rewrite in your own words to pull it back out of _inbox.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.

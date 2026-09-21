@@ -25,7 +25,7 @@ tags:
 - [[RNN]] — Builds a character and token-level GRU language model from scratch: encoding text to ids, sliding-window datasets, dataloaders, embeddings, and predicting the next character.
 - [[RNN and LSTM]] — NLP in PyTorch with RNNs and LSTMs: preprocessing, spaCy tokenization, vocabulary building and numericalization, then an RNN question-answering model and an LSTM next-word predictor.
 - [[NLP Preprocess code]] `raw` — Copy-ready NLTK preprocessing block: downloads, tokenizer, stemmer, lemmatizer and a customized stop-word list.
-- [[Sorting - Sort Three Numbers]] `raw` — Pasted tokenizer code covering encoding text, every padding option, truncation to model max length, and what input_ids and attention masks look like.
+- [[HF Tokenizer - Encoding Padding Truncation]] `raw` — Pasted tokenizer code covering encoding text, every padding option, truncation to model max length, and what input_ids and attention masks look like.
 
 ## References & cheat sheets
 - [[Fine-Tuning Quick Reference]] — A condensed fine-tuning recipe: add a classification head to a pretrained transformer, tokenize, define metrics, and run the HuggingFace Trainer, plus tricks to improve results.

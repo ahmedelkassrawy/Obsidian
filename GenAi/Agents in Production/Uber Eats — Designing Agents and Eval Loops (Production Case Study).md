@@ -29,7 +29,7 @@ created: 2026-07-31
 > [!abstract] One-line
 > A real production agent system that **auto-enhances food photos** for millions of merchants — and the real lesson isn't the images, it's how they **wrapped every agent in an eval loop** so the system keeps *tuning itself* against human-labeled truth without a human in the loop.
 
-**Why this note exists:** evaluation rigor is my #1 growth edge. This talk is the cleanest end-to-end example I've seen of *eval-driven agent design* in production. Treat it as a template, not trivia. See [[Agent Evaluation]], [[Agent Patterns]].
+**Why this note exists:** evaluation rigor is my #1 growth edge. This talk is the cleanest end-to-end example I've seen of *eval-driven agent design* in production. Treat it as a template, not trivia. See [[Agent Evaluation]], [[Agent Reasoning Patterns]].
 
 ---
 
@@ -251,6 +251,6 @@ Take the mismatches from Exercise A, have a **reflect** step summarize systemic 
 
 ## Related
 - [[Agent Evaluation]] — why single-run eval is worthless (non-determinism)
-- [[Agent Patterns]]
+- [[Agent Reasoning Patterns]]
 - [[Agents Best Practice]]
 - [[Optimizing GenAI Services for Multiple Users]]

@@ -17,7 +17,6 @@ tags:
 ## How-tos & recipes
 - [[LlamaIndex RAG Pipeline]] — The LlamaIndex RAG pipeline end to end: loading with readers, transformations and chunking, adding metadata and embeddings, and building the index.
 - [[LlamaIndex Agents And Multi-Agent Workflows]] `raw` — Pasted LlamaIndex agent code: a basic FunctionAgent, running with a Context for state, setting Settings for LLM and embeddings, and defining a multi-agent workflow.
-- [[LlamaIndex Agents And Workflows Notes]] `raw` — Scratch notes plus code on combining LlamaIndex agents, workflows and AgentWorkflows, and on specifying tool parameters and outputs.
 - [[LlamaIndex Event-Driven Workflows]] `raw` — Pasted LlamaIndex Workflow code: steps and typed events, start/stop events, running a workflow, concurrent state changes, typed state, and collecting multiple event types.
 
 ## Related hubs

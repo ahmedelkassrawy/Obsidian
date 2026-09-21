@@ -795,3 +795,54 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+## Salvaged scratch example
+
+From the old `LlamaIndex Agents And Workflows Notes` scratch note — a `Workflow` (email parser) wrapped as a `FunctionAgent` and combined with a second agent inside an `AgentWorkflow`, showing Agents + Workflow + AgentWorkflow composed together:
+```python
+from llama_index.core.workflow import StartEvent, StopEvent, Workflow, step, Event
+from llama_index.core.agent.workflow import FunctionAgent, AgentWorkflow
+
+class ParsedEmail(Event):
+    sender: Optional[str]
+    content: str
+    subject: Optional[str]
+    deadline: Optional[datetime]
+
+class EmailParsingWorkflow(Workflow):
+    @step
+    async def parse(self, ev: StartEvent) -> ParsedEmail:
+        prompt = f"""You are an expert email parser. Extract sender, subject,
+        content, deadline from:\n{ev.email_text}\nReturn JSON."""
+        result = await llm.acomplete(prompt)
+        data = json.loads(result.text)
+        return ParsedEmail(**data)
+
+    @step
+    async def end(self, ev: ParsedEmail) -> StopEvent:
+        return StopEvent(result=ev)
+
+# a Workflow can be wrapped as a FunctionAgent...
+parse_agent = FunctionAgent(
+    name="email_parser",
+    description="Parse the email to extract relevant fields",
+    workflow=EmailParsingWorkflow(),
+)
+
+class EmailResponse(BaseModel):
+    response: str
+
+respond_agent = FunctionAgent(
+    name="respond_agent", llm=llm,
+    description="Generate a professional email response",
+    output_cls=EmailResponse,
+    system_prompt="You are an expert email assistant...",
+)
+
+# ...then both live inside one AgentWorkflow
+email_agent_workflow = AgentWorkflow(
+    agents=[parse_agent, respond_agent],
+    root_agent=parse_agent.name,
+)
+result = await email_agent_workflow.run(user_msg=email_text)
+```

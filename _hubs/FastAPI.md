@@ -33,7 +33,7 @@ tags:
 - [[RBAC - Role Base Access Control]] — Cheat sheet for adding role-based access control to FastAPI: role field on the user model, a dependency that checks roles, and guarded routes.
 - [[FastAPI - Scheduler]] `stub` — A three-line snippet adding APScheduler BackgroundScheduler interval jobs inside a FastAPI app file.
 - [[Ngrok]] `stub` — A snippet that starts an ngrok tunnel in front of a local FastAPI app to get a public URL.
-- [[Sorting - Sort Three Numbers]] `raw` — Code snippets lifted from the RAG proof of concept: content hashing for duplicate detection, a global model cache, and the async document-processing function.
+- [[RAG POC Snippets - Hashing Cache Async Ingest]] `raw` — Code snippets lifted from the RAG proof of concept: content hashing for duplicate detection, a global model cache, and the async document-processing function.
 
 ## References & cheat sheets
 - [[07 - Full Source Listing (copy-paste ready)]] — The complete working source for the integrated app in two file layouts, ready to copy.

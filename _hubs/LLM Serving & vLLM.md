@@ -12,8 +12,7 @@ tags:
 > Part of [[MOC - AI Engineering]]. Also try the tag `#topic/llm-serving-and-vllm`.
 
 ## Concepts
-- [[How KV Cache speed up LLM Inference]] — Why a model that is fast for one user crawls for a hundred, and the two fixes: KV cache to stop redoing attention maths, and paged attention to stop wasting GPU memory.
-- [[LLM Inference From Prefill To Batching]] — The two phases of inference - prefill reads the whole prompt, decode writes one token at a time - plus KV cache and static vs continuous batching.
+- [[LLM Inference Internals]] — prefill/decode, KV cache, paged attention, static vs continuous batching, vLLM tuning.
 - [[LLMOps Observability And Production Stack]] — Notes on LLMOps in production: which LLM metrics to monitor, the observability layers, LLM routing, feedback loops, versioning strategy, and cost and privacy controls.
 - [[Optimizing GenAI Services for Multiple Users]] — Why GenAI services block under load and how to fix it: concurrency vs parallelism, Python execution models, asyncio, and FastAPI concurrency choices.
 
@@ -23,7 +22,6 @@ tags:
 
 ## Course notes
 - [[LLM Proxies]] — Course notes on running a LiteLLM proxy in front of several model providers: config file, starting the server, calling it with the OpenAI client, logging and load balancing.
-- [[vLLM Lesson Notes]] `empty` — Empty placeholder for vLLM course notes.
 
 ## Clippings (raw)
 - [[AI Engineering Reading Links]] `raw` — A bare list of URLs to vLLM, eval-harness, BMAD-method and LinkedIn/YouTube posts to read later.
@@ -33,7 +31,6 @@ tags:
 
 ## Notes to self (from the audit)
 - [[AI Engineering Reading Links]]: Pure link dump with no annotations - note next to each link why it is worth reading.
-- [[vLLM Lesson Notes]]: Zero words - the real vLLM notes are in 'GenAi/vLLM Serving'; fill or delete this one.
 - [[LLMOps Observability And Production Stack]]: Opens with a LinkedIn link and a personal roadmap TODO - move that to a task note.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.

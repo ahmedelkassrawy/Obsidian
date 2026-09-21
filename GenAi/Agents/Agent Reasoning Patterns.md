@@ -23,7 +23,7 @@ source: "Kassra growth-track session 2026-09-21"
 ---
 # Agent Reasoning Patterns
 
-> Related: [[Agent Patterns]] · [[Agent Agency Levels And Reflection Pattern]] · [[Agent Workflow Patterns (The Five)]] (three of these ARE workflow patterns).
+> Related: [[Agent Agency Levels And Reflection Pattern]] · [[Agent Workflow Patterns (The Five)]] (three of these ARE workflow patterns).
 
 How an agent **thinks** before/while acting. Most map onto workflow patterns you already know.
 
@@ -164,3 +164,33 @@ This is the evaluator-optimizer loop: **generate → reflect (critique) → revi
 - raaaaag's agent is **ReAct** (model ↔ `search_docs`).
 - Adding a **reflection** pass ("is this grounded? if not, retry") = the evaluator-optimizer/guardrail already sketched.
 - A complex Shutterabia task (plan a week of posts) suits **plan-and-execute** (plan once, execute per-post cheaply).
+
+---
+
+## Classic agent architectures (reactive / deliberative / hybrid)
+
+The patterns above are about *how the agent reasons*. There's an older, coarser taxonomy about *how the agent is wired* — merged in from the old `Agent Patterns` note.
+
+### Reactive agents
+Direct mapping from state → action. No internal memory or world model; they respond to the current input immediately.
+- **Example:** a thermostat — if temp < 20°C, turn on the heater.
+- **When:** low-latency tasks, predictable environment, where history doesn't change the immediate decision.
+
+### Deliberative agents
+Hold an internal model of the world and **plan** toward goals — they think through consequences before acting.
+- **Example:** a chess AI simulating thousands of future board states to pick the winning move.
+- **When:** complex, goal-oriented, multi-step tasks where the best move isn't obvious from the current state.
+
+### Hybrid agents
+Combine reactive speed with deliberative foresight — usually layered: a fast layer for emergencies, a slow layer for planning.
+- **Example:** a self-driving car — reactive layer slams the brakes for a pedestrian, deliberative layer plans the route NY → DC.
+- **When:** real-world robotics/autonomy that must balance immediate safety with planned efficiency.
+
+### Summary table (all six)
+| Pattern | Primary strength | Weakness |
+|---|---|---|
+| **Reactive** | Speed / simplicity | No long-term memory |
+| **Deliberative** | Goal-oriented | High compute / slow |
+| **ReAct** | Tool use / fact-checking | Can get stuck in infinite loops |
+| **Plan-Execute** | Efficiency in long tasks | Brittle if the plan fails midway |
+| **Tree of Thoughts** | Deep problem solving | Very high token cost |

@@ -26,7 +26,6 @@ tags:
 - [[Advanced RAG]] `stale` — Two advanced retrievers explained with code: the self-querying retriever that turns a question into a metadata filter, and the parent-document retriever.
 - [[Hyde RAG]] `stale` — HyDE explained and implemented: have the model write a fake answer first, embed that instead of the question, and retrieve against it.
 - [[LangChain Prompt Templates And LLMChain]] `stale` — Early LangChain notes on prompt templates feeding an LLMChain, with a football Q&A example.
-- [[Langchain.Multi Agent - Router Implementation]] `empty` — Empty placeholder for the code version of the multi-agent router pattern.
 - [[Langchain.Structured Output]] `stale` — Chatbot and chain code for getting structured output out of LangChain, including parallel chains and text splitting.
 - [[RAG]] `stale` — End-to-end RAG guide: loading and splitting documents, embeddings and a vector store, retrieval, and generation.
 - [[Run Agent - Langchain & Langgraph]] `raw` — Two pasted REPL loops - one LangChain, one LangGraph - for chatting with an agent from the terminal with a per-conversation thread_id.
@@ -43,7 +42,6 @@ tags:
 
 ## Notes to self (from the audit)
 - [[Langchain.Structured Output]]: Uses pre-1.0 imports (langchain.schema, langchain.text_splitter) - port to langchain_core before reusing.
-- [[Langchain.Multi Agent - Router Implementation]]: Zero words - the concept note 'Langchain.Multi Agent - Router' exists; fill in the implementation or delete.
 - [[Langchain.Multi Agent Example]]: Contains a hardcoded API key - rotate it.
 - [[LangChain Prompt Templates And LLMChain]]: Uses pre-1.0 LLMChain and a hardcoded API key - port to LCEL/create_agent and rotate the key.
 - [[Prompt Engineering]]: The LangChain section uses pre-1.0 ConversationChain and ConversationBufferMemory - the prompting content itself is still fine.
