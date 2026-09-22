@@ -58,5 +58,8 @@ The full set of agent-engineering notes, built as one cluster. Each links to the
 ## Suggested learning order
 1. Reducers/Routing/Step-limit → 2. Reasoning patterns → 3. Workflow patterns → 4. Memory → 5. Context engineering → 6. Tools & handoffs → 7. Guardrails → 8. HITL → 9. Streaming & structured outputs → 10. Gateways → 11. Caching → 12. Observability → 13. Trajectory eval.
 
+## Flagship build — put it all together
+- [[ResolveFlow — Flagship Build Spec]] — one multi-tenant agentic support platform that demonstrates all 13 concepts in shipped code (merges the CV's Customer Support Agent + Multi-Tenant RAG entries). The portfolio proof.
+
 ## Anchored to real builds
 Everything maps to **raaaaag** (ReAct agent, `search_docs`, refusal guardrail, eval harness, OpenRouter gateway, Redis cache, Temporal durability) and **Shutterabia** (MCP tool catalog, publish HITL approval, brand guardrails, D1 mirror). The patterns aren't abstract — each note names where it shows up in code Kassra shipped.
