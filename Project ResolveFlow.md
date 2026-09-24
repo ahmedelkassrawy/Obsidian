@@ -80,3 +80,79 @@ not important for:
 - comparing refund amount against threshold
 - prevent the same refund from being executed twice
 
+---
+4. Draw Authority Boundaries
+```
+Customer
+   │ untrusted text
+   ▼
+API authentication ─────────────── deterministic
+   │ trusted tenant/user identity
+   ▼
+Input guardrails
+   ▼
+Intent router ──────────────────── LLM, structured output
+   ▼
+Investigation planner ──────────── LLM, read-only tools only
+   │
+   ├── transaction lookup ──────── deterministic tool
+   ├── duplicate detector ──────── deterministic function
+   └── policy retrieval ────────── tenant-filtered retrieval
+   ▼
+Resolution proposal ────────────── LLM, cannot execute
+   ▼
+Grounding/policy validation ────── deterministic + model-assisted
+   ▼
+Risk and permission check ──────── deterministic
+   ▼
+Human approval
+   ▼
+Refund service ─────────────────── deterministic + idempotent
+   ▼
+Audit record and customer response
+```
+
+----
+5. Design state before designing graph nodes
+```python
+class ResolveFlowState:
+	#Identity
+	tenant_id: str
+	actor_id: str
+	customer_id: str | None
+	ticket_id: str
+	thread_id: str
+	
+	#understanding
+	intent: TicketIntent | None
+	original_request: str
+	missing_inforamtion: list[str]
+	route_confidence: float | None
+	
+	#Investigation
+	plan: Plan | None
+	evidence: list[Evidence]
+	transaction_ids: list[str]
+	policy_ids: list[str]
+	
+	#Human Deciision 
+	approval_status: ApprovalStatus
+	approval_by: str | None
+	approval_comment: str | None
+	
+	#Execution
+	idempotency_key: str | NOne
+	action_status: ActionStatus
+	action_result: ActionResult | None
+	
+	# Proposed decision
+    proposed_resolution: str | None
+    proposed_action: ProposedAction | None
+    risk_level: RiskLevel | None
+    
+	# Control
+    step_count: int
+    retry_count: int
+    errors: list[RunError]
+    messages: list[Message]
+```
