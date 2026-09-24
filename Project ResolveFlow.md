@@ -65,3 +65,18 @@ Duplicate Charge ticket
 7. execute mock refund once
 8. report result
 ```
+
+---
+3. Agent Justification
+agent is useful where the path depends on :
+- interpreting the customer complaint
+- deciding which evidence is needed
+- choosing the correct tools
+- ask for missing info
+- making a explanation from the sources retrieved
+
+not important for:
+- checking whether 2 transaction share the id
+- comparing refund amount against threshold
+- prevent the same refund from being executed twice
+
