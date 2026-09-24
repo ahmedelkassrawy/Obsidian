@@ -141,7 +141,7 @@ class ResolveFlowState:
 	approval_comment: str | None
 	
 	#Execution
-	idempotency_key: str | NOne
+	idempotency_key: str | None
 	action_status: ActionStatus
 	action_result: ActionResult | None
 	
