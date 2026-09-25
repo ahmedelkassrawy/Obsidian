@@ -233,3 +233,36 @@ with pytest.raises(ValidationError,match = "greater than 0"):
             charged_at=datetime.now(UTC),
         )
 ```
+
+---
+building the MockBilling Gateway
+
+to build the idempotency keys 
+```python
+self._refunds: dict[str, RefundReceipt] = {}
+```
+
+the refund receipt is saved by the idemptonecy key and that is used as the key and the value is the RefundReceiprt
+
+a @property is something that gets updated 
+```python
+@property
+    def refund_count(self):
+        return len(self._refunds)
+```
+
+model copy and updating a single param inside the model 
+```python
+def _mark_refunded(self,transaction: Transaction):
+        updated = transaction.model_copy(
+            update = { 
+                "status": TransactionStatus.REFUNDED
+                }
+            )
+        
+        self.transactions = [
+            updated if t.transaction_id == transaction.transaction_id
+            else t for t in self.transactions
+        ]
+```
+
