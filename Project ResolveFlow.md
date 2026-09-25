@@ -212,3 +212,24 @@ def final_decision(self) -> "ApprovalDecision":
 ```
 
 currency is always min of 3 and the max of 3
+
+Writiting the test for the domain models
+assert is the same as if it returns true and false and checks for the infomartion you want to know 
+```python
+assert transaction.currrency == "USD"
+```
+
+with pytest is used when looking for a speicifc error that should arise from the wrong params or wrong runtime 
+
+```python
+with pytest.raises(ValidationError,match = "greater than 0"):
+	Transaction(
+            transaction_id="transaction-123",
+            tenant_id="tenant-a",
+            customer_id="customer-456",
+            order_id="order-789",
+            amount=Decimal("-50.00"),
+            currency="USD",
+            charged_at=datetime.now(UTC),
+        )
+```
