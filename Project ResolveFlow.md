@@ -156,3 +156,59 @@ class ResolveFlowState:
     errors: list[RunError]
     messages: list[Message]
 ```
+
+---
+First we used the README.md and then used the uv project to declare that as the place for the , and then the src folder and have to have init and the config.py and then the domain folders with the enums.py and models.py 
+
+the enums and the models are used for the domain (buisness rules) 
+the enums use 
+```python
+from enum import StrEnum
+```
+
+for the models
+we have the Domain Model as the default which everyother model inherits from 
+```python
+class DomainModel(BaseModel):
+    """Base Configuration for all domain models."""
+    model_config = ConfigDict(
+        extra = "forbid",
+        frozen = True,
+        str_strip_whitespace = True,
+    )
+```
+
+extra is to make the llm forbid the extra adding
+frozen is to make it immutable 
+str strip the whitespace 
+
+any model that has a list of str should have the default factory of list
+```python
+missing_information: list[str] = Field(default_factory=list)
+```
+
+same for the uuid 
+```python
+evidence_id: UUID = Field(default_factory=uuid4)
+```
+
+```python
+collected_at: datetime = Field(default_factory=utc_now)
+```
+
+the model validator of the mode its either before or after 
+```python
+@model_validator(mode = "after")
+def final_decision(self) -> "ApprovalDecision":
+	if self.status not in {
+		ApprovalStatus.APPROVED,
+		ApprovalStatus.REJECTED,
+	}:
+		raise ValueError(
+			"An approval decision must be approved or rejected"
+		)
+
+	return self
+```
+
+currency is always min of 3 and the max of 3
