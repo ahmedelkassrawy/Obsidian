@@ -482,10 +482,10 @@ If the transaction-status check happened first, the legitimate retry would incor
 - [x] Test the same idempotency key with the same parameters.
 - [x] Reject the same idempotency key with different parameters.
 - [~] Finish mock billing safety tests.
-  - [ ] Reject pending and failed transactions.
-  - [ ] Reject wrong-tenant access.
-  - [ ] Reject amount and currency mismatches.
-  - [ ] Reject a second refund using a different key.
+  - [x] Reject pending and failed transactions.
+  - [x] Reject wrong-tenant access.
+  - [x] Reject amount and currency mismatches.
+  - [x] Reject a second refund using a different key.
 - [ ] Build an approval-aware `RefundService`.
 - [ ] Introduce LangGraph after the deterministic action boundary is safe.
 
