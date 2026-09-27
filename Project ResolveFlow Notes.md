@@ -754,3 +754,10 @@ flowchart TD
     J --> K[Successful ActionResult]
     K --> Z
 ```
+
+---
+Ticket intake and intent routing
+message should be clasiifeied into 3 categouries
+- Duplicate charges -> refund workflow
+- Billing question -> billing path
+- Human Support -> low confidnece or an supported intent
