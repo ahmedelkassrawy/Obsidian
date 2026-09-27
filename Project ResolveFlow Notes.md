@@ -202,6 +202,10 @@ from enum import StrEnum
 
 for the models
 we have the Domain Model as the default which everyother model inherits from 
+
+- Rejects unexpected fields.
+- Removes surrounding whitespace.
+- Freezes objects after creation.
 ```python
 class DomainModel(BaseModel):
     """Base Configuration for all domain models."""
@@ -229,6 +233,15 @@ evidence_id: UUID = Field(default_factory=uuid4)
 ```python
 collected_at: datetime = Field(default_factory=utc_now)
 ```
+
+
+The models we introduced till now are 
+- Transaction -> record a customer charge
+- Evidence -> traceble fact supporting an action
+- ProposedAction -> Something resolveflow wants to execute
+- - ApprovalDecision ->  a reviewer’s final decision for one exact action.
+- ActionResult -> he result of executing an action.
+- RefundReceipt ->  the billing provider’s record of a refund.
 
 the model validator of the mode its either before or after 
 ```python
@@ -558,3 +571,186 @@ ResolveFlow/
 └── README.md
 ```
 
+The duplicate detection system 
+it recieves
+- a sequence of transactions
+- a time window supplied by the caller
+
+it then:
+1. Sort transactions chronologically 
+2. compares each charge with later cahrges
+3. requires matching tenant and customer and order and amount and currency
+4. checks whether the charges occurred within the allowed window
+5. returns the first mathcing pair as DuplicatedCHargedFinding
+6. Returns `None` if no duplicate exists.
+
+The graph currently supplies a five-minute window, meaning the general duplicate detector does not own that policy—the orchestration layer does.
+
+Refund-execution system
+safety boundary between a proposed action and the billing provider.
+
+Before executing anything, `RefundService.execute()` verifies:
+
+- The action type is `REFUND`.
+- The approval decision belongs to that action’s UUID.
+- The decision is explicitly approved.
+- The refund contains an amount and currency.
+
+It then creates this idempotency identity:
+```
+tenant_id
++ ticket_id
++ action_id
++ "refund"
++ target_transaction_id
+```
+
+```python
+idempotency_key = (
+            f"{action.tenant_id}:"
+            f"{action.ticket_id}:"
+            f"{action.action_id}:"
+            f"refund:{action.target_id}"
+        )
+```
+
+This means retrying the same proposed action generates the same provider key.
+
+The service then calls the billing gateway and converts the returned receipt into an `ActionResult`.
+
+Mock Billing Gateway 
+simulates an external billing provider.
+
+It stores:
+
+- Transactions.
+- Refund receipts indexed by idempotency key.
+
+Its refund operation verifies:
+
+- The transaction exists under the requested tenant.
+- Its status is `COMPLETED`.
+- It has not already been refunded.
+- Amount and currency match exactly.
+- An idempotency key is not being reused with different parameters.
+
+Its retry behavior is important:
+```
+Same key + same request
+→ return the existing receipt
+
+Same key + different request
+→ reject
+
+Different key + already refunded transaction
+→ reject
+```
+
+After a successful refund, it creates an immutable updated copy of the transaction with status `REFUNDED`.
+
+This produces two separate safety boundaries:
+
+```
+RefundService
+    authorization and command identity
+            ↓
+MockBillingGateway
+    provider facts, eligibility and idempotency
+```
+
+Orchestration of Langgraph
+```
+state.py     What data moves through the workflow?
+nodes.py     What work happens?
+routes.py    Where does execution go next?
+builder.py   How is the complete graph assembled?
+```
+
+Reducers
+`errors` uses list addition
+```python
+errors: Annotated[list[str], operator.add]
+```
+
+```python
+{
+	"errors": [
+		"There is soemthing wrong at"
+	]
+}
+```
+
+A workflow can accumulate many messages, evidence records and events, but it has one current proposal, decision and result.
+
+The routes 
+```
+After validation
+├── errors → END
+└── valid → load_transactions
+
+After detection
+├── no duplicate → END
+└── duplicate → create_evidence
+
+After approval
+├── approved → execute_action
+└── rejected → END
+```
+
+```python
+def route_after_validation(state:ResolveFlowState):
+    if state.get("errors"):
+        return "end"
+        
+    return "load_transactions"
+
+def route_after_detection(state:ResolveFlowState):
+    if state.get("duplicate_finding") is None:
+        return "end"
+        
+    return "create_evidence"
+
+def route_after_approval(state:ResolveFlowState):
+    decision = state.get("approval_decision")
+
+    if (decision is not None and decision.status == ApprovalStatus.APPROVED):
+        return "execute_action"
+        
+    return "end"
+```
+
+Conditional edges
+```python
+graph.add_conditional_edges(
+        "request_approval",
+        route_after_approval,
+        {
+            "execute_action": "execute_action",
+            "end" : END
+      
+```
+
+Workflow Diagram
+```
+flowchart TD
+    A[Initial ticket state] --> B[Validate request]
+
+    B -->|missing fields| Z[END with errors]
+    B -->|valid| C[Load tenant and customer transactions]
+
+    C --> D[Detect duplicate within five minutes]
+
+    D -->|not found| N[Add no-duplicate message]
+    N --> Z
+
+    D -->|found| E[Create evidence]
+    E --> F[Create pending refund proposal]
+    F --> G[Interrupt for human approval]
+
+    G -->|rejected| Z
+    G -->|approved| H[RefundService checks authorization]
+    H --> I[Billing gateway checks provider rules]
+    I --> J[Receipt and refunded transaction]
+    J --> K[Successful ActionResult]
+    K --> Z
+```
