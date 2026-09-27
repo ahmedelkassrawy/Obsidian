@@ -514,3 +514,47 @@ The LLM must never call the gateway's refund method directly.
 - Built a mock billing gateway and tested idempotent retries.
 - Learned that reusing one idempotency key with different parameters must be rejected.
 - Learned that `@property` exposes computed behavior through attribute syntax; it does not update state by itself.
+
+---
+So what we have now is 
+Detetc a duplicate charge -> collect evidence -> propose refund -> pause for human approval -> and execute the refund safely
+
+Domain Models -> define the business data
+Services -> implement deterministic business rules
+Infrastrcutre -> stimulate the external billing provider
+
+```
+ResolveFlow/
+├── src/resolveflow/
+│   ├── domain/
+│   │   ├── enums.py
+│   │   └── models.py
+│   │
+│   ├── services/
+│   │   ├── duplicate_detection.py
+│   │   └── refund_service.py
+│   │
+│   ├── infrastructure/
+│   │   └── mock_billing.py
+│   │
+│   ├── graph/
+│   │   ├── state.py
+│   │   ├── nodes.py
+│   │   ├── routes.py
+│   │   └── builder.py
+│   │
+│   └── config.py
+│
+├── tests/
+│   ├── test_domain_models.py
+│   ├── test_duplicate_detection.py
+│   ├── test_mock_billing.py
+│   ├── test_refund_service.py
+│   └── test_refund_graph.py
+│
+├── alembic/
+├── main.py
+├── pyproject.toml
+└── README.md
+```
+
