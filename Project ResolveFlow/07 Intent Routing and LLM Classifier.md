@@ -48,7 +48,39 @@ except Exception as exc:
     return {"errors": [f"Intent classification failed: {exc}"], ...}
 ```
 
-`route_after_intent` already sends `errors` to handoff. Open item: not changed yet. The same applies to `execute_action`.
+`route_after_intent` already sends `errors` to handoff.
+
+### Fixed: an LLM failure now escalates instead of returning 500
+
+```python
+last_message = messages[-1]
+try:
+    intent = classifier.classify_intent(last_message.content)
+except Exception as e:
+    return {
+        "errors": [f"Intent classification failed: {e}"],
+        "trajectory": ["classify_intent"],
+        "step_count": 1,
+    }
+```
+
+```text
+Before: LLM timeout -> exception -> run aborts -> 500
+After:  LLM timeout -> errors written -> route_after_intent -> human_handoff -> 200 "escalated"
+```
+
+- **The `try` wraps only the classifier call.** A bug anywhere else in the node still raises loudly instead of being hidden as "escalated."
+- **Catching every `Exception` is right here, and only here.** This is the boundary with an external service (timeouts, rate limits, malformed output, auth errors), and the policy at that boundary is one rule: whatever goes wrong, a human takes over. Do not copy a broad `except` into other nodes by reflex.
+- `f"{e}"` already calls `str(e)`. Writing `{str(e)}` is redundant.
+
+> [!important] "Fails safely" needs two parts
+> 1. The node **catches** the failure and **writes** it to state.
+> 2. A route **reads** that state and sends it somewhere safe.
+> Before the fix only part 2 existed, so the safety rule looked implemented but was not.
+
+Tested in [[09 API Testing#The LLM-failure test: a fake that raises]].
+
+Still open: `execute_action` raises the same way when the refund service or gateway fails. That one needs its own decision because it happens **after** a human approved money.
 
 ### Structured output is a parser, not a guarantee
 

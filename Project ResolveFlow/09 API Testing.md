@@ -244,6 +244,57 @@ The second version had the right idea but:
 > [!note] Test data away from the edges
 > The first version put the two charges exactly 5 minutes apart, on the boundary of the 5-minute window. If `<=` ever becomes `<`, the API test breaks for a reason unrelated to the API. Keep test data clearly inside the rule (2 minutes) unless the test is **about** the boundary.
 
+## The LLM-failure test: a fake that raises
+
+A fake does not only return good answers. It can also simulate the provider **failing**:
+
+```python
+class FailingIntentClassifier:
+    def classify_intent(self, message: str) -> TicketIntent:
+        raise TimeoutError("LLM provider timed out")
+```
+
+```python
+def test_llm_failure_escalates_without_refund(monkeypatch):
+    gateway = MockBillingGateway(transactions=[tx1, tx2])   # a real duplicate charge
+    fake_agent = build_refund_graph(gateway=gateway, classifier=FailingIntentClassifier())
+    monkeypatch.setattr(app_module, "agent", fake_agent)
+    client = TestClient(app_module.app)
+
+    created = client.post("/tickets", json={..., "message": "I was charged twice for the same order."})
+
+    assert created.status_code == 200
+    body = created.json()
+    assert body["status"] == TicketStatus.ESCALATED
+    assert "I could not confidently handle " in body["message"]
+    assert gateway.refund_count == 0
+```
+
+Result: 35 passed.
+
+> [!tip] Make the failing scenario the dangerous one
+> The gateway holds a **real** duplicate charge and the customer asks for a refund. So `refund_count == 0` proves something: when the LLM is down, the system escalates instead of guessing, and no money moves. With an empty gateway that assertion would be meaningless.
+
+### Red, then green
+
+Write the test **before** the fix and run it:
+
+1. Test first, no fix → it fails with `TimeoutError`.
+2. Add the `try/except` → it passes.
+
+That red → green sequence is the direct answer to "would this test fail if my fix were removed?" Watched once, not assumed.
+
+> [!note] Why the failure shows as `TimeoutError`, not a 500
+> `TestClient` **re-raises** server exceptions by default (`raise_server_exceptions=True`), so the test shows the real cause instead of a generic 500. A real client would have received a 500.
+
+### Test names describe the promise
+
+`test_intent_classification_failure` names the **situation**. `test_llm_failure_escalates_without_refund` names the **expected behavior**, so a failing test tells me what broke without opening it.
+
+### Repetition before abstraction
+
+The duplicate-transaction setup now appears in two tests. That is fine. When a third test needs it, a small helper earns its place, because the repetition is proven, not predicted.
+
 ## The limit of this approach
 
 This test only runs because my real API key is in `.env`. Importing `app.py` still builds the **real** classifier first, and `create_llm` raises if the key is missing. On a machine without the key (CI, a teammate), the import fails before any test runs.

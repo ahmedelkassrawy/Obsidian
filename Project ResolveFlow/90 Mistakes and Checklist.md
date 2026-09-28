@@ -58,6 +58,7 @@ Run through this whenever I add a node, service, or endpoint.
 - Does anything move money or change identity/permissions? Then: human approval, approval bound to the exact action, stable idempotency key, a second defensive check.
 - Is there any side effect before an `interrupt()`?
 - What happens when a dependency **raises**, not just returns a bad value?
+- "Fails safely" = a node **catches and writes** the failure **and** a route sends it somewhere safe. Both parts exist?
 
 **API**
 - Does every response (including 202 and errors) match the response model?
@@ -72,3 +73,6 @@ Run through this whenever I add a node, service, or endpoint.
 - Is every request's response asserted? Is the side effect counted before **and** after?
 - For anything that moves money: does a test repeat the action and prove it happens once?
 - Did I run the tests before asking for review?
+- For a bug fix: did I write the test first and watch it fail (red → green)?
+- Does the test name say the expected behavior, not just the situation?
+- Do fakes cover failures too (a fake that raises), not only good answers?
