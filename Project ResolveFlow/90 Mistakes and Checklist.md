@@ -32,6 +32,13 @@ Short list of things I got wrong, so I check for them next time.
 - [ ] Trusting green tests after a change, without an assertion that would fail if the fix were missing.
 - [ ] Implementing the next two steps ahead while fixing the current one. Smaller diffs are easier to review.
 - [ ] Assuming "fails safely" covers exceptions. Routes only see what nodes write.
+- [ ] Saying "check" without running the tests first. Two missing commas meant the file could not even load.
+- [ ] Writing a test expectation from memory instead of from the flow: expecting 200/`COMPLETED` on a path that pauses for approval (202).
+- [ ] Guessing an API's URL and body (`/approve`, `approver_id`) instead of copying them from the endpoint and its schema.
+- [ ] Making a request in a test without asserting its response. A call you do not check proves nothing.
+- [ ] Using the wrong enum because the string value happens to match (`TicketStatus.COMPLETED` on a `Transaction`).
+- [ ] `Decimal(100.0)` for money. Build `Decimal` from a string: `Decimal("100.00")`.
+- [ ] Sending fields the server ignores (`ticket_id` in the body when it is already in the URL).
 
 ---
 
@@ -61,3 +68,7 @@ Run through this whenever I add a node, service, or endpoint.
 - Fake the LLM; never call a real provider in unit tests.
 - Assert the path (`trajectory`), not only the result.
 - For negative action tests, assert the side effect did not happen.
+- Would this test fail if my fix were removed?
+- Is every request's response asserted? Is the side effect counted before **and** after?
+- For anything that moves money: does a test repeat the action and prove it happens once?
+- Did I run the tests before asking for review?

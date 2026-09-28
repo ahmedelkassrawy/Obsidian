@@ -135,3 +135,4 @@ The LLM must never call the gateway's refund method directly.
 - Learned that passing tests are not proof: a fix needs an assertion that would fail without it.
 - Added `GET /tickets/{ticket_id}` (404 via `snapshot.values`, waiting via `snapshot.next`).
 - Wrote the first API test: fake classifier + `monkeypatch` + `TestClient`, proving a ticket created in one request can be read in another.
+- Wrote the approval-path API test: 202 → waiting → approve → one refund → second approval refused with still one refund. Learned to count a side effect before and after, and to build money with `Decimal("...")`.

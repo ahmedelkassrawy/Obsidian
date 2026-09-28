@@ -159,6 +159,91 @@ Result: 33 passed.
 > [!note] Comparing JSON to an enum
 > `body["status"]` is a plain string from JSON. `== TicketStatus.COMPLETED` works because `TicketStatus` is a `StrEnum`, and a `StrEnum` member equals its string value.
 
+## The approval-path test: proving money moves once
+
+The most important API test, because it covers the only path that moves money. It walks the whole journey through HTTP and counts the side effect at each step.
+
+```python
+def test_duplicate_charge_requires_approval_and_refunds_once(monkeypatch):
+    tx1 = Transaction(
+        transaction_id="tx-1", tenant_id="tenant-a", customer_id="customer-1",
+        order_id="order-1", amount=Decimal("100.00"), currency="USD",
+        status=TransactionStatus.COMPLETED, charged_at="2024-06-01T12:00:00Z",
+    )
+    tx2 = Transaction(..., transaction_id="tx-2", charged_at="2024-06-01T12:02:00Z")
+
+    gateway = MockBillingGateway(transactions=[tx1, tx2])   # kept to count refunds
+    fake_agent = build_refund_graph(gateway=gateway, classifier=FakeIntentClassifier(duplicate_intent))
+    monkeypatch.setattr(app_module, "agent", fake_agent)
+    client = TestClient(app_module.app)
+
+    # 1. Create: pauses for approval, nothing refunded yet
+    created = client.post("/tickets", json={...})
+    assert created.status_code == 202
+    assert created.json()["status"] == TicketStatus.AWAITING_APPROVAL
+    assert created.json()["proposed_action"]["target_id"] == "tx-2"
+    assert gateway.refund_count == 0
+
+    # 2. Read while waiting
+    waiting = client.get(f"/tickets/{ticket_id}")
+    assert waiting.json()["status"] == TicketStatus.AWAITING_APPROVAL
+
+    # 3. Approve: exactly one refund
+    approval = {"reviewer_id": "agent-1", "approved": True, "comment": "Verified duplicate charge"}
+    approved = client.post(f"/tickets/{ticket_id}/approval", json=approval)
+    assert approved.status_code == 200
+    assert approved.json()["status"] == TicketStatus.COMPLETED
+    assert approved.json()["action_result"] is not None
+    assert gateway.refund_count == 1
+
+    # 4. Read after approval
+    assert client.get(f"/tickets/{ticket_id}").json()["status"] == TicketStatus.COMPLETED
+
+    # 5. Approve again: refused, still one refund
+    again = client.post(f"/tickets/{ticket_id}/approval", json=approval)
+    assert again.status_code == 404
+    assert gateway.refund_count == 1
+```
+
+Result: 34 passed.
+
+### What each part proves
+
+| Step | Assertion | Proves |
+|---|---|---|
+| 1 | `202` + `refund_count == 0` | Nothing moves before a human approves. |
+| 2 | GET shows `awaiting_approval` | The paused state is stored and readable in a separate request. |
+| 3 | `refund_count == 1` | Approval actually executes the refund, once. |
+| 4 | GET shows `completed` | The final state is stored too. |
+| 5 | `404` + `refund_count` still `1` | The `snapshot.next` guard stops a repeated approval from moving money twice. |
+
+> [!important] Count the side effect before **and** after
+> `refund_count == 1` alone does not prove much. `== 0` before approval proves the approval gate; `== 1` after the second call proves the refund-once guarantee. The **pair** of numbers tells the story.
+
+### What went wrong in my first two attempts
+
+The first version **passed-looking but proved nothing**:
+
+- It expected `200` / `COMPLETED` from the POST. A duplicate charge pauses, so the correct answer is `202` / `AWAITING_APPROVAL`. The failing test was right; my expectation was wrong.
+- The approval call used `/approve` (the endpoint is `/approval`) and `approver_id`/`reason` (the schema is `reviewer_id`/`approved`). It would have returned 404 or 422.
+- The approval response was never assigned or asserted, so that failure was **silent**.
+- The final GET only checked `200`, which a **paused** ticket also returns. With the POST expectation fixed, the test would have passed with **no refund at all**.
+
+The second version had the right idea but:
+
+- **Two missing commas**, so the file could not load and pytest collected nothing from it.
+- Still `/approve`.
+- `status=TicketStatus.COMPLETED` on a `Transaction`. The right enum is `TransactionStatus`. It "worked" only because both enums use the string `"completed"`.
+- `Decimal(100.0)` instead of `Decimal("100.00")`.
+- An extra `ticket_id` in the approval body, which FastAPI silently ignored.
+- No second-approval check, which is the reason the test exists.
+
+> [!tip] Money in Python
+> `Decimal(0.1)` → `0.1000000000000000055511151231257827…` because the float is already inexact before `Decimal` sees it. `Decimal("0.1")` → exactly `0.1`. Always build money from strings.
+
+> [!note] Test data away from the edges
+> The first version put the two charges exactly 5 minutes apart, on the boundary of the 5-minute window. If `<=` ever becomes `<`, the API test breaks for a reason unrelated to the API. Keep test data clearly inside the rule (2 minutes) unless the test is **about** the boundary.
+
 ## The limit of this approach
 
 This test only runs because my real API key is in `.env`. Importing `app.py` still builds the **real** classifier first, and `create_llm` raises if the key is missing. On a machine without the key (CI, a teammate), the import fails before any test runs.
