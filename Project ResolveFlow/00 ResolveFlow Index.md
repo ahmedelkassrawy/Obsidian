@@ -34,6 +34,7 @@ The notes follow the order the system was built in.
 6. [[06 LangGraph Orchestration]]
 7. [[07 Intent Routing and LLM Classifier]]
 8. [[08 FastAPI Layer]]
+9. [[09 API Testing]]
 
 Across all steps: [[90 Mistakes and Checklist]]
 
@@ -132,3 +133,5 @@ The LLM must never call the gateway's refund method directly.
 - Learned that `async def` + sync `invoke()` blocks the event loop; switched to `def`.
 - Added the approval endpoint with a `snapshot.next` guard and a structured resume that records the real reviewer.
 - Learned that passing tests are not proof: a fix needs an assertion that would fail without it.
+- Added `GET /tickets/{ticket_id}` (404 via `snapshot.values`, waiting via `snapshot.next`).
+- Wrote the first API test: fake classifier + `monkeypatch` + `TestClient`, proving a ticket created in one request can be read in another.

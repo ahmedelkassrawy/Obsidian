@@ -15,7 +15,7 @@ hubs:
 
 # 08 FastAPI Layer
 
-> Part of [[00 ResolveFlow Index]]. Previous: [[07 Intent Routing and LLM Classifier]] · Next: [[90 Mistakes and Checklist]]
+> Part of [[00 ResolveFlow Index]]. Previous: [[07 Intent Routing and LLM Classifier]] · Next: [[09 API Testing]]
 
 ## API layer (FastAPI over the graph)
 
@@ -153,7 +153,28 @@ decision = ApprovalDecision(
 > assert final_state["approval_decision"].reviewer_id == "reviewer-1"
 > ```
 
-### Next: `GET /tickets/{ticket_id}`
+### `GET /tickets/{ticket_id}`: reading a ticket from the checkpoint
+
+```python
+@app.get("/tickets/{ticket_id}", response_model=TicketResponse)
+def get_ticket(ticket_id: str):
+    config = {"configurable": {"thread_id": ticket_id}}
+    snapshot = agent.get_state(config)
+
+    if not snapshot.values:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+
+    state = snapshot.values
+    if snapshot.next:
+        ticket_status = TicketStatus.AWAITING_APPROVAL
+        message = "Refund proposal needs reviewer approval"
+    else:
+        ticket_status = get_ticket_status(state)
+        message = get_last_ai_message(state)
+    ...
+```
+
+Verified with a fake classifier: an unknown thread gives `values={}` and `next=()`, and a finished thread has values and `next=()`.
 
 - 404 check uses `snapshot.values` (empty for unknown IDs). A finished ticket has values but no `next`, and it must return 200.
 - Pause check uses `snapshot.next`, not `"__interrupt__"`.

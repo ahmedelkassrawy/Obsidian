@@ -15,7 +15,7 @@ hubs:
 
 # 90 Mistakes and Checklist
 
-> Part of [[00 ResolveFlow Index]]. Previous: [[08 FastAPI Layer]]
+> Part of [[00 ResolveFlow Index]]. Previous: [[09 API Testing]]
 
 ## Mistakes worth remembering
 
