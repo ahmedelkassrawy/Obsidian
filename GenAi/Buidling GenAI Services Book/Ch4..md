@@ -88,3 +88,33 @@ if we need custom data structures , we can use dataclass to organize and store a
 
 Having a dataclass allows you to organize your data in a custom-defined structure and pass it as a single item to functions that require data from different places
 
+dataclass -> reduce boilerplate only and doesnt have validations
+pydantic ->  strict validation + auto 
+
+When you create Pydantic models, a set of initialization hooks are called that add data validation, serialization, and JSON schema generation features to the models that vanilla data classes lack.
+
+Annotated -> pairs a type with metadata , pydantic reads the metadata to enforce runtime constraints
+```python
+Annotated[BaseType, Metadata]
+```
+
+default factory of the inseatd of assigning a static values , the defualt factory accepts a function executed dynamically every time a new instance is done.
+- Ensures every response receives a unique UUID string
+
+Special Constraint Types
+```python
+ip: Annotated[str, IPvAnyAddress] | None
+```
+
+PostiveInt
+```python
+ImageSize = Annotated[tuple[PositiveInt, PositiveInt], "Width and height of an image in pixels"]
+```
+
+URL 
+```python
+url: Annotated[str, HttpUrl] | None = None
+```
+
+Custom Field and Model Validators 
+Another excellent feature of Pydantic for performing data validation checks is custom field validators.
