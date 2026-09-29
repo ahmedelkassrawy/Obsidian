@@ -18,7 +18,7 @@ tags:
 - [[Insertion Sort]] `stub` — The insertion sort C++ function - shift larger elements right and drop the current one into place - with no surrounding explanation.
 
 ## Solved problems
-- [[Sorting - Sort Three Numbers]] `raw` — C++ snippet that reads three integers and bubble-sorts them into ascending order.
+- [[2.Behind the Scenes]] `raw` — C++ snippet that reads three integers and bubble-sorts them into ascending order.
 
 ## Related hubs
 [[Complexity Analysis]], [[Recursion & Backtracking]], [[Linked Lists]]

@@ -12,9 +12,9 @@ tags:
 > Part of [[MOC - CS Fundamentals]]. Also try the tag `#topic/typescript-and-javascript`.
 
 ## Concepts
-- [[Sorting - Sort Three Numbers]] — Explains what the JavaScript language actually is: high level and garbage collected, interpreted or JIT compiled, multi-paradigm, and prototype-based object oriented.
+- [[2.Behind the Scenes]] — Explains what the JavaScript language actually is: high level and garbage collected, interpreted or JIT compiled, multi-paradigm, and prototype-based object oriented.
 
 ## Course notes
-- [[Fundamentals]] — Course notes on JavaScript basics: values and variables, primitives vs objects, dynamic typing, let/const/var, and the operators.
+- [[1.Fundamentals]] — Course notes on JavaScript basics: values and variables, primitives vs objects, dynamic typing, let/const/var, and the operators.
 
 See also: [[Knowledge Gaps Audit 2026-09-15]] for what is still missing here.
