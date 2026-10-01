@@ -8,6 +8,9 @@ tags:
 
 Start from a **Map of Content** (one per domain), or jump straight to a **hub** (one per topic, lists every note about it wherever it lives).
 
+## Concepts layer
+- [[_Concepts Index]] - one idea per note, in my own words, linked with reasons, each ending in a 30-second interview answer. **Start here when reviewing.**
+
 ## Maps of Content
 - [[MOC - AI Engineering]] — 181 notes
 - [[MOC - Machine Learning]] — 148 notes
