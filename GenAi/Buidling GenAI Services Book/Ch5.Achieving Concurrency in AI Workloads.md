@@ -69,3 +69,107 @@ No concurrency (synchronous)
 
 In multiprocesing , each process has access to its own memory space and resources to complete a task in isolation from other processes
 
+this isolation can make process more stable , it wont affect others but makes inter-process communication more complex compared to threads
+
+multi threading and async reduce wait time in I/O tasks because the processor can do other work while wainting for I/O
+
+Howeveer that doesnt help with tasks that require heavy computation
+
+The first idea when working with slow models may be to adopt parallelism by creating multiple instansts of your fastapi service
+
+Unforuaontly multiple workers running in seperate process will not ahve access to a shared memory space.Sadly, a new instance of your model will also need to be loaded, which will significantly eat up your hardware resources.
+
+The solution is not parallelism on its own, but to adopt the external model-serving strategy
+
+The only isntrance where you can treat AI inference as I/O bound instead of CPU Bound is when relying on third party API
+
+Sync -> a single CPU core and thread 
+	Long waiting times depending on I/O or CPU blocking operations
+
+Async -> multitasking managed by event loop , max CPU utilization rate 
+
+Multi threading -> Single CPU core but multiple threads within same process
+	Threads share the same data and resources
+	Threads can block each other (deadlocks)
+	Concurrent access to resources can cause race conditions
+
+Multiprocessing -> Multiple processes running on several CPU cores
+	Each process allocated a CPU core
+
+## Optimizing for I/O Tasks with Asynchronous Programming
+the use of asynchronous programming to prevent blocking the main server process with I/O-bound tasks during AI workloads.
+
+Sync is when tasks are performed in a sequential order with each task waiting for the previous one
+
+if you need concurrency and want effiency of your services to be maximized on each core and not block operations so we use Async
+
+Sync exmaple
+```python
+import time
+
+def task():
+    print("Start of sync task")
+
+    time.sleep(5)
+
+    print("After 5 sec of sleep")
+
+start = time.time()
+
+for i in range(3):
+    task()
+
+duration = time.time() - start
+print(f"Total time taken for 3 tasks: {duration} seconds")
+```
+
+15 secs = 3 * 5
+
+Async
+```python
+import time
+import asyncio 
+
+async def task():
+    print("Start of async task")
+    await asyncio.sleep(5)
+    print("Task resumed after 5 secs")
+
+async def spawn_tasks():
+    await asyncio.gather(
+        task(),task(),task()
+    )
+
+start = time.time()
+
+asyncio.run(spawn_tasks())
+
+duration = time.time() - start
+print(f"Prcoess completed in: {duration} seconds")
+```
+5 secs only
+
+- task() function was concurrently called three times
+- The async function ran inside the asyncio ’s event loop, which was responsible for executing the code without waiting
+
+Deep DIve into ASyncio
+at the heart of asyncio lies a first class object called an event loop -> responsible for handling of I/O events or sys events
+
+![[Pasted image 20261001175229.png]]
+
+the event loop can be compared to a while True loop that watches for events or messages emitted by coroutine functions in python process and dispatch events to switch between functions while waiting for I/O blocking 
+
+Coroutine function -> special type of function that can pause its execution , save its sate and resume later from where it left off
+
+you will notice long waiting times before each request is processed. This is because you were preloading and hosting the model in the same Python process and CPU core that the server is running on. When you send the first request, the whole server becomes blocked while the inference workload is complete. Since during inference the CPU is working as hard as it can, the inference/generation process is a CPU-bound blocking operation. However, it doesn’t have to be. 
+
+When you use a provider’s API, you no longer have CPU-bound AI workloads to worry about since they become I/O-bound for you, and you offload the CPU-bound workloads to the provider. Therefore, it makes sense to know how to leverage async programming to concurrently interact with the model provider’s API
+
+Managing rate limites becuase concurrent requests to external APIs will need to be throttled 
+
+### Event loop and Thread pool
+FastAPI can handle async and sync , it does this by running sync handlers in its thread pool so that blocking operations dont stop the event loop from executing tasks
+
+FastAPI setups thread pool by instiating collection of threads at startup to reduce the runtime -> it then delegates background tasks and sync workloads to prevent event loop being blocked by any blocking operations
+
+Event loop responsible for orchestrating the async processing of requests
