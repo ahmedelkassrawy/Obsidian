@@ -123,3 +123,12 @@ def run_agent():
 if __name__ == "__main__":
     run_agent()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Agents]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain v1]]
+- [[Langchain.Structured Output]]
+- [[LangGraph Nodes Edges And State]]
+%% related:end %%

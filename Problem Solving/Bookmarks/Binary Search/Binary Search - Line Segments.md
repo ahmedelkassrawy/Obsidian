@@ -74,3 +74,12 @@ int main() {
 ```
 
 ![[photo_2024-11-22_16-33-53.jpg]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Machines]]
+- [[Binary Search - Another Pair Problem]]
+- [[Binary Search - Another Pair Problem (Duplicate)]]
+- [[Binary Search - Renting Bikes]]
+- [[Binary Search - Pirate Ships]]
+%% related:end %%

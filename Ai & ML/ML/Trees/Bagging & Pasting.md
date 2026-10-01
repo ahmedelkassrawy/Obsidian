@@ -96,3 +96,12 @@ That said, **XGBoost** can outperform Random Forest if:
     
 - **XGBoost → Boosting**  
     → Trees are trained _sequentially_, each new one correcting mistakes of the previous.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bagging And Boosting]]
+- [[Random Forest]]
+- [[Boosting Methods]]
+- [[Out-of-Bag (OOB) Evaluation]]
+- [[Ensemble Learning]]
+%% related:end %%

@@ -96,3 +96,12 @@ hubs:
 
 A deadlock is a situation in computing where two or more processes or threads are unable to proceed because each is waiting for the other to release a resource, creating a cycle of dependencies.
 example, Process A holds Resource 1 and waits for Resource 2, while Process B holds Resource 2 and waits for Resource 1, causing both to stall indefinitely.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Locks trade concurrency for correctness]]
+- [[Double Booking Prevention]]
+- [[Two Phase Locking]]
+- [[Concurrency]]
+- [[InstaBug Assessment]]
+%% related:end %%

@@ -59,3 +59,10 @@ pair <data_type1, data_type2> Pair_name
 
 ![[Pasted image 20241020182255.png]]
 **it sorts according to the first element so if you want to sort a value make it in first not in second**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Map]]
+- [[Lower & Upper Bounds]]
+- [[Linked List]]
+%% related:end %%

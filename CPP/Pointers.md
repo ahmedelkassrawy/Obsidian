@@ -29,3 +29,9 @@ cout << ptr << "\n";
 cout << *ptr << "\n";
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linked List]]
+- [[References]]
+- [[C++]]
+%% related:end %%

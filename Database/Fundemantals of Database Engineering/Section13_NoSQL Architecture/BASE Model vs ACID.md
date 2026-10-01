@@ -207,3 +207,11 @@ Now imagine a banking transaction:
 > - **CAP** explains _why you can’t have everything_.
 > - **BASE** describes _how NoSQL systems work within that limit._ 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CAP Theorem]]
+- [[Stale Reads in Replicated Databases]]
+- [[Phase1 — Scalability & Availability]]
+- [[Single-Leader Replication]]
+%% related:end %%

@@ -68,3 +68,11 @@ int main()
 - - clear() and erase():  clear is used to remove all the elements from the deque and erase is used to remove some specified elements.
 - - insert(): increases the container side by inserting element in the specified position.
 - resize(): changes the size of the element’s container as per requirement.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Queue]]
+- [[Vectors]]
+- [[Priority Queue]]
+- [[Stack]]
+%% related:end %%

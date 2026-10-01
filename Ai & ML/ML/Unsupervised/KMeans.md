@@ -120,3 +120,12 @@ Suppose a shop wants to group customers by purchase patterns. They don’t know 
 ❌ Doesn’t handle irregular shapes well
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Unsupervised Learning - AI Book]]
+- [[KMeans And DBSCAN]]
+- [[Clustering]]
+- [[KNN Algo]]
+- [[DBSCAN , HDBSCAN]]
+%% related:end %%

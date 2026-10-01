@@ -226,3 +226,12 @@ Implementing a rephraser dramatically improves the accuracy of a RAG system and 
 ![[Pasted image 20260501014559.png]]
 
 - Leveraging PostgreSQL’s `JSONB` for flexible/unstructured data eliminates the operational overhead of managing polyglot persistence (e.g., running Redis, MongoDB, and SQL together). This dramatically reduces infrastructure costs and system complexity.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[FastAPI Users - Router Setup]]
+- [[Hyde RAG]]
+- [[GraphRAG]]
+- [[A RAG answer is only as good as its retrieval]]
+%% related:end %%

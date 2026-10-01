@@ -308,3 +308,12 @@ async def delete_student(id: str):
   - Raises `HTTPException` if no document is found.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[04 - API Endpoints with Database Operations]]
+- [[Ch3. Creating the Database Layer]]
+- [[MongoDB Architecture]]
+- [[Ch7.Integrating DB in AI services]]
+%% related:end %%

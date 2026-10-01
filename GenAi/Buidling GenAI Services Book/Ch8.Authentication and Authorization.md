@@ -1597,3 +1597,10 @@ router = APIRouter(
 async def generate_text_controller(): 
     ...
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastApi - Security]]
+- [[JWT - API AUTH]]
+- [[FastAPI Users - Auth Backend]]
+%% related:end %%

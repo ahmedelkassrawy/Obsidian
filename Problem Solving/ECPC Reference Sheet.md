@@ -1586,3 +1586,8 @@ void unite(int a, int b) {
 ---
 
 Related: [[Problem Solving/PS Level 1/Binary Search]] · [[Two Pointers]] · [[Bitmasks]] · [[Recursion Notes]] · [[Sliding Window Technique]] · [[Graphs, DFS]] · [[BFS, Graph Applications]] · [[DP Recursive Patterns]] · [[Number Theory - Divisors Factorization And Sieve]] · [[Number Theory - Modular Arithmetic And GCD]] · [[1D Partial Sum]] · [[2D Partial Sum]] · [[Backtracking]] · [[C++ Contest Template]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Claude Code Memory System - Deep Dive]]
+%% related:end %%

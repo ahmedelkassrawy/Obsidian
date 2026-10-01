@@ -57,3 +57,12 @@ int main()
     
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - Apple Division]]
+- [[Recursion Notes]]
+- [[Backtracking - Creating Strings]]
+- [[DP - Vjudge 694272 L]]
+%% related:end %%

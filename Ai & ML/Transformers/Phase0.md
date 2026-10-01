@@ -364,3 +364,12 @@ Modern LLMs (GPT, Llama) are usually **decoder-only**, but both are worth knowin
 
 ## What's next
 The five internals — **÷√d · GQA/MQA · RoPE · KV cache · memory-bound decode** — are in [[Phase1 — Internals]], plus **KV cache vs GQA/MQA**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Transformers]]
+- [[Transformer Internals]]
+- [[Attention lets every token decide what to look at]]
+- [[RNN Implementation Guide]]
+- [[Sequence Modeling With RNNs]]
+%% related:end %%

@@ -124,3 +124,7 @@ An **OS virtualizes physical resources** (CPU, memory, disk), manages concurrenc
 
 - The **core principles** of building an OS apply across different kinds of devices, though specific implementations may vary.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[OSTEP - Processes and Time Sharing]]
+%% related:end %%

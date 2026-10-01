@@ -632,3 +632,12 @@ Nerd out about the history of technologies here https://www.fascinatingtechhisto
 **2:02:46** · better way in a much more intuitive way and that is the reason before getting into the coding part the programming of the API part regardless of the programming language that you're using whether it is go whether it is notes or any other language you should dedicate a separate session a separate session for just designing your interface the designing
 
 **2:03:08** · the interface for your apis without thinking about programming languages that's the reason in this video we did not uh talk about programming languages or language specific or framework specific implementation at all right we only focused on designing the interface for our apis with this we'll end this video and ideally and hopefully you should be able to create delightful and intuitive apas from now on
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch2. Selecting Your API Architecture]]
+- [[gRPC and Protocol Buffers]]
+- [[Complete REST API Design]]
+- [[Clipping - Validation and Transformation Pipelines (YouTube)]]
+- [[Clipping - Controllers Services and Repositories (YouTube)]]
+%% related:end %%

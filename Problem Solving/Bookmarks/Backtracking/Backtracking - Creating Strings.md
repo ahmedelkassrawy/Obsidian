@@ -62,3 +62,12 @@ int main()
 
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Apple Division]]
+- [[Backtracking - SkillUP]]
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - Creating Expression]]
+- [[Backtracking]]
+%% related:end %%

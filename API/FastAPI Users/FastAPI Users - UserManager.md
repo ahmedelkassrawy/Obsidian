@@ -223,3 +223,12 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 	async def on_after_delete(self, user: User, request: Optional[Request] = None): 
 		print(f"User {user.id} is successfully deleted")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Reset Password Router]]
+- [[FastAPI Users - Router Setup]]
+- [[FastAPI Users - Auth Strategy]]
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Schemas]]
+%% related:end %%

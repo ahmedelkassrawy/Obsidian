@@ -80,3 +80,8 @@ add_user_message(messages, "Write another sentence")
 # Get the follow-up response with full context
 final_answer = chat(messages)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Nodes Edges And State]]
+%% related:end %%

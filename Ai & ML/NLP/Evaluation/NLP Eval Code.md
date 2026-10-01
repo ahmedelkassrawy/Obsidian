@@ -321,3 +321,12 @@ trainer.train()
 |NER|seqeval|`compute_metrics(p)`|entity-level F1 & accuracy|
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP Evaluation Metrics]]
+- [[Fine-Tuning Tutorial]]
+- [[NLP]]
+- [[NLP Concepts]]
+- [[Tokenizer]]
+%% related:end %%

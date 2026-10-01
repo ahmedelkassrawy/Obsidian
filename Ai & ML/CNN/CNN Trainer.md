@@ -186,3 +186,12 @@ class ModelTrainer(nn.Module):
         return self.model(x)
     
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Final Transfer Learning]]
+- [[Fine-Tuning Quick Reference]]
+- [[02. PyTorch Classification]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[PyTorch Dataset , Dataloaders]]
+%% related:end %%

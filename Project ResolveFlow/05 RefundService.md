@@ -115,3 +115,8 @@ assert gateway.refund_count == 0
 ```
 
 For negative tests of actions, the exception alone is not enough. Assert the external effect is absent.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 Planning and Engineering Principles]]
+%% related:end %%

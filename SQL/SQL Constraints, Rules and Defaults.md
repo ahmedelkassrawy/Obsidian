@@ -234,3 +234,9 @@ CREATE TABLE table1
 > 2. How does a persisted computed column (`netsal`) differ from a non-persisted one (`age`)?
 > 3. Why might you choose a composite primary key (`eid`, `ename`) over a single-column key?
 > 4. How does `ON DELETE SET NULL` in the foreign key constraint (`c9`) affect data integrity?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL]]
+- [[Key vs Non-Key Column Indexes]]
+%% related:end %%

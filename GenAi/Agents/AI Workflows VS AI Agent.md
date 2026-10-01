@@ -133,3 +133,12 @@ We will introduce an example of this in an upcoming article.
 3. **Guardrails**: Set boundaries on agent behavior and tool usage
 4. **Observability**: Log agent reasoning and decision-making processes
 5. **Iterative Testing**: Continuously evaluate agent performance on diverse scenarios
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agents Best Practice]]
+- [[Agent Engineering MOC]]
+- [[Agents - Ai Engineering Book]]
+- [[Agent Agency Levels And Reflection Pattern]]
+%% related:end %%

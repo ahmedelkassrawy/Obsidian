@@ -137,3 +137,12 @@ email     (unique)      |   description  (nullable)
 ## Next
 
 → [[02 - Database Session Dependency (get_db)]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[Ch3. Creating the Database Layer]]
+- [[04 - API Endpoints with Database Operations]]
+- [[05 - Sessions and sessionmaker]]
+%% related:end %%

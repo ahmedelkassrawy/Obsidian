@@ -115,5 +115,8 @@ sns.heatmap(train_df.corr(), annot = True)
 plt.show()
 ```
 
-
-
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Visualization]]
+- [[7.Scatterplots]]
+%% related:end %%

@@ -76,3 +76,12 @@ int main()
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 U (K Special Nodes)]]
+- [[BFS - Vjudge 692604 H]]
+- [[BFS - Vjudge 692604 J]]
+- [[BFS - Vjudge 692604 W (0-1 BFS)]]
+- [[BFS - Vjudge 692604 P]]
+%% related:end %%

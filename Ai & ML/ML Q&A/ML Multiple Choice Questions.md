@@ -46,3 +46,9 @@ hubs:
 **Question 5: You are using K-nearest neighbors (KNN) to classify customer behavior into loyalty categories. How does increasing the value of k affect the KNN model?**
 
 **Answer: Causes underfitting by generalizing too much** Explanation: Increasing the value of k in KNN means considering more neighbors when making a prediction, which smooths the decision boundary and can lead to underfitting by overly generalizing the model. This reduces sensitivity to noise but may miss finer patterns in the data. Overfitting is more likely with smaller k, and the other options are not accurate descriptions of k’s effect.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[GoTo ML Classification]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+%% related:end %%

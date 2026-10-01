@@ -208,3 +208,12 @@ Both run on SQLAlchemy 2.x; the legacy one just gives you no type checking and a
 ## Next
 
 → [[05 - Sessions and sessionmaker]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[09 - Cheatsheet]]
+- [[02 - Core Tables with MetaData]]
+- [[11 - Core vs ORM — when to use which]]
+- [[14 - Best Practices Checklist]]
+%% related:end %%

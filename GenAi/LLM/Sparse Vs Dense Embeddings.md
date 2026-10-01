@@ -168,3 +168,11 @@ This phase happens every time a user asks a question.
 **Result:** A small number of highly relevant passages that are then passed to the **Reader** model (the third component of ODQA) to extract the final, precise answer.
 ![[Pasted image 20251124161657.png]]
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Embeddings turn meaning into distance]]
+- [[Pinecone]]
+- [[RAG Hybrid Search & Reranking]]
+- [[Embeddings Representations And Latent Space]]
+- [[NLP Concepts]]
+%% related:end %%

@@ -176,3 +176,12 @@ Also: bulk inserts (`conn.execute(insert(t), [dict, dict, dict])`), reporting qu
 ## Next
 
 → [[04 - ORM Models (declarative_base)]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[12 - Cheatsheet]]
+- [[SQL Cursors, Identity, Snapshots and SQLCLR]]
+- [[13 - Gotchas and Troubleshooting]]
+- [[04 - API Endpoints with Database Operations]]
+%% related:end %%

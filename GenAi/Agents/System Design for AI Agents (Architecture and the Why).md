@@ -314,3 +314,12 @@ The outermost loop optimizes **conversion / add-to-cart / order completion**, no
 - [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]] — the eval side of the same system
 - [[Agent Reasoning Patterns]] · [[AI Workflows VS AI Agent]] · [[Agents Best Practice]]
 - [[Context Engineering]] · [[Optimizing GenAI Services for Multiple Users]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Engineering MOC]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agents - Ai Engineering Book]]
+- [[Ch1 — Foundations of Agent Engineering]]
+- [[Claude Code Core Architecture]]
+%% related:end %%

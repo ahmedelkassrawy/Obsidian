@@ -386,3 +386,12 @@ with torch.no_grad():
 ---
 
 Would you like me to export this merged version as a **final `.md` Obsidian file** so you can store and navigate it directly inside your vault (with collapsible sections, emojis, and task checkboxes)?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Transfer Learning And Training Callbacks]]
+- [[CNN.Pytorch]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[Pytorch NN]]
+- [[02. PyTorch Classification]]
+%% related:end %%

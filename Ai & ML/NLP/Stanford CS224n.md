@@ -2145,3 +2145,12 @@ Each evaluation method has its strengths and weaknesses, and the choice depends 
 $$
 \boxed{\text{The best evaluation method depends on the task, with model-based metrics generally offering the most comprehensive insights.}}
 $$
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP Concepts]]
+- [[Text Representation - BoW TF-IDF And N-Grams]]
+- [[Tokenizer]]
+- [[RNN and LSTM]]
+- [[NLP Pipeline And Regex Basics]]
+%% related:end %%

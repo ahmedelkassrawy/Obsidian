@@ -705,3 +705,11 @@ SQL stands for Structured Query Language. It is a programming language used for 
 
 - ==`LEFT JOIN` includes all records from the left table and matched records from the right table.==
 - ==`RIGHT JOIN` includes all records from the right table and matched records from the left table.==
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Constraints, Rules and Defaults]]
+- [[Key vs Non-Key Column Indexes]]
+- [[SQL Stored Procedures, Triggers and XML]]
+- [[Intro DB Engine]]
+%% related:end %%

@@ -192,3 +192,12 @@ int main() {
 - Always include necessary headers (`<map>` for `map`, `<unordered_map>` for `unordered_map`).
 - Use `auto` for iterators to simplify code and avoid type errors.
 - Be cautious with `mp[key]` as it modifies the map if the key doesn't exist.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pair]]
+- [[Linked List]]
+- [[Lower & Upper Bounds]]
+- [[Lambda And Map]]
+- [[Key vs Non-Key Column Indexes]]
+%% related:end %%

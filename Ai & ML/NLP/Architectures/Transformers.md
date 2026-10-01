@@ -186,3 +186,12 @@ Notes this was synthesized from (each goes deeper on its piece):
 
 ### Related architectures
 - [[LSTM PyTorch]] · [[LSTMS Adhocs]] · [[RNN and LSTM]] · [[RNN Implementation Guide]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Phase0]]
+- [[Transformer Internals]]
+- [[Attention lets every token decide what to look at]]
+- [[Sequence Modeling With RNNs]]
+- [[Seq2Seq And Neural Machine Translation]]
+%% related:end %%

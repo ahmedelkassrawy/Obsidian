@@ -149,3 +149,12 @@ A **single pipeline** (middleware or utility) that:
 -  Return **clear `400 Bad Request`** messages for validation failures.  
 -  Keep validation logic **centralized** (pipeline/middleware).  
 -  Never trust frontend validation – **always validate on the backend**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Clipping - Validation and Transformation Pipelines (YouTube)]]
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[06 - Request vs Response Models Explained]]
+- [[Pydantic]]
+- [[AI Engineering Specific Use Cases]]
+%% related:end %%

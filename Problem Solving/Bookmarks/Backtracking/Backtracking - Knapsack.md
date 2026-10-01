@@ -60,3 +60,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Knapsack Recursive]]
+- [[Backtracking - Apple Division]]
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - SkillUP]]
+- [[Dynamic Programming]]
+%% related:end %%

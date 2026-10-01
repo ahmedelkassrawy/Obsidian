@@ -203,3 +203,11 @@ SET salary =
 > 2. Write a query to divide instructors into 3 salary tiers using `NTILE`.
 > 3. How would you format `GETDATE()` to show only the year (e.g., '2025')?
 > 4. Modify the `UPDATE` query to cap salary increases at 5000.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL TOP, Execution Order and DDL]]
+- [[SQL Subqueries, DML and Built-in Functions]]
+- [[SQL Variables, Functions and Window Functions]]
+- [[SQL Indexes, Tables, Merge and Views]]
+%% related:end %%

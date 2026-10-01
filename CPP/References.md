@@ -94,3 +94,8 @@ int main() {
    cout << "After Swap: x = " << x << " y = " << y << endl;  // Outputs 10 5
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lambda And Map]]
+%% related:end %%

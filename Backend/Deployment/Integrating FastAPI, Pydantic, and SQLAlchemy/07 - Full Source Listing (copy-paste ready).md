@@ -362,3 +362,12 @@ uvicorn[standard]
 sqlalchemy
 pydantic
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[14 - Best Practices Checklist]]
+- [[09 - Cheatsheet]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[04 - ORM Models (declarative_base)]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+%% related:end %%

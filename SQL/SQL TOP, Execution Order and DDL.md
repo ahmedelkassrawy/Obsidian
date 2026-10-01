@@ -296,3 +296,10 @@ SELECT st_id, st_fname FROM Student;
 > 2. Write a query using `NEWID()` to select a random student.
 > 3. Why does `WHERE fullname = 'ahmed ali'` fail in the example above?
 > 4. How would you copy the structure of `Instructor` into a new table without data?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Ranking Functions and Conditional Logic]]
+- [[SQL Subqueries, DML and Built-in Functions]]
+- [[Intro Cursors]]
+%% related:end %%

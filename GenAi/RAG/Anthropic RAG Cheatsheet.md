@@ -134,3 +134,12 @@ We ran a large number of tests, comparing different combinations of all the tech
 4. Adding context to chunks improves retrieval accuracy a lot;
 5. Reranking is better than no reranking;
 6. **All these benefits stack**: to maximize performance improvements, we can combine contextual embeddings (from Voyage or Gemini) with contextual BM25, plus a reranking step, and adding the 20 chunks to the prompt.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG Hybrid Search & Reranking]]
+- [[Advanced RAG]]
+- [[GraphRAG]]
+- [[Embeddings turn meaning into distance]]
+- [[Semantic Search]]
+%% related:end %%

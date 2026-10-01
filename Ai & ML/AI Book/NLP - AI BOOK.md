@@ -279,3 +279,12 @@ model.add(GRU(32))  # Replace LSTM with GRU
 - **N-grams**: When word co-occurrence matters
 
 **Pro Tip**: Bag-of-words (Dense) models are often surprisingly effective and fast!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Text Classification - AI Book]]
+- [[RNN and LSTM]]
+- [[NLP]]
+- [[NLP Pipeline And Regex Basics]]
+- [[POS Tagging]]
+%% related:end %%

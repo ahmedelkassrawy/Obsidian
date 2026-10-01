@@ -71,3 +71,8 @@ Claude can automatically trigger these exact operations:
     
 - `incomingCalls` / `outgoingCalls`: Call hierarchy tracing.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Claude Code Core Architecture]]
+%% related:end %%

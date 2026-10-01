@@ -84,3 +84,9 @@ Example:
 - During **inference**, it uses **running averages** collected during training.
 - If your **batch size is very small**, BatchNorm may perform poorly — you can use **LayerNorm** or **GroupNorm** instead.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Network Training - Vanishing Gradients And Optimizers]]
+- [[Optimizers]]
+%% related:end %%

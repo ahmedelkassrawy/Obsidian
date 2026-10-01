@@ -92,3 +92,10 @@ print(grid.best_params_)
 - **OOB Evaluation**: Uses out-of-bag samples for fast, unbiased performance estimates in bagging models.
 - **Tools**: Use scikit-learn’s `DecisionTreeClassifier`, `RandomForestClassifier`, `BaggingClassifier`, and `VotingClassifier`.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bagging And Boosting]]
+- [[Random Forest]]
+- [[Bagging & Pasting]]
+- [[Boosting Methods]]
+%% related:end %%

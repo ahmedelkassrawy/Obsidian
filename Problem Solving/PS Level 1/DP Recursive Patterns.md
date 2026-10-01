@@ -349,3 +349,12 @@ These examples illustrate common DP patterns:
 - **Query Handling**: Adapts DP for multiple inputs (Queries).
 
 Each example uses a top-down approach with memoization, but they can be converted to bottom-up DP for potentially better space efficiency.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recursion Notes]]
+- [[Dynamic Programming]]
+- [[DP - Vjudge 694272 O]]
+- [[DP Iterative]]
+- [[DP - Vjudge 694272 M]]
+%% related:end %%

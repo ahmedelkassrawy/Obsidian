@@ -95,3 +95,12 @@ Below is a visual representation of a consistent hashing ring with 4 databases a
 - **Interview Relevance**: Essential for discussing or designing distributed systems like caches or databases.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Replication scales reads, sharding scales writes]]
+- [[CAP Theorem]]
+- [[Hash Tables]]
+- [[Bloom Filters]]
+- [[Phase1 — Scalability & Availability]]
+%% related:end %%

@@ -38,3 +38,12 @@ my_array8 = my_array8.astype('float') # Change To Float64
 print(my_array8.dtype)
 print(my_array8[0].itemsize) # 8 Bytes
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Creating And Accessing Arrays]]
+- [[Numpy - Memory Layout And Mixed Types]]
+- [[Numpy - Dimensions Shape And Reshape]]
+- [[Numpy - Arithmetic Operations]]
+- [[Type Conversion]]
+%% related:end %%

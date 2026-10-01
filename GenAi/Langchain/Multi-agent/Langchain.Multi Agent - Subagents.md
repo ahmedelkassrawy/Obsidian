@@ -431,3 +431,12 @@ def call_subagent1(
 	    }
 	)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent Intro]]
+- [[Langchain.Multi Agent - Handoffs Implementation]]
+- [[Langchain.Multi Agent - Handoffs]]
+- [[Agent Handoffs And Tool Design]]
+- [[Langchain.Multi Agent - Router]]
+%% related:end %%

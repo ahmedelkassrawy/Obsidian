@@ -45,3 +45,12 @@ There are multiple types of Agents that take actions differently:
 ## Agentic Patterns
 ### 1.Reflection Pattern
 The **Reflection Pattern** in agentic AI is a design approach where an AI system iteratively improves its output by generating content, critiquing it, and refining it based on the critique. The process involves three key steps: (1) **Generation**, where the AI produces an initial output (e.g., code, text); (2) **Reflection**, where the AI evaluates the output for errors, inefficiencies, or improvements; and (3) **Refinement**, where the AI revises the output based on the critique. This cycle repeats for a fixed number of iterations or until a stopping condition (e.g., "no further improvements") is met. The pattern enhances output quality by mimicking human-like self-assessment and iterative problem-solving, making it ideal for tasks like code generation, writing, or complex reasoning.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agent Engineering MOC]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Reasoning Patterns]]
+- [[AI Workflows VS AI Agent]]
+%% related:end %%

@@ -23,3 +23,10 @@ scheduler.add_job(run_eval,"interval",minutes = 60)
 scheduler.add_job(dashboard.change_data,"interval",days = 60)
 scheduler.start()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch2.Getting Started with FastAPI]]
+- [[01 - Overview and Project Layout]]
+- [[08 FastAPI Layer]]
+%% related:end %%

@@ -505,3 +505,12 @@ Example interaction:
 - **Optimize Infrastructure**: Use quantized models and semaphores for concurrent users, as recommended in the enterprise RAG post.
 - **Explore Redis Cloud**: For production-grade scalability and persistence.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[Context Engineering]]
+- [[LangGraph Short-Term & Long-Term Memory]]
+- [[The context window is a budget, not a bucket]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

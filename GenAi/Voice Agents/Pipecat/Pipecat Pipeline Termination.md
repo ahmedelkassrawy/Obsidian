@@ -214,3 +214,12 @@ The pipeline source automatically converts `EndTaskFrame` to `EndFrame` and�
 - **Idle detection provides safety net** - prevents hanging processes and resource waste
 - **SystemFrames bypass queues** - CancelFrames process immediately for fast shutdown
 - **Resource cleanup is automatic** - proper termination ensures clean resource disposal
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.Speech Input & Turn Detection]]
+- [[Pipecat.Function Calling]]
+- [[Pipecat.Transports]]
+- [[Pipecat.LLM Inference]]
+%% related:end %%

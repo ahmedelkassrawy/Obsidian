@@ -169,3 +169,12 @@ Key includes the embedding-model version (`v1`): a new model = different vectors
 - **raaaaag** Redis BM25 cache = cache-aside response caching; **vLLM prefix caching** (M2) + **KV cache** = layers 5/3 in the model.
 - **Anthropic prompt caching** = the layer-4 knob for any agent with a big system prompt + docs.
 - The **[[LLM Gateways]]** cache layer is exactly layers 1–2 here, centralized in the gateway.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Prompt caching only pays off when the prefix stays identical]]
+- [[Caching trades freshness for speed]]
+- [[Phase4 — Caching]]
+- [[Semantic Caching - Redis]]
+- [[Caching - Capacity Estimation and Strategies]]
+%% related:end %%

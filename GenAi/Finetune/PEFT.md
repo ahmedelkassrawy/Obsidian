@@ -202,3 +202,8 @@ for key, value in zip(peft_model_results.keys(), improvement):
 
     print(f'{key}: {value*100:.2f}%')
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning Quick Reference]]
+%% related:end %%

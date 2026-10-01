@@ -145,3 +145,12 @@ The workflow also inverts. Classic machine learning went data first, then model,
 The recurring problem underneath all of this is that foundation models are probabilistic, ready-made, and open-ended, and the engineer's job is adaptation and evaluation rather than training.
 
 The three adaptation techniques introduced here, prompting, retrieval, and finetuning, map onto later chapters and onto related work on [[rag-retrieval]], [[llm-prompting]], and [[provider-abstraction]]. Chapter 2 opens the model far enough to make sensible choices about it, covering training data, the transformer architecture, model size and scaling laws, post-training, and the sampling process that explains why models hallucinate.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Vodafone Behavioral Interview Script]]
+- [[Ch2. Understanding Foundation Models]]
+- [[Deep Agents Best Practice]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Deep Agents]]
+%% related:end %%

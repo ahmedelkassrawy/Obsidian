@@ -111,3 +111,12 @@ int area = prefix[y2][x2]
 			- prefix[y2][x1 - 1] 
 			+ prefix[y1 - 1][x1 - 1];
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[2D Partial Sum]]
+- [[Frequency Array]]
+- [[1D Partial Sum]]
+- [[2D Prefix Sum]]
+- [[Sliding Window Technique]]
+%% related:end %%

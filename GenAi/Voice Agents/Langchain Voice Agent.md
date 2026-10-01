@@ -794,3 +794,12 @@ async def websocket_endpoint(websocket: WebSocket):
 We use [RunnableGenerators](https://reference.langchain.com/python/langchain_core/runnables/#langchain_core.runnables.base.RunnableGenerator) to compose each step of the pipeline. This is an abstraction LangChain uses internally to manage [streaming across components](https://reference.langchain.com/python/langchain_core/runnables/)
 
 Each stage processes events independently and concurrently: audio transcription begins as soon as audio arrives, the agent starts reasoning as soon as a transcript is available, and speech synthesis begins as soon as agent text is generated. This architecture can achieve sub-700ms latency to support natural conversation.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.TTS]]
+- [[Pipecat.Speech to text]]
+- [[Voice Agent]]
+- [[Pipecat]]
+- [[Livekit]]
+%% related:end %%

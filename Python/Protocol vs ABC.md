@@ -169,3 +169,12 @@ generic  : class Storage(Protocol[T]) + TypeVar   (== TS <T>)
 **Track B bridge:** a Python `Protocol` ≈ a TypeScript `interface`; `TypeVar`/`Generic[T]` ≈ TS `<T>`. Shutterabia's `SocialProvider` is this exact pattern in TS.
 
 **Sources:** [PEP 544 / typing spec — Protocols](https://typing.python.org/en/latest/spec/protocol.html) · [`typing.Protocol`](https://docs.python.org/3/library/typing.html#typing.Protocol) · [`abc`](https://docs.python.org/3/library/abc.html) · Lesson: `D:\me\teach\lessons\0005-storage-protocol.html`
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pydantic]]
+- [[Langchain.Multi Agent - Skills]]
+- [[Data Structures]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[OOP]]
+%% related:end %%

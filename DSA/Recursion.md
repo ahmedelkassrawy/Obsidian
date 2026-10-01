@@ -249,3 +249,10 @@ int main() {
 - Experiment with code by changing the order of print statements or recursive calls.
 - Practice writing recursive functions for simple problems (e.g., factorial, Fibonacci) before tackling complex ones like knapsack.
 - Use debugging tools to step through recursive calls and inspect the stack.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recursion Notes]]
+- [[DP - Vjudge 694272 T]]
+- [[Recursion - Reach Value (CF 223339W)]]
+%% related:end %%

@@ -65,3 +65,11 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 
 Notice that `SQLAlchemyBaseUserTable` expects a generic type to define the actual type of ID you use.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[05 - Sessions and sessionmaker]]
+- [[10 - Async SQLAlchemy]]
+- [[02 - Database Session Dependency (get_db)]]
+- [[13 - Gotchas and Troubleshooting]]
+- [[12 - Cheatsheet]]
+%% related:end %%

@@ -118,3 +118,9 @@ class Program
 	}
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Inheritance And Polymorphism]]
+- [[Static Members And Overloading]]
+%% related:end %%

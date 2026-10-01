@@ -100,3 +100,8 @@ for col in cols:
 ```
 
 أنا مهندس ذكاء اصطناعي متخصص في بناء تطبيقات إدارة التعلم الآلي القابلة للتطوير والجاهزة للإنتاج. أجمع بين خبرتي في ال تعلم العميق و الفهم الاساسي لل باك اند في FastAPI , Docker في عمل تطبيقات امنه و عمل AI Agents ذات اداء عالي و يمكنها حل مشاكل العالم الحقيقي و العمليه في سوق العمل.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Basics Cheat Sheet]]
+%% related:end %%

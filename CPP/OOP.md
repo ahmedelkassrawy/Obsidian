@@ -119,3 +119,8 @@ class Employee {
 [[Inheritance]]
 [[Polymorphism]]
 [[UML]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Classes]]
+%% related:end %%

@@ -214,3 +214,12 @@ Task guardrails provide a way to validate and transform task outputs before they
 - Tasks give you structured control: explicit descriptions, expected outputs, context chaining from other tasks, guardrails, async execution, output files/Pydantic schemas, and orchestration via a Crew's sequential or hierarchical process — things a bare agent call doesn't provide.
 
 Per CrewAI's 80/20 rule, task design matters more than agent design for execution quality. You can call `agent.kickoff(...)` directly for one-shot prompts (as shown on your migration page), but Tasks are what enable multi-step, validated, agent-collaborative workflows.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CrewAI Task Execution Basics]]
+- [[Crews vs Flows]]
+- [[Deep Agents Best Practice]]
+- [[AI Workflows VS AI Agent]]
+- [[Agent Orchestration And Tool Selection]]
+%% related:end %%

@@ -295,3 +295,12 @@ The author used AI assistance during the writing of this article. AI tools were 
 Significant Revisions
 
 *16 June 2026:* published
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[GraphRAG]]
+- [[RAG Production Best Practices]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Memory with Redis]]
+%% related:end %%

@@ -219,3 +219,12 @@ Distributed specialist agents coordinate via pub-sub, shared memory, or task dis
 > - Five interaction levels from stateless LLM to fully distributed MAS
 > - Progression Framework: Levels 0–4 from manual ops to learning agents
 > - Agents are generating measurable revenue today across insurance, support, and sales
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agents - Ai Engineering Book]]
+- [[Claude Code Core Architecture]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Agent Engineering MOC]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

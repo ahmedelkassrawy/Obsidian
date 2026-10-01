@@ -323,3 +323,12 @@ prompt = f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"
 response = generator(prompt, max_new_tokens=100)
 print(response[0]['generated_text'])
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Parent-child chunking]]
+- [[Anthropic RAG Cheatsheet]]
+- [[RAG]]
+- [[Advanced RAG]]
+- [[Embeddings turn meaning into distance]]
+%% related:end %%

@@ -115,3 +115,12 @@ This changes Mongo architecture to be similar to MySQL InnoDB, where secondary i
 Database systems share the same fundamentals when it comes to their internal storage model. I really like this because it removes fluff and allows me to answer questions related to performance in a predictable manner. Marketing brochures where each database claims to be the best, fastest and scalable no longer has power on an engineer who understands the fundamentals.
 
 In this article I discussed the MongoDB internal architecture evolution. In MongoDB the clustered collection is an interesting feature. However, one must use it with caution as the more secondary indexes the larger the size of these indexes get the harder it is to put them in memory for faster traversal. The MongoDB docs on clustered collection
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MongoDB Architecture]]
+- [[Intro DB Engine]]
+- [[MongoDB Cluster Collection]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+- [[SQLite]]
+%% related:end %%

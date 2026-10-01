@@ -131,3 +131,9 @@ for (int r = 0; r < n; r++)
     ans = max(ans, r - l + 1);
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Hash Tables]]
+- [[Strings - Anagram Check]]
+%% related:end %%

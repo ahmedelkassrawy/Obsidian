@@ -264,3 +264,12 @@ print(y_pred[0])
 ```
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLP (Multilayer Perceptrons)]]
+- [[GoTo ML Regression]]
+- [[SVM]]
+- [[Linear Regression]]
+- [[Polynomial Regression And Error Metrics]]
+%% related:end %%

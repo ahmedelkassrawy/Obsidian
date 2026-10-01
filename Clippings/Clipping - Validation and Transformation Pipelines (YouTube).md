@@ -244,3 +244,10 @@ Nerd out about the history of technologies here https://www.fascinatingtechhisto
 **41:47** · WR this gmail.com and then when we do submit we do a proper API call and when we see the payload it is sending the this and in the preview it is getting this and it is a getting a 200 response is a success response this is how client side validation and server side validation work together the client side validation provides a proper user experience provides immediate feedback to the client to the user and the server side
 
 **42:18** · validation performs different different Security checks and it is a mandatory validation which has the purpose of security and data Integrity but the front endend validation has the purpose of user experience and providing immediate feedbacks now that's pretty much all there is to talk about validations and transformation it's not a very complex topic or a very large topic just a set of rules and guidelines to follow when you are designing your apas
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[API Validations & Transformations]]
+- [[Clipping - REST API Design (YouTube)]]
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+%% related:end %%

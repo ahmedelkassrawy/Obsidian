@@ -99,3 +99,12 @@ int main() {
 
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[STL - Min Element In Chunks]]
+- [[Backtracking - Creating Strings]]
+- [[Sorting - Sort Three Numbers]]
+- [[DP - Vjudge 694272 S (Counting Valid Arrays)]]
+- [[Arrays - Shift Zeros]]
+%% related:end %%

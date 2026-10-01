@@ -43,3 +43,8 @@ GF_SECURITY_ADMIN_PASSWORD =
 GF_SECURITY_ADMIN_USER = 
 GF_USERS_ALLOW_SIGN_UP = 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Prometheus]]
+%% related:end %%

@@ -292,3 +292,12 @@ Retrieval systems often involve trade-offs between indexing speed/memory and que
 - Query rewriting clarifies ambiguous user inputs, critical for accurate retrieval.
 - Contextual retrieval enhances chunk relevance with metadata or generated context.
 - Evaluate retrieval solutions based on scalability, latency, and supported mechanisms.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Router Setup]]
+- [[GraphRAG]]
+- [[RAG Production Best Practices]]
+- [[Advanced RAG]]
+- [[RAG]]
+%% related:end %%

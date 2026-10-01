@@ -142,3 +142,12 @@ When using function evaluation, consider these best practices:
 
 [Dataset Evaluation | MLflow](https://mlflow.org/docs/latest/ml/evaluation/dataset-eval/)
 [Model Evaluation | MLflow](https://mlflow.org/docs/latest/ml/evaluation/model-eval/)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLFlow]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[GoTo ML Regression]]
+- [[GoTo ML Classification]]
+- [[Three Levels Of ML Software]]
+%% related:end %%

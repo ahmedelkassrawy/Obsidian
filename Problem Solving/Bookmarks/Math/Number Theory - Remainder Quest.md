@@ -46,3 +46,9 @@ ha5od lrakm fy string wb3deen a5o4 for loop abd2 a5r ll2wl w tenpowx = 1
 y5o4 yt3mlo modulus m3 n wb3dha y5o4 ydrb fy 34ra pow rkm w yt3mlo modulus
 wb3den modulus lanswer kolha wb3deen tenpow dy htzeed whndrb 10 fyha
 wb3deen modulus ltenpowx
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Last 2 Digits]]
+- [[DP Iterative - Vjudge 696069 Y]]
+%% related:end %%

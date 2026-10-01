@@ -131,3 +131,12 @@ Think of `Depends(get_db)` as a socket on the wall. FastAPI plugs a fresh sessio
 ## Next
 
 → [[03 - Pydantic Schemas (Request and Response Models)]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[05 - Sessions and sessionmaker]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[Ch7.Integrating DB in AI services]]
+- [[14 - Best Practices Checklist]]
+- [[04 - API Endpoints with Database Operations]]
+%% related:end %%

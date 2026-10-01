@@ -58,3 +58,12 @@ This will get us time limit so why dont we just go the other way, nm4y mn elsabt
 ```C++
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP - Vjudge 694272 K]]
+- [[DP - Vjudge 694272 U]]
+- [[DP - Vjudge 694272 E]]
+- [[DP - Vjudge 694272 M]]
+- [[DP - Vjudge 694272 O]]
+%% related:end %%

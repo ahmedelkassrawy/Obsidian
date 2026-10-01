@@ -64,3 +64,9 @@ What steps did you take?
 I'm keen to hear what the situation was, your actions and the outcomes of your idea
 
 6- Talk about your strengths.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Clipping - Observability From Scratch Part 1 (Podcast, Arabic)]]
+- [[REPORT]]
+%% related:end %%

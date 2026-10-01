@@ -383,3 +383,12 @@ def tokenize_function(example):
 tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Tokenizer]]
+- [[Modern Tokenization]]
+- [[RNN and LSTM]]
+- [[Stanford CS224n]]
+- [[Fine-Tuning BERT On MRPC With Trainer]]
+%% related:end %%

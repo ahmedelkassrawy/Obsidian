@@ -148,3 +148,12 @@ In modern architectures, both are used **together**:
 - **API Gateway** = Security, management, and smart routing.
 - **Load Balancer** = Speed, uptime, and even traffic spread.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Gateways]]
+- [[FastApi - Security]]
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[Ch2. Selecting Your API Architecture]]
+- [[Horizontal vs Vertical Scaling]]
+%% related:end %%

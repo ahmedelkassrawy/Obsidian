@@ -143,3 +143,9 @@ If you do a random split (`stratify=None`), you risk ending up with a Test Set t
 **Using `stratify=y` guarantees that:**
 - **Train Set:** 95% Legal, 5% Fraud.
 - **Test Set:** 95% Legal, 5% Fraud.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Structures]]
+- [[Iterating With Enumerate And Zip]]
+%% related:end %%

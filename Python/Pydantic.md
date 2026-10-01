@@ -256,3 +256,12 @@ always -> return the value / self
 ```
 
 **Sources:** [Pydantic Validators](https://docs.pydantic.dev/latest/concepts/validators/) · [Models](https://docs.pydantic.dev/latest/concepts/models/) · [Parse, don't validate (King)](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/) · Lesson HTML: `D:\me\teach\lessons\0003-pydantic-post-model.html`
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Pydantic]]
+- [[FastAPI - Response Models and Status Codes]]
+- [[JSON Serialization]]
+- [[01 - Overview and Project Layout]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+%% related:end %%

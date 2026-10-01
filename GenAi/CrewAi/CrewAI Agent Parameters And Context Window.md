@@ -313,3 +313,12 @@ Important Considerations and Best Practices
     - Review conversation history management
 
 Remember that agents are most effective when configured according to their specific use case. Take time to understand your requirements and adjust these parameters accordingly.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[Context Engineering]]
+- [[Context-Compression Best Practices]]
+- [[CrewAI Tasks]]
+- [[Pipecat.Context Management]]
+%% related:end %%

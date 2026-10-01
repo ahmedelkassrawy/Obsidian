@@ -84,3 +84,9 @@ The CLT states that the sampling distribution of the sample mean will be approxi
 ## Linear Algebra Concepts
 - **Eigenvalue (λ)**: A scalar indicating how much the eigenvector is stretched or compressed.
 - **Eigenvector (v)**: A vector that does not change its direction during the transformation.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Visualization]]
+- [[Pandas - Aggregation And Grouping]]
+%% related:end %%

@@ -216,3 +216,12 @@ session.execute(select(User).where(User.id == 1)).scalar_one_or_none()  # -> Use
 ## Next
 
 → [[02 - Core Tables with MetaData]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch7.Integrating DB in AI services]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[Ch3. Creating the Database Layer]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[14 - Best Practices Checklist]]
+%% related:end %%

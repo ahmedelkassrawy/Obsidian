@@ -170,3 +170,12 @@ print(trajectory_match(out, {"messages": [
 
 ## Fits
 raaaaag's harness is **outcome** eval (hit@k, refusal) and already gates-deterministic/reports-flaky — the next step is a **trajectory** eval (did it call `search_docs` before answering, and not skip it?). [[LangSmith]] hosts both via the feedback/scores API.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]]
+- [[Agent Engineering MOC]]
+%% related:end %%

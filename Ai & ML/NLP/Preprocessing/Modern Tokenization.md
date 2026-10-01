@@ -298,3 +298,12 @@ else:
 - This example uses `bert-base-uncased` for simplicity. Other models (e.g., `distilbert-base-uncased`) may be faster for experimentation.
 - The IMDb dataset is large; using a subset (500 samples) speeds up processing for demonstration purposes.
 - Adjust `max_length` or `batch_size` based on your hardware constraints.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Stanford CS224n]]
+- [[HF Tokenizer - Encoding Padding Truncation]]
+- [[RNN and LSTM]]
+- [[Fine-Tuning BERT On MRPC With Trainer]]
+- [[Tokenizer]]
+%% related:end %%

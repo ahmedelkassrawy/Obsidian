@@ -407,3 +407,12 @@ If you’re using SQLAlchemy’s ORM (e.g., `session.execute()` or `session.scal
   with engine.execute(query) as result:
       rows = result.fetchall()
   ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[10 - Async SQLAlchemy]]
+- [[01 - Engine and Connections]]
+- [[Async helps with waiting, not with computing]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[Deep Look into Postgres Wire Protocol with Wireshark]]
+%% related:end %%

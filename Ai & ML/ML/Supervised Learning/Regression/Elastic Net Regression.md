@@ -74,3 +74,11 @@ print("Score:", elastic.score(X_test, y_test))
 ❌ Less interpretable than pure Lasso or Ridge
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ridge Regression]]
+- [[Lasso Regression]]
+- [[Regularization trades training fit for generalization]]
+- [[Learning Curves And Regularization]]
+%% related:end %%

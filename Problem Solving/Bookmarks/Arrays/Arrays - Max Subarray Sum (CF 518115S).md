@@ -47,3 +47,12 @@ int main()
     cout<<maxsub;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Arrays - Maximum Subarray Sum (CF 386415I)]]
+- [[Arrays - Max Subarray (Kadane Practice)]]
+- [[Sliding Window Technique]]
+- [[Array]]
+- [[Two Pointers]]
+%% related:end %%

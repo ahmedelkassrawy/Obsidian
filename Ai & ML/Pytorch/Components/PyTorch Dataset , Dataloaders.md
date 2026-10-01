@@ -202,3 +202,11 @@ for epoch in range(epochs):
     print("Epoch [%d/%d], Average Test Loss %.4f" % (epoch + 1, nepochs, test_loss_accum))
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Final Transfer Learning]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[02. PyTorch Classification]]
+- [[CNN.Pytorch]]
+- [[Pytorch NN]]
+%% related:end %%

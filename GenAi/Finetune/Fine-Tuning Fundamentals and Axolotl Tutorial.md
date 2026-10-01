@@ -153,3 +153,12 @@ This note covered the theory and practice of fine-tuning LLMs. You learned:
 3.  How to use **Axolotl**, a low-code tool, to fine-tune an LLM on a GPU provider like RunPod.
 
 The next step is to experiment with your own datasets and model configurations.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Terminology]]
+- [[Fine-Tuning Quick Reference]]
+- [[Clipping - LLM Fine-Tuning Crash Course (YouTube)]]
+- [[Fine-Tuning vs Reinforcement Learning]]
+- [[Fine-Tuning Tutorial]]
+%% related:end %%

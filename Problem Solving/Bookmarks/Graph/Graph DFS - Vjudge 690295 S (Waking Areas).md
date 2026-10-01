@@ -108,3 +108,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graph DFS - Vjudge 690295 G]]
+- [[Graph DFS - Maze]]
+- [[Graph DFS - Vjudge 690295 U]]
+- [[Graph DFS - Vjudge 690295 J]]
+%% related:end %%

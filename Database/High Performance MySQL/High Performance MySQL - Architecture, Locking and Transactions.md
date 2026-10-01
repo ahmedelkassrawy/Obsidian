@@ -236,3 +236,12 @@ When choosing a MySQL storage engine, consider the following factors:
    - Choose an engine based on the **specific features** required for your application.
 
 **Key Takeaway**: **InnoDB** is often preferred for its transactional support, online backups, and reliable crash recovery, especially for critical applications. **MyISAM** may be suitable for non-transactional, low-maintenance scenarios but is less robust.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Intro DB Engine]]
+- [[InnoDB]]
+- [[MongoDB Architecture]]
+- [[MongoDB Internals]]
+- [[High Performance MySQL - Benchmarking]]
+%% related:end %%

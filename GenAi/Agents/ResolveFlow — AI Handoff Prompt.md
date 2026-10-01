@@ -80,3 +80,12 @@ Scaffold the repo and build the **core graph skeleton**:
 - Use `ChatOpenAI(base_url="https://openrouter.ai/api/v1")`.
 
 Give me the folder structure and the graph skeleton first; I'll run it, then we add the billing worker + RAG. Explain each design choice in 1–2 lines as we go.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[ResolveFlow — Flagship Build Spec]]
+- [[00 ResolveFlow Index]]
+- [[Agents Best Practice]]
+- [[01 Planning and Engineering Principles]]
+- [[CrewAI Tasks]]
+%% related:end %%

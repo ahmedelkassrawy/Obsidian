@@ -298,3 +298,11 @@ chmod 600 server.key && chown 999:999 server.*
 ```
 
 > **Pro Tip**: Always mount certificates as read-only volumes and automate renewal in production. Use internal PKI or Let's Encrypt for CA-signed certificates.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SSL,TLS]]
+- [[Deep Look into Postgres Wire Protocol with Wireshark]]
+- [[Sharding]]
+- [[PGVector]]
+%% related:end %%

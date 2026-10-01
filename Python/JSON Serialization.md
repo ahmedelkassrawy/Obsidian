@@ -194,3 +194,12 @@ boundary        :  serialize in _write, deserialize in _read — one place each
 **Track B bridge:** JavaScript does the same two steps — `JSON.stringify(x)` (object→text) and `JSON.parse(text)` (text→object). Same idea, different names.
 
 **Sources:** [Python `json`](https://docs.python.org/3/library/json.html) · [Pydantic serialization](https://docs.pydantic.dev/latest/concepts/serialization/) · Lesson: `D:\me\teach\lessons\0006-json-save-load.html` · Code: `D:\me\teach\postqueue\storage.py`
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Response Models and Status Codes]]
+- [[Model Saving]]
+- [[06 - Request vs Response Models Explained]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[FastAPI - Pydantic]]
+%% related:end %%

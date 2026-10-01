@@ -202,3 +202,12 @@ plt.ylabel("BCE Loss")
 ```
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pytorch Basic Training]]
+- [[Logistic Regression And Classification Basics]]
+- [[Logistic Regression]]
+- [[Loss Functions]]
+- [[02. PyTorch Classification]]
+%% related:end %%

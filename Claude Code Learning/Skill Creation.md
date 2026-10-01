@@ -66,3 +66,12 @@ A good skill pins down *what* and leaves *how* open.
 ## Related
 - [[Langchain.Multi Agent - Skills]] — the skills pattern and progressive disclosure (concept)
 - [[Langchain.Multi Agent - Skills Implementation]] — building your own skills/`load_skill` middleware (code)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SKILLS Best Practice]]
+- [[LangGraph Nodes Edges And State]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[CrewAI Tasks]]
+- [[Agent Engineering MOC]]
+%% related:end %%

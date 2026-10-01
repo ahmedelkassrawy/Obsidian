@@ -155,3 +155,12 @@ Rule of thumb: **one schema per direction per resource**, and a third (`XUpdate`
 ## Next
 
 → [[07 - Full Source Listing (copy-paste ready)]] or back to [[00 - Index]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Response Models and Status Codes]]
+- [[04 - API Endpoints with Database Operations]]
+- [[FastAPI - Pydantic]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[01 - Overview and Project Layout]]
+%% related:end %%

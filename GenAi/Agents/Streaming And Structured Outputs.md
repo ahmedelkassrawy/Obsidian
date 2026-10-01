@@ -107,3 +107,12 @@ route = llm.with_structured_output(Route).invoke(user_msg).domain   # never a st
 - **Shutterabia:** stream the caption draft to the SMM live (streaming); return the schedule/hashtags as a validated `Post` object the scheduler consumes (structured).
 - **Routing** (workflow patterns): use structured output for the classifier so the route is always a valid enum, never a stray string.
 - raaaaag: stream the grounded answer's tokens; keep citations as structured data.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.LLM Inference]]
+- [[Ch6.Real-Time Communication with Generative Models]]
+- [[06 LangGraph Orchestration]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[Langgraph Best Practices]]
+%% related:end %%

@@ -68,3 +68,12 @@ n_correct += (predicted == labels).sum().item()
 
 acc = 100 * n_correct / n_samples
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLP (Multilayer Perceptrons)]]
+- [[PyTorch Linear, Logistic]]
+- [[Logistic Regression And Classification Basics]]
+- [[GoTo ML Classification]]
+- [[SVM]]
+%% related:end %%

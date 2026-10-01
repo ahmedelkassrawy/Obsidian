@@ -192,3 +192,11 @@ static void main(string[] args)
 	 
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Inheritance And Polymorphism]]
+- [[Overriding Object Methods]]
+- [[Static Polymorphism]]
+- [[Function Overloading]]
+%% related:end %%

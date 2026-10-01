@@ -138,3 +138,9 @@ Converts the scaled predictions back to the original scale (e.g., actual stock p
 - `df_result = pd.concat([date, forcasted_output], axis=1)`: Combines the dates and forecasted values into a single DataFrame.
     
 - `df_result.columns = ["Date", "Forecasted"]`: Renames the columns for clarity.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[LSTMS Adhocs]]
+%% related:end %%

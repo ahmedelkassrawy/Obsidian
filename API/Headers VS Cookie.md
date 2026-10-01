@@ -173,3 +173,12 @@ In the context of FastAPI (and HTTP in general), both `Header` and `Cookie` are 
 For more details, refer to the FastAPI documentation:
 - [FastAPI Headers](https://fastapi.tiangolo.com/tutorial/header-params/)
 - [FastAPI Cookies](https://fastapi.tiangolo.com/tutorial/cookies/)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Auth Transport]]
+- [[FastApi - Security]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[FastAPI Async and Routers]]
+- [[JWT - API AUTH]]
+%% related:end %%

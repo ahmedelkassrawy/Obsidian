@@ -227,3 +227,12 @@ Data processing can occur in two primary modes: batch and stream processing.
 > - Explore Apache Flink documentation for stream processing.
 > - Experiment with Parquet vs. CSV in a small ML project.
 > - Set up a simple Kafka pubsub system to understand event-driven architecture.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+- [[Designing ML Systems Ch4 - Training Data]]
+%% related:end %%

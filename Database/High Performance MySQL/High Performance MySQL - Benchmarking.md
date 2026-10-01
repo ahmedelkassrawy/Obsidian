@@ -97,3 +97,10 @@ Recording raw data is a good idea because you can manipulate it in many differen
 
 ### Benchmarking Tools
 it's called `mysqlslap` which is a single-component benchmarking tool (only benchmarks MySQL). `mysqlslap` let's you create a test schema, specify the number of connections, run a test load of sql queries or even let it generate random `SELECT`s based on the provided schema and it reports time information.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Profiling Server Performance]]
+- [[Phase1 — Scalability & Availability]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+%% related:end %%

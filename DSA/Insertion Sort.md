@@ -51,3 +51,12 @@ int main()
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lower & Upper Bounds]]
+- [[Sets]]
+- [[Sorting - Sort Three Numbers]]
+- [[Selection Sort]]
+- [[BST]]
+%% related:end %%

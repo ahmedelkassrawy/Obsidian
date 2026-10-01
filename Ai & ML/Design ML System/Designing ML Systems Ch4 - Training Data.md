@@ -119,3 +119,12 @@ To better evaluate models on imbalanced datasets, alternative metrics are used:
     - **Cost-Sensitive Learning**: Modifies the loss function to penalize misclassifications of the minority class more heavily than the majority class, making the model more sensitive to errors on the minority class.
     - **Class-Balanced Loss**: Aims to balance the weight of each class inversely proportional to the number of samples in that class.
     - **Focal Loss**: A more sophisticated version of class-balanced loss, which reduces the relative loss for well-classified examples, putting more focus on hard, misclassified examples.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch3 - Data Engineering]]
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+%% related:end %%

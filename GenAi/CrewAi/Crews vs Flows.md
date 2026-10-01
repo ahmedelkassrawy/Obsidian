@@ -131,3 +131,12 @@ researcher = Agent(
 |**Needs API keys**|Per tool|Per server|Integration token|No|Embedder only|
 |**Set on Agent**|`tools=[]`|`mcps=[]`|`apps=[]`|`skills=[]`|`knowledge_sources=[]`|
 |**Set on Crew**|❌|❌|❌|`skills=[]`|`knowledge_sources=[]`|
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CrewAI Tasks]]
+- [[AI Workflows VS AI Agent]]
+- [[Agent Orchestration And Tool Selection]]
+- [[Deep Agents Best Practice]]
+- [[Agents Best Practice]]
+%% related:end %%

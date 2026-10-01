@@ -113,3 +113,12 @@ conversational_agent = create_agent(
 
 >[!warning]
 >**Stateful routers require custom history management.** If the router switches between agents across turns, conversations may not feel fluid to end users when agents have different tones or prompts. With parallel invocation, you’ll need to maintain history at the router level (inputs and synthesized outputs) and leverage this history in routing logic. Consider the [handoffs pattern](https://docs.langchain.com/oss/python/langchain/multi-agent/handoffs) or [subagents pattern](https://docs.langchain.com/oss/python/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent Intro]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[Langchain.Multi Agent Example]]
+- [[Langchain.Multi Agent - Handoffs]]
+%% related:end %%

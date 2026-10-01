@@ -334,3 +334,10 @@ Nerd out about the history of technologies here https://www.fascinatingtechhisto
 **59:17** · etc etc right and we can do that because we have a shared state which is called request context where we can save information for that request okay that is another example of when we use request context request context we also use to send cancellation signals and abort signals and deadlines to our
 
 **59:38** · Downstream external services so that our service does not hang up perpetually these are all the use cases of request contexts that we typically have in a backin server so that's all about uh handlers Services repositories middlewares and request context
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[Clipping - REST API Design (YouTube)]]
+- [[Backend Intro]]
+%% related:end %%

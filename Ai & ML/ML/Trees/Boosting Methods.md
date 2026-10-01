@@ -342,3 +342,12 @@ Stacking is most appropriate in scenarios where the potential performance gains 
 |**Gradient Boosting**|Medium to large structured datasets where **high predictive power** is required, even at the cost of extra tuning.|Housing price prediction, risk assessment, demand forecasting|
 |**Histogram-Based Gradient Boosting (HGB)**|**Large structured datasets** where **training speed** and **scalability** are key.|Click-through rate prediction, ranking algorithms, real-time bidding in advertising|
 |**Stacking**|**Complex, high-dimensional datasets** where combining **multiple diverse models** can maximize accuracy.|Recommendation engines, autonomous vehicle decision-making, Kaggle competitions|
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bagging And Boosting]]
+- [[Bagging & Pasting]]
+- [[Out-of-Bag (OOB) Evaluation]]
+- [[Fine-Tuning Quick Reference]]
+- [[Random Forest]]
+%% related:end %%

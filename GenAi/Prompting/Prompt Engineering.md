@@ -469,3 +469,12 @@ _Output:_
 ```
 Sorry, I don't have any information about your interests. However, here's a list of the top global trending movies right now: [list of movies]. I hope you find something you like!
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Langchain.Multi Agent - Skills]]
+- [[Ch5. Prompt Engineering]]
+- [[LangGraph Nodes Edges And State]]
+- [[ALX Week 2 - Prompt Engineering Basics]]
+%% related:end %%

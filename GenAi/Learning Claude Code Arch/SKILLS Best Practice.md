@@ -1118,3 +1118,11 @@ Before sharing a Skill, verify:
 - [ ] Tested with Haiku, Sonnet, and Opus
 - [ ] Tested with real usage scenarios
 - [ ] Team feedback incorporated (if applicable)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Skill Creation]]
+- [[Langchain.Multi Agent - Skills]]
+- [[Langchain.Multi Agent - Skills Implementation]]
+- [[Claude Code Core Architecture]]
+%% related:end %%

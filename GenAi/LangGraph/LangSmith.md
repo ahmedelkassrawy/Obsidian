@@ -197,3 +197,12 @@ Same job (traces, datasets, evals, scores). raaaaag picked Langfuse (open-source
 > **Tracing** = one request's tree · **Monitoring** = traces in aggregate (latency/cost/errors) · **Evaluation** = score outputs over a dataset · **Feedback** = attach real-world scores by run_id. All four = observability. For agents it's not optional — you can't debug a non-deterministic loop from the source.
 
 Ties to the parked **[[otel-langfuse-grafana]]** lesson: **OTel** = the vendor-neutral standard for emitting spans; **Langfuse / LangSmith / Grafana** = backends that receive and display them. LangSmith is the LangChain-flavored backend; the OTel lesson is the theory underneath all of them.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Agents]]
+- [[Langchain v1]]
+- [[LangGraph Short-Term & Long-Term Memory]]
+- [[LLM Proxies]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

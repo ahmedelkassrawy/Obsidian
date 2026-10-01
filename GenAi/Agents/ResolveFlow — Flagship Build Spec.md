@@ -106,3 +106,12 @@ Remove the separate *Customer Support Agent* and *Multi-Tenant RAG System* entri
 
 ## Why this is the right flagship
 Existing CV strengths reused; weak areas (eval, testing, observability) made visible; every concept in the MOC demonstrated inside one believable product. It's the difference between "took a course" and "ships production agents."
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[ResolveFlow — AI Handoff Prompt]]
+- [[01 Planning and Engineering Principles]]
+- [[00 ResolveFlow Index]]
+- [[Deep Agents Best Practice]]
+- [[Agents Best Practice]]
+%% related:end %%

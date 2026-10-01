@@ -210,3 +210,12 @@ _Mix of both approaches_
 ➡ Master handles writes, replicas handle reads (common in cloud DBs like **AWS RDS**, **MongoDB Atlas**, **PostgreSQL clusters**).
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Replication scales reads, sharding scales writes]]
+- [[Phase1 — Scalability & Availability]]
+- [[DB Replications]]
+- [[Multi-Leader Replication]]
+- [[Concurrency]]
+%% related:end %%

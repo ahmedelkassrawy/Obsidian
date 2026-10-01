@@ -707,3 +707,12 @@ retriever_tool = create_retriever_tool(
 
 prompt = hub.pull("rlm/rag-prompt")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[06 LangGraph Orchestration]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[LangGraph Routing And Path Maps]]
+- [[LangGraph Nodes Edges And State]]
+- [[Langchain.Multi Agent - Router]]
+%% related:end %%

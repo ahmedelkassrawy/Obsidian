@@ -184,3 +184,12 @@ FinalScore = (VectorScore × 5)
 ---
 
 ![[Pasted image 20260119204759.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Exact nearest-neighbour search doesn't scale, so vector databases approximate]]
+- [[ANN Tools FAISS and ScaNN]]
+- [[Phase3 — Data at Scale]]
+- [[Optimizing Schema and Data Types]]
+- [[MyISAM]]
+%% related:end %%

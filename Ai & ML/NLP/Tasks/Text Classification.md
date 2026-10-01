@@ -158,3 +158,12 @@ print(classification_report(ds["test"]["label"], y_pred))
 - `tqdm` displays a progress bar for inference.
 - Use `lower()` to handle case variations in model output.
 - Larger T5 models (e.g., `flan-t5-base`) may improve accuracy but require more resources.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN Implementation Guide]]
+- [[NLP Concepts]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[NLP]]
+- [[Tokenizer]]
+%% related:end %%

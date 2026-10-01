@@ -129,3 +129,12 @@ agent_builder.add_conditional_edges(
 )
 agent_builder.add_edge("tool_node", "llm_call")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Nodes Edges And State]]
+- [[06 LangGraph Orchestration]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[Langchain.Multi Agent - Router]]
+- [[LangGraph - Before v1]]
+%% related:end %%

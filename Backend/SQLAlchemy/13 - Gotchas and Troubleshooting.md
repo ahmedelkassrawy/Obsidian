@@ -209,3 +209,12 @@ Something's wrong
 
 **Cause:** `with get_db() as db:` wraps a loop that calls Cohere/OpenAI per row. The DB connection sits idle-in-transaction for the whole duration; on Postgres this blocks vacuum and can exhaust the pool.
 **Fix:** do all network calls first (batched), then open the session and write. → [[10 - Async SQLAlchemy#Worked example — PDF ingestion]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[08 - Gotchas and Troubleshooting]]
+- [[09 - Cheatsheet]]
+- [[14 - Best Practices Checklist]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[12 - Cheatsheet]]
+%% related:end %%

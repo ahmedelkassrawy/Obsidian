@@ -167,3 +167,12 @@ As you design your multi-agent system, consider:
 - **Context filtering strategy**: Will each agent receive full conversation history, filtered portions, or summaries? Different agents may need different context depending on their role.
 - **Tool semantics**: Clarify whether handoff tools only update routing state or also perform side effects. For example, should `transfer_to_sales()` also create a support ticket, or should that be a separate action?
 - **Token efficiency**: Balance context completeness against token costs. Summarization and selective context passing become more important as conversations grow longer.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent - Handoffs Implementation]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Agent Handoffs And Tool Design]]
+- [[Langchain.Multi Agent Example]]
+- [[Langchain.Multi Agent Intro]]
+%% related:end %%

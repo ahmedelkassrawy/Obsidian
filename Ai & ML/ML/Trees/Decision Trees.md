@@ -153,3 +153,12 @@ tree_clf.fit(X_transformed, y)
 - Regularization should be applied during training to prevent overfitting
 - Unlike other algorithms, decision trees do not require feature scaling
 - The combination of scaling + PCA can be beneficial for high-dimensional problems despite trees being scale-invariant
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Regularization trades training fit for generalization]]
+- [[Decision Trees And Naive Bayes]]
+- [[Regression Trees]]
+- [[Random Forest]]
+- [[Bagging And Boosting]]
+%% related:end %%

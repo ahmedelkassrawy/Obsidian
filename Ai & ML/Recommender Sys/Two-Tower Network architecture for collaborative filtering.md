@@ -65,3 +65,12 @@ After training, item embeddings are indexed in an ANN structure (FAISS, ScaNN, o
 2. Query the ANN index with $\bar{u}$ → retrieve top-K nearest item embeddings
 3. Pass the K candidates to a ranking model (which can use more expensive cross-features)
 ![[Pasted image 20260505161948.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recommender Systems]]
+- [[Building a Two-Tower Retrieval System with PyTorch and FAISS]]
+- [[Recommendation sys]]
+- [[Mastering the 3-Stage Recommendation Pipeline]]
+- [[K Nearest Neighbor Algo]]
+%% related:end %%

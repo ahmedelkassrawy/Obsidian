@@ -115,3 +115,12 @@ Shard key = **tenant/collection**. Two real costs:
 
 > [!success] Phase 3 done
 > Own: the escalation ladder (index → replicate → federate → shard → denormalize), the "don't shard early" judgment, SQL-vs-NoSQL + the four families, and the hot-shard trap. **Next: Phase 4 — caching (layers + cache-aside/write-through/write-behind/refresh-ahead; invalidation is the hard part).**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Exact nearest-neighbour search doesn't scale, so vector databases approximate]]
+- [[Indexes speed up reads by slowing down writes]]
+- [[Choosing A Vector Database]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[Replication scales reads, sharding scales writes]]
+%% related:end %%

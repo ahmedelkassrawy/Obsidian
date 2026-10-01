@@ -178,3 +178,12 @@ Hash collisions occur when multiple keys map to the same index.
 - **Potential Improvements** (From Article): Make LRU optional for even more simplicity.
 - **Demo Placeholder**: The original article mentions a demo but doesn't provide one. For study, experiment with Memcached via tools like `telnet` or libraries (e.g., Python's `pymemcache`).
   - Example Command: `set key 0 60 5\r\nvalue\r\n` (key, flags, TTL, length, value).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Caching]]
+- [[Caching trades freshness for speed]]
+- [[Caching - Capacity Estimation and Strategies]]
+- [[Phase4 — Caching]]
+- [[AI Agent Prompt Caching and Context Management]]
+%% related:end %%

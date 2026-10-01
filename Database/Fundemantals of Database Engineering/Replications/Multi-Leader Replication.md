@@ -195,3 +195,12 @@ sequenceDiagram
 - **Detection**: Relies on Version Vectors to identify conflicts, then apply logic.
 - **Pros**: Tailored to application.
 - **Cons**: Complex to implement.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Single-Leader Replication]]
+- [[DB Replications]]
+- [[Replication scales reads, sharding scales writes]]
+- [[Stale Reads in Replicated Databases]]
+- [[Phase1 — Scalability & Availability]]
+%% related:end %%

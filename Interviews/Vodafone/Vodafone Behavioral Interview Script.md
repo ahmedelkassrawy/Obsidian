@@ -81,3 +81,12 @@ What I bring to the company is a **production-first mindset**. My background in 
 "I would categorize my strengths into three areas: **technical adaptability**, **systemic thinking**, and **resilience**.
 
 First, I have a high 'learning velocity.' I can pick up a new framework, like LangGraph or a new backend stack, and be productive within days. Second, I don't just write code; I design systems. I’m always thinking about how a piece of software will scale, how it's containerized, and how the data flows securely. Finally, my experience in problem solving has taught me to stay calm and analytical under pressure. Whether it’s a bug  or a tight project deadline, I focus on the most logical path to a solution."
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[ResolveFlow — AI Handoff Prompt]]
+- [[Agents Best Practice]]
+- [[Ch1. Introduction to Building AI Applications with Foundation Models]]
+- [[Pipecat]]
+- [[camelAI - VM-less Agent in a Durable Object]]
+%% related:end %%

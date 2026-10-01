@@ -40,3 +40,12 @@ Available routers
 - [Verify router](https://fastapi-users.github.io/fastapi-users/latest/configuration/routers/verify/): Provides `/request-verify-token` and `/verify` routes to manage user e-mail verification.
 - [Users router](https://fastapi-users.github.io/fastapi-users/latest/configuration/routers/users/): Provides routes to manage users.
 - [OAuth router](https://fastapi-users.github.io/fastapi-users/latest/configuration/oauth/): Provides routes to perform an OAuth authentication against a service provider (like Google or Facebook).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Users Router]]
+- [[FastAPI Users - Auth Backend]]
+- [[FastAPI Users - UserManager]]
+- [[FastAPI Users - Reset Password Router]]
+%% related:end %%

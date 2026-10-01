@@ -87,3 +87,12 @@ Three ways to handle it:
 
 > [!success] Phase 5 done
 > Own: sync-vs-async, message vs task queues, back pressure + bounded queues, retries+idempotency as a pair, REST-vs-RPC, TCP-vs-UDP — each mapped to shipped code. **Next: Phase 6 — full designs end-to-end (method → estimate → API → data → high-level → scale, defended under questioning). Start with a primer classic, then pivot to the AI bank the Interview Track wants.**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Concurrency and Async]]
+- [[Async helps with waiting, not with computing]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[Stale Reads in Replicated Databases]]
+- [[LlamaIndex Async Explained]]
+%% related:end %%

@@ -156,3 +156,12 @@ A chain is only as available as the **product** of its links. Every hop (LB → 
 
 > [!success] Phase 1 done
 > Own: performance-vs-scalability, latency-vs-throughput, CAP (+ the "needs replication first" trap), the 3 consistency patterns, and the nines. **Next: Phase 2 — the building blocks (DNS, CDN, load balancers, reverse proxy, app layer).**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Replication scales reads, sharding scales writes]]
+- [[Message Queues  (RabbitMQ)]]
+- [[Stale Reads in Replicated Databases]]
+- [[Optimizing GenAI Services for Multiple Users]]
+- [[Locks trade concurrency for correctness]]
+%% related:end %%

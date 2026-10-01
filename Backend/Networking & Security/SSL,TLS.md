@@ -160,3 +160,8 @@ ssl_ciphers ECDHE-AESGCM:ECDHE-CHACHA20;
 - **Private Key**: Can decrypt, server keeps secret
 - **PFS** (Perfect Forward Secrecy): Even if private key stolen later, old sessions safe
 - **Handshake**: The "hello" process to agree on encryption
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Enabling SSL,TLS]]
+%% related:end %%

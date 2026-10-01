@@ -343,3 +343,12 @@ async def query_database(params: FunctionCallParams):
 - **Multiple definition approaches** - use standard schema for portability, direct functions for simplicity
 - **Pipeline integration is seamless** - functions work within your existing voice AI architecture
 - **Advanced control available** - fine-tune LLM execution and monitor function call lifecycle
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.LLM Inference]]
+- [[Pipecat.Context Management]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat.TTS]]
+- [[Pipecat.Pipeline & Frame Processing]]
+%% related:end %%

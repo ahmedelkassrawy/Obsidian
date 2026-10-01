@@ -74,3 +74,10 @@ When a JWT is received by the server, it needs to validate the token.
 the server reconstructs the signature by signing the header and payload again.
 - **Compare Signatures** : The server compares the reconstructed signature with the signature included in the received JWT. If they match, the token is considered valid and untampered.
 - **Check Claims**:The server then checks the claims within the payload to ensure they meet the required conditions (e.g., not expired, correct audience, etc.).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch8.Authentication and Authorization]]
+- [[FastApi - Security]]
+- [[Headers VS Cookie]]
+%% related:end %%

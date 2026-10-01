@@ -191,3 +191,11 @@ Choosing optimal data types and schema designs in MySQL requires balancing stora
 
 - MySQL 8 Documentation
 - Official MySQL ALTER TABLE Documentation
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Key vs Non-Key Column Indexes]]
+- [[Choosing A Vector Database]]
+- [[MyISAM]]
+- [[InnoDB]]
+%% related:end %%

@@ -221,3 +221,12 @@ session = AgentSession(
 - Finally, `session.start()` brings Kelly to life. It connects your `MyAgent` class to the LiveKit `room`.
     
 - It also wraps the incoming audio in a Noise Cancellation filter (`BVC`) to scrub out background noise like typing, dogs barking, or fans before the audio reaches the transcription engine.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agents Best Practice]]
+- [[Pipecat]]
+- [[Agent with Tools]]
+- [[AI Workflows VS AI Agent]]
+- [[Deep Agents Best Practice]]
+%% related:end %%

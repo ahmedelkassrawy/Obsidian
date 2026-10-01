@@ -173,3 +173,12 @@ Key Takeaways
 - **Services are modular** - easily swap providers without code changes
 - **Best practices improve performance** - use interim results, formatting, and local VAD
 - **Configuration affects quality** - proper setup significantly impacts transcription accuracy
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.TTS]]
+- [[Pipecat.LLM Inference]]
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat]]
+- [[Pipecat.Transports]]
+%% related:end %%

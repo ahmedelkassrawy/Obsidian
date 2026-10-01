@@ -251,3 +251,12 @@ except ValidationError as e:
 
 - **When to Upgrade**: V2 is recommended for new projects; use V1 compatibility mode (`from pydantic import v1`) for gradual migration.
 - **Common Pitfalls**: V2 is stricter (e.g., no auto-coercion); test thoroughly.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Pydantic]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[01 - Overview and Project Layout]]
+- [[FastAPI - Response Models and Status Codes]]
+%% related:end %%

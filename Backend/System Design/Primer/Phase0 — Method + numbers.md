@@ -290,3 +290,11 @@ request → app middleware → Redis: read current + previous counts → compute
 ## Phase 0 checklist (grokked-when)
 
 On a blank page, no AI: list the **6 steps** in order, the **5 latency numbers / the ranking**, and do **one estimate** (writes/day → storage/year). Then run the full method on a novel prompt.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[02 - Best practices & refactor]]
+- [[BootStrap Pipeline Best Practices]]
+- [[Phase5 — Asynchronism & Communication]]
+%% related:end %%

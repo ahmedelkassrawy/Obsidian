@@ -349,3 +349,12 @@ map_chain = map_prompt | llm | StrOutputParser()
 result = map_chain.invoke({"context": docs})
 print(result)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Gateways]]
+- [[LiteLLM Prompt Caching]]
+- [[Pipecat.LLM Inference]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[vLLM Serving]]
+%% related:end %%

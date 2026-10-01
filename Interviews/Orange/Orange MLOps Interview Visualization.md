@@ -122,3 +122,12 @@ The 5 phases that make up the complete answer to "walk me through MLOps":
 | `Docker & K8s` | Dockerfile/Image/Container, Pod/Node/Cluster, Auto-scale | **High** — "how do you put models in production?" |
 | `Drifts` | Data Drift vs Concept Drift, hypothesis testing, CT pipeline | **High** — "how do models degrade?" |
 | `MLOPS Lifecycle` | Extraction → Training → Evaluation → Deployment → Monitoring | **Highest** — the master framework question |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CI & CD]]
+- [[Practical MLOps Ch1 - DevOps Foundations]]
+- [[MLOps Maturity And Production Practices]]
+- [[MLOps Lifecycle]]
+- [[MLOps Complete Guide]]
+%% related:end %%

@@ -84,3 +84,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sliding Window Technique]]
+- [[Frequency Array]]
+- [[Arrays - Max Subarray (Kadane Practice)]]
+- [[2D Prefix Sum]]
+- [[1D Partial Sum]]
+%% related:end %%

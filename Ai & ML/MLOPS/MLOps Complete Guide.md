@@ -688,3 +688,12 @@ stages:
     - Book: _Prediction Machines_ by Agrawal et al.
     - Canvas Examples: Embed figures in Obsidian if available.
 - **Next Steps**: Practice filling out a Machine Learning Canvas for a real-world problem.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[ML Project Checklist]]
+- [[MLOps Lifecycle]]
+%% related:end %%

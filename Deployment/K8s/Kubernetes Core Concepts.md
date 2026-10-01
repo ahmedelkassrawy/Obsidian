@@ -240,3 +240,10 @@ helm install my-jupyter jupyterhub/jupyterhub
 **Absolutely! The answer is B.**
 
 Trying to do A would take you weeks, and doing C is an anti-pattern that defeats the entire purpose of Kubernetes (if the massive Pod crashes, the entire system goes down). With Helm, you stand on the shoulders of giants who have already figured out the best way to deploy these complex AI systems.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Running Kubernetes Locally]]
+- [[Docker & K8s]]
+- [[AWS SageMaker]]
+%% related:end %%

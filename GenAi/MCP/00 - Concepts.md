@@ -298,3 +298,12 @@ The real split: a **Request** carries an `id` so its Result/Error can be matched
 1. **Initialization** — client sends `initialize` (protocol version + capabilities), server replies with its own, client sends the `initialized` notification, then normal traffic begins.
 2. **Message exchange** — request/response both ways, plus one-way notifications from either side.
 3. **Termination** — clean shutdown via `close()`, a transport disconnect, or an error.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MCPs]]
+- [[01 - Build a server (SDK v2)]]
+- [[MCP Reading Order]]
+- [[03 - MCP host (client side)]]
+- [[02 - Best practices & refactor]]
+%% related:end %%

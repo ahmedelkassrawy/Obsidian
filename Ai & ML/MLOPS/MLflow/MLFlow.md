@@ -281,3 +281,12 @@ The MLflow REST API provides endpoints for various functionalities:
 - **Colab Setup**: Ensure MLflow is installed (`!pip install mlflow`) and configure a tracking server if needed (local or remote).
 
 This guide provides a comprehensive overview of MLflow for tracking, managing, and evaluating machine learning experiments, particularly for scikit-learn models.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Mlflow Tracking]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[MLflow Evaluation]]
+- [[MLOps Lifecycle]]
+- [[Three Levels Of ML Software]]
+%% related:end %%

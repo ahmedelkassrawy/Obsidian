@@ -194,3 +194,12 @@ Combine reactive speed with deliberative foresight — usually layered: a fast l
 | **ReAct** | Tool use / fact-checking | Can get stuck in infinite loops |
 | **Plan-Execute** | Efficiency in long tasks | Brittle if the plan fails midway |
 | **Tree of Thoughts** | Deep problem solving | Very high token cost |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Engineering MOC]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[LangGraph Agents]]
+- [[LangGraph Nodes Edges And State]]
+%% related:end %%

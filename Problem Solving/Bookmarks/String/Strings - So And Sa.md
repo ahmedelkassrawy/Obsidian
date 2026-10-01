@@ -67,3 +67,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Strings - Max Subsequences]]
+- [[Strings - Longest Palindromic Substring]]
+- [[Arrays - Maximum Subarray Sum (CF 386415I)]]
+- [[Strings - Subsequence String]]
+- [[Backtracking - Creating Strings]]
+%% related:end %%

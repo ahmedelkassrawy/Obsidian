@@ -141,3 +141,12 @@ An exception test should name the expected error:
 with pytest.raises(ValidationError, match="greater than 0"):
     Transaction(...)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pydantic]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[Pydantic]]
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[04 - API Endpoints with Database Operations]]
+%% related:end %%

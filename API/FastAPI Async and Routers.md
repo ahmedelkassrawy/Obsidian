@@ -91,3 +91,12 @@ The APIRouter class in FastAPI allows you to:
 - **Webhooks**: For event-driven, one-way updates (e.g., notifying a system when a payment is made).
 - **WebSockets**: For real-time, bidirectional apps needing constant updates (e.g., live collaboration tools).
 - **APIs**: For general-purpose data access or updates where real-time isn’t critical (e.g., retrieving user profiles).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[Concurrency and Async]]
+- [[Async helps with waiting, not with computing]]
+- [[LlamaIndex Async Explained]]
+- [[Advanced Topics and Best Practices]]
+%% related:end %%

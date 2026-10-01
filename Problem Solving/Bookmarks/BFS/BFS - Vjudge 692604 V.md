@@ -118,3 +118,12 @@ int main()
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 P]]
+- [[BFS - Vjudge 692604 Q]]
+- [[BFS - Vjudge 692604 L]]
+- [[BFS - Vjudge 692604 H]]
+- [[BFS - Vjudge 692604 G]]
+%% related:end %%

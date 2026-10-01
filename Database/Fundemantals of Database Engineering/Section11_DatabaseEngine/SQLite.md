@@ -63,3 +63,12 @@ hubs:
   - Not for multi-user/client-server needs.
   - Performance tweaks (e.g., LSM) may not yield big gains due to architecture.
 - **Use Cases**: Local data storage in apps, browsers; not for networked, multi-user databases.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Intro DB Engine]]
+- [[MongoDB Architecture]]
+- [[MyISAM]]
+- [[InnoDB]]
+- [[MongoDB Internals]]
+%% related:end %%

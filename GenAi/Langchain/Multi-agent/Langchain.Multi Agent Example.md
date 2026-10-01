@@ -316,3 +316,12 @@ def schedule_event(request: str) -> str:
     # })
 ```
 **Important:** Make sure sub-agent prompts emphasize that their final message should contain all relevant information. A common failure mode is sub-agents that perform tool calls but don’t include the results in their final response.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain.Multi Agent Intro]]
+- [[Langchain.Multi Agent - Handoffs Implementation]]
+- [[Langchain.Multi Agent - Handoffs]]
+- [[Agent Handoffs And Tool Design]]
+%% related:end %%

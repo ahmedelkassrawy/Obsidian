@@ -165,3 +165,12 @@ The algorithm builds clusters through a step-by-step recursive process:
 - **Parameter Sensitivity:** The algorithm's success heavily relies on you choosing the perfect $\epsilon$ and `min_samples`; poor choices ruin the results.
     
 - **Struggles with High Dimensions:** It suffers from the "curse of dimensionality". In datasets with many features, distance gets skewed, making it incredibly difficult to define a meaningful $\epsilon$.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Unsupervised Learning - AI Book]]
+- [[DBSCAN , HDBSCAN]]
+- [[KMeans]]
+- [[Unsupervised Tasks]]
+- [[Gaussian Mixtures]]
+%% related:end %%

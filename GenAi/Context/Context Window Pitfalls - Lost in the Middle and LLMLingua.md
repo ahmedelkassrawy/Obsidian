@@ -54,3 +54,12 @@ For long conversations, appending the complete history to every request will qui
 - **Active Window:** Keep the last 5 turns of conversation raw and unmodified.
 - **Archived History:** Summarize the conversation’s first `$N$` turns into a structured bullet-point state block (e.g., _“User is querying API specs for project X”_).
 - **Injection:** Inject the state block at the top of the prompt, discarding the older raw chat logs.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[Sentence Window RAG]]
+- [[Context Engineering]]
+- [[Parent-child chunking]]
+- [[Attention lets every token decide what to look at]]
+%% related:end %%

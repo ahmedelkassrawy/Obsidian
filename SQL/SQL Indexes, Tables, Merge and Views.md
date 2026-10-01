@@ -306,3 +306,12 @@ Schema names (e.g., `dbo`) are required for:
 > 2. Write a `MERGE` statement to sync student grades between two tables.
 > 3. Create a view for instructors with salaries above 3000, with `CHECK OPTION`.
 > 4. How would you use a table variable to store top 5 students by age?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[Multiple Indexes]]
+- [[Key vs Non-Key Column Indexes]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[Indexes Concurrently]]
+%% related:end %%

@@ -216,3 +216,12 @@ Before adding a feature, answer:
 > If being wrong changes money, identity, permissions, or tenant boundaries, the LLM cannot be the final authority.
 
 Related: [[Agent Guardrails]], [[Human-in-the-Loop (Approval & Interrupts)]], and [[Agent Handoffs And Tool Design]].
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[ResolveFlow — Flagship Build Spec]]
+- [[ResolveFlow — AI Handoff Prompt]]
+- [[05 RefundService]]
+- [[Building Applications with Agents.Ch1 & 2]]
+- [[Agents Best Practice]]
+%% related:end %%

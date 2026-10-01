@@ -69,3 +69,12 @@ services:
 volumes:
 	prometheus_data
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Grafana]]
+- [[FastAPI - Request Files, MLOps, and API Metadata]]
+- [[AWS Deployment Plan]]
+- [[FastAPI AI Deployment (Docker + Azure)]]
+- [[FastAPI - MongoDB]]
+%% related:end %%

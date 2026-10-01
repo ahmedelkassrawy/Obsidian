@@ -52,3 +52,12 @@ app.include_router(
     tags=["users"],
 )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Verify Router]]
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Register Router]]
+- [[FastAPI Users - Router Setup]]
+- [[FastAPI Users - Reset Password Router]]
+%% related:end %%

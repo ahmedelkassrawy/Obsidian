@@ -515,3 +515,12 @@ By prioritizing UX at every stage of development, we ensure agents become not ju
 
 ---
 *Next: Chapter 4 – Tool Use, moving from ordinary chatbots to systems that can do real work for users.*
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Building Applications with Agents.Ch1 & 2]]
+- [[Context Engineering]]
+- [[Ch1 — Foundations of Agent Engineering]]
+- [[Agent with Tools]]
+- [[Agent Memory with Redis]]
+%% related:end %%

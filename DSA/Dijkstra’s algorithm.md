@@ -23,3 +23,10 @@ hubs:
 
 - Dijkstra’s algorithm only works on graphs with no cycles, or on graphs with a positive weight cycle.
 - You can’t use Dijkstra’s algorithm if you have negative-weight edges. Negative-weight edges break the algorithm
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Breadth First Search (BFS)]]
+- [[BFS, Graph Applications]]
+- [[BFS - Vjudge 692604 U (K Special Nodes)]]
+%% related:end %%

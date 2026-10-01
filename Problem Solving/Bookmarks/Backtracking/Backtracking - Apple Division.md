@@ -49,3 +49,12 @@ int main()
 
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - SkillUP]]
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - Knapsack Recursive]]
+- [[Backtracking - Knapsack]]
+- [[Backtracking - Creating Strings]]
+%% related:end %%

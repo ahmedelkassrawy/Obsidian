@@ -142,3 +142,12 @@ $$ \text{Efficiency} = \frac{\text{Cache Read}}{\text{Cache Read} + \text{Cache 
 ![[Pasted image 20260503141745.png]]![[Pasted image 20260503141836.png]]
 ![[Pasted image 20260503141859.png]]![[Pasted image 20260503142013.png]]
 ![[Pasted image 20260503142025.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[Prompt caching only pays off when the prefix stays identical]]
+- [[Context Engineering]]
+- [[Claude Code Core Architecture]]
+- [[Attention lets every token decide what to look at]]
+%% related:end %%

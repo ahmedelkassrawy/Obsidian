@@ -59,3 +59,11 @@ If they ask you to explain your understanding of the whole MLOps lifecycle on Su
 
 > _"MLOps is about treating machine learning models like robust software. I would start by extracting data and tracking my training experiments using **MLflow**. Once the model is evaluated and approved, a **CI/CD pipeline** takes over. The **Continuous Integration (CI)** step automatically tests the code for errors. If it passes, the **Continuous Deployment (CD)** step packages the model into a **Docker** container and deploys it to a highly scalable environment like **Kubernetes** or **AWS SageMaker**. Finally, we continuously monitor the model in production. If we detect data or concept drift, we trigger a **Continuous Training (CT)** pipeline to automatically retrain the model, ensuring our telecom systems stay accurate over time."_
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Practical MLOps Ch1 - DevOps Foundations]]
+- [[Orange MLOps Interview Visualization]]
+- [[MLOps Lifecycle]]
+- [[MLOps Maturity And Production Practices]]
+- [[Three Levels Of ML Software]]
+%% related:end %%

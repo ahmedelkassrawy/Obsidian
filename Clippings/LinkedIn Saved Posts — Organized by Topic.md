@@ -312,3 +312,12 @@ Review of the "Generative AI Design Patterns" book covering 32 patterns for prod
 ### Mohamed El sayed - Bosla (بوصلة) career mentor project
 Bosla: an AI career mentor that builds CVs, generates personalized roadmaps, and tracks ATS scores.
 🔗 https://www.linkedin.com/feed/update/urn:li:activity:7471973654650630145
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[AI Engineering Reading Links]]
+- [[PLAN]]
+- [[00 Home]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[X Bookmarks]]
+%% related:end %%

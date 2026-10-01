@@ -44,3 +44,11 @@ model_list:
         - location: message
           role: system
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Proxies]]
+- [[Prompt caching only pays off when the prefix stays identical]]
+- [[LLM Caching]]
+- [[LLM Gateways]]
+%% related:end %%

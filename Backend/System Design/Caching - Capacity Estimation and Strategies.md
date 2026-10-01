@@ -472,3 +472,12 @@ When you scale your application horizontally, each instance has its own local me
 ---
 
 *سبحانك اللهم وبحمدك، أشهد أن لا إله إلا أنت، أستغفرك اللهم، وأتوب إليك*
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Caching]]
+- [[Caching trades freshness for speed]]
+- [[Phase4 — Caching]]
+- [[Memcached]]
+- [[LLM Caching]]
+%% related:end %%

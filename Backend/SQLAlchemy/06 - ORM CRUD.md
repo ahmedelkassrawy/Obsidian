@@ -234,3 +234,12 @@ Works, but `query()` is legacy, doesn't exist on `AsyncSession`, and commit-per-
 ## Next
 
 → [[07 - Relationships One-to-Many]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[03 - Core CRUD (insert, select, update, delete)]]
+- [[12 - Cheatsheet]]
+- [[14 - Best Practices Checklist]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[13 - Gotchas and Troubleshooting]]
+%% related:end %%

@@ -818,3 +818,12 @@ async def invalidate_user_bm25(user_id: uuid.UUID):
     
     logger.info(f"BM25 invalidated: {user_id}")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[RAG Production]]
+- [[RAG Hybrid Search & Reranking]]
+- [[LlamaIndex RAG Pipeline]]
+%% related:end %%

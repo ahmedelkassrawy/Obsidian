@@ -518,3 +518,8 @@ int main() {
 
 - [[Recursion Notes]] (for base cases and stack mechanics)
 - [[Dynamic_Programming_Notes]] (for contrast with backtracking)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Creating Strings]]
+%% related:end %%

@@ -527,3 +527,12 @@ Static-first helps attention **and** makes prompt caching bite ([[LLM Caching]])
 > Context engineering is **curation, not accumulation.** The four moves keep the window small, relevant, and well-ordered. Everything this session feeds it: memory = Write, RAG + tool grouping = Select, summarization = Compress, handoffs = Isolate, caching rewards good ordering.
 
 **Fits:** raaaaag does Select (top-k) + Compress (rerank to the best few); a long agent chat needs Compress (summarize old turns); Shutterabia MCP surfaces = Isolate/Select (route to one surface's tools).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Engineering MOC]]
+- [[Deep Agents Best Practice]]
+- [[Deep Agents]]
+%% related:end %%

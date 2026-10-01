@@ -211,3 +211,12 @@ for i, doc in enumerate(used_docs, 1):
 - The **hypothetical answer** gives the retriever a _dense, concept-rich_ embedding.
 - Even if the document uses _different wording_, the retrieval hits the right passages.
 - It’s like _query expansion_, but guided by an LLM’s understanding.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG Production Best Practices]]
+- [[FastAPI Users - Router Setup]]
+- [[Project Talk to RAG]]
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[RAG]]
+%% related:end %%

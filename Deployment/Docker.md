@@ -251,3 +251,8 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 First off, you should notice that the build was MUCH faster! You'll see that several steps are using previously cached layers.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Docker & K8s]]
+%% related:end %%

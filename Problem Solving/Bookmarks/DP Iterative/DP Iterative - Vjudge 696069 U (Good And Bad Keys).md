@@ -66,3 +66,12 @@ int main()
 // If you use a bad key, you gain a[i] / 2^(j + 1) coins
 // dp[i][j] = dp[i + 1][j + 1] + a[i] / 2^(j + 1)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Iterative - Vjudge 696069 E]]
+- [[DP Iterative - Vjudge 696069 W]]
+- [[DP Iterative - Vjudge 696069 B]]
+- [[DP Iterative - Vjudge 696069 P]]
+- [[DP Iterative - Vjudge 696069 D]]
+%% related:end %%

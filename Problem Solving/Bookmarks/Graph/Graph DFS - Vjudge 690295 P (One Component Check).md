@@ -85,3 +85,12 @@ int main()
 ```
 
 ![[Screenshot (87).png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 R (Complete Components)]]
+- [[Graph DFS - Sum Friends]]
+- [[Graph DFS - Vjudge 690295 K (Is It A Tree)]]
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graphs, DFS]]
+%% related:end %%

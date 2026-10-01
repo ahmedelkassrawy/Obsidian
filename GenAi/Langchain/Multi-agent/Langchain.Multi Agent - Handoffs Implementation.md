@@ -411,3 +411,12 @@ result = agent.invoke(
 )
 # Agent will call go_back_to_warranty and restart the warranty verification step
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent - Handoffs]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain.Multi Agent Intro]]
+- [[Langchain.Multi Agent Example]]
+- [[Agent Agency Levels And Reflection Pattern]]
+%% related:end %%

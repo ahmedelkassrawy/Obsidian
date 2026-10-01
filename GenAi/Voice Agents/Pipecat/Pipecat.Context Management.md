@@ -189,3 +189,12 @@ await task.queue_frames([
 - **Manual control available** - use frames to append messages or trigger responses when needed
 - **Word-level precision** - proper placement ensures context accuracy during interruptions
 - **Automatic summarization** - enable context summarization to manage long conversations efficiently and reduce token costs
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.LLM Inference]]
+- [[Pipecat.Function Calling]]
+- [[Pipecat.TTS]]
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.Speech to text]]
+%% related:end %%

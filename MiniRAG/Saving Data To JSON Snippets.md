@@ -52,3 +52,8 @@ else:
 	with open(file_path,'a',encoding = 'utf-8') as f:
 		f.write(str(data) + '\n')
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[JSON Serialization]]
+%% related:end %%

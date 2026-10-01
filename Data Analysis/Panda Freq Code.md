@@ -60,3 +60,12 @@ df.groupby(["Churn"])[columns_to_show].describe(percentiles=[])
 columns_to_show = ["Total day minutes", "Total eve minutes", "Total night minutes"]
 df.groupby(["Churn"])[columns_to_show].agg(["mean", "std", "min", "max"])
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas - Sorting Values]]
+- [[Pandas - Modifying Rows And Columns]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Adding And Removing Columns]]
+- [[Pandas - Selecting Filtering And Indexing]]
+%% related:end %%

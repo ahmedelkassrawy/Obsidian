@@ -196,3 +196,12 @@ answer = interrupt({"question": "...", "action": proposed_action.model_dump(mode
 ### `InMemorySaver` is for learning
 
 Checkpoints live in process memory. A server restart loses every paused ticket, and two server processes do not share them. Production needs a persistent saver (for example Postgres). Keep this in mind before calling the approval flow "done."
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[LangGraph - Before v1]]
+- [[LangGraph Nodes Edges And State]]
+- [[Langgraph Best Practices]]
+- [[Langgraph v1 - Map Reduce Pattern]]
+%% related:end %%

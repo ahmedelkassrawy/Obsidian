@@ -166,3 +166,12 @@ We generally recommend keeping the default settings unless you need longer train
 - `**gradient_accumulation_steps = 4**` – Simulates a larger batch size without increasing memory usage.
 - `**max_steps = 60**` – Speeds up training. For full runs, replace with `num_train_epochs = 1` (1–3 epochs recommended to avoid overfitting).
 - `**learning_rate = 2e-4**` – Lower for slower but more precise fine-tuning. Try values like `1e-4`, `5e-5`, or `2e-5`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning vs Reinforcement Learning]]
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[A RAG answer is only as good as its retrieval]]
+- [[RAG Production]]
+- [[Fine-Tuning Quick Reference]]
+%% related:end %%

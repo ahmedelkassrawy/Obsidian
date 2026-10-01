@@ -96,3 +96,11 @@ Browsers enforce **CORS** policies, which prevent a script on one website from m
 |**Security Risk**|High (Code is visible)|Low (Code is hidden)|
 
 Are you more interested in how the "traffic controller" (Nginx) manages these requests, or do you want to dive deeper into the security constraints like CORS?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Nginx]]
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[Ch2. Selecting Your API Architecture]]
+- [[gRPC and Protocol Buffers]]
+%% related:end %%

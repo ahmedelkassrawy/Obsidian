@@ -157,3 +157,12 @@ async def chat_stream_endpoint(request: AskRequest, db: Session = Depends(get_db
             detail=str(e)
         )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Project Talk to RAG]]
+- [[RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[A RAG answer is only as good as its retrieval]]
+- [[Full Design]]
+%% related:end %%

@@ -65,3 +65,10 @@ log.file.level = info
 log.console = true
 log.console.level = info
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Celery]]
+- [[Message Queues  (RabbitMQ)]]
+- [[Celery - Complete Guide]]
+%% related:end %%

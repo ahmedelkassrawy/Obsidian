@@ -89,3 +89,9 @@ Still open: `execute_action` raises the same way when the refund service or gate
 ### `.env` format
 
 One `KEY=value` per line. Lines starting with `#` are comments. Quote the value if it contains spaces or `#`. A line without `=` (or a pasted multi-line value) is what `python-dotenv` reports as malformed.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Gateways]]
+- [[Agent Guardrails]]
+%% related:end %%

@@ -255,3 +255,12 @@ async def query_knowledge_base(params: FunctionCallParams,query:str):
     await params.result_callback(response.text)
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Speech Input & Turn Detection]]
+- [[Pipecat Pipeline Termination]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat.Function Calling]]
+- [[Pipecat.LLM Inference]]
+%% related:end %%

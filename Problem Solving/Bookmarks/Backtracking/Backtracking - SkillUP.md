@@ -89,3 +89,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Apple Division]]
+- [[DP - Vjudge 694272 O]]
+- [[DP - Vjudge 694272 E]]
+- [[DP - Vjudge 694272 M]]
+- [[Backtracking - Knapsack]]
+%% related:end %%

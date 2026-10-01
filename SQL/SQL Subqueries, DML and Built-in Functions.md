@@ -231,3 +231,12 @@ SELECT @@VERSION; -- Returns the SQL Server version
 > 2. What’s the difference between `UNION ALL` and `UNION` in terms of performance and output?
 > 3. How would you use `COALESCE` to handle nulls in a `SELECT` query?
 > 4. Write an adhoc query to extract the first two characters of `dept_name`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Variables, Functions and Window Functions]]
+- [[SQL TOP, Execution Order and DDL]]
+- [[SQL Stored Procedures, Triggers and XML]]
+- [[SQL Ranking Functions and Conditional Logic]]
+- [[Intro Cursors]]
+%% related:end %%

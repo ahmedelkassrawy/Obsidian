@@ -143,3 +143,9 @@ X_holidays = pd.DataFrame(
 X_holidays = pd.get_dummies(holidays)
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Time Series Cookbook]]
+- [[Pandas Time Series Cookbook]]
+%% related:end %%

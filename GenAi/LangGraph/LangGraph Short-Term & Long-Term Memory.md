@@ -279,3 +279,12 @@ initial_input = {"messages": [("user", "Explain gradient descent.")]}
 response = run_agent_with_approval(agent, initial_input, config)
 response["messages"][-1].content
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[Langchain v1]]
+- [[06 LangGraph Orchestration]]
+- [[LangGraph Agents]]
+- [[LangGraph Nodes Edges And State]]
+%% related:end %%

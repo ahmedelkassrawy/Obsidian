@@ -514,3 +514,12 @@ You must unpack them using `pad_packed_sequence()` _if_ you need the full sequen
 In our model, we only need **hidden states**, so unpacking is unnecessary.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN and LSTM]]
+- [[RNN Implementation Guide]]
+- [[Tokenizer]]
+- [[Sequence Modeling With RNNs]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+%% related:end %%

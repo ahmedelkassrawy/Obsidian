@@ -590,3 +590,12 @@ The success of agents relies heavily on the approach to orchestration. Best prac
 
 Start small with well-designed scenarios and simpler orchestration, then gradually increase complexity as needed. In the next chapter, we will explore how **memory** can further enhance your agents' capabilities—enabling them to recall knowledge, maintain context across interactions, and perform tasks with greater intelligence and personalization.
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Agents]]
+- [[Deep Agents Best Practice]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[AI Workflows VS AI Agent]]
+- [[Function Calling]]
+%% related:end %%

@@ -103,3 +103,12 @@ This means that the amount of context that can be bundled into a skill is effect
 4. Finally, Claude proceeds with the user’s task now that it has loaded relevant instructions from the PDF skill.
 
  Pay special attention to the `name` and `description` of your skill. Claude will use these when deciding whether to trigger the skill in response to its current task.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Skill Creation]]
+- [[Langchain.Multi Agent - Skills Implementation]]
+- [[Langchain.Multi Agent Intro]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[SKILLS Best Practice]]
+%% related:end %%

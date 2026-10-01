@@ -63,3 +63,12 @@ which at the first iteration the i = 0 so we have a pointer on the begin of the 
 
 - `numbers.begin() + 6` points to the start (`2`), and `min(6 + 3, 8)` gives index 8, so the chunk is `[2, 7]`.
 - `min_element` finds `2`, and `*min_element` returns `2`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lower & Upper Bounds]]
+- [[Two Pointers]]
+- [[Vectors]]
+- [[Binary Search]]
+- [[Sliding Window Technique]]
+%% related:end %%

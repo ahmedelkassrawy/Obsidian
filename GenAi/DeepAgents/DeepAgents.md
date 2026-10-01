@@ -241,3 +241,12 @@ class WeatherReport(BaseModel):
 agent = create_deep_agent(response_format=WeatherReport, 
 						tools=[internet_search] )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent Intro]]
+- [[Deep Agents]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Deep Agents Best Practice]]
+- [[Context Engineering]]
+%% related:end %%

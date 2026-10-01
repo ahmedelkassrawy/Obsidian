@@ -434,3 +434,9 @@ POST /organizations/101/archive
 
 > [!success]
 > Good API design is invisible: it behaves exactly how developers expect.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[Clipping - REST API Design (YouTube)]]
+%% related:end %%

@@ -215,3 +215,12 @@ Because only responses are built from ORM objects. Request bodies come from JSON
 ## Next
 
 → [[04 - API Endpoints with Database Operations]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[Ch3. Creating the Database Layer]]
+- [[05 - Sessions and sessionmaker]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[09 - Cheatsheet]]
+%% related:end %%

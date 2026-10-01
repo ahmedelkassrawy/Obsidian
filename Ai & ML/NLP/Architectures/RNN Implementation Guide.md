@@ -504,3 +504,12 @@ test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
 print(f"\nTest Accuracy: {test_accuracy:.4f}")
 print(f"Test Loss: {test_loss:.4f}")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sequence Modeling With RNNs]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[Text Classification]]
+- [[RNN]]
+- [[RNN and LSTM]]
+%% related:end %%

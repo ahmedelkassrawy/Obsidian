@@ -62,3 +62,12 @@ print(reshaped_array5.ndim)
 print(reshaped_array5.shape)
 print(reshaped_array5)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Creating And Accessing Arrays]]
+- [[00. PyTorch Tensor Fundamentals]]
+- [[Numpy - Data Types]]
+- [[Numpy - Arithmetic Operations]]
+- [[Numpy - Memory Layout And Mixed Types]]
+%% related:end %%

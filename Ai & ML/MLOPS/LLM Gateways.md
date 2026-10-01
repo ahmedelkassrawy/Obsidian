@@ -121,3 +121,12 @@ litellm.completion(
 - **raaaaag** already goes through **OpenRouter** (a gateway) — that's how a string swaps models.
 - **Shutterabia:** a gateway would centralize the model calls its MCP tools make — cost caps per client, fallback if a provider is down, one key to rotate.
 - **System design:** this *is* the AI-bank "LLM gateway" design — the design and the code are the same thing.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Proxies]]
+- [[API Gateway]]
+- [[vLLM Serving]]
+- [[07 Intent Routing and LLM Classifier]]
+- [[08 FastAPI Layer]]
+%% related:end %%

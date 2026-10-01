@@ -150,3 +150,12 @@ This checklist can guide you through your machine learning projects. There are e
     - Describe what worked and what did not.
     - List your assumptions and your system's limitations.
 5. Ensure your key findings are communicated through beautiful visualizations or easy-to-remember statements (e.g., "the median income is the number-one predictor of housing prices").
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLOps Complete Guide]]
+- [[Designing ML Systems.1]]
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[GoTo ML Regression]]
+%% related:end %%

@@ -35,4 +35,8 @@ The `ceil` function is a mathematical function that returns the smallest integer
 - `ceil(2.0)` returns `2` because `2` is already an integer, so no rounding is necessary.
 - `ceil(-3.8)` returns `-3` because it's the next smallest integer greater than `-3.8` (closer to zero in this case).
 
-
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[C++ Solving Tips - Ternary And Palindrome]]
+- [[Lower & Upper Bounds]]
+%% related:end %%

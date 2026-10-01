@@ -180,3 +180,12 @@ Verified with a fake classifier: an unknown thread gives `values={}` and `next=(
 - Pause check uses `snapshot.next`, not `"__interrupt__"`.
 - Returns 200 even while waiting. The 202 on POST meant "accepted, not finished." A GET succeeded at reading; the `status` field carries the waiting state.
 - Security gap for later: anyone with a `ticket_id` can read the ticket. A real system checks the caller's tenant against `tenant_id`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[06 LangGraph Orchestration]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[04 - API Endpoints with Database Operations]]
+- [[Human-in-the-Loop (Approval & Interrupts)]]
+%% related:end %%

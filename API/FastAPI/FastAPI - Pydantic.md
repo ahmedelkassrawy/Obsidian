@@ -680,3 +680,12 @@ async def read_items(headers: Annotated[CommonHeaders, Header()]):
 - **Cookies**: For client-side state management (e.g., sessions, tracking, preferences).
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Response Models and Status Codes]]
+- [[Pydantic]]
+- [[Pydantic]]
+- [[01 - Overview and Project Layout]]
+- [[06 - Request vs Response Models Explained]]
+%% related:end %%

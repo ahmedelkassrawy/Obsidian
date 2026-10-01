@@ -274,3 +274,12 @@ Uses the **dependency-inversion principle**: outer layers depend inward; the cor
 
 ## Verification note
 Code checked against the official FastAPI docs (fastapi.tiangolo.com): **dependencies-with-yield** and **custom-response / RedirectResponse** confirmed. Pydantic validation updated from the book's v1 `@validator` to **v2 `field_validator`** (the book states it targets Pydantic v2). All ⚠️ marks above are my corrections to the book's printed snippets.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[Pydantic]]
+- [[04 - API Endpoints with Database Operations]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[FastAPI - Pydantic]]
+%% related:end %%

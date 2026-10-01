@@ -784,3 +784,12 @@ Output: Memory {
 **The difference:** What happens behind the scenes.
 - **InMemoryMemoryService:** Stores raw events
 - **VertexAiMemoryBankService:** Intelligently consolidates before storing
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[Agent Memory with Redis]]
+- [[Pipecat.Context Management]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Google ADK]]
+%% related:end %%

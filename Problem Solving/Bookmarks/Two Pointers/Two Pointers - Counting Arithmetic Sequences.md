@@ -61,3 +61,12 @@ int main()
     cout<<total;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Another Pair Problem]]
+- [[DP - Vjudge 694272 O]]
+- [[DP - Vjudge 694272 S (Counting Valid Arrays)]]
+- [[Two Pointers]]
+- [[DP - Vjudge 694272 W]]
+%% related:end %%

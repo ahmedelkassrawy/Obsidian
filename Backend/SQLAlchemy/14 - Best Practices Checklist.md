@@ -96,3 +96,12 @@ hubs:
 ## Review prompt (copy into a PR review)
 
 > Check this file against `SQLAlchemy/14 - Best Practices Checklist`: session scope, commit ownership, 2.0 style, N+1, await coverage, FK/cascade agreement, `.where()` on bulk statements.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[09 - Cheatsheet]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[Ch3. Creating the Database Layer]]
+%% related:end %%

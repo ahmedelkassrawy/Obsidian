@@ -38,3 +38,9 @@ docker run --name pgshard1 -p 5432:5432 -d pgshard
 docker run --name pgshard2 -p 5433:5432 -d pgshard
 docker run --name pgshard3 -p 5434:5432 -d pgshard
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Replication scales reads, sharding scales writes]]
+- [[Enabling SSL,TLS]]
+%% related:end %%

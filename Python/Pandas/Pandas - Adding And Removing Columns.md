@@ -26,3 +26,12 @@ df[["fisrt","last"]] = df["full_name"].str.split(" ", expand=True)
 
 df.append({"first": "Tony"}, ignore_index = True) #it wil append Tony but will leave the other rows or columns with values of NaN
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas - Modifying Rows And Columns]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Sorting Values]]
+- [[Pandas - Dates And Times]]
+- [[Panda Freq Code]]
+%% related:end %%

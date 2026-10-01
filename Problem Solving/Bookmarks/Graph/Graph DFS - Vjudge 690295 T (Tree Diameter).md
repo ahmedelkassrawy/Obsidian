@@ -88,3 +88,12 @@ int main()
     cout << big << endl; // Output the tree diameter
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 J]]
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graph DFS - Vjudge 690295 K (Is It A Tree)]]
+- [[Graph DFS - Vjudge 690295 G]]
+- [[Graph DFS - Maze]]
+%% related:end %%

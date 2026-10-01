@@ -58,3 +58,12 @@ Using platforms like LiveKit, setting up the backend requires focusing on three 
     
 - **Optimizing the LLM:** The LLM is usually the main bottleneck. To speed it up, use smaller/quantized models, utilize fast inference APIs, and prompt the LLM to provide shorter or staged replies.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat]]
+- [[Langchain Voice Agent]]
+- [[Pipecat.Speech Input & Turn Detection]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat.TTS]]
+%% related:end %%

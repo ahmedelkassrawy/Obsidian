@@ -238,3 +238,12 @@ TOOL_GROUPS = {"publishing": publishing.TOOLS,
 ## Shutterabia + raaaaag fits
 - **Shutterabia MCP server = a tool catalog.** Each MCP tool's name + description is what a client model reads to decide when to publish/schedule/analyze. Same rules: one job per tool, tight schemas, string errors. As the catalog grows, group by surface (Ads / Analytics / Publishing) rather than one flat list — the multi-agent split.
 - **raaaaag `search_docs`** already follows the empty-result rule (refusal on no context), and the eval harness gates on refusal rate — testing the tool's contract.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent Example]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain.Multi Agent Intro]]
+- [[Agent Engineering MOC]]
+- [[Langchain.Multi Agent - Handoffs Implementation]]
+%% related:end %%

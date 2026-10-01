@@ -91,3 +91,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 J]]
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graph DFS - Vjudge 690295 G]]
+- [[Graph DFS - Vjudge 690295 P (One Component Check)]]
+- [[Graph DFS - Vjudge 690295 U]]
+%% related:end %%

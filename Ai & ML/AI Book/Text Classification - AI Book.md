@@ -103,3 +103,12 @@ def get_recomm(title,df,sim,count = 10):
 - **return titles**: Returns the list of recommended titles.
 
 **What’s Happening**: The function identifies a movie by title, looks up its similarity scores with all other movies, sorts them, and returns the top similar titles as recommendations.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP - AI BOOK]]
+- [[NLP Concepts]]
+- [[NLP]]
+- [[RNN and LSTM]]
+- [[NLP Pipeline And Regex Basics]]
+%% related:end %%

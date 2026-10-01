@@ -912,3 +912,12 @@ We covered a lot. Quick recap:
 
 > [!success] Where you are now
 > You should feel more confident building your own GenAI services from a variety of open-source models. Next chapter: **type safety** — how it kills bugs and reduces uncertainty when working with external APIs, and how validating request/response schemas makes your services more reliable.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[AI Engineering Specific Use Cases]]
+- [[Designing ML Systems Ch3 - Data Engineering]]
+- [[Project Talk to RAG]]
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[vLLM Serving]]
+%% related:end %%

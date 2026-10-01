@@ -97,3 +97,10 @@ Soft voting accuracy: 0.920
 
 > [!info] Why Voting Works  
 > Combining diverse classifiers reduces errors, as they make uncorrelated mistakes. Soft voting often outperforms hard voting by leveraging probability confidence.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bagging And Boosting]]
+- [[Random Forest]]
+- [[Bagging & Pasting]]
+%% related:end %%

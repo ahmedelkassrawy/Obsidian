@@ -40,3 +40,11 @@ pd.to_datetime(landslides['date'], format="%m/%d/%y")
 day_of_month_landslides = landslides['date_parsed'].dt.day
 day_of_month_landslides.head()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas - Dates And Times]]
+- [[Pandas Basics Cheat Sheet]]
+- [[SQL Date Formatting, Self-Joins and CTEs]]
+- [[Pandas Time Series Cookbook]]
+%% related:end %%

@@ -169,3 +169,12 @@ Here’s how patterns compare across all three scenarios:
 | Parallel execution    | ✅                                                                                  |                                                                                  |                                                                              | ✅                                                                            |
 | Large-context domains | ✅                                                                                  |                                                                                  |                                                                              | ✅                                                                            |
 | Simple, focused tasks |                                                                                    |                                                                                  | ✅                                                                            |                                                                              |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain.Multi Agent Example]]
+- [[Langchain.Multi Agent - Handoffs Implementation]]
+- [[Langchain.Multi Agent - Router]]
+- [[Deep Agents Best Practice]]
+%% related:end %%

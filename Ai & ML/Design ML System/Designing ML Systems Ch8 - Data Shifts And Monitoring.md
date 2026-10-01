@@ -145,3 +145,12 @@ We’ll start by covering reasons why ML models that perform great during develo
 - **Notification channels** can include email, Slack, or PagerDuty.
 - Alerts should be **actionable**, providing clear information for addressing the issue.
 - It's important to minimize **false positives** (alerts without a real problem) and **false negatives** (missed problems).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+- [[ML Project Checklist]]
+- [[MLOps Lifecycle]]
+%% related:end %%

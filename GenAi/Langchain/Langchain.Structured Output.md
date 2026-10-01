@@ -448,3 +448,8 @@ for m in chunks:
   print(m)
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph - Before v1]]
+- [[Run Agent - Langchain & Langgraph]]
+%% related:end %%

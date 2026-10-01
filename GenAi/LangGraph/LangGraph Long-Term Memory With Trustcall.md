@@ -630,3 +630,12 @@ def should_summarize_conversation(
 
     return END
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Short-Term & Long-Term Memory]]
+- [[LangSmith]]
+- [[Langchain v1]]
+- [[LangGraph Agents]]
+- [[LangGraph Tools Persistence And Streaming]]
+%% related:end %%

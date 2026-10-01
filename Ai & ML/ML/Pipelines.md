@@ -142,3 +142,10 @@ joblib.dump(pipefinal, "pipefinal.joblib")
 # Loading the saved model
 pipefinal2 = joblib.load("pipefinal.joblib")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Three Levels Of ML Software]]
+- [[MLflow Evaluation]]
+- [[01. PyTorch Workflow Fundamentals]]
+%% related:end %%

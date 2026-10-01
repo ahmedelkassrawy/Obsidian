@@ -65,3 +65,9 @@ print(classification_report(y_test, y_pred))
 (ROC) curve is another common tool used with binary classifiers.
 the ROC curve plots the true positive rate (another name for recall) against the false positive rate (FPR).
 ![[Pasted image 20250413193155.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLflow Evaluation]]
+- [[Logistic Regression And Classification Basics]]
+%% related:end %%

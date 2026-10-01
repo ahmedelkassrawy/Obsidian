@@ -1008,3 +1008,8 @@ The LangChain agent uses different tools for each region.
 |**LayoutReader**|Reading order prediction|Sorted sequence of regions|
 |**PaddleOCR**|Layout Detection|Region types (table, chart, text)|
 |**VLM**|Analysis of charts/tables|JSON (title, legend,... / headers, rows,...)|
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PaddleOCR Result Structure]]
+%% related:end %%

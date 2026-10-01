@@ -41,3 +41,11 @@ def recommend(title):
   ]
   return top_5
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recommendation sys]]
+- [[Embeddings turn meaning into distance]]
+- [[Recommender Systems]]
+- [[Two-Tower Network architecture for collaborative filtering]]
+%% related:end %%

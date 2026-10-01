@@ -82,3 +82,11 @@ int main()
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linked List]]
+- [[Quicksort]]
+- [[Hash Tables]]
+- [[Binary Search]]
+%% related:end %%

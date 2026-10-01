@@ -47,3 +47,12 @@ bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 ```
 - `tokenUrl` (`str`): The exact path of your login endpoint. It'll allow the interactive documentation to automatically discover it and get a working _Authorize_ button.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Headers VS Cookie]]
+- [[FastApi - Security]]
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Router Setup]]
+- [[FastAPI Users - Auth Backend]]
+%% related:end %%

@@ -137,3 +137,10 @@ The LLM must never call the gateway's refund method directly.
 - Wrote the first API test: fake classifier + `monkeypatch` + `TestClient`, proving a ticket created in one request can be read in another.
 - Wrote the approval-path API test: 202 → waiting → approve → one refund → second approval refused with still one refund. Learned to count a side effect before and after, and to build money with `Decimal("...")`.
 - Closed the "exception is not a route" gap: `classify_intent` catches LLM failures and writes `errors`, so the ticket escalates instead of returning 500. Tested with a fake that raises, red → green.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agent Engineering MOC]]
+- [[2. AI Contract Review — Advanced Temporal Patterns]]
+%% related:end %%

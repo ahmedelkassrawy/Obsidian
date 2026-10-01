@@ -194,3 +194,12 @@ def search_database(query: str) -> str:
         
     return format_results(results)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Context Engineering]]
+- [[Agent Orchestration And Tool Selection]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[LangGraph Agents]]
+%% related:end %%

@@ -89,3 +89,12 @@ plt.xlabel("Number of clusters")
 plt.ylabel("Interias")
 ```
 ![[Pasted image 20251016133331.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KMeans And DBSCAN]]
+- [[KMeans]]
+- [[Unsupervised Tasks]]
+- [[Clustering]]
+- [[Gaussian Mixtures]]
+%% related:end %%

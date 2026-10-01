@@ -189,3 +189,9 @@ Simpler dampeners help in practice, such as telling the model to say "I don't kn
 The four choices behind a model, its data, its shape, its alignment, and its sampling, together explain both its strengths and its failure modes, and they are what to reason about when picking and adapting one.
 
 The sampling knobs feed directly into [[llm-prompting]], and the two accounts of hallucination sit under the evaluation work in [[rag-retrieval]] and the next chapter. Chapter 3, already covered in [[Ch3. Eval]], turns to evaluation methodology: exact versus subjective measures, functional correctness, and the uses and limits of using one model to judge another.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1. Introduction to Building AI Applications with Foundation Models]]
+- [[Designing ML Systems Ch4 - Training Data]]
+%% related:end %%

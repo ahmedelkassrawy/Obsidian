@@ -153,3 +153,7 @@ readPool.query('SELECT * FROM employees');
 - **Connection Pooling**: Implement pools for different routes to optimize performance and security.
 - **Idempotent Scripts**: For non-production scripts, `CREATE TABLE IF NOT EXISTS` is useful for idempotency.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Best Practices for SQL Connection Pooling]]
+%% related:end %%

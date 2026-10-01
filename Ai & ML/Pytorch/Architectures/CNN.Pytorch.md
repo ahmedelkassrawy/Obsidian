@@ -94,3 +94,11 @@ mcro -> care about the performance on small classes
 weighted -> consider errors in larger classes as more important
 ![[Pasted image 20250722155328.png]]![[Pasted image 20250722155443.png]]![[Pasted image 20250722155450.png]]
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CNN]]
+- [[Final Transfer Learning]]
+- [[Pytorch NN]]
+- [[CNN HyperParameters]]
+- [[PyTorch Dataset , Dataloaders]]
+%% related:end %%

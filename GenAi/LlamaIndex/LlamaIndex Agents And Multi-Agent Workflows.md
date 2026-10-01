@@ -846,3 +846,12 @@ email_agent_workflow = AgentWorkflow(
 )
 result = await email_agent_workflow.run(user_msg=email_text)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LlamaIndex RAG Pipeline]]
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[Context Engineering]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Memory with Redis]]
+%% related:end %%

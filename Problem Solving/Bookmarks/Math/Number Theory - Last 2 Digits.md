@@ -48,3 +48,12 @@ https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/Y
  solution1();
  }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Remainder Quest]]
+- [[Number Theory - Modular Arithmetic And GCD]]
+- [[Number Theory - Hard Compare]]
+- [[C++ Solving Tips - Ternary And Palindrome]]
+- [[DP Iterative - Vjudge 696069 Y]]
+%% related:end %%

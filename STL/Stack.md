@@ -43,3 +43,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Queue]]
+- [[Stack vs Heap]]
+- [[Priority Queue]]
+- [[Linked List]]
+- [[Deque]]
+%% related:end %%

@@ -126,3 +126,12 @@ To train a neural network, we must navigate a mathematical landscape to minimize
    * **How it works:** Combines the benefits of Momentum and RMSProp. It maintains per-parameter, adaptive learning rates based on moving averages of past gradients.
    * **Why it helps:** By adapting the learning rate for *each individual parameter*, Adam achieves incredibly fast, efficient, and stable convergence. 
    * **Popularity:** Because of this efficiency, Adam is widely considered the most commonly used optimization algorithm in deep learning today.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Introduction To Deep Learning]]
+- [[Transfer Learning And Training Callbacks]]
+- [[BatchNorm]]
+- [[Regularization trades training fit for generalization]]
+- [[Pytorch Basic Training]]
+%% related:end %%

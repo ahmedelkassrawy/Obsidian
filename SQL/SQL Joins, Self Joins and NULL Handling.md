@@ -110,6 +110,9 @@ FROM Student
 ```
 
 ----   _ one char 
-----   % more than one char 
+----   % more than one char
 
-
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Self Join and Aggregate Adhoc Queries]]
+%% related:end %%

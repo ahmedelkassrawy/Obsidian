@@ -531,3 +531,12 @@ item_sim_df = pd.DataFrame(item_sim, index=pivot.columns, columns=pivot.columns)
 - Start simple (SVD or item-KNN) on small datasets (MovieLens) before moving to NCF.
 - For high sparsity, use regularized matrix factorization or hybrid models that incorporate content.
 - Evaluate for both rating prediction (RMSE/MAE) and ranking (Precision@K, Recall@K, NDCG).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recommender Systems]]
+- [[Embeddings turn meaning into distance]]
+- [[Building a Two-Tower Retrieval System with PyTorch and FAISS]]
+- [[Neo4j]]
+- [[Two-Tower Network architecture for collaborative filtering]]
+%% related:end %%

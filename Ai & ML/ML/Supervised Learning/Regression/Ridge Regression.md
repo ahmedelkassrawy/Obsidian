@@ -68,3 +68,11 @@ print("Score:", ridge.score(X_test, y_test))
 ```
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lasso Regression]]
+- [[Elastic Net Regression]]
+- [[Regularization trades training fit for generalization]]
+- [[Linear Regression]]
+%% related:end %%

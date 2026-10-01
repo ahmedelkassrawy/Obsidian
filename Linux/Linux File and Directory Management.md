@@ -192,3 +192,9 @@ hubs:
 - **File Management**: Copy (`cp`), move/rename (`mv`), and delete (`rm`) files efficiently.
 - **Directory Management**: Create (`mkdir`) and remove (`rmdir`) directories as needed.
 - **Caution**: Commands like `rm` are permanent; double-check before executing.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linux Commands]]
+- [[Bash Shell and Commands]]
+%% related:end %%

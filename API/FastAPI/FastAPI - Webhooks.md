@@ -489,3 +489,12 @@ async def get_webhook_stats():
 
 > [!note] Need help?
 > Check the FastAPI docs at `http://localhost:8000/docs` when your server is running!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[FastAPI - Request Files, MLOps, and API Metadata]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[08 FastAPI Layer]]
+- [[FastApi - Security]]
+%% related:end %%

@@ -529,3 +529,12 @@ retriever = VectorIndexRetriever(
     filters=metadata_filters  # Apply organization filtering
 )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[Project Talk to RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[Advanced RAG]]
+- [[RAG And Agents - AI Engineering Book Ch6]]
+%% related:end %%

@@ -360,3 +360,10 @@ def upload_file_task(self, file_b64, file_name, file_type, user_id):
 2. **Acks Late + Status:** Because `acks_late=True`, if the worker crashes during `process_documents`, the task remains in the queue. When it restarts, your `IdempotencyManager` will see the status is `STARTED` and use your `task_time_limit` logic to decide whether to resume it.
     
 3. **Audit Trail:** The `CeleryTaskExecution` table now serves as a reliable log for your LLM/Document processing pipeline.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Celery - Complete Guide]]
+- [[10 - Async SQLAlchemy]]
+- [[Celery]]
+%% related:end %%

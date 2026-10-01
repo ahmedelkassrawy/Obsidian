@@ -43,3 +43,12 @@ FastAPI Users takes care of upgrading the password hash to a more recent algorit
 Typically, when a user logs in, we'll check if the password hash algorithm is deprecated.
 
 If it is, we take the opportunity of having the password in plain-text at hand (since the user just logged in!) to hash it with a better algorithm and update it in database.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - UserManager]]
+- [[FastAPI Users - Reset Password Router]]
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Schemas]]
+- [[FastAPI Users - Router Setup]]
+%% related:end %%

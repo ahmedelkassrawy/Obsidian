@@ -932,3 +932,12 @@ int main()
 
 > [!summary] If you forget everything else
 > BFS = ripples in a pond. **Queue** keeps the rings in order, **visited** stops repeats, **levels** counts the steps. Every problem above is that same loop with one small idea added on top.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Breadth First Search (BFS)]]
+- [[BFS - Vjudge 692604 U (K Special Nodes)]]
+- [[Dijkstra’s algorithm]]
+- [[BFS - Vjudge 692604 J]]
+- [[BFS - Vjudge 692604 G]]
+%% related:end %%

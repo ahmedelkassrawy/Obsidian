@@ -136,3 +136,12 @@ Memory System:
     - Enables fast retrieval of historical information
     - Valuable for future task completion
     - Less commonly implemented but potentially crucial for future developments
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Agents Best Practice]]
+- [[AI Workflows VS AI Agent]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agent Engineering MOC]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

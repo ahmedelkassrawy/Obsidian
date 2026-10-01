@@ -273,3 +273,12 @@ Two pieces do the work: the **counter** (`operator.add` reducer, so returning `{
 - **Step-limit** = a counter (reducer) + a guard (router) so the loop always terminates cleanly.
 
 An agent needs all four: reducers to keep the conversation, routing to loop, and a cap so it stops. This is the production shape of [[raaaaag]]'s agent — `search_docs` can be called repeatedly, but a step cap stops a confused model from burning tokens, and the user still gets a coherent reply.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[06 LangGraph Orchestration]]
+- [[LangGraph - Before v1]]
+- [[LangGraph Agents]]
+- [[Langchain.Multi Agent - Router]]
+- [[LangGraph Short-Term & Long-Term Memory]]
+%% related:end %%

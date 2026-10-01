@@ -66,3 +66,12 @@ SELECT * FROM T WHERE F1 = 1 AND F2 = 4
 | **Case 2** | One Index           | One condition is highly selective          | Moderate; depends on filter efficiency   |
 | **Case 3** | None (Table Scan)   | Large result set or poor index selectivity | Slow for large tables                    |
 | **Hint**   | Forced Index        | Optimizer overridden via hint              | Use cautiously; verify with EXPLAIN PLAN |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PostgreSQL Scan Types Comparison]]
+- [[Indexes speed up reads by slowing down writes]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+- [[Key vs Non-Key Column Indexes]]
+%% related:end %%

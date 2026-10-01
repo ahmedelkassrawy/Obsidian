@@ -35,3 +35,9 @@ int main()
 }
 ```
 ![[Pasted image 20240419174921.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Last 2 Digits]]
+- [[Number Theory - Multiplication Of Its Divisors]]
+%% related:end %%

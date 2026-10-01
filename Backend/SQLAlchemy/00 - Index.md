@@ -115,3 +115,12 @@ Full checklist: [[14 - Best Practices Checklist]].
 - [[Backend/Deployment/Integrating FastAPI, Pydantic, and SQLAlchemy/00 - Index|Integrating FastAPI, Pydantic, and SQLAlchemy]] — uses these models inside FastAPI endpoints.
 - [[Pydantic]] — the schema side.
 - [[Advanced Topics and Best Practices]] — Alembic migrations, connection pooling, auth.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[09 - Cheatsheet]]
+- [[Ch3. Creating the Database Layer]]
+- [[02 - Database Session Dependency (get_db)]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+%% related:end %%

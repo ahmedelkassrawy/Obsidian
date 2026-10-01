@@ -80,3 +80,10 @@ while states_needed:
 	states_needed -= states_covered
 	final_stations.add(best_station)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Dynamic Programming]]
+- [[Backtracking - Knapsack]]
+- [[Backtracking - SkillUP]]
+%% related:end %%

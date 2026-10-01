@@ -56,3 +56,10 @@ The first step of OCR, where you go through images of numbers and extract featur
 
 ## Building A Spam Filter
 Spam filters use another simple algorithm called the Naive Bayes classifier. First, you train your Naive Bayes classifier on some data.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KNN Algo]]
+- [[KNN And SVM]]
+- [[Two-Tower Network architecture for collaborative filtering]]
+%% related:end %%

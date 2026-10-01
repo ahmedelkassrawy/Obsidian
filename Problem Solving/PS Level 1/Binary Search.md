@@ -400,3 +400,12 @@ int main()
       array (e.g. minimum capacity, square root). ← this is Level 2.
 
 Related: [[Two Pointers]] • [[Prefix Sum]] • [[Sorting]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lower & Upper Bounds]]
+- [[STL - Min Element In Chunks]]
+- [[Sets]]
+- [[Binary Search - Machines]]
+- [[Binary Search - Magic Powder 2]]
+%% related:end %%

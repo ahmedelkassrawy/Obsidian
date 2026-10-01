@@ -26,3 +26,9 @@ Different Evaluation Metrics Mean Absolute Error (MAE): Measures the average abs
 Mean Squared Error (MSE): Measures the average of the squared differences between actual and predicted values. Commonly used because it effectively penalizes larger errors and is simple to calculate
 
 Gradient Descent Iterative Process 1. Finding Global Minimum The objective of Gradient Descent is to achieve the global minimum of the cost function. During each iteration, parameters are updated based on the computed gradient, guiding the process toward the lowest point on the cost function curve. 2. Effect of Learning Rate (α) The learning rate controls the size of the steps taken toward the minimum. A small learning rate leads to slow convergence, while a large learning rate might cause overshooting or fluctuation around the minimum. Experimentation is usually necessary to determine an optimal learning rate that achieves stable and efficient convergence
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Supervised.Regression - AI Book]]
+- [[Linear Regression]]
+%% related:end %%

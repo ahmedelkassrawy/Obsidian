@@ -254,3 +254,12 @@ Take the mismatches from Exercise A, have a **reflect** step summarize systemic 
 - [[Agent Reasoning Patterns]]
 - [[Agents Best Practice]]
 - [[Optimizing GenAI Services for Multiple Users]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Agent Trajectory Evaluation]]
+- [[Agent Engineering MOC]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agents - Ai Engineering Book]]
+%% related:end %%

@@ -240,3 +240,12 @@ Tolerance: "3.2M vs 3.1M likes? Close enough"
    - **Single node viable?** → CA
 
 > **Pro Tip**: Simple AP systems often outperform complex CP systems for most web applications. Choose consistency only when data integrity is critical.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BASE Model vs ACID]]
+- [[Stale Reads in Replicated Databases]]
+- [[Phase1 — Scalability & Availability]]
+- [[Consistent Hashing]]
+- [[Replication scales reads, sharding scales writes]]
+%% related:end %%

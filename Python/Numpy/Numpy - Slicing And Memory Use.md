@@ -36,3 +36,12 @@ print(b[0:3])
 print("#" * 50)
 print(b[:3, :2]) #accessing the first 3 arrays then accessing the first and second element inside of each array
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Creating And Accessing Arrays]]
+- [[Numpy - Memory Layout And Mixed Types]]
+- [[Numpy - Arithmetic Operations]]
+- [[Vectors]]
+- [[Numpy - Data Types]]
+%% related:end %%

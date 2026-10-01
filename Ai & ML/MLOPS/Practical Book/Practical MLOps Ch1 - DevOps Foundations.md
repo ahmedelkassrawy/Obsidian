@@ -68,3 +68,12 @@ packages to a specific directory. There are other solutions to
 this problem and many developing tools. They effectively
 solve the same problem: the Python library and interpreter are
 isolated to a particular project.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CI & CD]]
+- [[Orange MLOps Interview Visualization]]
+- [[MLOps Lifecycle]]
+- [[Three Levels Of ML Software]]
+- [[MLOps Maturity And Production Practices]]
+%% related:end %%

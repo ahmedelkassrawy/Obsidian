@@ -819,3 +819,12 @@ FastAPI integration and testing:
 - [[02 - Database Session Dependency (get_db)]] — the `get_db` dependency in depth
 - [[Testing with pytest]] — fixtures, `assert`, test conventions
 - [[SQLite]] — the database engine this chapter uses
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[01 - Overview and Project Layout]]
+- [[Ch7.Integrating DB in AI services]]
+- [[00 - Index]]
+%% related:end %%

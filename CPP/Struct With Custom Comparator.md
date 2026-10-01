@@ -44,3 +44,10 @@ int main()
   myCar1.year = 1999;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Structs - 3D Points]]
+- [[Structs - Highest Y]]
+- [[C++]]
+%% related:end %%

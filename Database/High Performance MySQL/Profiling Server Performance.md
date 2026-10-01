@@ -95,3 +95,11 @@ Profiling MySQL queries can be approached at two levels:
 - Query profiles make optimization more targeted but not always "obvious."
 - Example: If a profile shows a query creates a temporary table, focus on why it’s created and how to avoid it.
 - Profiles direct efforts toward resolving specific issues (e.g., adding indexes, reducing lock contention).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[High Performance MySQL - Benchmarking]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[Multiple Indexes]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+%% related:end %%

@@ -59,3 +59,10 @@ at each input i have to specify the dimension i want it to store the input in.
 
 https://codeforces.com/group/5pUldkahAU/contest/511788/problem/D
 [[Problem Solving/PS Level 1/Struct With Custom Comparator]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Structs - Highest Y]]
+- [[Struct With Custom Comparator]]
+- [[Struct With Custom Comparator]]
+%% related:end %%

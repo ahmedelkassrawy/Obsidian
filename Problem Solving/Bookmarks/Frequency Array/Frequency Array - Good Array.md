@@ -53,3 +53,9 @@ int main()
  
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Frequency Array - Canvas Frame]]
+- [[DP - Vjudge 694272 S (Counting Valid Arrays)]]
+%% related:end %%

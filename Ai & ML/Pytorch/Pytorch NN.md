@@ -542,3 +542,12 @@ plt.show()
 | ---------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------- |
 | Binary classification                          | Removes the extra dimension `[batch_size, 1] → [batch_size]`        | Matches labels shape `[batch_size]` |
 | Multiclass classification (`CrossEntropyLoss`) | Usually **not used**, since outputs are `[batch_size, num_classes]` | —                                   |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[02. PyTorch Classification]]
+- [[Final Transfer Learning]]
+- [[CNN.Pytorch]]
+- [[PyTorch Dataset , Dataloaders]]
+- [[01. PyTorch Workflow Fundamentals]]
+%% related:end %%

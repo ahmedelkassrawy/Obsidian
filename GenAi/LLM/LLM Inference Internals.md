@@ -97,3 +97,12 @@ Four settings (plus one bonus) to squeeze the most out of the hardware:
 2. **Prefix caching** — if many users send the same system prompt, save its maths **once** and let everyone point at it instead of recomputing it 100 times. Big win for chatbots and coding assistants.
 3. **Chunked prefill** — normally a huge new prompt pauses everyone's decoding (prefill takes priority). Chunked prefill splits that prompt into smaller bites and mixes them into ongoing decode work, so no one stutters.
 4. **Speculative decoding (bonus)** — run a tiny fast "draft" model alongside the main model. The draft rapidly guesses the next few tokens while the main model rests between memory reads; the main model then verifies the guesses in one quick sweep.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning vs Reinforcement Learning]]
+- [[Prompt caching only pays off when the prefix stays identical]]
+- [[Transformer Internals]]
+- [[LLM Caching]]
+- [[AI Agent Prompt Caching and Context Management]]
+%% related:end %%

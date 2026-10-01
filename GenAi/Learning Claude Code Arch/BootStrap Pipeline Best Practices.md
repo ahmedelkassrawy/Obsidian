@@ -41,3 +41,9 @@ By the time the REPL renders, every decision has been made. The query loop recei
 **Memoize your init function.** Make initialization idempotent — calling it twice produces the same result. This eliminates ordering bugs when multiple entry points may each trigger initialization. The memoization pattern is trivial but eliminates an entire class of double-initialization bugs.
 
 **Capture early input before yielding.** In an event-driven system, user input that arrives during initialization can be lost. Claude Code captures the initial prompt from argv before any async work begins, ensuring that `claude "fix the bug"` does not drop the prompt if initialization takes longer than expected.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Phase0 — Method + numbers]]
+- [[Optimizing GenAI Services for Multiple Users]]
+%% related:end %%

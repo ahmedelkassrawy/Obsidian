@@ -58,3 +58,9 @@ Deploying a Python FastAPI service with heavy AI dependencies is most stable whe
     - Trigger an Azure Web App refresh.
 
 ![image.png](image%206.png)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Web App Deployment (React + NET)]]
+- [[AWS Deployment Plan]]
+%% related:end %%

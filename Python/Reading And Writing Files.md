@@ -35,3 +35,8 @@ file_data = f.read()`
 ```
 
 If you pass the `read` method an integer argument, it will read up to that number of characters, output all of them
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Strings]]
+%% related:end %%

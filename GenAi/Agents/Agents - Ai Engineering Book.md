@@ -216,3 +216,12 @@ A memory system for AI models has two key functions:
 - **Consistency:** Memory allows an AI model to reference its previous answers to ensure future responses are consistent.
 - **Redundancy Reduction:** FIFO (First In, First Out) is the simplest strategy for memory management, where the oldest messages are moved first to the external storage.
 - More sophisticated strategies for removing redundancy involve using a summary of the conversation or using a reflection approach. Reflection can be used to determine if new information should be merged with existing memory, replace outdated information, or contradict existing information.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 — Foundations of Agent Engineering]]
+- [[AI Workflows VS AI Agent]]
+- [[Agent Engineering MOC]]
+- [[Claude Code Core Architecture]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+%% related:end %%

@@ -56,3 +56,12 @@ def binary_search(list,item):
 - O notation lets you compare the number of operations. It tells you how fast the algorithm grows.
 - O(log n), also known as log time. Example: Binary search.
 - O(n), also known as linear time. Example: Simple search.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BST]]
+- [[Lower & Upper Bounds]]
+- [[Selection Sort]]
+- [[Binary Search - Another Pair Problem]]
+- [[Pinecone]]
+%% related:end %%

@@ -67,3 +67,11 @@ If they ask you, _"Why do we use K8s instead of just running Docker containers o
 ### How to summarize K8s in your interview:
 
 > _"I use Docker to ensure the model runs perfectly in an isolated environment. But for production at a telecom scale, one container isn't enough. I would deploy those containers onto a Kubernetes cluster. This ensures that as network traffic fluctuates, K8s can auto-scale the model pods to handle the load, and provide self-healing by automatically restarting any pods that fail, guaranteeing zero downtime."_
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Kubernetes Core Concepts]]
+- [[Running Kubernetes Locally]]
+- [[AWS SageMaker]]
+- [[Docker]]
+%% related:end %%

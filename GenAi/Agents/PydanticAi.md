@@ -120,3 +120,12 @@ def add_the_date() -> str:
 result = agent.run_sync('What is the date?', deps='Frank')
 print(result.data)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Streaming And Structured Outputs]]
+- [[Project Agent Arch]]
+- [[Langchain.Multi Agent - Subagents]]
+- [[Langchain.Multi Agent - Router]]
+- [[Agent Agency Levels And Reflection Pattern]]
+%% related:end %%

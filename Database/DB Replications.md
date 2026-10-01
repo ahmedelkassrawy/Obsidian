@@ -265,3 +265,12 @@ MySQL Group Replication, PostgreSQL BDR, CouchDB, Cassandra.
 - **Master–Master:** Share writes across regions.
 - **Multi-Master:** Go global with resilience.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Single-Leader Replication]]
+- [[Multi-Leader Replication]]
+- [[Replication scales reads, sharding scales writes]]
+- [[Stale Reads in Replicated Databases]]
+- [[Phase1 — Scalability & Availability]]
+%% related:end %%

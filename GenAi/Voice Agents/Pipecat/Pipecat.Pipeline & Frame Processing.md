@@ -304,3 +304,12 @@ task = PipelineTask(
     ],
 )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.TTS]]
+- [[Pipecat]]
+- [[Pipecat.Transports]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat.Context Management]]
+%% related:end %%

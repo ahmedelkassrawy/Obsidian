@@ -756,3 +756,12 @@ model = Word2Vec(sentences, vector_size=50, window=3, min_count=1, sg=0)
 word_vector = model.wv['word2vec']
 print(word_vector)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Stanford CS224n]]
+- [[NLP Concepts]]
+- [[Text Classification - AI Book]]
+- [[Embeddings turn meaning into distance]]
+- [[RNN and LSTM]]
+%% related:end %%

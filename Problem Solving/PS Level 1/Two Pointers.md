@@ -254,3 +254,11 @@ If you can't state *why* moving the pointer is safe, you don't have a two-pointe
 3. In the "count pairs ≤ X" code, why `cnt += (r - l)` and not `cnt++`?
 4. Why does sliding window break when the array contains negative numbers?
 5. When would you use a hash map instead of two pointers for a pair-sum problem?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[STL - Min Element In Chunks]]
+- [[2D Prefix Sum]]
+- [[Linked List]]
+- [[Arrays - Maximum Subarray Sum (CF 386415I)]]
+%% related:end %%

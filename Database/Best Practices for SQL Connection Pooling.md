@@ -291,3 +291,9 @@ document.getElementById('delete-btn').addEventListener('click', async () => {
 - How can environment variables or key vaults be integrated into a Node.js application securely?
 - What are the performance implications of sequences in high-concurrency environments?
 - How do you implement pagination effectively for large datasets?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Best Practices for SQL Table Creation]]
+- [[Deep Look into Postgres Wire Protocol with Wireshark]]
+%% related:end %%

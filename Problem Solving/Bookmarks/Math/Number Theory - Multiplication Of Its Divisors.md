@@ -36,3 +36,7 @@ int main()
 }
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Divisors Factorization And Sieve]]
+%% related:end %%

@@ -164,3 +164,12 @@ graph TD
 ## Next
 
 → [[10 - Async SQLAlchemy]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[04 - ORM Models (declarative_base)]]
+- [[02 - Core Tables with MetaData]]
+- [[11 - Core vs ORM — when to use which]]
+- [[12 - Cheatsheet]]
+%% related:end %%

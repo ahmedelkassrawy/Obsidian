@@ -54,3 +54,12 @@ int main()
     cout<<go(0, 0)<<endl;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Iterative - Vjudge 696069 C]]
+- [[DP - Vjudge 694272 P]]
+- [[DP - Vjudge 694272 E]]
+- [[DP - Vjudge 694272 O]]
+- [[DP - Vjudge 694272 M]]
+%% related:end %%

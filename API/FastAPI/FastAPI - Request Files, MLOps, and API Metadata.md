@@ -478,3 +478,12 @@ async def read_elements():
   - Useful for transitioning APIs without breaking existing clients.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Response Models and Status Codes]]
+- [[01 - Overview and Project Layout]]
+- [[FastAPI - Pydantic]]
+- [[LLMOps Observability And Production Stack]]
+- [[08 FastAPI Layer]]
+%% related:end %%

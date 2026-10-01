@@ -89,3 +89,12 @@ rend
 
 r means reversed so if you ++ the iterator it goes back in case of rebegin <---
 and the opp in rend --->
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lower & Upper Bounds]]
+- [[BST]]
+- [[Priority Queue]]
+- [[Map]]
+- [[Binary Search]]
+%% related:end %%

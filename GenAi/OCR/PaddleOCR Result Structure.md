@@ -62,3 +62,8 @@ for page in result:
 		 # line[1][1] = score 
 		 print(f"Text: {line[1][0]} | Confidence: {line[1][1]:.2f}")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PaddleOCR Basics]]
+%% related:end %%

@@ -941,3 +941,12 @@ workflow.add_edge(START, "call_model")
 workflow.add_conditional_edges("call_model", should_continue, ["tools", END])
 workflow.add_edge("tools", "call_model")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Nodes Edges And State]]
+- [[LangGraph Agents]]
+- [[06 LangGraph Orchestration]]
+- [[Langchain v1]]
+- [[Langchain.Multi Agent - Router]]
+%% related:end %%

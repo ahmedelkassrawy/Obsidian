@@ -30,3 +30,12 @@ hubs:
 - **`asyncio.to_thread()`**: Sometimes you need to run synchronous (blocking) code without freezing your async program. `asyncio.to_thread()` offloads the blocking code to a separate thread, allowing the event loop to continue processing other tasks. Use it cautiously, as it adds some overhead and can make debugging more challenging.
     
 - **Alternative: Executors**: You might also encounter the use of `loop.run_in_executor()` to handle blocking functions.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Concurrency and Async]]
+- [[Async helps with waiting, not with computing]]
+- [[FastAPI Async and Routers]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[Phase5 — Asynchronism & Communication]]
+%% related:end %%

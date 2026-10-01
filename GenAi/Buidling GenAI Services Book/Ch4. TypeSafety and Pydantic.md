@@ -340,3 +340,8 @@ print(type(json_str))  # <class 'str'>
 | `model_dump()` | Python `dict` | Native Python objects (`datetime`, `UUID`, ...) |
 | `model_dump(mode="json")` | Python `dict` | JSON-safe primitives (str, int, float, bool, list, dict, `None`) |
 | `model_dump_json()` | `str` | Valid JSON text, ready to send over the wire |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pydantic]]
+%% related:end %%

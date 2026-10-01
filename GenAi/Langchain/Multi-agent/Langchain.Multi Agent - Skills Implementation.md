@@ -548,3 +548,12 @@ This tutorial implemented skills as in-memory Python dictionaries loaded through
 - **Large skills** (> 10K tokens / ~7.5K words, or > 5-10% of context window): Should use progressive disclosure techniques like pagination, search-based loading, or hierarchical exploration to avoid consuming excessive context
 
 The choice depends on your requirements: in-memory is fastest but requires redeployment for skill updates, while file-based or remote storage enables dynamic skill management without code changes.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent - Skills]]
+- [[Langchain.Multi Agent Intro]]
+- [[The context window is a budget, not a bucket]]
+- [[Context Engineering]]
+- [[Agent Orchestration And Tool Selection]]
+%% related:end %%

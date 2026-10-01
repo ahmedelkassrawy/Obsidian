@@ -34,3 +34,12 @@ Similar items can appear close in the latent space; however, this is not a stric
 A _representation_ is an encoded, typically intermediate form of an input. For instance, an embedding vector or vector in the latent space is a representation of the input, as previously discussed. However, representations can also be produced by simpler procedures. For example, one-hot encoded vectors are considered representations of an input.
 
 The key idea is that the representation captures some essential features or characteristics of the original data to make it useful for further analysis or processing.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Embeddings turn meaning into distance]]
+- [[Sparse Vs Dense Embeddings]]
+- [[Autoencoders, GANs, and Diffusion Models]]
+- [[Word2Vec And Word Embeddings]]
+- [[Encoder Vs Decoder Models]]
+%% related:end %%

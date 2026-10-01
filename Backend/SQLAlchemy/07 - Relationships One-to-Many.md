@@ -151,3 +151,12 @@ Without this, deleting a user leaves orphan products (SQLite) or raises (Postgre
 ## Next
 
 → [[08 - Many-to-Many and Association Objects]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[09 - Querying Data]]
+- [[02 - Core Tables with MetaData]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[11 - Core vs ORM — when to use which]]
+%% related:end %%

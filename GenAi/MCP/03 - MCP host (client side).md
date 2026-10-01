@@ -555,3 +555,12 @@ Notes, potential improvements & gotchas
 > - Centralized connection & tool registry
 > - Temperature=0 for deterministic tool use
 > - Graceful tool error fallback
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MCPs]]
+- [[MCP Reading Order]]
+- [[01 - Build a server (SDK v2)]]
+- [[00 - Concepts]]
+- [[02 - Best practices & refactor]]
+%% related:end %%

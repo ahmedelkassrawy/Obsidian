@@ -385,3 +385,12 @@ asyncio.run(main())
 - **DO NOT use it for CPU-bound tasks:** Because of Python's Global Interpreter Lock (GIL), multiple threads cannot execute Python bytecode at the exact same time. If you have a heavy mathematical computation or data-processing task, `to_thread` will not actually speed it up. It will just move the CPU bottleneck to another thread.
 
 For heavy CPU-bound tasks, you should use a `ProcessPoolExecutor` to spin up entirely separate processes instead of threads.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Async helps with waiting, not with computing]]
+- [[FastAPI Async and Routers]]
+- [[LlamaIndex Async Explained]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[Phase5 — Asynchronism & Communication]]
+%% related:end %%

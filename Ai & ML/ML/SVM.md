@@ -429,3 +429,12 @@ grid_search.fit(x, y)  # Train with different parameter combinations
 - Use `make_pipeline` to combine transformers and estimators, ensuring consistent data transformations.
 - Use `GridSearchCV` with the `component_name__parameter` convention to tune pipeline parameters.
 - This approach simplifies code and reduces errors in machine learning workflows.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Anomaly Detection]]
+- [[KNN And SVM]]
+- [[Unsupervised Tasks]]
+- [[Supervised.Regression - AI Book]]
+- [[Loss Functions]]
+%% related:end %%

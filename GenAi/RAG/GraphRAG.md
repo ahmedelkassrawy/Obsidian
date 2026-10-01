@@ -258,3 +258,12 @@ GraphRAG enables:
 While more complex and resource-intensive, it frequently outperforms standard RAG in large-scale, interconnected knowledge domains.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[Project Talk to RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[A RAG answer is only as good as its retrieval]]
+- [[RAG And Agents - AI Engineering Book Ch6]]
+%% related:end %%

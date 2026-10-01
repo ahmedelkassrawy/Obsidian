@@ -337,3 +337,12 @@ async def read_user(user_id: int, db: AsyncSession = Depends(get_db_dep)):
 ## Next
 
 → [[11 - Core vs ORM — when to use which]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[12 - Cheatsheet]]
+- [[Async helps with waiting, not with computing]]
+- [[02 - Database Session Dependency (get_db)]]
+- [[13 - Gotchas and Troubleshooting]]
+- [[PGVector]]
+%% related:end %%

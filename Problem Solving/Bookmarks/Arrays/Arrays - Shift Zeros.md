@@ -45,3 +45,12 @@ int main()
 ```
 
 [Problem - N - Codeforces](https://codeforces.com/group/MWSDmqGsZm/contest/223205/problem/N)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Arrays - Shift Right]]
+- [[STL - Min Element In Chunks]]
+- [[Insertion Sort]]
+- [[Sliding Window Technique]]
+- [[DP - Vjudge 694272 S (Counting Valid Arrays)]]
+%% related:end %%

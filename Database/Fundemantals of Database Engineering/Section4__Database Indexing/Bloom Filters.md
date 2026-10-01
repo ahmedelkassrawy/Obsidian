@@ -86,3 +86,8 @@ A **Bloom Filter** is a probabilistic data structure used to test whether an ele
 - **Collisions**: As seen with `jack` and `Tim` mapping to bit 63, leading to potential false positives.
 - **Single Hash Function**: Document uses one hash (`Hash % 64`). Real Bloom Filters use multiple to reduce collisions.
 - **Fixed Size**: Bit array size (e.g., 64) limits capacity. Too small, and false positives increase.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Hash Tables]]
+%% related:end %%

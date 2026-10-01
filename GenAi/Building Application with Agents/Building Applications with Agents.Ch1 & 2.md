@@ -379,3 +379,12 @@ Effective agent systems are more than a sum of their parts. They depend on:
 
 > [!quote] Next Chapter
 > In Chapter 3, we shift focus to the **human side** – designing agent experiences that are clear, responsive, and intuitive for the people who rely on them. Ultimately, no matter how powerful your system architecture, its success depends on how it lands in human hands.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agents Best Practice]]
+- [[Agent UX Design]]
+- [[Agent Engineering MOC]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+%% related:end %%

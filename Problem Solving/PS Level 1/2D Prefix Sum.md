@@ -221,3 +221,12 @@ Before you call this note "done", answer without looking:
 2. Why is the `+ P[r1-1][c1-1]` in the **query** a `+` and not a `-`?
 3. What breaks if the prefix array is 0-indexed?
 4. Why `long long`?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[1D Partial Sum]]
+- [[Two Pointers]]
+- [[Prefix Sum]]
+- [[Array]]
+- [[Bit Prefix Sums (Archived)]]
+%% related:end %%

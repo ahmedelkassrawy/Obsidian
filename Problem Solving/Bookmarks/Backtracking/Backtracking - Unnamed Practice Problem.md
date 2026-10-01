@@ -89,3 +89,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Creating Expression]]
+- [[Backtracking - Apple Division]]
+- [[Backtracking - Knapsack]]
+- [[Backtracking - Knapsack Recursive]]
+- [[Backtracking - SkillUP]]
+%% related:end %%

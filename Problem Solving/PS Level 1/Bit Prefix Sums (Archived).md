@@ -149,3 +149,12 @@ long long XOR(long long n)
     return ans;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bitmasks]]
+- [[Bitmask - Subset Enumeration]]
+- [[Bitwise Operators]]
+- [[1D Partial Sum]]
+- [[2D Prefix Sum]]
+%% related:end %%

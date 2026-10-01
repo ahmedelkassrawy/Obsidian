@@ -169,3 +169,12 @@ produce_search_query ─┐
                       ├─► web_search_worker (queryN)
 orchestrate_searches ─┘
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[06 LangGraph Orchestration]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[LangGraph Short-Term & Long-Term Memory]]
+- [[LangGraph Nodes Edges And State]]
+- [[Project Agent Arch]]
+%% related:end %%

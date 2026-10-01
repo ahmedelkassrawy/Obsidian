@@ -227,3 +227,8 @@ connection.close()
   - Server-side: Processing millions of rows in batches (e.g., ETL, streaming to WebSocket/gRPC).
 
 - **Python Library**: Uses `psycopg2` for PostgreSQL connectivity.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Intro Cursors]]
+%% related:end %%

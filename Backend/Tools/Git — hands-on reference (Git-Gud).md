@@ -314,3 +314,8 @@ git reset --hard HEAD@{1}     # or: git reset --hard <that-hash>
 | look at an old commit | `git checkout <hash>` → `git switch master` |
 | copy one commit | `git cherry-pick <hash>` |
 | recover a "lost" commit | `git reflog` → `git reset --hard HEAD@{n}` |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Git]]
+%% related:end %%

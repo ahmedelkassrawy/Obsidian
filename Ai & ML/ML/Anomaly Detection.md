@@ -125,3 +125,10 @@ Random Forest can then **learn interactions** like:
 > “If `amount > 5000` and `anomaly_score` is very low → likely fraud.”
 
 So you’re combining **unsupervised anomaly detection** with **supervised classification**, which makes the model more robust and interpretable.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Unsupervised Tasks]]
+- [[SVM]]
+- [[Gaussian Mixtures]]
+%% related:end %%

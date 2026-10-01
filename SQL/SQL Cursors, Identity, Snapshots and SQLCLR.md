@@ -347,3 +347,12 @@ RECONFIGURE;
 > 2. How would you insert a row into `T1` with an explicit `column_3` value of 10?
 > 3. Create a snapshot of a `Company` database and query its `employee` table.
 > 4. Outline a SQLCLR function to calculate the factorial of a number.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Intro Cursors]]
+- [[SQL Variables, Functions and Window Functions]]
+- [[SQL Stored Procedures, Triggers and XML]]
+- [[SQL Indexes, Tables, Merge and Views]]
+- [[03 - Core CRUD (insert, select, update, delete)]]
+%% related:end %%

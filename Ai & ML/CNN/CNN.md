@@ -113,3 +113,12 @@ Pooling layers reduce spatial dimensions (height and width) to:
 - **Convolutional layers**: Apply filters to extract features, with `padding` and `stride` controlling output size.
 - **Pooling layers**: Reduce dimensions, but max pooling can be destructive and may not suit tasks requiring equivariance.
 - **CNN design**: Alternates convolution and pooling layers, increasing depth while reducing spatial size, culminating in a dense output layer for predictions.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CNN.Pytorch]]
+- [[CNN HyperParameters]]
+- [[Final Transfer Learning]]
+- [[Pytorch NN]]
+- [[Autoencoders, GANs, and Diffusion Models]]
+%% related:end %%

@@ -95,3 +95,12 @@ This isn't for simple Q&A. Use this pattern when the problem is:
 |**Structured Output**|Data Reliability|Pydantic schemas / JSON output parsing|
 
 How does this filesystem-based state management compare to the state management strategies you've used in your recent hospital management or RAG projects?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Agents]]
+- [[Agents Best Practice]]
+- [[Agent Orchestration And Tool Selection]]
+- [[Langchain.Multi Agent Intro]]
+- [[Context Engineering]]
+%% related:end %%

@@ -850,3 +850,9 @@ dspy_tool = dspy.Tool.from_mcp_tool(session, mcp_tool)
 # Use it like any DSPy tool
 result = await dspy_tool.acall(param1="value", param2=123)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Caching]]
+- [[04 - API Endpoints with Database Operations]]
+%% related:end %%

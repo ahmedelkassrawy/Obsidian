@@ -75,3 +75,12 @@ source: https://github.com/h9-tec/AI_deployment#6-integrating-fastapi-pydantic-a
 - [[Backend/SQLAlchemy/00 - Index|SQLAlchemy]] — Core, ORM, relationships, many-to-many, async (folder)
 - [[Advanced Topics and Best Practices]] — section 7 (async, Alembic, auth, etc.)
 - [[AI Engineering Specific Use Cases]] — section 8
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch3. Creating the Database Layer]]
+- [[14 - Best Practices Checklist]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[05 - Sessions and sessionmaker]]
+- [[Ch2.Getting Started with FastAPI]]
+%% related:end %%

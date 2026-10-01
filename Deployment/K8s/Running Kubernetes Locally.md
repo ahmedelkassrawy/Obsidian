@@ -196,3 +196,10 @@ spec:
     app: mlops-api         # Connects to our deployment pods
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Kubernetes Core Concepts]]
+- [[Docker & K8s]]
+- [[AWS SageMaker]]
+%% related:end %%

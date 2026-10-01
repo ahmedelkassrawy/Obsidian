@@ -124,3 +124,12 @@ EXPLAIN ANALYZE SELECT c FROM test WHERE col_b = 100;
     - `AND` conditions on composite index columns work well.
     - `OR` conditions or filters on non-leftmost columns often lead to sequential scans.
 - **Bitmap Scans**: Used when filtering on non-leftmost columns in a composite index, combining index and heap scans.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[PostgreSQL Scan Types Comparison]]
+- [[Multiple Indexes]]
+- [[Key vs Non-Key Column Indexes]]
+%% related:end %%

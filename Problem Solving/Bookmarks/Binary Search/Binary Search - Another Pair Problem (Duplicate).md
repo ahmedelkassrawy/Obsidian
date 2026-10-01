@@ -64,3 +64,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Another Pair Problem]]
+- [[Binary Search - Machines]]
+- [[Binary Search - Line Segments]]
+- [[Two Pointers - Counting Arithmetic Sequences]]
+- [[Binary Search - Renting Bikes]]
+%% related:end %%

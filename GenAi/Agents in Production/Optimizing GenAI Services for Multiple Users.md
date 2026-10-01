@@ -134,3 +134,10 @@ A critical error in FastAPI development is defining a route with `async def` but
 ![[Pasted image 20260122223406.png]]
 
 ![[Pasted image 20260122223424.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Phase1 — Scalability & Availability]]
+- [[Ch9.Securing AI Services]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+%% related:end %%

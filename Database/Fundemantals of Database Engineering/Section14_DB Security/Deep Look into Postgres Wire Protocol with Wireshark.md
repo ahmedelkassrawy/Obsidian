@@ -149,3 +149,10 @@ TCP Close (Server-initiated FIN, potential Client bug leading to RST)
 - ElephantSQL: Free tier for quick Postgres setup.
 
 Save this as `Wireshark-Postgres-Notes.md` in your Obsidian vault for interactive linking and embedding!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Best Practices for SQL Connection Pooling]]
+- [[Enabling SSL,TLS]]
+- [[Server-Side vs. Client-Side]]
+%% related:end %%

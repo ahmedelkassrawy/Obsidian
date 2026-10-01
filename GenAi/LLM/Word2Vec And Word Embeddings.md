@@ -26,3 +26,12 @@ tokenization
 build a vocabulary -> defines how we map each unique word and special char to a unique int.
 convert tokens into token ids
 adding special context tokens
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Embeddings turn meaning into distance]]
+- [[Stanford CS224n]]
+- [[Sparse Vs Dense Embeddings]]
+- [[Modern Tokenization]]
+- [[RNN]]
+%% related:end %%

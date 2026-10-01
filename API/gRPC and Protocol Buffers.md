@@ -431,3 +431,12 @@ Now the toolbox contains:
 Continue building the future of distributed systems, service by service.
 
 *Peace, mercy, and blessings of God be upon you.*
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch2. Selecting Your API Architecture]]
+- [[Backend Intro]]
+- [[Ch6.Real-Time Communication with Generative Models]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[Clipping - REST API Design (YouTube)]]
+%% related:end %%

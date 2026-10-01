@@ -443,3 +443,10 @@ FOR XML RAW('student'), ELEMENTS, ROOT('iti');
 > 2. Create an `AFTER INSERT` trigger to log new `Student` insertions in a history table.
 > 3. How would you use the `OUTPUT` clause to capture both old and new `st_fname` after an update?
 > 4. Modify the XML query to output only `st_id` and `st_fname` with a root element `students`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Variables, Functions and Window Functions]]
+- [[SQL Subqueries, DML and Built-in Functions]]
+- [[SQL Cursors, Identity, Snapshots and SQLCLR]]
+%% related:end %%

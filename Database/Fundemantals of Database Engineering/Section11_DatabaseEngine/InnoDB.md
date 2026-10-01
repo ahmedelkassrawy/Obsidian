@@ -88,3 +88,12 @@ hubs:
 - **Comparison to MyISAM**:
   - InnoDB: Transactions, row-locking, indirect secondary indexes.
   - MyISAM: No transactions, table-locking, direct indexes (faster reads but prone to corruption/fragmentation).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MyISAM]]
+- [[Intro DB Engine]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+- [[Key vs Non-Key Column Indexes]]
+- [[SQLite]]
+%% related:end %%

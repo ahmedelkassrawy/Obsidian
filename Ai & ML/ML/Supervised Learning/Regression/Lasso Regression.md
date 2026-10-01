@@ -87,3 +87,12 @@ So the model becomes very simple — maybe even underfitting, because it’s ign
 - **Medium λ → shrinks some, drops others (feature selection).**
 - **Huge λ → almost all coefficients = 0 (very simple/underfit model).**
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ridge Regression]]
+- [[Elastic Net Regression]]
+- [[Regularization trades training fit for generalization]]
+- [[Linear Regression]]
+- [[Learning Curves And Regularization]]
+%% related:end %%

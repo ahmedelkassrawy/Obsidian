@@ -409,3 +409,12 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     - Set token expiration to limit risks.
     - Avoid `allow_origins=["*"]` in production.
     - Use HTTPS to protect tokens in transit.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch8.Authentication and Authorization]]
+- [[FastAPI Users - Auth Transport]]
+- [[FastAPI Users - Auth Backend]]
+- [[FastAPI Users - Auth Router]]
+- [[Headers VS Cookie]]
+%% related:end %%

@@ -32,3 +32,10 @@ hubs:
     
 - **Context Switching**  
     ➔ A mechanism where the OS saves the state of one process and loads the state of another to switch CPU execution.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[OSTEP - Virtualization, Concurrency and Persistence]]
+- [[Concurrency]]
+- [[Phase1 — Scalability & Availability]]
+%% related:end %%

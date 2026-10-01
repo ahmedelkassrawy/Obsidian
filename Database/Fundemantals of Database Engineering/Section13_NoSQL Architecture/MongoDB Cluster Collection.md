@@ -138,3 +138,9 @@ hubs:
   - [MongoDB Docs: Clustered Collections](https://www.mongodb.com/docs/manual/core/clustered-collections/)
   - WiredTiger internals (source code for hidden index details).
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MongoDB Architecture]]
+- [[MongoDB Internals]]
+- [[SQL Indexes, Tables, Merge and Views]]
+%% related:end %%

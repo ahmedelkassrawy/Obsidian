@@ -106,3 +106,12 @@ result = cache.check("I need a refund for my purchase")
 ```python
 cache.set_ttl(86400)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Caching]]
+- [[Phase4 — Caching]]
+- [[Caching trades freshness for speed]]
+- [[Caching]]
+- [[Caching - Capacity Estimation and Strategies]]
+%% related:end %%

@@ -133,3 +133,12 @@ async with engine.begin() as c: await c.run_sync(Base.metadata.create_all)
 ## Errors → fix
 
 `IntegrityError` → catch outside `with get_db()`, 409 · `PendingRollbackError` → `rollback()` first · `DetachedInstanceError` → `expire_on_commit=False` / eager-load · `MissingGreenlet` → eager-load / `expire_on_commit=False` · `check_same_thread` → `connect_args` · `db = get_db()` gives a context-manager object → `with get_db() as db` · tuples not objects → `.scalars()`
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[09 - Cheatsheet]]
+- [[10 - Async SQLAlchemy]]
+- [[06 - ORM CRUD]]
+- [[05 - Sessions and sessionmaker]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+%% related:end %%

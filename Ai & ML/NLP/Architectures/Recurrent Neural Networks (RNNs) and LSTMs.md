@@ -227,3 +227,12 @@ print(f"Test Loss: {test_loss:.4f}")
 - **Metrics**: Accuracy is used for binary classification. For multi-class, use `categorical_accuracy` with a softmax output.
 - **Padding**: Ensures all sequences have the same length (`max_len`) for efficient batch processing.
 - **Pre-trained Embeddings**: If using pre-trained embeddings (e.g., GloVe), load them into the `Embedding` layer and set `trainable=False` to preserve the pre-trained weights.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sequence Modeling With RNNs]]
+- [[RNN Implementation Guide]]
+- [[RNN]]
+- [[Text Classification]]
+- [[POS Tagging]]
+%% related:end %%

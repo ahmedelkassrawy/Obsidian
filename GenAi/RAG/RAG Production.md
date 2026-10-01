@@ -229,3 +229,12 @@ Each stage addresses a specific failure mode:
 > "The LLM is the last step in the pipeline, not the first. Most RAG problems aren't solved by changing the model, but by improving retrieval quality and context engineering."
 
 If you had budget to improve only one component in a RAG system, the most leveraged choice is usually the **retrieval pipeline** (multi-stage architecture) — not the embedding model, not the re-ranker, and not the chunking strategy — because it governs what reaches the LLM in the first place.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[A RAG answer is only as good as its retrieval]]
+- [[Advanced RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[NLP Evaluation Metrics]]
+- [[RAG]]
+%% related:end %%

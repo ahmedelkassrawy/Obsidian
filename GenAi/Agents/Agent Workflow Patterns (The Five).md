@@ -243,3 +243,12 @@ g.add_conditional_edges("evaluate", gate, {"retry": "generate", "accept": END})
 - **Voting:** a safety gate — run the check a few times, block on any fail.
 - **Routing:** triage an incoming message → publish / analytics / support.
 - **Evaluator–optimizer:** caption generation held to the brand-voice bar.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Engineering MOC]]
+- [[Agent Reasoning Patterns]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[Agents Best Practice]]
+- [[LangGraph Nodes Edges And State]]
+%% related:end %%

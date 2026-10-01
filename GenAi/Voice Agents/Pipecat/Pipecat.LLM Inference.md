@@ -80,3 +80,12 @@ These handlers enable you to provide user feedback and implement error recovery 
 - **Function calling extends capabilities** beyond training data
 - **Configuration affects behavior** - tune temperature, penalties, and limits
 - **Services are modular** - swap providers without changing pipeline code
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Function Calling]]
+- [[Pipecat.Context Management]]
+- [[Pipecat.TTS]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat.Pipeline & Frame Processing]]
+%% related:end %%

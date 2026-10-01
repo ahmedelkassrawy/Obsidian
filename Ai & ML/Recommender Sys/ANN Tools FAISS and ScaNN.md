@@ -74,3 +74,12 @@ When deciding how to integrate these into a backend architecture:
 2. **Use FAISS for Custom Pipelines:** If you are building a specialized microservice (e.g., using Celery to process offline batch similarity tasks on millions of documents), FAISS `IndexIVFPQ` is ideal. You can load it entirely into GPU memory for massive throughput.
     
 3. **Use ScaNN for Pure Retrieval Speed:** If you have a static, massive dataset of text embeddings and your FastAPI endpoint is getting hammered by search requests, wrapping ScaNN in a Python service will give you state-of-the-art latency. Note that ScaNN can be slightly more rigid to update dynamically compared to FAISS or a managed vector DB.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Exact nearest-neighbour search doesn't scale, so vector databases approximate]]
+- [[Choosing A Vector Database]]
+- [[Phase3 — Data at Scale]]
+- [[KNN And SVM]]
+- [[Parent-child chunking]]
+%% related:end %%

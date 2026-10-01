@@ -250,3 +250,10 @@ plot_series(time_valid, x_valid)
 
 plot_series(time_valid, results)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Time Series Kaggle]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Time Series Basics And Naive Forecasting]]
+%% related:end %%

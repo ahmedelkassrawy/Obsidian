@@ -78,3 +78,8 @@ sf_permits.fillna(0) #filling all Nans with zeros but it will be float sine the 
 sf_permits_with_na_imputed = sf_permits.fillna(method='bfill', axis=0).fillna(0)
 #method backward fill in the rows using filling NaN values
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas - Handling Missing Data]]
+%% related:end %%

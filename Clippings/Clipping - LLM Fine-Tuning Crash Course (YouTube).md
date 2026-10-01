@@ -411,3 +411,12 @@ created: 2026-05-03
 **1:20:19** · was the agenda of the video as well to give you enough understanding and where I wanted to cover the fundamentals of pre-training fine-tuning and the novel techniques like Laura and Cur if you have any thoughts or feedbacks please let me know in the comment box you can also reach out to me through my social media channels please find those details on the channel about us on the channel Banner that's all uh for this video
 
 **1:20:44** · please like the video hit the like icon and if you haven't subscribed the Channel please do subscribe the channel share the video and Channel with your friends and appear thank you so much for watching see you in the next
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[Fine-Tuning Quick Reference]]
+- [[Fine-Tuning Tutorial]]
+- [[Fine-Tuning Use Cases And Hyperparameters]]
+- [[GoTo ML Classification]]
+%% related:end %%

@@ -125,3 +125,11 @@ output, _ = self_attn_layer(
     attn_mask=mask  # <--- Prevents peeking at future words
 )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Attention lets every token decide what to look at]]
+- [[Transformer Internals]]
+- [[Seq2Seq]]
+- [[Clipping - Self-Attention Explained (Article)]]
+%% related:end %%

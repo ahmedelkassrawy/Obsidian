@@ -651,3 +651,12 @@ async def create_conversation(
 ```
 
 Using SQLAlchemy with Alembic is a tried and tested approach to working with relational databases in FastAPI, so you’re more likely to find a lot of resources on integrating these technologies. Both the SQLAlchemy ORM and Alembic allow you to interact with your database and control the changes to its schemas.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch3. Creating the Database Layer]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[01 - Engine and Connections]]
+- [[05 - Sessions and sessionmaker]]
+%% related:end %%

@@ -177,3 +177,8 @@ WHERE SalaryRank <= 2;
 > 2. Write a self-join query to list students and their supervisors, including students without supervisors.
 > 3. Create a CTE to select the youngest student per department.
 > 4. How would you find the 3rd highest salary per department using a CTE?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Cleaning - Dates And Times]]
+%% related:end %%

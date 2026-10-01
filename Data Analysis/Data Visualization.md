@@ -286,3 +286,12 @@ plt.ylabel('Median House Value (Hundreds of Thousands $)')
 
 plt.show()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[2.Bar Charts and Analyzing Data from CSVs]]
+- [[7.Scatterplots]]
+- [[6.Histograms]]
+- [[Statistics Notes]]
+- [[EDA Notes]]
+%% related:end %%

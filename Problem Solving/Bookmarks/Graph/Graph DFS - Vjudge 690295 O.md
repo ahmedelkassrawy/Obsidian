@@ -164,3 +164,12 @@ int main()
     
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 G]]
+- [[Graph DFS - Vjudge 690295 U]]
+- [[Graph DFS - Vjudge 690295 J]]
+- [[Graph DFS - Sum Friends]]
+- [[BFS - Vjudge 692604 Q]]
+%% related:end %%

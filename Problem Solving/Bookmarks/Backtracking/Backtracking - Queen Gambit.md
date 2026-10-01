@@ -81,3 +81,10 @@ bool colvis[n + 1];
 bool diag1[n*2 + 1];
 bool diag2[n*2 + 1];
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking]]
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - Creating Expression]]
+%% related:end %%

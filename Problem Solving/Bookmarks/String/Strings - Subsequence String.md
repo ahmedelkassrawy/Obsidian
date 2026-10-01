@@ -45,3 +45,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Strings - Max Subsequences]]
+- [[Strings - Longest Palindromic Substring]]
+- [[Strings - Decoding]]
+- [[Strings - Anagram Check]]
+- [[STL - Double Strings]]
+%% related:end %%

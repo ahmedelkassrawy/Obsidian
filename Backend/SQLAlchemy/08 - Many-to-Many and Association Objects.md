@@ -198,3 +198,8 @@ If you mixed them in one model file (main tables with `back_populates`, `TeamPla
 ## Next
 
 → [[09 - Querying Data]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQLAlchemy CRUD And Relationships Recap]]
+%% related:end %%

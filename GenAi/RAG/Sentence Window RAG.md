@@ -165,3 +165,12 @@ for i, doc in enumerate(result["source_documents"], 1):
     print(f"\nSource #{i}:\n{doc.page_content[:300]}...")
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Project Talk to RAG]]
+- [[GraphRAG]]
+- [[The context window is a budget, not a bucket]]
+- [[Parent-child chunking]]
+- [[RAG]]
+%% related:end %%

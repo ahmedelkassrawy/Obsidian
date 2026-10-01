@@ -148,3 +148,12 @@ Here's a concise comparison of **Bag of Words (BoW)**, **TF-IDF**, and **Word2Ve
 | **Best For**           | Machine translation               | Text summarization                      |
 | **Output**             | Single score (0 to 1)             | Multiple scores (recall, precision, F1) |
 | **Semantic Awareness** | None                              | None                                    |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Stanford CS224n]]
+- [[Text Representation - BoW TF-IDF And N-Grams]]
+- [[Embeddings turn meaning into distance]]
+- [[Text Classification]]
+- [[NLP]]
+%% related:end %%

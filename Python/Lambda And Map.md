@@ -63,3 +63,8 @@ def mean(num_list):
 averages = list(map(mean, numbers))
 print(averages)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Map]]
+%% related:end %%

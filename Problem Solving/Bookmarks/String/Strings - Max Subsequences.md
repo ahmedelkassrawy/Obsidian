@@ -41,3 +41,12 @@ int main()
     cout<< counter;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Strings - Subsequence String]]
+- [[Strings - So And Sa]]
+- [[Strings - Longest Palindromic Substring]]
+- [[Backtracking - Creating Strings]]
+- [[Arrays - Maximum Subarray Sum (CF 386415I)]]
+%% related:end %%

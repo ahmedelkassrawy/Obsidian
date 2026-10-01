@@ -140,3 +140,12 @@ int main() {
 - Use in Obsidian by copying this note into a `.md` file.
 - Test the code in a C++ environment (e.g., VS Code, online compilers like Replit).
 - For advanced use cases, consider custom comparators or alternative containers like `deque`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Queue]]
+- [[Lower & Upper Bounds]]
+- [[Sets]]
+- [[Stack]]
+- [[Struct With Custom Comparator]]
+%% related:end %%

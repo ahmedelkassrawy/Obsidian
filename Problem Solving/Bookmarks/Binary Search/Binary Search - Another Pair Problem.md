@@ -64,3 +64,12 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Another Pair Problem (Duplicate)]]
+- [[Binary Search - Machines]]
+- [[Binary Search - Line Segments]]
+- [[Two Pointers - Counting Arithmetic Sequences]]
+- [[Binary Search - Magic Powder 2]]
+%% related:end %%

@@ -115,3 +115,10 @@ generated_text = tokenizer.decode(output_ids[0],
 
 print(generated_text)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Text Classification]]
+- [[Fine-Tuning Quick Reference]]
+- [[Summarization]]
+%% related:end %%

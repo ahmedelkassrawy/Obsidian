@@ -70,3 +70,10 @@ Cons:
     - Have a single **config loader**
     - Share a **database connection** across modules
     - Maintain a **global app state** in a web app or backend
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Langchain.Multi Agent Intro]]
+- [[OOP]]
+- [[Langchain.Multi Agent - Handoffs]]
+%% related:end %%

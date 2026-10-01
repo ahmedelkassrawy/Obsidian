@@ -170,3 +170,12 @@ def get_redis_strategy() -> RedisStrategy:
 
 Logout
 On logout, this strategy will delete the token from the Redis store.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - UserManager]]
+- [[FastApi - Security]]
+- [[FastAPI Users - Schemas]]
+- [[04 - API Endpoints with Database Operations]]
+- [[FastAPI Users - Auth Backend]]
+%% related:end %%

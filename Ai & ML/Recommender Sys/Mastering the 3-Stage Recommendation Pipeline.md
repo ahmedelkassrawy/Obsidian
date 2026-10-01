@@ -81,3 +81,10 @@ To help solidify how data flows and transforms through this architecture, I've g
 When architecting a production system, optimizing the handoff between the candidate generator's recall and the ranker's latency budget is usually where the toughest engineering challenges lie.
 
 Are you looking to implement a multi-stage pipeline from scratch for a specific application, or are you focusing on optimizing an existing retrieval setup?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recommender Systems]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+- [[Building a Two-Tower Retrieval System with PyTorch and FAISS]]
+%% related:end %%

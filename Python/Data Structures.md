@@ -315,3 +315,12 @@ Output: It's warm and morning time.
 
 ##### Bank Account Balance Check
 This code checks if the balance is sufficient for the withdraw_amount and then checks if the amount is positive. Since both conditions are true, it prints "Transaction successful."
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Python Review]]
+- [[Linked List]]
+- [[Pydantic]]
+- [[Iterating With Enumerate And Zip]]
+- [[Protocol vs ABC]]
+%% related:end %%

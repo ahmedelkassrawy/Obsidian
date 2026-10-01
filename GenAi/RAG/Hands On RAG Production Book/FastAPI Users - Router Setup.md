@@ -61,3 +61,12 @@ RAG Benifits:
 - enables explainability
 - Near Instant Addition and Removal of Knowledge
 - Access Controls and Security
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[Project Talk to RAG]]
+- [[A RAG answer is only as good as its retrieval]]
+- [[RAG And Agents - AI Engineering Book Ch6]]
+- [[GraphRAG]]
+%% related:end %%

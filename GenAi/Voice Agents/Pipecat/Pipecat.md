@@ -235,3 +235,12 @@ async def websocket_endpoint(websocket: WebSocket):
     # Start bot with parsed data
     await run_telephony_bot(websocket, transport_type, call_data)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.Speech to text]]
+- [[Voice Agent]]
+- [[Pipecat.Speech Input & Turn Detection]]
+- [[Pipecat.TTS]]
+%% related:end %%

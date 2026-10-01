@@ -78,3 +78,9 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Machines]]
+- [[Binary Search - Line Segments]]
+%% related:end %%

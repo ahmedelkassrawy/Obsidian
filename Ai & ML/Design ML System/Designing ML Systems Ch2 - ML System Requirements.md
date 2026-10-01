@@ -242,3 +242,12 @@ ML algorithms thrive in problems with the following characteristics:
 - Ensure systems are reliable, scalable, maintainable, and adaptable.
 - ML development is iterative, requiring constant monitoring and updates.
 - Experiments (e.g., A/B testing) are critical to validate ML’s business impact.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Designing ML Systems Ch3 - Data Engineering]]
+- [[MLOps Complete Guide]]
+- [[ML Project Checklist]]
+%% related:end %%

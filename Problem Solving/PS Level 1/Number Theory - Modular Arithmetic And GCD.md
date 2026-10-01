@@ -333,3 +333,8 @@ where $b^{-1}$ is the modular inverse of `b`, i.e. `(b · b⁻¹) % c == 1`.
 - [[Number Theory]] — sieve of Eratosthenes, prime factorization, phi function
 - [[Binary Exponentiation]]
 - [[GCD and LCM]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Last 2 Digits]]
+%% related:end %%

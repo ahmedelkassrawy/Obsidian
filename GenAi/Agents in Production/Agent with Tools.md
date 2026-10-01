@@ -502,3 +502,12 @@ while True:
 - **LangGraph Documentation**: Explore LangChain’s LangGraph for agent orchestration.
 - **OpenAI API**: [https://platform.openai.com](https://platform.openai.com) for model details.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agents Best Practice]]
+- [[Agent Engineering MOC]]
+- [[Langchain.Multi Agent Example]]
+- [[Agent Handoffs And Tool Design]]
+- [[Livekit]]
+%% related:end %%

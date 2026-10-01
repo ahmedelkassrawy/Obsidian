@@ -59,3 +59,12 @@ PEFT methods are techniques used to adapt a massive pre-trained model to a speci
 - **Usage:** Essential for speed. Without KV Caching, LLMs would get slower and slower for every word they type.
     
 - **Example:** If you ask an LLM to write a long story, KV Caching is what allows it to keep a steady "typing speed." Without it, the first paragraph would be fast, but the tenth paragraph would take minutes per word.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[Fine-Tuning vs Reinforcement Learning]]
+- [[Fine-Tuning Use Cases And Hyperparameters]]
+- [[LLM Inference Internals]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

@@ -31,3 +31,9 @@ The official server class was renamed between versions, keep them straight:
 - **v1** — `from mcp.server.fastmcp import FastMCP`. Older; the minimal example in 00 uses it.
 
 Check your version first: `python -c "import mcp; print(mcp.__version__)"`.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MCPs]]
+- [[gRPC and Protocol Buffers]]
+%% related:end %%

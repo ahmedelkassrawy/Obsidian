@@ -439,3 +439,12 @@ async def websocket_endpoint(websocket: WebSocket):
 * Always manage concurrency, reconnection, and resource cleanup carefully.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Streaming And Structured Outputs]]
+- [[Pipecat]]
+- [[Ch2. Selecting Your API Architecture]]
+- [[Phase5 — Asynchronism & Communication]]
+- [[gRPC and Protocol Buffers]]
+%% related:end %%

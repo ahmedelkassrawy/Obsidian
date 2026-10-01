@@ -57,3 +57,11 @@ hubs:
 38. return 0;
 39. }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Frequency Array - Good Array]]
+- [[Sorting - Sort Three Numbers]]
+- [[Structs - Highest Y]]
+- [[Arrays - Shift Zeros]]
+%% related:end %%

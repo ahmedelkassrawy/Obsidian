@@ -104,3 +104,11 @@ int main()
 Since literal `5L` is of type `long`, the compiler will first look to see if it can find an exact match for `print(long)`, but it will not find one. Next, the compiler will try numeric promotion, but values of type `long` can’t be promoted, so there is no match here either.
 
 Following that, the compiler will try to find a match by applying numeric conversions to the `long` argument. In the process of checking all the numeric conversion rules, the compiler will find two potential matches. If the `long` argument is numerically converted into an `int`, then the function call will match `print(int)`. If the `long` argument is instead converted into a `double`, then it will match `print(double)` instead. Since two possible matches via numeric conversion have been found, the function call is considered ambiguous.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Templates]]
+- [[Lambda And Map]]
+- [[Static Polymorphism]]
+- [[Static Members And Overloading]]
+%% related:end %%

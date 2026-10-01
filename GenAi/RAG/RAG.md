@@ -411,3 +411,12 @@ Combines BM25 (lexical precision) + embeddings (semantic recall).
 - **Example Query**: "When was Tesla founded?" – BM25 finds exact phrases; semantics finds paraphrases.
 
 This structure provides a complete, study-friendly guide. Experiment with code by replacing paths, keys, and questions!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Project Talk to RAG]]
+- [[GraphRAG]]
+- [[FastAPI Users - Router Setup]]
+- [[LlamaIndex RAG Pipeline]]
+- [[A RAG answer is only as good as its retrieval]]
+%% related:end %%

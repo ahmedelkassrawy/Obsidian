@@ -350,3 +350,12 @@ if __name__ == "__main__":
 **Layer your context management.** Light operations first (removal), heavy operations last (summarization). This preserves granular context when possible and falls back to monolithic summaries only when necessary.
 
 **Add circuit breakers for every retry.** Every recovery mechanism in `query.ts` has an explicit limit: 3 auto-compact failures, 3 max-output recovery attempts, 1 reactive compact attempt. Without these limits, the first production session that triggers a retry-on-failure loop will burn your API budget overnight.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[The context window is a budget, not a bucket]]
+- [[CrewAI Agent Parameters And Context Window]]
+- [[Claude Code Core Architecture]]
+- [[Context Engineering]]
+- [[AI Agent Prompt Caching and Context Management]]
+%% related:end %%

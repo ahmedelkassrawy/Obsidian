@@ -202,3 +202,12 @@ async def get_upcoming_events(self, days: int = 7) -> List[Dict]:
         now = datetime.now()
         future_date = now + timedelta(days=days)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph - Before v1]]
+- [[06 LangGraph Orchestration]]
+- [[Langchain.Multi Agent - Router]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[Project Agent Arch]]
+%% related:end %%

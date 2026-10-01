@@ -114,3 +114,8 @@ used to do temporary fixes to file while having a copy of what you where working
 git stash apply
 ```
 to get those code back
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Git — hands-on reference (Git-Gud)]]
+%% related:end %%

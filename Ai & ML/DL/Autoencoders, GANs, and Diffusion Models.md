@@ -116,3 +116,12 @@ codings = encoder(X_train.to(device))
 ```
 
 This code is really not very different from all the MLPs we built in past chapters, but there are a few things to note: We organized the autoencoder into two subcomponents: the encoder and the decoder, each composed of a single Linear layer in this example, and the autoencoder is a Sequential model containing the encoder followed by the decoder. The autoencoder’s number of outputs is equal to the number of inputs (i.e., 3). To perform PCA, we do not use any activation function (i.e., all neurons are linear), and the cost function is the MSE. That’s because PCA is a linear transformation. We will see more complex and nonlinear autoencoders shortly.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Optimizers]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[Transfer Learning And Training Callbacks]]
+- [[Embeddings Representations And Latent Space]]
+- [[CNN]]
+%% related:end %%

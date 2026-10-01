@@ -31,3 +31,12 @@ int main()
 	vector<Dragon> dragons(n)
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Structs - Highest Y]]
+- [[Priority Queue]]
+- [[Lower & Upper Bounds]]
+- [[Sets]]
+- [[Structs - 3D Points]]
+%% related:end %%

@@ -169,3 +169,12 @@ In this guide, we’ve covered:
 - **Challenges**: Cache invalidation and eviction policies to manage stale data and cache size.
 
 > **Fun Fact**: Cache invalidation is famously considered the second hardest problem in computer science. Can you guess the hardest? Share your thoughts in the comments!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Caching trades freshness for speed]]
+- [[Caching - Capacity Estimation and Strategies]]
+- [[Phase4 — Caching]]
+- [[Memcached]]
+- [[Prompt caching only pays off when the prefix stays identical]]
+%% related:end %%

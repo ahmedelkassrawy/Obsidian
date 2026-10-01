@@ -46,3 +46,8 @@ int main() {
     if(c >= '0' && c <= '9') cout<<"ITS DIGIT";
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Reading Input With Cin And Getline]]
+%% related:end %%

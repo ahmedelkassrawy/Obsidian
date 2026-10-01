@@ -148,3 +148,12 @@ hubs:
 ---
 
 **Tags**: #Database #Indexing #SQL #Performance
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[Multiple Indexes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+- [[MyISAM]]
+- [[Optimizing Schema and Data Types]]
+%% related:end %%

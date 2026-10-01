@@ -162,3 +162,10 @@ Using semantic errors and descriptive Zod schemas so the AI has context, rather 
 
 > [!quote] Core Principle
 > Autonomous agents need fault tolerance. If you build agents that run unattended, you need state projection, edge watchdogs, and state reconciliation — otherwise your scheduled tasks are at risk every time a machine goes down.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[camelAI - VM-less Agent in a Durable Object]]
+- [[Agents Best Practice]]
+- [[Phase5 — Asynchronism & Communication]]
+%% related:end %%

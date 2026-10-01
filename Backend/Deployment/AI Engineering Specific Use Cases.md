@@ -286,3 +286,12 @@ async def websocket_endpoint(websocket: WebSocket):
 ```
 
 This setup enables low-latency communication for interactive AI applications, such as real-time dashboards, gaming, or continuous monitoring systems. Clients can send data points, and the server can immediately return predictions without the overhead of traditional HTTP request-response cycles.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[06 - Request vs Response Models Explained]]
+- [[04 - API Endpoints with Database Operations]]
+- [[Advanced Topics and Best Practices]]
+- [[FastAPI - Response Models and Status Codes]]
+%% related:end %%

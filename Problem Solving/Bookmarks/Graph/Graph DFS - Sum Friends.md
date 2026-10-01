@@ -78,3 +78,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 R (Complete Components)]]
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graph DFS - Vjudge 690295 G]]
+- [[Graph DFS - Vjudge 690295 U]]
+- [[Graph DFS - Vjudge 690295 P (One Component Check)]]
+%% related:end %%

@@ -50,3 +50,12 @@ gRPC is usually used for a different set of problems than REST, and it has many 
 - Instead of returning data in a text-based format like JSON, it uses protocol buffers, which is a format for serializing data that is smaller and faster than JSON or XML.
 
 gRPC is not a likely candidate for the APIs that you will be creating in your portfolio project. However, it’s worth mentioning in this discussion of API architectural styles related to data science for one big reason: large language models (LLMs). These machine learning models are the engines behind generative AI services such as Gemini and ChatGPT. These are very big models that need all the performance they can get, and they are using gRPC in some cases to achieve this.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[gRPC and Protocol Buffers]]
+- [[Clipping - REST API Design (YouTube)]]
+- [[Handlers, Services, Repositories, Middleware & Request Context]]
+- [[Backend Intro]]
+- [[Ch6.Real-Time Communication with Generative Models]]
+%% related:end %%

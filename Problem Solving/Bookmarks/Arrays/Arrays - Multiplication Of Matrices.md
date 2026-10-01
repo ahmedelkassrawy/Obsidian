@@ -82,3 +82,9 @@ int main()
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Arrays - Pumbaa]]
+- [[00. PyTorch Tensor Fundamentals]]
+%% related:end %%

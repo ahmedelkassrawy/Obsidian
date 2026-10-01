@@ -236,3 +236,12 @@ print(f"sequential: {tk/dt:.0f} tokens/sec")
 - Sessions time out (~90 min idle, ~12 h max) and reset. Save the notebook to Drive or GitHub as you go.
 
 - `pip install vllm` brings its own CUDA runtime; the install is the step most likely to complain.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LLM Gateways]]
+- [[LLM Inference Internals]]
+- [[LLM Proxies]]
+- [[Ch3. Serving GenAI Models with FastAPI]]
+- [[ResolveFlow — AI Handoff Prompt]]
+%% related:end %%

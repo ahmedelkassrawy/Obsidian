@@ -382,3 +382,12 @@ Here’s a corrected and streamlined to-do list for a text classification task, 
 8. **Evaluate Model**:
     - Make predictions (y_pred) on test data.
     - Generate classification report using y_test and y_pred.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP Pipeline And Regex Basics]]
+- [[RNN and LSTM]]
+- [[NLP - AI BOOK]]
+- [[NLP Preprocess code]]
+- [[NLP Concepts]]
+%% related:end %%

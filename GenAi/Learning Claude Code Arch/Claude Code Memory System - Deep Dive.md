@@ -541,3 +541,11 @@ The gap between these two lists is the gap between what Claude Code's memory asp
 10. **The security model is thorough.** Path traversal protection, symlink validation, Unicode normalisation attack detection, and restricted permissions for the extraction agent are all well-implemented despite the architectural constraints.
 
 ![[HEwnczCaUAA-ICK.jpg]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Claude Code Core Architecture]]
+- [[Context-Compression Best Practices]]
+- [[Transformer Internals]]
+- [[ECPC Reference Sheet]]
+%% related:end %%

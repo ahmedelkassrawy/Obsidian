@@ -544,3 +544,12 @@ Define three tiers:
 Build a middleware that intercepts Tier 2+ tools and asks the user for confirmation.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Engineering MOC]]
+- [[Agents - Ai Engineering Book]]
+- [[Context Engineering]]
+- [[Claude Code Memory System - Deep Dive]]
+%% related:end %%

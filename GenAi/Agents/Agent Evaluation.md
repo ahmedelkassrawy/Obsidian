@@ -107,3 +107,12 @@ In most production incidents, the problem isn't the LLM. It lies in:
 - [[RAG Eval]] — retrieval-specific metrics
 - [[LangFuse Observability]] — tracing & instrumentation
 - `Google ADK. Agent Observability , Eval` — ADK-specific eval tooling
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Trajectory Evaluation]]
+- [[Ch3. Eval]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]]
+%% related:end %%

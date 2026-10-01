@@ -209,3 +209,12 @@ def send_email(to, body):
 - Only add **tool selection** when you truly have many tools; write tool descriptions in user language.
 
 - Make **side-effect tools idempotent** so retries don't duplicate.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Project Agent Arch]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[LangGraph Nodes Edges And State]]
+- [[LangGraph Reducers, Routing And Step-Limit Loops]]
+- [[Agent Engineering MOC]]
+%% related:end %%

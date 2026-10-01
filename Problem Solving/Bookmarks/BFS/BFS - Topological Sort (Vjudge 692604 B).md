@@ -85,3 +85,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 H]]
+- [[BFS - Vjudge 692604 T]]
+- [[BFS - Vjudge 692604 J]]
+- [[BFS - Vjudge 692604 W (0-1 BFS)]]
+- [[BFS - Vjudge 692604 M]]
+%% related:end %%

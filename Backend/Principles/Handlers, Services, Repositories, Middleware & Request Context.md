@@ -223,3 +223,11 @@ app.post("/books", (req, res) => {
 > [!quote] Design principle
 > *“Controller deals with data formats – input/output. Service deals with **what** to do. Repository deals with **how** to store/fetch.”*
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Clipping - Controllers Services and Repositories (YouTube)]]
+- [[Ch2. Selecting Your API Architecture]]
+- [[Backend Intro]]
+- [[Complete REST API Design]]
+- [[Phase4 — Caching]]
+%% related:end %%

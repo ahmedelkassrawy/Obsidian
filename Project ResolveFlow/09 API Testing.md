@@ -300,3 +300,11 @@ The duplicate-transaction setup now appears in two tests. That is fine. When a t
 This test only runs because my real API key is in `.env`. Importing `app.py` still builds the **real** classifier first, and `create_llm` raises if the key is missing. On a machine without the key (CI, a teammate), the import fails before any test runs.
 
 `monkeypatch` swaps the graph **after** the real one was already built. The clean fix is to stop building it at import time: an app factory or FastAPI lifespan that receives the graph. That is the next architectural step, and it will be safe to make because these API tests will protect it.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[07 Intent Routing and LLM Classifier]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[01 - Overview and Project Layout]]
+- [[FastAPI - Response Models and Status Codes]]
+%% related:end %%

@@ -91,3 +91,12 @@ hubs:
   - Table-level locking.
   - Prone to corruption.
 - **Alternatives**: Switch to InnoDB for modern needs.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[InnoDB]]
+- [[Intro DB Engine]]
+- [[Key vs Non-Key Column Indexes]]
+- [[Indexes speed up reads by slowing down writes]]
+- [[SQLite]]
+%% related:end %%

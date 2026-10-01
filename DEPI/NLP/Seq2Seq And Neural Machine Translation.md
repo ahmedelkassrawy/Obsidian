@@ -174,3 +174,12 @@ Attention provides a solution to the bottleneck problem:
 
 4. **Concatenate** attention output with decoder hidden state:
    $$[a_t; s_t] \in \mathbb{R}^{2h}$$
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Seq2Seq]]
+- [[Sequence Modeling With RNNs]]
+- [[Encoder Vs Decoder Models]]
+- [[RNN Implementation Guide]]
+- [[RNN]]
+%% related:end %%

@@ -107,3 +107,12 @@ RAG models are evaluated along multiple axes using human evaluations or by using
 *   **Citation precision:** The proportion of generated citations that support their associated statements.
 *   **Faithfulness:** Whether the answer is consistent with the provided context.
 *   **Answer relevance:** How relevant the answer is to the original question.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Embeddings turn meaning into distance]]
+- [[Pinecone]]
+- [[Anthropic RAG Cheatsheet]]
+- [[Advanced RAG]]
+- [[NLP Concepts]]
+%% related:end %%

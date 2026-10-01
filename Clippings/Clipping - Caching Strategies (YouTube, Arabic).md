@@ -488,3 +488,10 @@ https://www.tiktok.com/@musab\_khunaijir?\_t=ZS-8zu5dIfuGGH&\_r=1
 **1:19:03** · ما عندك حاجه تقول يا ابو بكر كده لا ما عندي حاجه جزاكم الله خير اسئله والله يعني جميله شديد ا ما شاء الله الشباب تفكيرهم جميل والله الزوايا المختلفه دي بتفيدنا شديد الواحد يعني ياخذ الموضوع من اكثر من ناحيه فدي حاجه ممتازه جزاكم الله خير وان شاء الله نشوفكم في السيشن الجاي ان شاء الله باذن الله امين ممكن اذا بعدك ناس نقاش بسيطه نخلصها
 
 **1:19:28** · بعد التسجيل ايوه ان شاء في الاول الاخير يعني فضل الله شكرا لك جزيلا يا ابو بكر منكسبحانك اللهم وبحمدكشهد ان لا اله الا انت استغفر السلام ‏N
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Caching - Capacity Estimation and Strategies]]
+- [[Caching trades freshness for speed]]
+- [[Clipping - SMM System Client Meeting (Arabic)]]
+%% related:end %%

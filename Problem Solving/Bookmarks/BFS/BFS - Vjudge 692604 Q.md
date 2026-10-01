@@ -93,3 +93,12 @@ int main()
     cout<<(ans.size() == 26 ? ans : "Impossible"); //if not then there was a cycle
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 P]]
+- [[BFS - Vjudge 692604 V]]
+- [[BFS - Vjudge 692604 L]]
+- [[BFS - Vjudge 692604 H]]
+- [[BFS - Vjudge 692604 M]]
+%% related:end %%

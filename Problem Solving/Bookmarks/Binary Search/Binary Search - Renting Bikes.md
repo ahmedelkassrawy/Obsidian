@@ -73,3 +73,12 @@ int main() {
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Machines]]
+- [[Binary Search - Line Segments]]
+- [[Binary Search - Another Pair Problem]]
+- [[Binary Search]]
+- [[Binary Search - Magic Powder 2]]
+%% related:end %%

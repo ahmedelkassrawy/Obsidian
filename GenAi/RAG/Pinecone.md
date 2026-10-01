@@ -215,3 +215,12 @@ def generate_sparse_vectors(context_batch):
    sparse_embeds = build_dict(inputs)
    return sparse_embeds
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Semantic Search]]
+- [[Embeddings turn meaning into distance]]
+- [[Sparse Vs Dense Embeddings]]
+- [[Indexes speed up reads by slowing down writes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+%% related:end %%

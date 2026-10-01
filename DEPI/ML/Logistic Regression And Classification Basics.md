@@ -117,3 +117,12 @@ plt.show()
 auc_score = roc_auc_score(y_test, y_prob)
 print(f"AUC Score: {auc_score}")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Logistic Regression]]
+- [[PyTorch Linear, Logistic]]
+- [[Loss Functions]]
+- [[GoTo ML Classification]]
+- [[02. PyTorch Classification]]
+%% related:end %%

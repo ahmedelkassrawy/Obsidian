@@ -51,3 +51,8 @@ Data leakage in machine learning occurs when information from outside the traini
 6. **Simulate Real-World Conditions**: Design the training process to reflect how the model will be used in production.
 
 By carefully structuring the data pipeline and ensuring that only relevant, realistic information is used during training, data leakage can be minimized, leading to more robust and reliable machine learning models.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems Ch4 - Training Data]]
+%% related:end %%

@@ -88,3 +88,12 @@ Explanation: Scores are turned into weights that sum to 100%.
 4. Aggregation
 The new vector for 'Apple' now contains 'fruit-like' information.
 Explanation: The final representation is a weighted sum of all Value vectors.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Attention lets every token decide what to look at]]
+- [[Self-Attention vs Cross-Attention]]
+- [[Sentence Window RAG]]
+- [[Stanford CS224n]]
+- [[Embeddings turn meaning into distance]]
+%% related:end %%

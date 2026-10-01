@@ -211,3 +211,8 @@ def agent_invocation(payload, context):
 if __name__ == "__main__":
     app.run()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Memory with Redis]]
+%% related:end %%

@@ -336,3 +336,12 @@ def create_thing(thing: ThingCreate, db: Session = Depends(get_db)):
 ## Next
 
 → [[05 - Running and Testing the App]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[Ch3. Creating the Database Layer]]
+- [[06 - Request vs Response Models Explained]]
+- [[05 - Sessions and sessionmaker]]
+- [[Ch2.Getting Started with FastAPI]]
+%% related:end %%

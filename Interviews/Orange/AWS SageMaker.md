@@ -42,3 +42,12 @@ For your interview, you don't need to know how to code in SageMaker. You just ne
 ### Why Telecoms Love SageMaker
 
 Telecoms have strict security and data privacy laws. With SageMaker, all the data stays securely inside the AWS ecosystem. Furthermore, telecom use cases (like 5G slicing or churn prediction) require real-time predictions with incredibly low latency. SageMaker Endpoints are optimized to handle millions of requests per second without breaking a sweat.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Kubernetes Core Concepts]]
+- [[Running Kubernetes Locally]]
+- [[Orange MLOps Interview Visualization]]
+- [[Practical MLOps Ch1 - DevOps Foundations]]
+- [[MLOps Complete Guide]]
+%% related:end %%

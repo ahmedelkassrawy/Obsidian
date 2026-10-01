@@ -146,3 +146,12 @@ print(f"Random Forest MSE: {mean_squared_error(y_test, rf_reg.predict(X_test)):.
 - **Prediction**: Leaf nodes predict the **average** of target values.
 - **Creation**: Recursively splits data to maximize information gain, forming a tree structure.
 - **Regularization**: Use `max_depth`, `min_samples_leaf`, etc., to prevent overfitting.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Decision Trees And Naive Bayes]]
+- [[Decision Trees]]
+- [[Random Forest]]
+- [[Bagging And Boosting]]
+- [[Supervised.Regression - AI Book]]
+%% related:end %%

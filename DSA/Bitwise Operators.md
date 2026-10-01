@@ -78,3 +78,11 @@ test
 flags.test(1)
 ```
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bitmasks]]
+- [[Bitmask - Subset Enumeration]]
+- [[Bit Prefix Sums (Archived)]]
+- [[Binary Search - Machines]]
+%% related:end %%

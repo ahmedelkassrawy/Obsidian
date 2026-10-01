@@ -139,3 +139,12 @@ uvicorn main_integrated:app --reload     # docs at http://127.0.0.1:8000/docs
 ## Full details
 
 [[02 - Database Session Dependency (get_db)]] · [[03 - Pydantic Schemas (Request and Response Models)]] · [[04 - API Endpoints with Database Operations]] · [[06 - Request vs Response Models Explained]] · [[08 - Gotchas and Troubleshooting]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[14 - Best Practices Checklist]]
+- [[12 - Cheatsheet]]
+- [[Ch3. Creating the Database Layer]]
+- [[04 - ORM Models (declarative_base)]]
+%% related:end %%

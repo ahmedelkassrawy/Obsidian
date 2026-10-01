@@ -83,3 +83,12 @@ python_df.rename(columns={"count":"NumRespondents", "LanguageWorkedWith": "NumKn
 python_df["PctKnowsPython"] = (python_df["NumKnowsPython"]/python_df["NumRespondents"]) * 100
 #now calculating the percentage in a new column 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Sorting Values]]
+- [[Statistics Notes]]
+- [[Pandas - Adding And Removing Columns]]
+- [[Panda Freq Code]]
+%% related:end %%

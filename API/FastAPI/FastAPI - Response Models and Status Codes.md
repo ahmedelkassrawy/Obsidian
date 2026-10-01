@@ -370,3 +370,12 @@ async def create_item(name: str):
   - Use `204 No Content` for endpoints that don’t return data.
 
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Pydantic]]
+- [[06 - Request vs Response Models Explained]]
+- [[01 - Overview and Project Layout]]
+- [[Pydantic]]
+- [[Pydantic]]
+%% related:end %%

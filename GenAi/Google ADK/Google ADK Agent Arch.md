@@ -539,3 +539,12 @@ if __name__ == "__main__":
 ```
 
 ![[Pasted image 20251121180752.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[Google ADK]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[Agent Engineering MOC]]
+- [[Agents Best Practice]]
+%% related:end %%

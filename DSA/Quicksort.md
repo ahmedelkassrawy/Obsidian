@@ -48,3 +48,10 @@ def quicksort(array):
 
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Selection Sort]]
+- [[Structs - Highest Y]]
+- [[Sorting - Sort Three Numbers]]
+%% related:end %%

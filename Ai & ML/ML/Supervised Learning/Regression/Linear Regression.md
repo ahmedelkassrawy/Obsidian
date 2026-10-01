@@ -144,3 +144,11 @@ print("95% confidence interval:", np.quantile(cv_scores, [0.025, 0.975]))
 - **Cross-validation scores**: Show model performance across different folds.
 - **Mean and standard deviation**: Indicate average performance and variability.
 - **Confidence interval**: Provides a range for expected model performance.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Lasso Regression]]
+- [[Ridge Regression]]
+- [[Supervised.Regression - AI Book]]
+- [[GoTo ML Regression]]
+%% related:end %%

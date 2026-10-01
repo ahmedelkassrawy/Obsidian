@@ -80,3 +80,12 @@ class UserUpdate(schemas.BaseUserUpdate):
 >[!warning]
 Make sure to mirror this in your database model
 The User model you defined earlier for your specific database will be the central object that will actually store the data. Therefore, you need to define the very same fields in it so the data can be actually stored.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[FastAPI Users - Users Router]]
+- [[04 - API Endpoints with Database Operations]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[FastAPI - Pydantic]]
+%% related:end %%

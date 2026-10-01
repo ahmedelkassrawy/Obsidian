@@ -243,3 +243,12 @@ await task.queue_frames([
 - **Word timestamps enable precision** - better interruption handling and context accuracy
 - **Configuration impacts performance** - balance quality, latency, and bandwidth needs
 - **Services are modular** - easily swap providers without changing pipeline code
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Speech to text]]
+- [[Pipecat.LLM Inference]]
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.Context Management]]
+- [[Pipecat.Function Calling]]
+%% related:end %%

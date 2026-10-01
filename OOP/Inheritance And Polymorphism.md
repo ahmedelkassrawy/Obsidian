@@ -183,3 +183,11 @@ namespace Program
     }
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Overriding Object Methods]]
+- [[Static Members And Overloading]]
+- [[Static Polymorphism]]
+- [[Association Aggregation And Composition]]
+%% related:end %%

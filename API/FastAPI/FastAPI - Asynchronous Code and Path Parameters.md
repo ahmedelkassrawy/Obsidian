@@ -325,3 +325,12 @@ async def read_items(
 - Order matters for path operations; specific paths come before generic ones.
 - Pydantic models define request bodies.
 - Numeric validations (`gt`, `ge`, `lt`, `le`) work for integers and floats.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Async and Routers]]
+- [[Concurrency and Async]]
+- [[Async helps with waiting, not with computing]]
+- [[LlamaIndex Async Explained]]
+- [[Advanced Topics and Best Practices]]
+%% related:end %%

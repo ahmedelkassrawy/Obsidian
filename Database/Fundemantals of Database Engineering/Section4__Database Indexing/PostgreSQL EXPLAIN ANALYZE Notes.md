@@ -160,3 +160,12 @@ Workers Planned: 2
 - **Parallelism**:
     - PostgreSQL uses parallel workers for large scans/sorts if enabled.
     - Check `Workers Planned` to see thread usage.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PostgreSQL Scan Types Comparison]]
+- [[Indexes speed up reads by slowing down writes]]
+- [[Index Scan vs Index Only Scan]]
+- [[Multiple Indexes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+%% related:end %%

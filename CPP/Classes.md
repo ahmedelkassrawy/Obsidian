@@ -21,3 +21,9 @@ hubs:
 - `protected`: more restrictive than `public`, but allows **derived** classes to know details of _parents_.
 - `private`: prevents objects of the **derived** class to be treated as objects of **base** class.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[OOP]]
+- [[Constructor]]
+- [[Forward Declaration]]
+%% related:end %%

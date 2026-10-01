@@ -712,3 +712,9 @@ Locates a program or command in the system path.
     ```bash
     which ls
     ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linux File and Directory Management]]
+- [[Bash Shell and Commands]]
+%% related:end %%

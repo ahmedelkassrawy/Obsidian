@@ -55,3 +55,12 @@ This line in the `reachValue` function performs a recursive call to `reachValue`
 The `||` operator between these two recursive calls means logical OR. If either of the recursive calls returns true (i.e., if either `current * 10` or `current * 20` reaches the `target` value), then the whole expression evaluates to true, and `reachValue` returns true. Otherwise, if neither of the recursive calls returns true, the expression evaluates to false, and `reachValue` returns false.
 
 In summary, this line explores two possibilities: either reaching the target value by multiplying the current value by 10 or reaching it by multiplying the current value by 20. If either of these possibilities is successful, the function returns true.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recursion]]
+- [[Recursion Notes]]
+- [[DP - Vjudge 694272 U]]
+- [[DP - Vjudge 694272 T]]
+- [[C++ Solving Tips - Ternary And Palindrome]]
+%% related:end %%

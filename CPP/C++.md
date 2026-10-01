@@ -43,3 +43,11 @@ int main()
 ```
 
 [4.9 — Boolean values – Learn C++ (learncpp.com)](https://www.learncpp.com/cpp-tutorial/boolean-values/)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[ECPC Reference Sheet]]
+- [[Structs - Highest Y]]
+- [[Struct With Custom Comparator]]
+- [[Struct With Custom Comparator]]
+%% related:end %%

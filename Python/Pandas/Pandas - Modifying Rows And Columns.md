@@ -53,3 +53,12 @@ df.applymap(str.lower)
 
 df["first"].map({"Corey":"Chris", "Jane":"Mary"}) #applys changes to specific values you wanted but the other values not changed take the NaN Value instead of its previous value 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Adding And Removing Columns]]
+- [[Panda Freq Code]]
+- [[Pandas Time Series Cookbook]]
+- [[Pandas - Sorting Values]]
+%% related:end %%

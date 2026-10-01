@@ -118,3 +118,12 @@ CREATE TABLE logs (timestamp DATETIME) ENGINE=MyISAM;   -- Fast inserts
 - **Trends**: Modular design → More specialized databases (e.g., for logs vs. analytics).
 - **Flexibility**: MySQL shines with swappable engines; PostgreSQL prioritizes consistency.
 - **Embedded**: Engines as libs for direct app integration.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MongoDB Internals]]
+- [[SQLite]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+- [[MongoDB Architecture]]
+- [[InnoDB]]
+%% related:end %%

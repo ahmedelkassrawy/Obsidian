@@ -61,3 +61,9 @@ int main(){
 
 
 _Constructors_ can be _overloaded_ by defining _constructors_ with **different** _parameters_ list.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[OOP]]
+- [[OOP]]
+%% related:end %%

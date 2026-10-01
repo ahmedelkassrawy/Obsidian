@@ -81,3 +81,12 @@ What is Attention?
 3. Computes attention 
 4. Concatenates Heads
 5. Applies w_o projection
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN and LSTM]]
+- [[Tokenizer]]
+- [[HF Tokenizer - Encoding Padding Truncation]]
+- [[Modern Tokenization]]
+- [[RNN]]
+%% related:end %%

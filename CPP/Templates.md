@@ -42,3 +42,9 @@ int main()
 ```
 
 templates are just functions that aren't existing unless called.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Function Overloading]]
+- [[Static Polymorphism]]
+%% related:end %%

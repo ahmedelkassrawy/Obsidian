@@ -185,3 +185,12 @@ ungrounded: [model] #0 → grounded=False → [model] #1 → grounded=False → 
 ## Shutterabia + raaaaag fits
 - **raaaaag already has one:** the **refusal** ("no relevant context → don't answer") is an output grounding guardrail, and the eval harness **gates on refusal rate** — that's testing the guardrail.
 - **Shutterabia:** *input* = PII + injection on incoming messages; *output* = brand-voice + banned-claims + no-competitor before a caption publishes. A publish is **irreversible**, so that output guard fails **closed**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Engineering MOC]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[Human-in-the-Loop (Approval & Interrupts)]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[LLM Gateways]]
+%% related:end %%

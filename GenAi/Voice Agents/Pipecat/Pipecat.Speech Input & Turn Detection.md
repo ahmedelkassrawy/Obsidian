@@ -168,3 +168,12 @@ The defaults use `TurnAnalyzerUserTurnStopStrategy` with `LocalSmartTurnAnaly
 - **System frames coordinate behavior** - enable interruptions and natural turn-taking
 - **Local processing is faster** - Silero VAD provides low-latency speech detection
 - **Turn detection improves quality** - but requires careful VAD configuration
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Speech to text]]
+- [[Pipecat]]
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.TTS]]
+- [[Voice Agent]]
+%% related:end %%

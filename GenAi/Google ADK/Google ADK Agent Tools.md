@@ -359,3 +359,12 @@ TIME 13: Tool returns {'status': 'approved', 'order_id': 'ORD-10-HUMAN', ...}
 TIME 14: Agent receives result and responds to user
 ```
 **Key point:** The `invocation_id` is how ADK knows to resume the paused execution instead of starting a new one.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Function Calling]]
+- [[Google ADK]]
+- [[Google ADK Observability And Eval]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[LangGraph Agents]]
+%% related:end %%

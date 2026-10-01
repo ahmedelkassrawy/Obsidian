@@ -53,3 +53,12 @@ int main()
     cout<<dp[x]<<endl;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Iterative]]
+- [[DP Iterative - Vjudge 696069 X (Knapsack)]]
+- [[DP Iterative - Vjudge 696069 B]]
+- [[DP Iterative - Vjudge 696069 W]]
+- [[DP Iterative - Vjudge 696069 P]]
+%% related:end %%

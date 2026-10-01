@@ -180,3 +180,12 @@ Routers ──► Tool-calling Agents ──► Multi-Agent Systems ──► (F
 ---
 
 *Summary of Chapter 1 — "AI Agent Defentive Guide"* (July 2026)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Engineering MOC]]
+- [[Agent Reasoning Patterns]]
+- [[Context Engineering]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[LangGraph Agents]]
+%% related:end %%

@@ -83,3 +83,12 @@ int main()
     cout << go(0, 0) << endl;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP - Vjudge 694272 L]]
+- [[DP - Vjudge 694272 O]]
+- [[DP - Vjudge 694272 W]]
+- [[DP - Vjudge 694272 X]]
+- [[DP - Vjudge 694272 E]]
+%% related:end %%

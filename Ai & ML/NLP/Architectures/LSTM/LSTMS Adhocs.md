@@ -44,3 +44,10 @@ model.compile(optimizer = "adam",
 # the shape [1] is because the the time steps are 1 day only could be 2,3,4,5 daysss
 # 1 is the number of features you have in your data
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN Implementation Guide]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[RNN and LSTM]]
+%% related:end %%

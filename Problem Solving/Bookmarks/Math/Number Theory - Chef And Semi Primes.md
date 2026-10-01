@@ -66,3 +66,10 @@ int main()
 	}
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 V (Prime Labels On A Tree)]]
+- [[Number Theory - Divisors Factorization And Sieve]]
+- [[Binary Search - Machines]]
+%% related:end %%

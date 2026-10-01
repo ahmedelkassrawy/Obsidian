@@ -88,3 +88,12 @@ task1 = Task(
     output_pydantic=Blog,
 )
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CrewAI Tasks]]
+- [[Crews vs Flows]]
+- [[FastAPI - Response Models and Status Codes]]
+- [[01 - Overview and Project Layout]]
+- [[2. AI Contract Review — Advanced Temporal Patterns]]
+%% related:end %%

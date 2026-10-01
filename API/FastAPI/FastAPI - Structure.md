@@ -40,3 +40,12 @@ As you move from a microservice to a full backend service, you will want to adop
 
 ![[Pasted image 20260122203832.png]]
 ![[Pasted image 20260122203915.png]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[Ch3. Creating the Database Layer]]
+- [[FastAPI Users - Full Example Layout]]
+- [[04 - API Endpoints with Database Operations]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+%% related:end %%

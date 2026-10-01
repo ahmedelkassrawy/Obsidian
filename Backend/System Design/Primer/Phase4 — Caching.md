@@ -98,3 +98,12 @@ The real trade-off for this case:
 
 > [!success] Phase 4 done
 > Own: the cache layers, the 4 write patterns, cache-aside as the default, the 3 invalidation strategies, and why invalidation is the hard part. **Next: Phase 5 — asynchronism & communication (message/task queues, back pressure, retries + idempotency, REST vs RPC, TCP vs UDP). Anchor = Temporal + Shutterabia scheduler/retry/HMAC.**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Caching trades freshness for speed]]
+- [[Caching]]
+- [[LLM Caching]]
+- [[Caching - Capacity Estimation and Strategies]]
+- [[Semantic Caching - Redis]]
+%% related:end %%

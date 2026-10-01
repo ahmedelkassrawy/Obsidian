@@ -201,3 +201,11 @@ df.to_excel("employees.xlsx", index=False, sheet_name="Staff")
 > - `axis=0` → **rows** (default for many operations)
 > - `axis=1` → **columns**
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas - Selecting Filtering And Indexing]]
+- [[Pandas Time Series Cookbook]]
+- [[Pandas - Modifying Rows And Columns]]
+- [[Pandas Time Series Cookbook]]
+- [[Pandas - Sorting Values]]
+%% related:end %%

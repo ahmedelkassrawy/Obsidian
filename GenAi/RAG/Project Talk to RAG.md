@@ -224,5 +224,13 @@ class VectorRepository:
 ```
 
 >[!tip] 
-Currently, converting text to embedding vectors is an irreversible process. Therefore, you will need to store the text that created the embedding with the embedding vector as metadata 
+Currently, converting text to embedding vectors is an irreversible process. Therefore, you will need to store the text that created the embedding with the embedding vector as metadata
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[FastAPI Users - Router Setup]]
+- [[GraphRAG]]
+- [[LlamaIndex RAG Pipeline]]
+- [[Advanced RAG]]
+%% related:end %%

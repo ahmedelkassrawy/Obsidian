@@ -53,3 +53,12 @@ Exemplars --> including examples
 Persona --> define who the ai should emulate such as coach or technical
 Format --> output structure
 Tone
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning vs Reinforcement Learning]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[Prompt Engineering]]
+- [[Fine-Tuning Quick Reference]]
+- [[Phase0]]
+%% related:end %%

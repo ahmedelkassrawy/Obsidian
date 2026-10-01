@@ -47,3 +47,11 @@ Network traffic fluctuates wildly. A sudden viral event or a massive football ma
 This is the classic, high-ROI business side of telecom.
 
 - **The ML Role:** Classification models analyze billing data, dropped call rates, and customer service logs to flag users who are likely to cancel their Orange subscriptions or to detect SIM-swapping and roaming fraud.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+%% related:end %%

@@ -49,3 +49,9 @@ int main() {
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Arrays - Shift Zeros]]
+- [[Arrays - Pumbaa]]
+%% related:end %%

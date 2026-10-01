@@ -85,3 +85,8 @@ _Next, I'd run automated evaluationsâ€”perhaps using a tool like **Evidently**â€
 _Once approved, I would package the model and its environment using **Docker**. Because telecom data operates at a massive scale, I would deploy those Docker containers onto a **Kubernetes** cluster to handle the load and auto-scaling._
 
 _Finally, I wouldn't just leave it there. I'd set up monitoring to watch for data or concept drift. If the network traffic patterns change and accuracy drops, it would trigger a **Continuous Training** pipeline to retrain the model on the freshest data."_
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems Ch8 - Data Shifts And Monitoring]]
+%% related:end %%

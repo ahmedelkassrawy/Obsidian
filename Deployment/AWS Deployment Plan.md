@@ -143,3 +143,9 @@ Browsers often force `https://` if you just type the IP, but since you haven't s
 ### The Fix
 Manually type the full address into your browser's address bar, making sure it starts with `http` (no **S**):
 **`http://98.92.81.170:8000`**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI AI Deployment (Docker + Azure)]]
+- [[Prometheus]]
+%% related:end %%

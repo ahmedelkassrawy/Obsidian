@@ -50,3 +50,11 @@ highs.plot()
 
 df.resample("W").agg({"Close": "mean","High":"max","Low":"min","Volume":"sum"}) #using resampling and the agg functions all together
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Cleaning - Dates And Times]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Adding And Removing Columns]]
+- [[Pandas Time Series Cookbook]]
+%% related:end %%

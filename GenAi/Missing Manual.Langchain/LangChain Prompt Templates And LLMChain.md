@@ -80,3 +80,9 @@ Let’s define them more precisely.
 **Output indicator** marks the _beginning_ of the to-be-generated text. If generating Python code, we may use `import` to indicate to the model that it must begin writing Python code (as most Python scripts begin with `import`).
 
 Each component is usually placed in the prompt in this order. Starting with instructions, external information (where applicable), prompter input, and finally, the output indicator.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch5. Prompt Engineering]]
+- [[Prompt Engineering]]
+%% related:end %%

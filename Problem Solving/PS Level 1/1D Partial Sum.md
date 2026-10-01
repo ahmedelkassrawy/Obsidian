@@ -162,3 +162,11 @@ If coordinates are huge (up to 10^9) you can't index an array that big — you'd
 2. Why must the array have size `n+2`?
 3. What operation converts `d` back into `a` — and what does that tell you about the relationship to [[Prefix Sum]]?
 4. Why is a difference array *useless* if the problem interleaves updates and queries?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[2D Prefix Sum]]
+- [[Sliding Window Technique]]
+- [[Array]]
+- [[Bit Prefix Sums (Archived)]]
+%% related:end %%

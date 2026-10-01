@@ -79,3 +79,9 @@ double plusFunc(double x, double y) {
 }
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Function Overloading]]
+- [[References]]
+- [[Map]]
+%% related:end %%

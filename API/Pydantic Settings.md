@@ -32,3 +32,9 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     return Settings()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pydantic]]
+- [[Pydantic]]
+%% related:end %%

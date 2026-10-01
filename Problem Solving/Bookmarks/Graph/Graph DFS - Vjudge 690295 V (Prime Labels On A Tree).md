@@ -84,4 +84,13 @@ int main() {
 }
 ```
 
-3andy tree of kaza leaf bs ana 3ayzha linear aw m4 aktr mn 2 34an lw h7ot arkam prime tb2a sum bta3ha mzboot lw node fy elawl aw la5r hyb2a el size bta3ha b 1 bs 
+3andy tree of kaza leaf bs ana 3ayzha linear aw m4 aktr mn 2 34an lw h7ot arkam prime tb2a sum bta3ha mzboot lw node fy elawl aw la5r hyb2a el size bta3ha b 1 bs
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Graph DFS - Vjudge 690295 J]]
+- [[Graph DFS - Vjudge 690295 O]]
+- [[Graph DFS - Vjudge 690295 G]]
+- [[BFS - Vjudge 692604 U (K Special Nodes)]]
+- [[Graph DFS - Vjudge 690295 U]]
+%% related:end %%

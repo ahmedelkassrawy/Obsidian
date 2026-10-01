@@ -162,3 +162,12 @@ rm test_orm.db        # then restart uvicorn; create_all rebuilds it
 ## Next
 
 → [[06 - Request vs Response Models Explained]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[08 - Gotchas and Troubleshooting]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[01 - Engine and Connections]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[01 - Overview and Project Layout]]
+%% related:end %%

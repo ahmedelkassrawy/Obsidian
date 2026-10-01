@@ -137,3 +137,12 @@ The ORM class *generates* a `Table` behind the scenes — reach it via `User.__t
 ## Next
 
 → [[03 - Core CRUD (insert, select, update, delete)]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[04 - ORM Models (declarative_base)]]
+- [[14 - Best Practices Checklist]]
+- [[07 - Relationships One-to-Many]]
+- [[07 - Full Source Listing (copy-paste ready)]]
+- [[SQLAlchemy CRUD And Relationships Recap]]
+%% related:end %%

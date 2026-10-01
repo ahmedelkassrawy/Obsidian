@@ -180,3 +180,9 @@ print(f"Accuracy: {accuracy:.2f}")
 conf_matrix = metrics.confusion_matrix(y_test, y_pred)
 class_report = metrics.classification_report(y_test, y_pred)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Decision Trees]]
+- [[Regression Trees]]
+%% related:end %%

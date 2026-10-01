@@ -85,3 +85,12 @@ Common pattern: ORM for the app, Core (`session.execute(text(...))` or `session.
 - **Many-to-many** — `secondary=` for plain links, association object for links with data. → [[08 - Many-to-Many and Association Objects]]
 - **Querying** — `filter`/`where`, `join`, `order_by`; prefer 2.0 `select()`. → [[09 - Querying Data]]
 - **Async** — `sqlalchemy.ext.asyncio`, `await` every I/O call, `expire_on_commit=False`, eager-load relationships. → [[10 - Async SQLAlchemy]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQLAlchemy CRUD And Relationships Recap]]
+- [[Ch3. Creating the Database Layer]]
+- [[02 - Database Session Dependency (get_db)]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[14 - Best Practices Checklist]]
+%% related:end %%

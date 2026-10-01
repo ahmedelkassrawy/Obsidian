@@ -47,3 +47,12 @@ print(d.ndim)
 #Custom Dimensions
 my_custom_array = np.array([1,2,3], ndmin = 3) # lets min dimesnions = 3
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Data Types]]
+- [[Numpy - Memory Layout And Mixed Types]]
+- [[Numpy - Dimensions Shape And Reshape]]
+- [[Numpy - Slicing And Memory Use]]
+- [[Numpy - Arithmetic Operations]]
+%% related:end %%

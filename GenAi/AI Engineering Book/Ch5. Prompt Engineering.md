@@ -78,3 +78,12 @@ Getting the model to reveal its training data or information used in its context
 Reverse prompt engineering is the process of deducing the system prompt used for a certain application.
 
 Reverse prompt engineering is typically done by analyzing the application outputs or by tricking the model into repeating its entire prompt, which includes the system prompt.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Prompt Engineering]]
+- [[LangChain Prompt Templates And LLMChain]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Context Engineering]]
+- [[ALX Week 2 - Prompt Engineering Basics]]
+%% related:end %%

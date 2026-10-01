@@ -241,3 +241,12 @@ print("Test accuracy:", test_acc)
 - Bigger networks → control overfitting with regularization.
 - Always tune with validation performance, not just training.
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Loss Functions]]
+- [[Supervised.Regression - AI Book]]
+- [[GoTo ML Regression]]
+- [[PyTorch Linear, Logistic]]
+- [[Introduction To Deep Learning]]
+%% related:end %%

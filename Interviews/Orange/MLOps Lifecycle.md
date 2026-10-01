@@ -45,3 +45,12 @@ You don't just train one model; you experiment with dozens. MLOps tools (like ML
 - We monitor for **Data Drift** (when the input data changes) , e.g., a new 5G plan alters customer usage patterns
 - **Concept Drift** (when the relationship between inputs and outputs changes). 
 - If accuracy drops below a threshold, the monitoring system triggers an alert to automatically restart the pipeline at Step 1 to retrain the model.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+- [[Designing ML Systems.1]]
+- [[MLOps Complete Guide]]
+- [[MLFlow]]
+%% related:end %%

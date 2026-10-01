@@ -177,3 +177,11 @@ MongoDB’s internal architecture has evolved significantly, particularly in its
 - **Customizable**: Users can set any value for `_id`, but large values (e.g., UUIDs) increase secondary index size.
 - **Impact on Clustered Collections**: Since `_id` is the clustered index, large values increase storage and I/O for secondary indexes.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MongoDB Internals]]
+- [[MongoDB Cluster Collection]]
+- [[Intro DB Engine]]
+- [[SQLite]]
+- [[High Performance MySQL - Architecture, Locking and Transactions]]
+%% related:end %%

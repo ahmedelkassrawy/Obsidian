@@ -478,3 +478,12 @@ Feel free to extend this project by:
 - Implementing a ranking model on top of the retrieved candidates
 
 Congratulations on completing a full, end‑to‑end retrieval architecture!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Two-Tower Network architecture for collaborative filtering]]
+- [[Recommender Systems]]
+- [[Mastering the 3-Stage Recommendation Pipeline]]
+- [[Recommendation sys]]
+- [[Neo4j]]
+%% related:end %%

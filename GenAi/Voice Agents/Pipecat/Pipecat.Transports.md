@@ -73,3 +73,12 @@ Telephony integration
 - **Configuration is standardized** - TransportParams work across transport types
 - **Pipeline placement matters** - consider what processing happens after output
 - **Development runner helps** - provides patterns for multi-transport bots
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pipecat.Pipeline & Frame Processing]]
+- [[Pipecat.Speech to text]]
+- [[Pipecat]]
+- [[Pipecat.Function Calling]]
+- [[Pipecat.TTS]]
+%% related:end %%

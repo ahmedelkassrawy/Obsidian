@@ -364,3 +364,12 @@ flowchart LR
 
 > [!success] Next up
 > Now that you understand data (for fine-tuning) and grading (for RL), you'll see how to **combine them** for a post-training reasoning example.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[LLM Inference Internals]]
+- [[Fine-Tuning Use Cases And Hyperparameters]]
+- [[LLM Terminology]]
+- [[ALX Week 2 - Prompt Engineering Basics]]
+%% related:end %%

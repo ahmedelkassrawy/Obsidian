@@ -383,3 +383,11 @@ That's the superpower of bitmasks: **one number holds a whole yes/no team**, and
 | Count ON switches | `__builtin_popcountll(n)` |
 | Loop all teams of n items | `for (mask = 0; mask < (1 << n); mask++)` |
 | Big-shift safety | use `1LL << k` |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bitwise Operators]]
+- [[Bitmask - Subset Enumeration]]
+- [[Bit Prefix Sums (Archived)]]
+- [[Binary Search]]
+%% related:end %%

@@ -116,3 +116,12 @@ from sklearn.neighbors import KNeighborsClassifier
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[GoTo ML Regression]]
+- [[MLflow Evaluation]]
+- [[ML Project Checklist]]
+- [[02. PyTorch Classification]]
+- [[01. PyTorch Workflow Fundamentals]]
+%% related:end %%

@@ -25,3 +25,12 @@ main.py
 	db.py
 	schemas.py
 	users.py
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI - Structure]]
+- [[FastAPI Users - Schemas]]
+- [[00 - Index]]
+- [[Ch2.Getting Started with FastAPI]]
+- [[01 - Overview and Project Layout]]
+%% related:end %%

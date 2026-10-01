@@ -70,3 +70,11 @@ int main()
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deque]]
+- [[Priority Queue]]
+- [[Stack]]
+- [[DP - Vjudge 694272 P]]
+%% related:end %%

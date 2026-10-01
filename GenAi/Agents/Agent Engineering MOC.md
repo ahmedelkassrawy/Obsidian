@@ -63,3 +63,12 @@ The full set of agent-engineering notes, built as one cluster. Each links to the
 
 ## Anchored to real builds
 Everything maps to **raaaaag** (ReAct agent, `search_docs`, refusal guardrail, eval harness, OpenRouter gateway, Redis cache, Temporal durability) and **Shutterabia** (MCP tool catalog, publish HITL approval, brand guardrails, D1 mirror). The patterns aren't abstract — each note names where it shows up in code Kassra shipped.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Langchain.Multi Agent Intro]]
+- [[AI Workflows VS AI Agent]]
+%% related:end %%

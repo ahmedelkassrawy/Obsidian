@@ -476,3 +476,12 @@ EXEC sp_executesql @SQLQuery;
 > 2. Create a table function to return students with grades above a given threshold.
 > 3. How would you use `LAG` to find grade differences between consecutive students?
 > 4. Write a dynamic SQL query to select columns based on a variable table name and filter condition.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Cursors, Identity, Snapshots and SQLCLR]]
+- [[SQL Subqueries, DML and Built-in Functions]]
+- [[SQL Stored Procedures, Triggers and XML]]
+- [[SQL Ranking Functions and Conditional Logic]]
+- [[1.Fundamentals]]
+%% related:end %%

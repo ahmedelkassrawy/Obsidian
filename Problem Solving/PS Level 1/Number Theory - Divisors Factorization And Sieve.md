@@ -207,3 +207,8 @@ bool is_prime(long long n)
 ---
 
 [Math/Level 1 at main · UwUkareem/Math · GitHub](https://github.com/UwUkareem/Math/tree/main/Level%201)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Number Theory - Multiplication Of Its Divisors]]
+%% related:end %%

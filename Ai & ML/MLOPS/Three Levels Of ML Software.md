@@ -310,3 +310,12 @@ Two common strategies for deploying ML models:
     - Books: _Hands-On Machine Learning_ (Géron), _Feature Engineering for Machine Learning_ (Zheng, Casari), _Ensemble Methods_ (Zhou).
     - Figures: Embed [[Figure: ML Workflows]], [[Figure: Web Service Pattern]], etc., in Obsidian.
 - **Next Steps**: Apply the Machine Learning Canvas (from prior content) to a deployment scenario.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLOps Complete Guide]]
+- [[MLOps Lifecycle]]
+- [[Designing ML Systems.1]]
+- [[Designing ML Systems Ch3 - Data Engineering]]
+- [[Designing ML Systems Ch1 - When To Use ML]]
+%% related:end %%

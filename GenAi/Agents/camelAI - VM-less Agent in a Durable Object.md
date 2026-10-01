@@ -297,3 +297,12 @@ If you forget everything else, keep these:
 - [[Function Calling]] (methods ≈ tools) · [[MCP Arch]] (another "expose safe capabilities" model)
 - [[Claude Code Core Architecture]] (the Claude Code harness camelAI started on) · [[AWS Bedrock Agent Core]] (another brain/hands split)
 - [[Context Engineering]] · [[Agents Best Practice]] (why fewer choices can beat more freedom)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Agents Best Practice]]
+- [[Workers Concept]]
+- [[Vodafone Behavioral Interview Script]]
+- [[Agent with Tools]]
+- [[Agent Engineering MOC]]
+%% related:end %%

@@ -48,3 +48,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Iterative - Vjudge 696069 B]]
+- [[DP Iterative - Vjudge 696069 W]]
+- [[DP Iterative - Vjudge 696069 E]]
+- [[DP Iterative - Vjudge 696069 N]]
+- [[DP Iterative - Vjudge 696069 P]]
+%% related:end %%

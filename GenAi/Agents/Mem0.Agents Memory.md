@@ -302,3 +302,11 @@ if __name__ == "__main__":
     result = plan_trip("Cairo", "kassra")
     print(result)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Memory with Redis]]
+- [[LangGraph Short-Term & Long-Term Memory]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+- [[Agent Engineering MOC]]
+%% related:end %%

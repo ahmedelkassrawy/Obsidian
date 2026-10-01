@@ -98,3 +98,12 @@ They do the same thing, but **joblib is faster and more efficient for ML**.
 ---
 Quick question for you:  
 When would saving a trained model be especially useful — in a Jupyter notebook experiment, or in deploying a model to production?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[JSON Serialization]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[Pydantic]]
+- [[MLFlow]]
+- [[Transfer Learning And Training Callbacks]]
+%% related:end %%

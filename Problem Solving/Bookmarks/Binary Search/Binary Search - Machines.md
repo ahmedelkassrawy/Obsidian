@@ -70,3 +70,12 @@ int main()
     cout<<ans;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Another Pair Problem]]
+- [[Binary Search - Line Segments]]
+- [[Binary Search - Another Pair Problem (Duplicate)]]
+- [[Binary Search - Renting Bikes]]
+- [[Binary Search - Magic Powder 2]]
+%% related:end %%

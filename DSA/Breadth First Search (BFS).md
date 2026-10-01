@@ -45,3 +45,11 @@ def search(name):
 	return False
 ```
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS, Graph Applications]]
+- [[Dijkstra’s algorithm]]
+- [[LangGraph Nodes Edges And State]]
+- [[BFS - Vjudge 692604 U (K Special Nodes)]]
+- [[BFS - Vjudge 692604 J]]
+%% related:end %%

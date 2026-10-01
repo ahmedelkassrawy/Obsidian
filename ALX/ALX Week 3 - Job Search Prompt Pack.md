@@ -52,3 +52,8 @@ teal
 instaresume.io
 
 https://www.careerflow.ai/premium
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Skill Creation]]
+%% related:end %%

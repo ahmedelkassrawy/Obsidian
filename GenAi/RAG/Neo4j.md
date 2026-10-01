@@ -375,3 +375,10 @@ kg = Neo4jGraph(
 )
 ```
 *   **Purpose:** Establishes a connection to a Neo4j database using `langchain_community.graphs.Neo4jGraph`, making it accessible within LangChain applications. This is useful for building agents or chains that interact with a knowledge graph.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[GraphRAG]]
+- [[Recommendation sys]]
+- [[Advanced RAG]]
+%% related:end %%

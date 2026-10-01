@@ -122,3 +122,12 @@ print("Probabilities:", probabilities)
 - Use `covariance_type` to control cluster shapes and `n_init` to avoid poor convergence.
 - Handle outliers carefully to prevent bias in the model.
 - Combine with visualization tools to interpret results effectively.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KMeans And DBSCAN]]
+- [[Unsupervised Tasks]]
+- [[Unsupervised Learning - AI Book]]
+- [[Anomaly Detection]]
+- [[DBSCAN , HDBSCAN]]
+%% related:end %%

@@ -41,3 +41,12 @@ prices, it doesn’t mean there’s no pattern.)
 ![[Pasted image 20250722162418.png]]
 3. Existing data: data is available or its possible to collect data 
 4. Prediction: it’s a predictive problem. ML models make predictions, so they can only solve problems that require predictive answers.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Designing ML Systems.1]]
+- [[MLOps Lifecycle]]
+- [[Three Levels Of ML Software]]
+- [[Designing ML Systems Ch2 - ML System Requirements]]
+- [[MLOps Complete Guide]]
+%% related:end %%

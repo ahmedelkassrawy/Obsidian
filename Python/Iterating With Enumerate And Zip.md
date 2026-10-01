@@ -82,3 +82,9 @@ heights = [72, 68, 72, 66, 76]
 for i, character in enumerate(cast): 
 cast[i] = character + " " + str(heights[i]) print(cast)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Python Review]]
+- [[Data Structures]]
+%% related:end %%

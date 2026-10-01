@@ -841,3 +841,12 @@ class MCPBenchmark:
 - **Latency P99**: < 500ms for complex operations
 - **Error Rate**: < 0.1% under normal conditions
 - **Availability**: > 99.9% uptime
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MCP Reading Order]]
+- [[MCPs]]
+- [[00 - Concepts]]
+- [[02 - Best practices & refactor]]
+- [[03 - MCP host (client side)]]
+%% related:end %%

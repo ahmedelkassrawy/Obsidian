@@ -38,3 +38,12 @@ auth_backend = AuthenticationBackend(
 
 Next Step:
 You'll then have to pass those backends to your `FastAPIUsers` instance and generate an auth router for each one of them.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI Users - Auth Router]]
+- [[FastAPI Users - Router Setup]]
+- [[FastApi - Security]]
+- [[FastAPI Users - Users Router]]
+- [[FastAPI Users - Reset Password Router]]
+%% related:end %%

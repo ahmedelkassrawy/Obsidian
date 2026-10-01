@@ -153,3 +153,12 @@ SELECT name FROM grades WHERE g > 95 AND id < 10000;
 - The query uses indexes to efficiently filter rows (`g > 95` and `id < 10000`).
 - Bitmaps are used to combine conditions and minimize table access.
 - Only the necessary rows are fetched, resulting
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[Multiple Indexes]]
+- [[Index Scan vs Index Only Scan]]
+- [[SQL Indexes, Tables, Merge and Views]]
+%% related:end %%

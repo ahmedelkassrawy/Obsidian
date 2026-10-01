@@ -54,3 +54,12 @@ int main() {
 }
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Structs - 3D Points]]
+- [[Struct With Custom Comparator]]
+- [[Priority Queue]]
+- [[Sorting - Sort Three Numbers]]
+- [[Sets]]
+%% related:end %%

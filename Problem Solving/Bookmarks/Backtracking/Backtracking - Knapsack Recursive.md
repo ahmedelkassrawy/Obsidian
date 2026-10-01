@@ -50,3 +50,12 @@ int main() {
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Backtracking - Knapsack]]
+- [[Backtracking - Apple Division]]
+- [[DP Iterative - Vjudge 696069 X (Knapsack)]]
+- [[Backtracking - Unnamed Practice Problem]]
+- [[Backtracking - SkillUP]]
+%% related:end %%

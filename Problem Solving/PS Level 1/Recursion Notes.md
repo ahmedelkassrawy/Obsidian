@@ -557,3 +557,12 @@ int main() {
 - [[Number Theory]] — modular arithmetic, binary exponentiation (itself a divide-and-conquer recursion)
 - [[Backtracking]]
 - [[Dynamic Programming]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Recursion]]
+- [[DP Recursive Patterns]]
+- [[DP - Vjudge 694272 T]]
+- [[Backtracking - Creating Expression]]
+- [[DP - Vjudge 694272 K]]
+%% related:end %%

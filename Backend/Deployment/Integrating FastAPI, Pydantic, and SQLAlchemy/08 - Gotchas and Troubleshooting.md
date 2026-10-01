@@ -192,3 +192,12 @@ Request fails
        ├── OperationalError (no such table) -> create_all didn't run / wrong cwd
        └── PydanticUserError / not subscriptable -> missing from_attributes=True
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[13 - Gotchas and Troubleshooting]]
+- [[14 - Best Practices Checklist]]
+- [[09 - Cheatsheet]]
+- [[01 - Engine and Connections]]
+- [[Ch7.Integrating DB in AI services]]
+%% related:end %%

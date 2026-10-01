@@ -619,3 +619,12 @@ int main()
 **The key question: Is the property monotonic?**  
 If adding elements always increases the measured value and removing always decreases it → **sliding window**.  
 If not (negatives, modulo, non-monotonic frequency matching) → **prefix sum + hashmap**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Two Pointers]]
+- [[2D Prefix Sum]]
+- [[Sliding Windows]]
+- [[Array]]
+- [[2D Partial Sum]]
+%% related:end %%

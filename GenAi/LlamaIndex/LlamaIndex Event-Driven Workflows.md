@@ -1151,3 +1151,12 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Workflow Patterns (The Five)]]
+- [[LlamaIndex RAG Pipeline]]
+- [[LlamaIndex Agents And Multi-Agent Workflows]]
+- [[AI Workflows VS AI Agent]]
+- [[Agent Orchestration And Tool Selection]]
+%% related:end %%

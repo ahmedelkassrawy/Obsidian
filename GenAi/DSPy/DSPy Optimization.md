@@ -399,3 +399,12 @@ To load a program from a file, you can instantiate an object from that class and
 loaded_program = YOUR_PROGRAM_CLASS()
 loaded_program.load(path=YOUR_SAVE_PATH)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DSPy Evaluation]]
+- [[MLflow Evaluation]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[Fine-Tuning Fundamentals and Axolotl Tutorial]]
+- [[Fine-Tuning Quick Reference]]
+%% related:end %%

@@ -100,3 +100,12 @@ long long count = right - left; // 3 elements
 This will include all elements `x` where `l <= x <= r`.
 
 [[Problem Solving/PS Level 1/Binary Search]][[DSA/Binary Search]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sets]]
+- [[STL - Min Element In Chunks]]
+- [[Priority Queue]]
+- [[Binary Search]]
+- [[Map]]
+%% related:end %%

@@ -79,3 +79,12 @@ print(my_array8.ravel())
 x = my_array8.ravel()
 print(x.ndim)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Creating And Accessing Arrays]]
+- [[Numpy - Data Types]]
+- [[Numpy - Slicing And Memory Use]]
+- [[Numpy - Dimensions Shape And Reshape]]
+- [[2D Partial Sum]]
+%% related:end %%

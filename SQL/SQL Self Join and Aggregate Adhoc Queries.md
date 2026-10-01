@@ -50,3 +50,9 @@ VALUES ('Kassra', 'Mohammed', 102672, 20);
 DELETE FROM Employee
 where ssn = 223344;
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[SQL Joins, Self Joins and NULL Handling]]
+- [[SQL Subqueries, DML and Built-in Functions]]
+%% related:end %%

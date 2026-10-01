@@ -176,3 +176,12 @@ Why?
 - **AdamW** → fast + correct regularization
 - **LR schedule** → polish & stability
 ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Regularization trades training fit for generalization]]
+- [[Fine-Tuning Quick Reference]]
+- [[BatchNorm]]
+- [[Transfer Learning And Training Callbacks]]
+- [[Fine-Tuning vs Reinforcement Learning]]
+%% related:end %%

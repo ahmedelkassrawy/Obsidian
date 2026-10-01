@@ -339,3 +339,12 @@ async def read_item(item_id: int):
 ```
 
 This allows for centralized and consistent error responses across your API.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[FastAPI - Asynchronous Code and Path Parameters]]
+- [[FastAPI Async and Routers]]
+- [[AI Engineering Specific Use Cases]]
+- [[10 - Async SQLAlchemy]]
+%% related:end %%

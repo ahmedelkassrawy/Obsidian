@@ -229,3 +229,9 @@ async def websocket_endpoint(
 1.  Configure the FastAPILimiter application lifespan with a Redis storage backend.
 2. Configure a WebSocket rate limiter to allow one request per second.
 3. Use the user’s ID as the unique identifier for rate limiting.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Optimizing GenAI Services for Multiple Users]]
+- [[Agent Guardrails]]
+%% related:end %%

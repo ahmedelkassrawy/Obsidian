@@ -31,3 +31,12 @@ If you are building an agentic system — any system where an LLM decides what a
 **Permission modes, not permission checks.** Define a small set of named modes (plan, default, auto, bypass) and resolve every permission decision through the mode. Do not scatter `if (isAllowed)` checks through tool implementations. The problem it solves: inconsistent permission enforcement. When every tool goes through the same mode-based resolution chain, you can reason about the system’s security posture by knowing which mode is active.
 
 **Recursive agent architecture via tasks.** Sub-agents should be new instances of the same agent loop with their own message history, not special-cased code paths. Permission escalation flows upward via `bubble` mode. The problem it solves: sub-agent logic that diverges from the main agent loop, leading to subtle differences in behavior and error handling. If the sub-agent is the same loop, it inherits all the same guarantees.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[Agent Orchestration And Tool Selection]]
+- [[Agents Best Practice]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

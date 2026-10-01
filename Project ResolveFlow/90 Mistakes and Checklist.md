@@ -76,3 +76,9 @@ Run through this whenever I add a node, service, or endpoint.
 - For a bug fix: did I write the test first and watch it fail (red → green)?
 - Does the test name say the expected behavior, not just the situation?
 - Do fakes cover failures too (a fake that raises), not only good answers?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[08 FastAPI Layer]]
+- [[FastAPI - Response Models and Status Codes]]
+%% related:end %%

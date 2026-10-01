@@ -205,3 +205,12 @@ class Asset(SQLAlchemyBase):
 - Use `JSONB` for flexible structured data  
 - Use modern Mapped + annotated style when possible (SQLAlchemy 2.0+)  
 - Always refresh after commit when you need generated/default values
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[01 - Overview and Project Layout]]
+- [[00 - Index]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[00 - Index]]
+- [[Ch2.Getting Started with FastAPI]]
+%% related:end %%

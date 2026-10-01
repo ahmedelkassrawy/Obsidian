@@ -82,3 +82,12 @@ model = nn.Sequential(
 			nn.Linear(3,1)
 		)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PyTorch Linear, Logistic]]
+- [[01. PyTorch Workflow Fundamentals]]
+- [[Deep Network Training - Vanishing Gradients And Optimizers]]
+- [[02. PyTorch Classification]]
+- [[Final Transfer Learning]]
+%% related:end %%

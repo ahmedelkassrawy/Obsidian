@@ -178,3 +178,9 @@ plt.title('PCA of Iris Dataset')
 plt.colorbar(label='Class Labels')
 plt.show()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Dimensionality Reduction]]
+- [[KNN And SVM]]
+%% related:end %%

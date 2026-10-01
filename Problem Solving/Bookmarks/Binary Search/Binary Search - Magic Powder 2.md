@@ -76,3 +76,12 @@ int main()
     cout << ans << endl;  
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Binary Search - Machines]]
+- [[Binary Search - Another Pair Problem]]
+- [[Binary Search]]
+- [[Binary Search - Renting Bikes]]
+- [[Binary Search - Line Segments]]
+%% related:end %%

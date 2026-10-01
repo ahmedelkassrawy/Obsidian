@@ -562,3 +562,12 @@ Without `default=0`, an empty-but-present `tasks.json` makes `max()` raise `Valu
 | `max((...))` no `default=` | `ValueError` on an empty-but-present file | `max((...), default=0)` |
 | store returns string, handler re-wraps | "Cleared Cleared 2 ... tasks." | store returns int, handler formats |
 | leftover `tasks`/`max_id` globals + double `mcp` | dead code contradicting the refactor | deleted |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MCP Reading Order]]
+- [[01 - Build a server (SDK v2)]]
+- [[MCPs]]
+- [[00 - Concepts]]
+- [[Phase0 — Method + numbers]]
+%% related:end %%

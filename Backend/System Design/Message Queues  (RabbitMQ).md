@@ -171,3 +171,12 @@ Elegant, stateful connections that allow asynchronous push communication.
 ---
 
 Would you like me to add **a small visual diagram (Mermaid)** showing how the queue fits between client, web server, and worker — for your Obsidian note?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RabbitMQ]]
+- [[Phase1 — Scalability & Availability]]
+- [[Celery]]
+- [[Phase5 — Asynchronism & Communication]]
+- [[Replication scales reads, sharding scales writes]]
+%% related:end %%

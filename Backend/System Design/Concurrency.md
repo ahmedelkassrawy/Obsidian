@@ -310,3 +310,12 @@ This **sets** the key (acquires the lock) for **only 1 minute**, then it **expir
 5. Make sure that any code path that has **a lock has a corresponding unlock**. Make sure to check branching in the code, for example if you lock then get into a `switch ... case`, each code path in the cases should have an unlock in its path to completion, otherwise you will get into **deadlocks**.
 6. Think twice about your **concurrency scope** and handle it accordingly as explained.
 7. Never declare locks that can be left as locked forever, always add a **safeguard unlock or an expiry**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Locks trade concurrency for correctness]]
+- [[Two Phase Locking]]
+- [[Phase1 — Scalability & Availability]]
+- [[Exclusive Lock VS Shared Lock]]
+- [[Horizontal vs Vertical Scaling]]
+%% related:end %%

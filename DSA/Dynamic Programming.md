@@ -26,3 +26,11 @@ General Tips:
 3. Each cell is a subproblem, so think about how you can divide your problem into subproblems. That will help you figure out what the axes are.
 4. In dynamic programming, you’re trying to maximize something
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Recursive Patterns]]
+- [[Backtracking - Knapsack]]
+- [[DP Iterative]]
+- [[DP Iterative - Vjudge 696069 X (Knapsack)]]
+- [[Greedy Algorithm]]
+%% related:end %%

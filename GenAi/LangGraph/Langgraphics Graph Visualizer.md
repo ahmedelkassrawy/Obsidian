@@ -28,3 +28,9 @@ graph = watch(workflow.compile())
 
 await graph.ainvoke({"messages": [...]})
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Agents]]
+- [[06 LangGraph Orchestration]]
+%% related:end %%

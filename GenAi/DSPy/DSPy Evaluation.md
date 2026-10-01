@@ -142,3 +142,10 @@ def metric(gold, pred, trace=None):
     if trace is not None: return score >= 2
     return score / 2.0
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[MLflow Evaluation]]
+- [[DSPy Optimization]]
+- [[NLP Eval Code]]
+%% related:end %%

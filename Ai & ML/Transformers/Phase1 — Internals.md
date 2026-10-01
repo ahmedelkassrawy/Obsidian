@@ -179,3 +179,9 @@ MQA:  one  KV head   → cache smallest               (max saving, small quality
 **Why you can't swap one for the other:**
 - KV cache with no GQA → fast, but the cache eats all your memory at long context.
 - GQA with no KV cache → small footprint, but you'd still recompute the past every step → slow.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Attention lets every token decide what to look at]]
+- [[Transformer Internals]]
+%% related:end %%

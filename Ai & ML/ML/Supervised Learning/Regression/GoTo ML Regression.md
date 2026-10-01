@@ -155,3 +155,12 @@ So the rule is: _scale only when the algorithm is sensitive to feature magnitude
 - If using **distance-based models (KNN, K-means)** → MinMaxScaler (or StandardScaler).
     
 - If data has **outliers** → RobustScaler.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[GoTo ML Classification]]
+- [[MLflow Evaluation]]
+- [[ML Project Checklist]]
+- [[Three Levels Of ML Software]]
+- [[MLOps Lifecycle]]
+%% related:end %%

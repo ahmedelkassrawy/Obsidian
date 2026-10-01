@@ -287,3 +287,10 @@ class Math:
 
 print(Math.add5(5))
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Constructor]]
+- [[Singleton]]
+- [[Protocol vs ABC]]
+%% related:end %%

@@ -150,3 +150,11 @@ To apply 2PL in SQL:
 2. Set `SERIALIZABLE` or use `FOR UPDATE`/`FOR SHARE` to enforce locks.
 3. Ensure locks are held until commit (handled by the database).
 4. Handle deadlocks and serialization failures in your application logic.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Locks trade concurrency for correctness]]
+- [[Double Booking Prevention]]
+- [[Exclusive Lock VS Shared Lock]]
+- [[Concurrency]]
+%% related:end %%

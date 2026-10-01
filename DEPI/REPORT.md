@@ -103,3 +103,9 @@ Because DataPilot executes model-generated SQL, safety was part of the agent flo
 The project records query success and latency and evaluates generated SQL for syntax, correctness, completeness, efficiency, and use of the database schema. I also reviewed the execution-match approach used in offline tests, where generated SQL and expected SQL are run against the same database and their results are compared. This was more useful than comparing the query text alone because two different SQL statements can return the same correct answer.
 
 I worked with the deployment setup by packaging the application in Docker and deploying it to Azure Container Apps. Azure Container Registry stores the container image, Azure Database for PostgreSQL supports persistent data, and Azure storage keeps uploaded files. GitHub Actions builds and deploys a new version when code is pushed to the deployment branch. This connected my work on agent architecture and latency with the behavior of the system after deployment.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Clipping - Observability From Scratch Part 1 (Podcast, Arabic)]]
+- [[Vodafone Interview Format Details]]
+%% related:end %%

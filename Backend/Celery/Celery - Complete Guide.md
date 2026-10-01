@@ -1433,3 +1433,11 @@ result.result              # Result value (if ready)
 ---
 
 *Last updated: 2026-03-26*
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Celery]]
+- [[RabbitMQ]]
+- [[IdempotencyManager - Review & Fixes]]
+- [[2. Durable Ingestion in raaaaag (M5 W2)]]
+%% related:end %%

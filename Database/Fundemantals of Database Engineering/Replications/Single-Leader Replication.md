@@ -126,3 +126,12 @@ sequenceDiagram
 - Solution Teased: Multi-leader replication to distribute writes.
 ## Summary
 Single-leader replication offers read scalability and fault tolerance but faces challenges with failures (especially leader) and write throughput. Distributed consensus is key to resolving failures. Teases multi-leader for write-heavy scenarios.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Multi-Leader Replication]]
+- [[DB Replications]]
+- [[Replication scales reads, sharding scales writes]]
+- [[Stale Reads in Replicated Databases]]
+- [[Phase1 — Scalability & Availability]]
+%% related:end %%

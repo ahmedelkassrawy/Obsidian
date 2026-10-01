@@ -622,3 +622,12 @@ def check_complaint_status(runtime: ToolRuntime[Context]) -> str:
 result = check_complaint_by_id.delay(ctx.complaint_id)
 data = result.get(timeout=10)
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RabbitMQ]]
+- [[Celery - Complete Guide]]
+- [[Message Queues  (RabbitMQ)]]
+- [[Async helps with waiting, not with computing]]
+- [[Concurrency and Async]]
+%% related:end %%

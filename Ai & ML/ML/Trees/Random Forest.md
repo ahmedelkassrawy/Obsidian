@@ -132,3 +132,11 @@ for score, name in zip(rnd_clf.feature_importances_, iris.data.columns):
 | min_samples_split | Minimum samples required to split an internal node                                              |
 | min_samples_leaf  | Minimum samples required in a leaf node                                                         |
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Bagging And Boosting]]
+- [[Bagging & Pasting]]
+- [[Out-of-Bag (OOB) Evaluation]]
+- [[Ensemble Learning]]
+- [[Decision Trees]]
+%% related:end %%

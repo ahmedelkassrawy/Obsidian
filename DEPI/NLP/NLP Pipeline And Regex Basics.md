@@ -95,3 +95,12 @@ Range matches use `[]` to define custom character sets. Examples:
 | `[a-zA-Z]` | Matches any letter (either case) |
 | `[^aeiou]` | Matches any character **except** vowels |
 | `[abc123]` | Matches `a`, `b`, `c`, `1`, `2`, or `3` |
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP]]
+- [[NLP - AI BOOK]]
+- [[NLP Concepts]]
+- [[Stanford CS224n]]
+- [[Text Classification - AI Book]]
+%% related:end %%

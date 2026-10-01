@@ -143,3 +143,12 @@ Run it and you'll see it **stop** after drafting, print the pending question, th
 
 ## Shutterabia fit
 The **stage draft → SMM approves → publish** flow (ADR 0003/0005) *is* HITL: the agent pauses at the irreversible boundary (publishing to Meta), a human approves, then it resumes. A publish fails **closed** — no approval, no post.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Agents]]
+- [[Agent Agency Levels And Reflection Pattern]]
+- [[Agent Engineering MOC]]
+- [[Agent Workflow Patterns (The Five)]]
+- [[08 FastAPI Layer]]
+%% related:end %%

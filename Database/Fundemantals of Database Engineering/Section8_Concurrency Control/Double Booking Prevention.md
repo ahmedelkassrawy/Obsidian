@@ -78,3 +78,11 @@ hubs:
 ## Tags
 
 #Database #DoubleBooking #Concurrency #PostgreSQL #Locking #IsolationLevels #DatabaseEngineering
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Locks trade concurrency for correctness]]
+- [[Two Phase Locking]]
+- [[Exclusive Lock VS Shared Lock]]
+- [[Concurrency]]
+%% related:end %%

@@ -284,3 +284,12 @@ When this note is grokked, promote toward "full transformer from scratch": FFN/S
 
 ## Progress log
 - 2026-09-15 — captured. Note written covering all five Week-1 topics with math + from-scratch code + defend-solo checks. `rebuild_solo: 0%` (parked behind System Design per WIP cap).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Phase0]]
+- [[Attention lets every token decide what to look at]]
+- [[Phase1 — Internals]]
+- [[LLM Inference Internals]]
+- [[Attention is all you need]]
+%% related:end %%

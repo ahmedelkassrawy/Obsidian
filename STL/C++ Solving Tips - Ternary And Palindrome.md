@@ -180,4 +180,9 @@ yhb2a index bta3tk lkol rkm bytsyve wbtzwd literrator b3dha.
 
 
 
-str.find(char) --> returns index 
+str.find(char) --> returns index
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sorting - Sort Three Numbers]]
+%% related:end %%

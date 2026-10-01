@@ -252,3 +252,12 @@ Tokenization is a fundamental step in NLP, enabling models to process text by co
 - **Word-Based**: Suitable for simple tasks or when vocabulary is limited and well-defined.
 - **Character-Based**: Ideal for low-resource languages or tasks requiring fine-grained analysis (e.g., spelling correction).
 - **Subword-Based**: Preferred for modern NLP models, especially for multilingual tasks or handling diverse vocabularies.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN and LSTM]]
+- [[HF Tokenizer - Encoding Padding Truncation]]
+- [[RNN]]
+- [[Stanford CS224n]]
+- [[Attention is all you need]]
+%% related:end %%

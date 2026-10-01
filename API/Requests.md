@@ -39,3 +39,12 @@ try:
 	if response.status_code == 200:
 		order_data = response.json()
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch2.Getting Started with FastAPI]]
+- [[Concurrency and Async]]
+- [[01 - Overview and Project Layout]]
+- [[06 - Request vs Response Models Explained]]
+- [[FastAPI Async and Routers]]
+%% related:end %%

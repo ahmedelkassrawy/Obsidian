@@ -21,3 +21,12 @@ create index concurrently g on grades(g);
 ```
 
 This will allow reading and writing while creating the index , which doesn't stop the production. It just takes some much longer since it depends on multiple scans to the table and may fail due to duplicates writing for example.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+- [[Multiple Indexes]]
+- [[PostgreSQL Scan Types Comparison]]
+- [[Locks trade concurrency for correctness]]
+%% related:end %%

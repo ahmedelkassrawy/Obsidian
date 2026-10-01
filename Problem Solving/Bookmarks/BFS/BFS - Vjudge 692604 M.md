@@ -109,3 +109,12 @@ int main()
     for(int i : ans) cout << i << '\n';
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 L]]
+- [[BFS - Vjudge 692604 Q]]
+- [[BFS - Vjudge 692604 P]]
+- [[BFS - Vjudge 692604 V]]
+- [[BFS - Vjudge 692604 H]]
+%% related:end %%

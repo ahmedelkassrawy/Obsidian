@@ -251,3 +251,12 @@ If you need to go deeper (custom analyzers, advanced relevance tuning, sharding 
 > [!quote] Final Thought
 > *“You don’t have to master Elasticsearch. Just know when to reach for it – and then copy‑paste from the docs.”*  
 > – **Sriniiously**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[Exact nearest-neighbour search doesn't scale, so vector databases approximate]]
+- [[Semantic Search]]
+- [[Phase3 — Data at Scale]]
+- [[Multiple Indexes]]
+%% related:end %%

@@ -41,3 +41,9 @@ for(int i = k; i < n; i++)
 
 arr[i] --> +++
 arr[i-k] --> ---
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sliding Window Technique]]
+- [[Two Pointers]]
+%% related:end %%

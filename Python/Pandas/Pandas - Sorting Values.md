@@ -38,3 +38,12 @@ df["SalaryUSD"].nlargest(10) #shows the highest 10 Salarys in the column of Sala
 
 df.nlargest(10,"SalaryUSD") #returns all info about the people with highest 10 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Panda Freq Code]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Aggregation And Grouping]]
+- [[Pandas - Adding And Removing Columns]]
+- [[Pandas - Dates And Times]]
+%% related:end %%

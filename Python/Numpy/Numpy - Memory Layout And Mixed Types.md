@@ -34,3 +34,12 @@ my_array_of_data_two = np.array([1,2]) #numpy.int32 after removing the data
 #if we put 10.5 it becomes float
 #if we put "A" it becomes string
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Numpy - Creating And Accessing Arrays]]
+- [[Numpy - Data Types]]
+- [[Numpy - Slicing And Memory Use]]
+- [[Numpy - Arithmetic Operations]]
+- [[Data Structures]]
+%% related:end %%

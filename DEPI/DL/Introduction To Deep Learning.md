@@ -123,3 +123,12 @@ $$w_{new}=w_{old}-\eta\cdot\frac{\partial L}{\partial w}$$
 4. **Weight Update (Gradient Descent):** The model adjusts its weights based on the calculated gradients to push the loss down.
     
 5. **Repeat:** This entire cycle loops for many iterations (epochs) until the loss function reaches a minimum and the model converges.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Deep Network Training - Vanishing Gradients And Optimizers]]
+- [[MLP (Multilayer Perceptrons)]]
+- [[Transfer Learning And Training Callbacks]]
+- [[Pytorch Basic Training]]
+- [[Optimizers]]
+%% related:end %%

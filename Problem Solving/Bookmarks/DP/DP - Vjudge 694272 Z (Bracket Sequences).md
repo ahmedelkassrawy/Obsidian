@@ -117,3 +117,12 @@ int main()
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP - Vjudge 694272 T]]
+- [[DP - Vjudge 694272 U]]
+- [[DP - Vjudge 694272 O]]
+- [[DP Iterative - Vjudge 696069 N]]
+- [[DP - Vjudge 694272 M]]
+%% related:end %%

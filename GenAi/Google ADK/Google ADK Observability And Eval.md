@@ -50,3 +50,12 @@ Agents are different from traditional software:
 To accommodate all these differences, agents need systematic evaluation, not just "happy path" testing. **Which means assessing the agent's entire decision-making process - including the final response and the path it took to get the response (trajectory)!**
 
 See [[Agent Evaluation]] for the full framework — metrics, harness requirements, and the golden rule (evaluate the whole cognitive system, not just the model).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Trajectory Evaluation]]
+- [[Google ADK Agent Tools]]
+- [[Google ADK]]
+- [[Function Calling]]
+- [[Ch3. Eval]]
+%% related:end %%

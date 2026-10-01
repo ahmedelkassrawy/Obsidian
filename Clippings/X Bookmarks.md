@@ -1050,4 +1050,9 @@ created: 2025-01-01
 - [@glxlz والله قرار جريء] (https://twitter.com/TurkiFPL/status/2009037745201594524) — @TurkiFPL (0👍, 1🔖)
 - [هو انا ليه كل ما ارتقي اجتماعياً اسعار قمصان امريكان ايجل بترتقي معايا؟] (https://twitter.com/0xNour/status/1953572785592172717) — @0xNour (45👍, 1🔖)
 
-
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[AI Engineering Reading Links]]
+- [[LinkedIn Saved Posts — Organized by Topic]]
+- [[Knowledge Gaps Audit 2026-09-15]]
+%% related:end %%

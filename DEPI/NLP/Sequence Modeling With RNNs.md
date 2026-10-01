@@ -465,3 +465,12 @@ print("LSTM Predictions:", lstm_predictions)
 ### Key differences from LSTM:
 - SimpleRNN has **no forget gate, input gate, or output gate** – it uses a single tanh activation for the hidden state update, making it simpler and faster but less effective at capturing long‑term dependencies.
 - Number of parameters: ~2.45 million (vs LSTM had slightly more due to additional gates, but both are comparable here).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RNN Implementation Guide]]
+- [[Recurrent Neural Networks (RNNs) and LSTMs]]
+- [[Seq2Seq And Neural Machine Translation]]
+- [[RNN]]
+- [[POS Tagging]]
+%% related:end %%

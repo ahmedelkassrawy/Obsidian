@@ -24,3 +24,9 @@ If we only looked at the bus column, it would be a univariate time series, with 
 we can see that a similar pattern is clearly repeated every week. This is called a weekly seasonality.
 
 In fact, it’s so strong in this case that forecasting tomorrow’s ridership by just copying the values from a week earlier will yield reasonably good results. This is called naive forecasting: simply copying a past value to make our forecast. Naive forecasting is often a great baseline, and it can even be tricky to beat in some cases.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Time Series Cookbook]]
+- [[Pandas Time Series Cookbook]]
+%% related:end %%

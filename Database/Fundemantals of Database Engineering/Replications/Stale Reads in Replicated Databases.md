@@ -173,3 +173,12 @@ Ensures client writes apply in issued order; reads don't show regressions (e.g.,
 - RYW: Individual user focus.
 - Consistent Prefix: Inter-event dependencies.
 - Monotonic Writes: Sequential integrity across reads.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Single-Leader Replication]]
+- [[Replication scales reads, sharding scales writes]]
+- [[DB Replications]]
+- [[Caching trades freshness for speed]]
+- [[CAP Theorem]]
+%% related:end %%

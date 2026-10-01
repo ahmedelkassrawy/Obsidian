@@ -159,3 +159,11 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 What is the primary purpose of scaling features before applying k-NN?
 - To ensure all features contribute equally to the distance measure
 - Scaling ensures that no single feature unfairly influences the distance metric.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KNN And SVM]]
+- [[K Nearest Neighbor Algo]]
+- [[KMeans]]
+- [[Curse Of Dimensionality And PCA]]
+%% related:end %%

@@ -142,3 +142,11 @@ def convolutional_model():
     model.compile(optimizer='adam', loss='categorical_crossentropy',  metrics=['accuracy'])
     return model
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PyTorch Linear, Logistic]]
+- [[CNN]]
+- [[Final Transfer Learning]]
+- [[01. PyTorch Workflow Fundamentals]]
+%% related:end %%

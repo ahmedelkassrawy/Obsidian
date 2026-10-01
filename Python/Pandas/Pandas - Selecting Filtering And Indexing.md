@@ -226,3 +226,8 @@ df.loc[high_salary, ['Country', 'LanguageWorkedWith', 'ConvertedComp']]
 |`~`|Invert the filter|`df.loc[~filt]`|
 |`.isin(list)`|Match any item in a list|`df['col'].isin(['A', 'B'])`|
 |`.str.contains()`|Find a substring|`df['col'].str.contains('text')`|
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Basics Cheat Sheet]]
+%% related:end %%

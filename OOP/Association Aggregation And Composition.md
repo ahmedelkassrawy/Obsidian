@@ -123,3 +123,8 @@ class Human : Creature
         weight = 100;
     }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Inheritance And Polymorphism]]
+%% related:end %%

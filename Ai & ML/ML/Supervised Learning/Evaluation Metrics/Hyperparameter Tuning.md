@@ -41,3 +41,9 @@ ridge_cv.fit(X_train, y_train)
 print(ridge_cv.best_params_, ridge_cv.best_score_)
 
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KNN And SVM]]
+- [[Fine-Tuning Use Cases And Hyperparameters]]
+%% related:end %%

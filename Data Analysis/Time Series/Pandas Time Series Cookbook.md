@@ -94,3 +94,10 @@ prices = pd.concat([prices, price_per_year], axis=1)
 - `.reset_index(drop=True)` resets the index of the selected rows, which is useful to prevent the year from remaining part of the index.
 - `price_per_year.rename(columns={"price": year}, inplace=True)` renames the "price" column to the corresponding year (e.g., "2013"). This way, each year's data will be stored in a separate column.
 - `prices = pd.concat([prices, price_per_year], axis=1)` concatenates the current `price_per_year` data for the current year into the `prices` DataFrame along the columns (using `axis=1`).
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Selecting Filtering And Indexing]]
+- [[Data Cleaning - Dates And Times]]
+%% related:end %%

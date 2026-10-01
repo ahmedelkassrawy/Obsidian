@@ -108,3 +108,9 @@ model.save("my_keras_model", save_format="tf")
 
 model = tf.keras.models.load_model("my_keras_model")
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[PyTorch Linear, Logistic]]
+- [[Final Transfer Learning]]
+%% related:end %%

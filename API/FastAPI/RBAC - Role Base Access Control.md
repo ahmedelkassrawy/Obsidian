@@ -53,3 +53,12 @@ async def create_something():
 That's all there is to it! 
 
 You successfully wrote the logic and connected the dots without me writing the code for you. If you ever want to learn how to implement another feature from scratch, just call the `/teach` command again!
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[04 - API Endpoints with Database Operations]]
+- [[FastAPI Users - Schemas]]
+- [[Ch3. Creating the Database Layer]]
+- [[Ch7.Integrating DB in AI services]]
+- [[01 - Overview and Project Layout]]
+%% related:end %%

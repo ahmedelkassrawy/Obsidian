@@ -441,3 +441,11 @@ asmo to sub problems wt loop 3la target mn zero to target masln
 kda sub problems 
 lw m3ak refrence aw value aw 7aga htdeefha wdy fy for loop tanya nested gowa targt for loop
 daymn lhs = dp[i + ...] = min(dp[i + ...] , dp[i] + coins[j] aw 1 lw number of ways)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[DP Iterative - Vjudge 696069 K (Coin Combinations)]]
+- [[DP Recursive Patterns]]
+- [[DP Iterative - Vjudge 696069 X (Knapsack)]]
+- [[Dynamic Programming]]
+%% related:end %%

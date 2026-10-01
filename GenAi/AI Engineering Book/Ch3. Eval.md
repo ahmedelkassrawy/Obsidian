@@ -165,3 +165,11 @@ Takeaways I'm carrying into the build:
 - Treat AI-as-judge as the last resort, only where meaning can't be pinned to words, and never trust it blind. Inconsistency and bias mean I have to spot-check the judge against my own labels. That's the week-3 "how do I know my judge is any good" gap.
 
 - "Design evals around where the system fails" means my eval set should target rag-prod's real weak spots, like the no-inline, file-level-only citations finding, not generic questions.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Agent Evaluation]]
+- [[System Design for AI Agents (Architecture and the Why)]]
+- [[Agent Trajectory Evaluation]]
+- [[Uber Eats — Designing Agents and Eval Loops (Production Case Study)]]
+%% related:end %%

@@ -115,3 +115,11 @@ vector<vector<int>> arr(size, vector<int>(size));
 lets say 3ayz t7ot rakm 35 ht3mlo push back, hyroo7 ydwr fy array of size 1? la2 , y3ml wa7da wy7ot 35, tegy enta tzwd rakm yroo7 ys2l larray lt3mlt enty fy mkan , LA2 , yegy 3aml <font color="#c00000">DOUBLE THE PREVIOUS SIZE </font> fkda m3ana array of 2, tegy tzwd rakm kman fy mkan t2olk la2 fy3ml <font color="#c00000">DOUBLE THE PREVIOUS SIZE</font> b2a m3ana size of 4 tkfy rakm da wwa7d kman wlb3dha htb2a size of 8 whkza
 
 Amortized Complexity
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linked List]]
+- [[Lower & Upper Bounds]]
+- [[Deque]]
+- [[STL - Min Element In Chunks]]
+%% related:end %%

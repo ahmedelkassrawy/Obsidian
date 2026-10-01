@@ -433,3 +433,12 @@ Inorder DFS
 - left -> root -> right
 - so the k-th node you visit is the k-th smallest 
 - no sorting needed
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sets]]
+- [[Binary Search]]
+- [[Lower & Upper Bounds]]
+- [[Linked List]]
+- [[Map]]
+%% related:end %%

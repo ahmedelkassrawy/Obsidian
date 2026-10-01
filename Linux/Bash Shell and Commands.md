@@ -168,3 +168,8 @@ chmod +x hello.sh
         - **Output**: `hello world` (case preserved as in the script).
 - **Use Case**: Introduces basic Bash scripting for automating tasks.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Linux Commands]]
+- [[Linux File and Directory Management]]
+%% related:end %%

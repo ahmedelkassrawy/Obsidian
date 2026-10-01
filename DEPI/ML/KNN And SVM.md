@@ -84,3 +84,11 @@ Disadvantages of SVM
 
 ![[Pasted image 20260304232945.png]]
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[KNN Algo]]
+- [[K Nearest Neighbor Algo]]
+- [[SVM]]
+- [[Curse Of Dimensionality And PCA]]
+- [[ANN Tools FAISS and ScaNN]]
+%% related:end %%

@@ -96,3 +96,12 @@ int main()
     return 0;
 }
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Structs - Highest Y]]
+- [[C++ Solving Tips - Ternary And Palindrome]]
+- [[Insertion Sort]]
+- [[Sets]]
+- [[Lower & Upper Bounds]]
+%% related:end %%

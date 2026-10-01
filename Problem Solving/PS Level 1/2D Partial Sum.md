@@ -156,3 +156,9 @@ Four notes, one idea: *inclusion–exclusion on corners.* The 2D versions cost 4
 2. Why is the 4th write a `+` and not a `-`?
 3. Why is the rebuild the same code as the 2D prefix-sum build — what does that say about the two techniques?
 4. What must the array dimensions be, and what goes wrong at exactly `r2 = n`?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Sliding Window Technique]]
+- [[Arrays - Pumbaa]]
+%% related:end %%

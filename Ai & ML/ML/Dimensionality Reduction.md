@@ -154,3 +154,8 @@ plt.show()
 - **Use Case**: Reduces dimensionality before applying another classification algorithm (if LDA alone is insufficient).
 - **Scikit-Learn**: `sklearn.discriminant_analysis.LinearDiscriminantAnalysis`
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Curse Of Dimensionality And PCA]]
+- [[KMeans And DBSCAN]]
+%% related:end %%

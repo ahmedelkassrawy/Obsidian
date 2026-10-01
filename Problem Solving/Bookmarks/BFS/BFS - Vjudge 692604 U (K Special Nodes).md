@@ -232,3 +232,12 @@ For each node, the output represents the sum of the smallest `3` distances to th
 - Sorting the distances for each node: O(k log k), and this is done for each node, so O(n * k log k).
 
 Overall, the time complexity is approximately **O(k * (n + m) + n * k log k)**.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[BFS - Vjudge 692604 J]]
+- [[BFS - Vjudge 692604 T]]
+- [[BFS - Vjudge 692604 P]]
+- [[BFS - Vjudge 692604 Q]]
+- [[BFS - Vjudge 692604 V]]
+%% related:end %%

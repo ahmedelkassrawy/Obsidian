@@ -159,3 +159,12 @@ BAD  (pooled, whale mixed in):        GOOD (whale dedicated, smalls pooled):
 - **Name why you're NOT using a tool** (e.g. not sharding when the table fits one box) — worth as much as picking the right one.
 - **Name backoff + idempotency together** on every retry (backoff protects the downstream, idempotency protects the data).
 - **Separate trivial (stateless) tiers from the real bottleneck** at 10×.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[RAG]]
+- [[GraphRAG]]
+- [[Project Talk to RAG]]
+- [[LlamaIndex RAG Pipeline]]
+- [[RAG Hybrid Search & Reranking]]
+%% related:end %%

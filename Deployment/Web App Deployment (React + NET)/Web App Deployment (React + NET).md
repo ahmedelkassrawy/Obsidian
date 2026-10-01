@@ -62,3 +62,8 @@ This guide covers deploying a full-stack application (React frontend and .NET ba
 > 
 
 ![image.png](image%205%201.png)
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[FastAPI AI Deployment (Docker + Azure)]]
+%% related:end %%

@@ -33,3 +33,8 @@ y_pred = knn.predict(X_test)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Logistic Regression And Classification Basics]]
+%% related:end %%

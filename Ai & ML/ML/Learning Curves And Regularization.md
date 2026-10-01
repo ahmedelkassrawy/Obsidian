@@ -88,3 +88,9 @@ Increasing a **model’s complexity** -> increase its **variance** and reduce it
 - **Apply Regularization**: Use Ridge, Lasso, or Elastic Net to penalize large coefficients and reduce overfitting.
 - **Increase Training Data**: More data can help the model generalize better.
 
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Regularization trades training fit for generalization]]
+- [[Elastic Net Regression]]
+- [[Lasso Regression]]
+%% related:end %%

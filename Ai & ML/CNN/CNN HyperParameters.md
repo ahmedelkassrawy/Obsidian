@@ -24,3 +24,12 @@ larger kernels --> less info extracted --> faster reduction in layer  --> worst 
 **Stride** 
 	indicates how many pixels the kernel should be shifted over at a time.
 stride decrease --> more feature learned --> more data extracted --> large output layers
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[CNN]]
+- [[CNN.Pytorch]]
+- [[BatchNorm]]
+- [[Transfer Learning And Training Callbacks]]
+- [[Optimizers]]
+%% related:end %%

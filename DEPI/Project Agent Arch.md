@@ -533,3 +533,12 @@ backend/scripts/
 > [!question] Design Decisions
 
 10. **Arabic question handling** relies entirely on one prompt rule (rule 22 in `SQL_GENERATION_PROMPT`). It contains a 4-step procedure with 15 Arabic→English keyword mappings. No Arabic-specific preprocessing, transliteration, or separate model.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LangGraph Agents]]
+- [[LangGraph Nodes Edges And State]]
+- [[06 LangGraph Orchestration]]
+- [[Agent Engineering MOC]]
+- [[Ch1 - From LLMs to Agents - The Foundational Blueprint]]
+%% related:end %%

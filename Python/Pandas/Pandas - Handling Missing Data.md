@@ -63,3 +63,10 @@ df["YearsCode"].replace("More than 50 years",51,inplace=True)
 
 df ["YearsCode"] = df["YearsCode"].astype(float)#now acts normally
 ```
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Data Cleaning - Missing Values And Dtypes]]
+- [[Pandas Basics Cheat Sheet]]
+- [[Pandas - Adding And Removing Columns]]
+%% related:end %%

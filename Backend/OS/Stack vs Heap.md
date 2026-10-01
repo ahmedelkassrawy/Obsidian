@@ -40,3 +40,12 @@ Heap -> dynamic memory allocation
 |**Management**|Compiler-managed|Programmer or garbage collector|
 |**Use Case**|Local variables, function calls|Dynamic objects, large data|
 |**Risks**|Stack overflow|Memory leaks, fragmentation|
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Stack]]
+- [[Vectors]]
+- [[Linked List]]
+- [[References]]
+- [[1.Fundamentals]]
+%% related:end %%

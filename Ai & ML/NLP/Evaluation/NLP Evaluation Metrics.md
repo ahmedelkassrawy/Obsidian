@@ -190,3 +190,12 @@ METEOR (Metric for Evaluation of Translation with Explicit ORdering) evaluates t
 > 
 > - Which metric is best for evaluating chatbots? Why?
 > - How do these metrics handle multilingual texts?
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[NLP Eval Code]]
+- [[NLP]]
+- [[NLP Concepts]]
+- [[RAG Production]]
+- [[NLP Pipeline And Regex Basics]]
+%% related:end %%

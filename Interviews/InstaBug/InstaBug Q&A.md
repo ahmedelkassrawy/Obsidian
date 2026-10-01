@@ -121,3 +121,12 @@ Processes -> DON'T share data where each process has its own address space, heap
 | **Error Handling** | Can have custom error handlers inside the procedure.                                                         | If error inside a transaction — usually leads to a **ROLLBACK**.                                      |
 A stored procedure is like a **machine** you build to automate tasks.
 If two stored procedures update the same tables in different orders — deadlocks can happen.
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Indexes speed up reads by slowing down writes]]
+- [[Multiple Indexes]]
+- [[SQL Indexes, Tables, Merge and Views]]
+- [[PostgreSQL EXPLAIN ANALYZE Notes]]
+- [[PostgreSQL Scan Types Comparison]]
+%% related:end %%

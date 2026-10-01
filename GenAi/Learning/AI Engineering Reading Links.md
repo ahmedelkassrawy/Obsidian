@@ -50,3 +50,12 @@ https://www.linkedin.com/feed/update/urn:li:activity:7470381099941236737/
 https://www.linkedin.com/feed/update/urn:li:activity:7468767459798347777/
 https://www.linkedin.com/feed/update/urn:li:activity:7468219777061351424/
 https://www.linkedin.com/in/meguebli-yosra/
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[LinkedIn Saved Posts — Organized by Topic]]
+- [[LLMOps Observability And Production Stack]]
+- [[PLAN]]
+- [[X Bookmarks]]
+- [[Pipecat.LLM Inference]]
+%% related:end %%

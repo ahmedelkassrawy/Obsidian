@@ -760,3 +760,12 @@ After a few minutes, the status will change to **Active**.
 * If successful, you will see your API’s health check page.
 
 **Congratulations! Your API is now live on AWS.**
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Ch3. Creating the Database Layer]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[Ch7.Integrating DB in AI services]]
+- [[01 - Engine and Connections]]
+- [[14 - Best Practices Checklist]]
+%% related:end %%

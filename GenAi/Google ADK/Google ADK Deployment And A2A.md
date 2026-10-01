@@ -441,3 +441,10 @@ print("✅ Agent successfully deleted")
 This cell deletes your deployed agent:
 - `resource_name=remote_agent.resource_name` - Identifies which agent to delete
 - `force=True` - Forces deletion even if the agent is running
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[Google ADK]]
+- [[Google ADK Agent Tools]]
+- [[Building Applications with Agents.Ch1 & 2]]
+%% related:end %%

@@ -210,3 +210,12 @@ graph TD
 ## Next
 
 → [[06 - ORM CRUD]]
+
+%% related:start (auto-generated, regenerate with related_links.py) %%
+## Related
+- [[02 - Database Session Dependency (get_db)]]
+- [[03 - Pydantic Schemas (Request and Response Models)]]
+- [[14 - Best Practices Checklist]]
+- [[FastAPI Users - SQLAlchemy Adapter]]
+- [[04 - API Endpoints with Database Operations]]
+%% related:end %%
