@@ -25,7 +25,7 @@ tags:
 - [[Fine-Tuning Quick Reference]] — A condensed fine-tuning recipe: add a classification head to a pretrained transformer, tokenize, define metrics, and run the HuggingFace Trainer, plus tricks to improve results.
 
 ## Book notes
-- [[Ch3. Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
+- [[Ch3.Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
 
 ## Clippings (raw)
 - [[Clipping - LLM Fine-Tuning Crash Course (YouTube)]] `raw` — Raw YouTube transcript of a one-hour end-to-end fine-tuning walkthrough: preparing a custom dataset and fine-tuning an LLM on it.

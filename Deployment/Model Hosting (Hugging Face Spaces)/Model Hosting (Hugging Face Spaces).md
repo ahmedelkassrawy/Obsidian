@@ -52,5 +52,5 @@ result = client.predict(input_data, api_name="/predict")`
 
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related
-- [[Ch3. Serving GenAI Models with FastAPI]]
+- [[Ch3.Serving GenAI Models with FastAPI]]
 %% related:end %%

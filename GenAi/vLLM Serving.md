@@ -242,6 +242,6 @@ print(f"sequential: {tk/dt:.0f} tokens/sec")
 - [[LLM Gateways]]
 - [[LLM Inference Internals]]
 - [[LLM Proxies]]
-- [[Ch3. Serving GenAI Models with FastAPI]]
+- [[Ch3.Serving GenAI Models with FastAPI]]
 - [[ResolveFlow — AI Handoff Prompt]]
 %% related:end %%

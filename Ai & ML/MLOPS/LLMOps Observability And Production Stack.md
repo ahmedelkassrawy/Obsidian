@@ -301,5 +301,5 @@ It often *starts* with monitoring.
 - [[AI Engineering Specific Use Cases]]
 - [[FastAPI - Request Files, MLOps, and API Metadata]]
 - [[Pipecat.LLM Inference]]
-- [[Ch3. Serving GenAI Models with FastAPI]]
+- [[Ch3.Serving GenAI Models with FastAPI]]
 %% related:end %%

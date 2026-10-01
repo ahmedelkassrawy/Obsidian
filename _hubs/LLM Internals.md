@@ -28,7 +28,7 @@ tags:
 ## Book notes
 - [[Ch1. Introduction to Building AI Applications with Foundation Models]] — Chip Huyen Ch1: how self-supervision and scale produced foundation models, why the job is called AI engineering, what people build with it, and the layers of the stack.
 - [[Ch2. Understanding Foundation Models]] — Chip Huyen Ch2: the four choices that make models differ - training data, transformer architecture and size, post-training alignment, and sampling (which is why models hallucinate).
-- [[Ch3. Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
+- [[Ch3.Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
 - [[Encoder Vs Decoder Models]] `stub` — Short comparison of encoder models (representation, e.g. BERT) and decoder models (generation) by purpose, input and output.
 
 ## Clippings (raw)

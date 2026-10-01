@@ -57,7 +57,7 @@ tags:
 
 ## Book notes
 - [[Ch2.Getting Started with FastAPI]] — Ch2 notes on FastAPI: first server setup, dependency injection, Pydantic v2 validation, auto docs, project structure and onion architecture.
-- [[Ch3. Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
+- [[Ch3.Serving GenAI Models with FastAPI]] — Ch3 notes: how transformers, tokenization, embeddings and positional encoding work, then how to serve text, image, audio and 3D models from a FastAPI app.
 - [[Ch6.Real-Time Communication with Generative Models]] — Ch6 notes comparing request/response, short polling, long polling, Server-Sent Events and WebSockets for streaming model output.
 - [[Ch7.Integrating DB in AI services]] — Ch7 notes on wiring a database into a FastAPI AI service: SQLAlchemy ORM models, the engine as a connection pool, session dependency injection, and Alembic migrations.
 - [[Ch8.Authentication and Authorization]] — Ch8 notes on auth for AI services: registration and login flows, password hashing, JWT access and refresh tokens, logout, and role-based authorization.
