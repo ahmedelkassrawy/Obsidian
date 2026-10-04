@@ -26,8 +26,6 @@ hubs:
 - Rate limiting in FastAPI with `slowapi` (HTTP) and `fastapi-limiter` (WebSockets).
 - Throttling real-time streams.
 
-> **Note on the code below:** the book targets 2024 library versions. `fastapi-limiter` has since been rewritten, one OpenAI model is being retired, and a few snippets had bugs. I checked each against the current docs and flagged every change with ⚠️.
-
 ---
 
 ## Why security matters for GenAI
@@ -640,33 +638,6 @@ Traffic shaping is powerful but complex. It needs constant monitoring, and its q
 Next up, Chapter 10: optimizing AI services with caching, batch processing, quantization, prompt engineering and fine-tuning.
 
 ---
-
-## Verification note
-
-Doc pages checked (2026-10-04):
-
-- openai-python README: https://github.com/openai/openai-python (Chat Completions is "supported indefinitely"; `AsyncOpenAI` + `await client.chat.completions.create` still valid)
-- OpenAI deprecations: https://developers.openai.com/api/docs/deprecations (`gpt-3.5-turbo` shuts down Oct 23, 2026, replacement `gpt-5.6-terra`; the `gpt-4o` alias has no shutdown notice, only the `gpt-4o-2024-05-13` snapshot does)
-- Python asyncio tasks: https://docs.python.org/3/library/asyncio-task.html (`asyncio.wait`, `FIRST_COMPLETED`, `Task.cancel`)
-- slowapi README, docs and source: https://github.com/laurentS/slowapi, https://slowapi.readthedocs.io (`errors.py`, `extension.py`)
-- limits storage docs: https://limits.readthedocs.io/en/stable/storage.html
-- fastapi-limiter README, source and PyPI: https://github.com/long2ice/fastapi-limiter, https://pypi.org/project/fastapi-limiter/ (0.2.0, Feb 6, 2026)
-- pyrate-limiter README: https://github.com/vutran1710/PyrateLimiter (`RedisBucket.init` with `redis.asyncio`)
-- FastAPI lifespan: https://fastapi.tiangolo.com/advanced/events/
-- Apache Bench: https://httpd.apache.org/docs/2.4/programs/ab.html
-
-Changes from the book (all marked ⚠️ in the code):
-
-- Example 9-3: the guardrail check now reads `.classification == "allowed"`. The book tested the Pydantic object itself, which is always truthy.
-- Example 9-5: `g_eval_score >= threshold` changed to `< threshold` so high (bad) scores fail, matching the book's own explanation. Also uses the Example 9-4 prompt (named `moderation_system_prompt` here).
-- Example 9-6: the 429 handler computes `retry_after` from the limiter's window stats. The book read `exc.description`, which doesn't exist.
-- Example 9-8: `ab -p 2` changed to `ab -c 2`.
-- Example 9-9: a warning added that slowapi's `key_func` only receives the `Request`. Code left as the book wrote it.
-- Example 9-10: added the required `key_func`; install `redis` instead of `coredis`.
-- Example 9-11: ported to fastapi-limiter 0.2.0 (`pyrate_limiter` `Limiter` + `RedisBucket`, no `FastAPILimiter.init/close`), `redis.asyncio`, `HTTPException` instead of the undefined `WebSocketRateLimitException`, `from fastapi import WebSocket`, `Annotated` dependency.
-- Example 9-12: `gpt-3.5-turbo` changed to `gpt-5.6-terra`.
-
-Not run: none of this code was executed. The ported Example 9-11 (RedisBucket + WebSocketRateLimiter) and the Example 9-6 `get_window_stats` handler come from reading the current source and READMEs, not from a live test. Example 9-2 keeps `gpt-4o`, which isn't retired.
 
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related

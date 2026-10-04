@@ -863,38 +863,6 @@ SQLAlchemy plus Alembic is a tried and tested way to use relational databases wi
 
 ---
 
-## Verification note
-
-Checked against these official docs on 2026-10-04:
-
-- SQLAlchemy asyncio: https://docs.sqlalchemy.org/en/21/orm/extensions/asyncio.html (and the 2.0 version)
-- SQLAlchemy column defaults: https://docs.sqlalchemy.org/en/21/core/defaults.html
-- SQLAlchemy Session API: https://docs.sqlalchemy.org/en/21/orm/session_api.html
-- SQLAlchemy 2.1 migration notes: https://docs.sqlalchemy.org/en/21/changelog/migration_21.html
-- SQLAlchemy PostgreSQL dialects (psycopg, asyncpg): https://docs.sqlalchemy.org/en/20/dialects/postgresql.html
-- psycopg 3 install: https://www.psycopg.org/psycopg3/docs/basic/install.html
-- FastAPI dependencies with yield: https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/
-- FastAPI advanced dependencies (exit-code timing, background tasks): https://fastapi.tiangolo.com/advanced/advanced-dependencies/
-- Alembic tutorial: https://alembic.sqlalchemy.org/en/latest/tutorial.html
-- Alembic cookbook, asyncio: https://alembic.sqlalchemy.org/en/latest/cookbook.html
-- openai-python README and source: https://github.com/openai/openai-python
-- OpenAI deprecations: https://developers.openai.com/api/docs/deprecations
-- Latest versions on PyPI: SQLAlchemy 2.1.3, FastAPI 0.142.2, Alembic 1.20.0, psycopg 3.3.6, Pydantic 2.13.5, openai 3.24.0
-
-Code changes (⚠️):
-
-- Timestamps: `default=datetime.now(UTC)` (evaluated once at import) → `server_default=func.now()` and `onupdate=func.now()`, as in the SQLAlchemy asyncio example.
-- Install: `psycopg3` → `"psycopg[binary]"`, and `sqlalchemy` → `"sqlalchemy[asyncio]"` (greenlet is an extra since 2.1).
-- Session factory: dropped `autocommit=False` (backwards-compat only in 2.x), added `expire_on_commit=False` (recommended for async).
-- Routes: `{id}` → `{conversation_id}` so the path matches the dependency's parameter.
-- Messages endpoint: return type `list[Message]` → `list[MessageOut]`.
-- Alembic: `alembic init` → `alembic init alembic` (directory required), plus the `-t async` option. `target_metadata = Base` → `Base.metadata`.
-- Background task: opens its own session instead of reusing the request's session. Dependency written in `Annotated` style.
-- Title example: `gpt-3.5-turbo` → `gpt-5.6-terra`. Passes a `ConversationCreate` instead of a `Conversation` entity, with a new `model_type` argument.
-- Not changed, only flagged: the eager `"".join(stream_1)` in Example 7-15, and the session commit that runs after the response in Example 7-4.
-
-Not run: none of this code was executed against a live Postgres database. `MessageOut` and `MessageRepository` aren't defined in the chapter.
-
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related
 - [[Ch3. Creating the Database Layer]]

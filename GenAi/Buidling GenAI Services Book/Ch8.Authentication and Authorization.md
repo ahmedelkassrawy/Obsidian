@@ -1482,34 +1482,6 @@ Building a full authorization service from scratch takes a lot of time. Provider
 **Next chapter:** testing GenAI services: unit, integration, end-to-end, and regression tests, plus mocking, patching, and dealing with probabilistic models.
 
 ---
-
-## Verification note
-
-Checked on 2026-10-04 against:
-
-- FastAPI, OAuth2 with password (and hashing), Bearer with JWT tokens: https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/ (uses `pyjwt` + `pwdlib[argon2]`, `PasswordHash.recommended()`, `DUMMY_HASH`, `jwt.exceptions.InvalidTokenError`, `datetime.now(timezone.utc)`, `Annotated[OAuth2PasswordRequestForm, Depends()]`)
-- FastAPI, HTTP Basic Auth: https://fastapi.tiangolo.com/advanced/security/http-basic-auth/ (Example 8-1 already matches)
-- FastAPI, Advanced Dependencies (callable class instances): https://fastapi.tiangolo.com/advanced/advanced-dependencies/
-- pwdlib README: https://github.com/frankie567/pwdlib
-- PyJWT API, usage, and changelog: https://pyjwt.readthedocs.io/en/stable/api.html, https://pyjwt.readthedocs.io/en/stable/usage.html, https://pyjwt.readthedocs.io/en/stable/changelog.html (`exp` accepts a datetime; `sub`/`jti` validation added in 2.10.0; `InvalidSubjectError`)
-- GitHub, Authorizing OAuth apps: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps (authorize/access_token URLs, `state`, PKCE, `Accept: application/json`, `Authorization: Bearer`)
-- SQLAlchemy 2.0 session transactions and asyncio: https://docs.sqlalchemy.org/en/20/orm/session_transaction.html, https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
-- Starlette middleware docs (SessionMiddleware options), read from the GitHub source of starlette.io
-
-Changes marked ⚠️ in the code:
-
-- **Install:** `passlib python-jose` → `pyjwt "pwdlib[argon2]"`.
-- **Password hashing:** `CryptContext(schemes=["bcrypt"])` → `PasswordHash.recommended()` (Argon2); added a dummy-hash verify for unknown usernames, per FastAPI docs.
-- **JWT:** `from jose import JWTError, jwt` → `import jwt`; `except JWTError` → `except jwt.InvalidTokenError`; `sub` is now `str(token.id)`.
-- **Models:** `default=datetime.now(UTC)` (evaluated once) → `default=utc_now` (a callable); `Token.user_id` `int` → `uuid.UUID`; restored `User.tokens` relationship; `Users` → `User`.
-- **Schemas:** fixed bad `UUID` import → `UUID4`; `TokenBase.user_id` → `UUID4`; added a minimal `TokenUpdate`; `TokenOut` inherits `BaseModel` again.
-- **Repositories/services:** removed `begin()` + `commit()`-inside-`begin()` mix; `.dict()` → `.model_dump()`; restored `deactivate()` with a matching `update()` call; `TokenCreate` now gets `user_id`; replaced `user._asdict()` with an explicit payload.
-- **Dependencies/routes:** `Annotated[..., None]` → real `Depends()`; `Depends(AuthService.get_current_user)` → a `get_current_user` function; logout uses the bearer header dependency; Annotated deps in routes; fixed double `/generate` prefixes and `dependencies=[Depends(...)]` in Example 8-12.
-- **OAuth:** removed nonexistent `HTTP_301_REDIRECT`; the stored session value is now the same `state` sent to GitHub, and the callback reads the same session key; `urlencode` for the authorize URL; `secure=True` + explicit `samesite="lax"` on the cookie; `https_only=True` suggested for `SessionMiddleware`; Example 8-18 moved to `/oauth/github/user` to avoid clashing with the callback route.
-- **Authorization:** `Depends(lambda user: has_role(...))` → `RoleChecker` callable class; added the missing `@` on `app.get` and the missing `Depends` import in Example 8-22.
-
-Not changed: `aiohttp` is still a maintained async client, so the GitHub calls keep using it (httpx's `AsyncClient` would work the same way). The Streamlit button is left as printed, with a warning about the redirect.
-
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related
 - [[FastApi - Security]]
