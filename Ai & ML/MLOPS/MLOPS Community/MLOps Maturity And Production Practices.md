@@ -85,6 +85,7 @@ notebooks/
     exploration.ipynb
 Dockerfile
 pyproject.toml
+requirements.txt
 README.md
 ```
 
@@ -440,14 +441,15 @@ Every line is a frozen decision.
 # Stage 1: build
 FROM python:3.11-slim AS builder
 WORKDIR /app
-COPY pyproject.toml .
-RUN pip install --no-cache-dir -e .[dev]
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: runtime
 FROM python:3.11-slim AS runtime
 WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.11 \
      /usr/local/lib/python3.11
+COPY --from=builder /usr/local/bin /usr/local/bin
 COPY src/ ./src/
 
 RUN adduser --disabled-password appuser
@@ -461,19 +463,24 @@ CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0"]
 > ```dockerfile
 > FROM python:3.11-slim AS builder
 > WORKDIR /app
-> COPY pyproject.toml .
-> RUN pip install --no-cache-dir -e .[dev]
+> COPY requirements.txt .
+> RUN pip install --no-cache-dir -r requirements.txt
 > ```
-> Stage 1, named `builder`. Start from a small Python image, copy only the dependency file, install. `-e .[dev]` = editable install of this project plus its dev extras.
+> Stage 1, named `builder`. Start from a small Python image, copy only the dependency list, install. Only the runtime libraries go in: no `-e` (editable install) and no `[dev]` extras, because test tools like pytest don't belong in production.
 >
-> **Layer caching:** Docker caches each line. If `pyproject.toml` did not change, the slow `pip install` line is reused from cache. That is why deps are copied *before* `src/`: code changes daily, deps change monthly.
+> **Why `requirements.txt` and not `pyproject.toml`:** pip can't install "just the dependencies" from `pyproject.toml`. It always tries to build your project too, and that needs `src/`, which hasn't been copied yet. A pinned `requirements.txt` (exported with `pip-compile` or `uv export`) is a plain list of libraries with no source code needed. The app itself doesn't need installing at all: stage 2 copies `src/` and uvicorn imports it straight from `/app`.
+>
+> **Layer caching:** Docker caches each line. If `requirements.txt` did not change, the slow `pip install` line is reused from cache. That is why deps are copied *before* `src/`: code changes daily, deps change monthly.
 >
 > ```dockerfile
 > FROM python:3.11-slim AS runtime
 > COPY --from=builder /usr/local/lib/python3.11 /usr/local/lib/python3.11
+> COPY --from=builder /usr/local/bin /usr/local/bin
 > COPY src/ ./src/
 > ```
 > Stage 2 starts fresh and copies only the installed packages from stage 1. Build tools, caches and compilers from stage 1 are thrown away. Smaller image, smaller attack surface.
+>
+> Two folders are needed. `/usr/local/lib/python3.11` holds the libraries' code. `/usr/local/bin` holds the commands pip created, like `uvicorn`. Without the second line, `CMD ["uvicorn", ...]` fails with "executable file not found".
 >
 > ```dockerfile
 > RUN adduser --disabled-password appuser
@@ -489,7 +496,7 @@ CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0"]
 
 
 - **Multi-stage build** — builder installs everything, runtime copies only what runs. ~60% smaller.
-- **Layer caching** — `COPY pyproject.toml` before `COPY src/`. Deps change rarely, code changes often.
+- **Layer caching** — `COPY requirements.txt` before `COPY src/`. Deps change rarely, code changes often.
 - **Non-root user** — never run as root. If the app is exploited, damage is contained.
 - **CMD vs ENTRYPOINT** — CMD is the default command. ENTRYPOINT is the fixed binary.
 
@@ -530,7 +537,7 @@ services:
 
 - **Environment variables** — inject config at runtime. Never hardcode paths or secrets.
 - **Read-only volumes** — `:ro` means the API can read models but not modify them.
-- **`depends_on`** — API waits for MLflow. In production, add healthcheck conditions.
+- **`depends_on`** — MLflow starts first, but the API does not wait for it to be ready. In production, add healthcheck conditions.
 - **Daily commands** — `docker compose up -d`, `ps`, `logs -f api`.
 
 ## Logging
