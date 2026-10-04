@@ -19,15 +19,52 @@ hubs:
   - "[[Postgres]]"
   - "[[FastAPI]]"
 ---
-An ORM library allows you to interact with a database and execute SQL operations without then need to write raw SQL yourself
-Defining ORM Models The first step to query your database in Python is to define your ORM models with SQLAlchemy classes
 
-#### Defining ORM Models
+## What this chapter covers
 
-**`models.py`**
+- Defining database tables as Python classes with the SQLAlchemy ORM.
+- Creating an async engine and a per-request database session in FastAPI.
+- Building CRUD endpoints for a `conversations` table.
+- Refactoring that code into the repository and service patterns.
+- Versioning schema changes with Alembic.
+- Saving LLM output that was streamed to the user.
+
+> [!note] Code in this note
+> The book targets 2024-era libraries. I checked every block against the current docs (SQLAlchemy 2.1, FastAPI 0.142, Alembic 1.20, Pydantic 2.13, openai-python 3.x) and flagged each change with ⚠️. Details are in the Verification note at the end.
+
+---
+
+## Object relational mappers (ORMs)
+
+> [!definition] ORM (object relational mapper)
+> A library that lets you work with a database through normal Python classes, so you don't have to write raw SQL yourself. Tables become classes, columns become class attributes, and rows become class instances.
+
+So instead of writing `SELECT * FROM users WHERE id = 1`, you ask the ORM for the `User` whose `id` is 1, and it writes the SQL for you.
+
+| Pros | Cons |
+|---|---|
+| Hides the details of talking to the database | You trade some flexibility for convenience |
+| Speeds up development | Learning curve |
+| Easier to maintain | Complex queries can be slower than hand-written SQL |
+| Many libraries to choose from (SQLAlchemy, SQLModel, TortoiseORM, Django ORM) | Debugging can be harder |
+
+For most projects the pros win, so it's worth learning one well. This chapter uses **SQLAlchemy** with a Postgres database.
+
+> [!tip] Refresher
+> For the basics of SQLAlchemy queries and relationships, see [[SQLAlchemy CRUD And Relationships Recap]].
+
+---
+
+## Defining ORM models
+
+The first step is to describe your tables as SQLAlchemy classes. There are two for now: `conversations` and `messages`. (The `users` table comes in the next chapter, with authentication.)
+
+### Example 7-2: Defining the ORM models
+
 ```python
-from datetime import UTC,datetime
-from sqlalchemy import ForeignKey
+# entities.py
+from datetime import datetime
+from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 class Base(DeclarativeBase):
@@ -36,26 +73,27 @@ class Base(DeclarativeBase):
 class Conversation(Base):
     __tablename__ = "conversations"
 
-    id: Mapped[int] = mapped_column(primary_key = True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column()
-    model_type: Mapped[str] = mapped_column(index = True)
-    created_at: Mapped[datetime] = mapped_column(
-        default = datetime.now(UTC), onupdate = datetime.now(UTC)
+    model_type: Mapped[str] = mapped_column(index=True)
+    # ⚠️ book had default=datetime.now(UTC). That calls now() ONCE, when the module is
+    # imported, so every row would get the same timestamp. The SQLAlchemy docs show
+    # server_default=func.now() (the database fills it in) and func.now() for onupdate.
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        server_default=func.now(), onupdate=func.now()
     )
 
     messages: Mapped[list["Message"]] = relationship(
-        "Message", 
-        back_populates="conversation",
-        cascade = "all, delete-orphan"
+        "Message", back_populates="conversation", cascade="all, delete-orphan"
     )
 
 class Message(Base):
     __tablename__ = "messages"
 
-    id: Mapped[int] = mapped_column(primary_key = True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     conversation_id: Mapped[int] = mapped_column(
-        ForeignKey("conversations.id",
-                   ondelete="CASCADE"), index = True
+        ForeignKey("conversations.id", ondelete="CASCADE"), index=True
     )
     prompt_content: Mapped[str] = mapped_column()
     response_content: Mapped[str] = mapped_column()
@@ -64,54 +102,122 @@ class Message(Base):
     total_tokens: Mapped[int | None] = mapped_column()
     is_success: Mapped[bool | None] = mapped_column()
     status_code: Mapped[int | None] = mapped_column()
-    created_at: Mapped[datetime] = mapped_column(default = datetime.now(UTC))
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())  # ⚠️ same fix
     updated_at: Mapped[datetime] = mapped_column(
-        default = datetime.now(UTC), onupdate=datetime.now(UTC)
+        server_default=func.now(), onupdate=func.now()  # ⚠️ same fix
     )
 
     conversation: Mapped["Conversation"] = relationship(
-        "Conversation", 
-        back_populates="messages"
+        "Conversation", back_populates="messages"
     )
 ```
 
-Specify Mapped[int | None] to declare an optional typing so the column will allow NULL values (i.e., nullable=True )
+- `DeclarativeBase` is the parent class that every model inherits from. SQLAlchemy uses it to collect all your tables.
+- `mapped_column()` reads the column type from the `Mapped[...]` type hint, so `Mapped[str]` becomes a text column.
+- `index=True` on `model_type` makes filtering conversations by model faster.
+- `cascade="all, delete-orphan"` means that when you delete a conversation, its messages get deleted too.
+- `Mapped[int | None]` makes a column optional, so it allows `NULL` (the same as `nullable=True`).
+- The `messages` table stores both the prompt and the LLM's response, plus token usage, status code, and whether the call succeeded.
 
-Once you have your data models defined, you can create a connection to the database to create each table with the specified configurations. To achieve this, you will need to create a database engine and implement session management.
+> [!warning] Timestamp defaults
+> Pass a function or a SQL expression to `default`, never the result of calling one. If you want the timestamp made in Python instead of by the database, use `default=lambda: datetime.now(UTC)`. That runs on every insert.
 
-#### Creating Database Engine and Session Management
-Once created, you can use the engine and the Base class to create tables for each of your data models
+Once the models exist, you need a connection to the database to create the tables. That takes an **engine** and some **session management**.
 
-- With the engine created, you can now implement a factory function for creating sessions to the database. 
-- Session factory is a design pattern that allows you to open, interact with, and close database connections across your services. 
-- Since you may reuse a session, you can use FastAPI’s dependency injection system to cache and reuse sessions across each request runtime
+---
 
-**`main.py`**
+## Creating the database engine and session management
+
+> [!definition] Engine
+> The object that holds your database connection string and manages a **pool** of open connections that your app reuses.
+
+You need the database driver and SQLAlchemy's async extras first:
+
+```bash
+# ⚠️ book printed `pip install alembic sqlalchemy psycopg3`. The psycopg 3 package is
+# called "psycopg", and since SQLAlchemy 2.1 the async support (greenlet) is an extra.
+pip install alembic "sqlalchemy[asyncio]" "psycopg[binary]"
+```
+
+### Example 7-3: Creating the engine and tables
+
 ```python
-import os
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from typing import AsyncGenerator
+# database.py
+from sqlalchemy.ext.asyncio import create_async_engine
 from entities import Base
-from typing import Annotated
+
+database_url = (
+    "postgresql+psycopg://fastapi:mysecretpassword@localhost:5432/backend_db"
+)
+
+engine = create_async_engine(database_url, echo=True)
+
+async def init_db() -> None:
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+```
+
+```python
+# main.py
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from database import engine, init_db
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    await init_db()
+    # other startup operations within the lifespan
+    ...
+    yield
+    await engine.dispose()
+
+app = FastAPI(lifespan=lifespan)
+```
+
+- The connection string follows the template `<driver>://<username>:<password>@<host>/<database>`.
+- `postgresql+psycopg` picks the psycopg 3 driver. With `create_async_engine` it automatically uses psycopg's async mode. (`postgresql+asyncpg://...` is the other common async driver.)
+- `echo=True` logs every SQL statement, which helps while debugging.
+- `init_db()` drops any existing tables and then creates them all from your models.
+- Code after `yield` in the `lifespan` runs on server shutdown, so `engine.dispose()` closes the connection pool cleanly.
+
+> [!warning] `create_all()` is for prototyping only
+> `create_all()` can create tables but can't change existing ones. Combined with `drop_all()`, this wipes your data on every start. In production, use a migration tool like Alembic (covered below).
+
+> [!warning] Don't hard-code secrets
+> The connection string is hard-coded here only to keep the example short. In real projects, load it from environment files or a secret manager, for example with Pydantic Settings.
+
+### Sessions
+
+> [!definition] Session
+> A short-lived workspace for talking to the database. You load and change objects through it, then commit or roll back the changes as one transaction.
+
+> [!definition] Session factory
+> A function that hands out new sessions on demand. It's a design pattern for opening, using, and closing database connections across your services.
+
+Since every request needs a session, FastAPI's dependency injection is a good fit. It creates one session per request and reuses it for everything that request needs.
+
+### Example 7-4: A database session dependency
+
+```python
+# database.py
+from typing import Annotated, AsyncGenerator
 from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+# engine is defined above in this same file (Example 7-3)
 
-# Use environment variables
-DATABASE_URL =  "postgresql+psycopg://fastapi:mysecretpassword@localhost:5432/backend_db"
-
-# The engine is the connection pool
-engine = create_async_engine(DATABASE_URL,echo=True)
-
-# A factory for creating individual session objects
 async_session = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
-    autocommit = False,
+    # ⚠️ book also passed autocommit=False. In SQLAlchemy 2.x that keyword only exists
+    # for backwards compatibility and must stay False, so it's dropped here.
     autoflush=False,
-    expire_on_commit=False, # Prevents errors when accessing attributes after commit
+    # ⚠️ not in the book. The SQLAlchemy asyncio docs recommend it: without it, reading
+    # an attribute after commit triggers a hidden database call, which fails under async.
+    expire_on_commit=False,
 )
 
-# Dependency Injection for FastAPI
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
+async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         try:
             yield session
@@ -122,32 +228,40 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
-db_session = Annotated[AsyncSession, Depends(get_db)]
+DBSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 ```
-1. Create an async database session factory bound to the database engine you created previously to asynchronously connect to your Postgres instance. Disable automatic committing of transactions with autocommit=false and automatic flushing of changes to the database with autoflush=False . Disabling both behaviors gives you more control, helps prevent unintended data updates, and allows you to implement more robust transaction management.
-2. Define a dependency function to reuse and inject across your FastAPI app into route controller functions. Since the function uses the yield keyword within the async with , it is considered an async context manager. FastAPI will internally decorate the get_db_session as context manager when it is used as a dependency
-3. Use the database session factory to create an async session. The context manager helps to manage the database session lifecycle such as opening, interacting with, and closing the database connections in each session. 
-4. Yield the database session to the caller of the get_db_session function. 
-5. If there are any exceptions, roll back the transaction and reraise the exception. 
-6. In any case, close the database session at the end to release any resources that it holds. 
-7. Declare an annotated database session dependency that can be reused across different controllers
 
-#### Implementing CRUD Endpoints
-- Before implementing CRUD endpoints, you’ll need to map database entities to Pydantic models. 
-- This avoids tightly coupling your API schema with your database models to give you the freedom and flexibility in developing your API and databases independent of each other.
+1. `async_sessionmaker` is the session factory, bound to the engine. `autoflush=False` stops SQLAlchemy from sending pending changes to the database on its own, which gives you more control over when writes happen.
+2. `get_db_session` is the dependency. Because it uses `yield` inside `async with`, FastAPI treats it like an async context manager.
+3. `async with async_session()` opens a session and handles its lifecycle.
+4. `yield session` hands the session to the route.
+5. If anything goes wrong, the transaction is rolled back and the error is re-raised.
+6. In every case, the session is closed at the end to free its resources.
+7. `DBSessionDep` is an `Annotated` type you can reuse in any route.
 
-schemas.py
+> [!warning] When the code after `yield` runs
+> Since FastAPI 0.118, the code after `yield` runs **after the response has been sent**. So the `commit()` in this dependency happens after the client already got a success response. The routes below commit explicitly, so this is just a safety net. If you need cleanup to finish before the response goes out, FastAPI 0.121+ lets you write `Depends(get_db_session, scope="function")`.
 
-**`schemas.py`**
+---
+
+## Implementing CRUD endpoints
+
+FastAPI uses Pydantic to validate data coming in and going out. So before writing endpoints, you map your database entities to Pydantic models.
+
+Keeping the two separate means your API shape and your database shape can change independently.
+
+### Example 7-5: Pydantic schemas for conversations
+
 ```python
+# schemas.py
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 class ConversationBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    title:str
-    model_type:str
+    title: str
+    model_type: str
 
 class ConversationCreate(ConversationBase):
     pass
@@ -156,120 +270,150 @@ class ConversationUpdate(ConversationBase):
     pass
 
 class ConversationOut(ConversationBase):
-    id:int
-    created_at:datetime
-    updated_at:datetime
+    id: int
+    created_at: datetime
+    updated_at: datetime
 ```
 
-Now that you have the SQLAlchemy and Pydantic models, you can start developing your CRUD API endpoints. When implementing CRUD endpoints, you should try to leverage FastAPI dependencies as much as you can to reduce database round-trips. For instance, when retrieving, updating, and deleting records, you need to check in with the database that a record exists using its ID. You can implement a record retrieval function to use a dependency across your get, update, and delete endpoints
+- `from_attributes=True` lets Pydantic read values from object attributes, like a SQLAlchemy model, instead of only from dicts.
+- Separate models for create, update, and output let each use case have its own fields.
 
-#### CRUD Endpoints
+> [!tip] What about the duplication?
+> Writing both SQLAlchemy and Pydantic models can feel repetitive. The `sqlmodel` package merges them into one class. The book's view: it's less flexible for advanced SQLAlchemy use, so for complex apps keep the two separate.
 
-**`main.py`**
+### Use dependencies to cut database round-trips
+
+The get, update, and delete endpoints all need to check that the record exists first. Put that check in one dependency and reuse it.
+
+> [!note]
+> FastAPI caches a dependency's result **within one request** only, not across requests.
+
+### Example 7-6: CRUD endpoints for the conversations table
+
 ```python
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db, engine
-from entities import Base
+# main.py
 from typing import Annotated
-from database import db_session
-from entities import Conversation
 from fastapi import Depends, FastAPI, HTTPException, status
-from schemas import ConversationCreate, ConversationOut, ConversationUpdate
 from sqlalchemy import select
+from database import DBSessionDep
+from entities import Conversation
+from schemas import ConversationCreate, ConversationOut, ConversationUpdate
 
-@asynccontextmanager
-async def lifespan(_: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
-    await engine.dispose()
+...  # lifespan and app = FastAPI(lifespan=lifespan) from Example 7-3
 
-app = FastAPI(lifespan=lifespan)
-
-async def get_conversation(conversation_id:int, session: db_session) -> Conversation:
+async def get_conversation(
+    conversation_id: int, session: DBSessionDep
+) -> Conversation:
     async with session.begin():
-        result = await session.execute(select(Conversation).where(Conversation.id == conversation_id))
+        result = await session.execute(
+            select(Conversation).where(Conversation.id == conversation_id)
+        )
         conversation = result.scalars().first()
-
     if not conversation:
         raise HTTPException(
-            status_code = status.HTTP_404_NOT_FOUND,
-            detail = "Conversation not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Conversation not found",
         )
-      
     return conversation
 
-get_conversation_dep = Annotated[Conversation, Depends(get_conversation)]
+GetConversationDep = Annotated[Conversation, Depends(get_conversation)]
 
 @app.get("/conversations")
-async def list_conversations(db: db_session, skip:int=0,
-                             limit:int=100) -> list[ConversationOut]:
-    async with db.begin():
-        result = await db.execute(select(Conversation).offset(skip).limit(limit))
-        return [
-            ConversationOut.model_validate(conversation) 
-            for conversation in result.scalars().all()
-        ]
-    
-@app.get("/conversations/{id}")
-async def get_conversation(db:db_session,conversation:get_conversation_dep) -> ConversationOut:
+async def list_conversations_controller(
+    session: DBSessionDep, skip: int = 0, take: int = 100
+) -> list[ConversationOut]:
+    async with session.begin():
+        result = await session.execute(
+            select(Conversation).offset(skip).limit(take)
+        )
+    return [
+        ConversationOut.model_validate(conversation)
+        for conversation in result.scalars().all()
+    ]
+
+# ⚠️ book used "/conversations/{id}". The dependency's parameter is conversation_id,
+# so FastAPI would look for it in the query string and return 422. The path
+# parameter name has to match.
+@app.get("/conversations/{conversation_id}")
+async def get_conversation_controller(
+    conversation: GetConversationDep,
+) -> ConversationOut:
     return ConversationOut.model_validate(conversation)
 
-@app.post("/conversations",status_code=status.HTTP_201_CREATED)
-async def create_conversation(db:db_session,conversation:ConversationCreate) -> ConversationOut:
+@app.post("/conversations", status_code=status.HTTP_201_CREATED)
+async def create_conversation_controller(
+    conversation: ConversationCreate, session: DBSessionDep
+) -> ConversationOut:
     new_conversation = Conversation(**conversation.model_dump())
-    async with db.begin():
-        db.add(new_conversation)
-        await db.commit()
-        await db.refresh(new_conversation)
+    async with session.begin():
+        session.add(new_conversation)
+        await session.commit()
+        await session.refresh(new_conversation)
     return ConversationOut.model_validate(new_conversation)
 
-@app.put("/conversations/{id}",status_code = status.HTTP_202_ACCEPTED)
-async def update_conversation(db:db_session,conversation:get_conversation_dep,
-                              conversation_update:ConversationUpdate) -> ConversationOut:
-    for key,value in conversation_update.model_dump().items():
-        setattr(conversation,key,value)
-
-    async with db.begin():
-        await db.commit()
-        await db.refresh(conversation)
-
+@app.put("/conversations/{conversation_id}", status_code=status.HTTP_202_ACCEPTED)  # ⚠️ was {id}
+async def update_conversation_controller(
+    updated_conversation: ConversationUpdate,
+    conversation: GetConversationDep,
+    session: DBSessionDep,
+) -> ConversationOut:
+    for key, value in updated_conversation.model_dump().items():
+        setattr(conversation, key, value)
+    async with session.begin():
+        await session.commit()
+        await session.refresh(conversation)
     return ConversationOut.model_validate(conversation)
 
-@app.delete("/conversations/{id}",status_code=status.HTTP_204_NO_CONTENT)
-async def delete_conversation(db:db_session,conversation:get_conversation_dep) -> None:
-    async with db.begin():
-        await db.delete(conversation)
-        await db.commit()
-    return None
+@app.delete("/conversations/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)  # ⚠️ was {id}
+async def delete_conversation_controller(
+    conversation: GetConversationDep, session: DBSessionDep
+) -> None:
+    async with session.begin():
+        await session.delete(conversation)
+        await session.commit()
 ```
 
-- Define a dependency to check if the conversation record exists. Raise a 404 HTTPException if a record is not found; otherwise, return the retrieved record. This dependency can be reused across several CRUD endpoints through dependency injection. 
-- Begin the async session within an async context manager during each request. 
-- When listing records, it’s more efficient to retrieve only a subset of records. By default, SQLAlchemy ORM returns a subset of most recent records in the database, but you can use the .offset(skip) and .limit(take) chained methods to retrieve any subset of records. 
-- Create a Pydantic model from a SQLAlchemy model using model_validate() . Raises a ValidationError if the SQLAlchemy object passed can’t be created or doesn’t pass Pydantic’s data validation checks. 
-- For operations that mutate a record (i.e., create, update, and delete), commit the transaction then send the refreshed record to the client, except for the successful delete operation that should return None .
+- `get_conversation` is the shared dependency. It returns the record or raises a 404, and the get, update, and delete routes all reuse it.
+- Each request opens a transaction with `async with session.begin()`.
+- For lists, fetch only a page of records with `.offset(skip).limit(take)` instead of the whole table.
+- `model_validate()` builds a Pydantic model from the SQLAlchemy object. It raises a `ValidationError` if the data doesn't pass validation.
+- Create, update, and delete commit the transaction. Create and update then return the refreshed record. Delete returns nothing.
 
-Notice how the controller logic is simplified through this dependency injection approach. Additionally, pay attention to success status codes you should to send to the client. Successful retrieval operations should return 200, while record creation operations return 201, updates return 202, and deletions return 204. Congratulations! You now have a resource-based RESTful API that you can use to perform CRUD operations on your conversations table. Now that you can implement CRUD endpoints, let’s refactor the existing code examples to use the repository and services design pattern you learned
+> [!tip] Paging needs an order
+> Without an `ORDER BY`, Postgres doesn't promise any particular order, so pages can shift between calls. Add something like `.order_by(Conversation.id)` before `.offset()`.
 
-#### Repository and Services Design Pattern 
-A repository is a design pattern that mediates the business logic of your application and the database access layer—for instance, via an ORM. It contains several methods for performing CRUD operations in the database layer.
+The status codes to send on success:
+
+| Operation | Status code |
+|---|---|
+| Retrieve | 200 OK |
+| Create | 201 Created |
+| Update | 202 Accepted |
+| Delete | 204 No Content |
+
+Notice how the dependency keeps each route short. You now have a resource-based REST API for the `conversations` table.
+
+---
+
+## Repository and services design pattern
+
+> [!definition] Repository
+> A class that sits between your business logic and the database layer (for example, the ORM). It holds the methods that do the CRUD operations, so your routes don't touch the database directly.
+
 ![[Pasted image 20260125023303.png]]
 
->[!note]
->If you’ve never used abstract classes, they’re classes that can’t be instantiated on their own. Abstract classes can contain methods without implementation that its subclasses must implement.
-> A concrete class is one that inherits an abstract class and implements each of its abstract methods
+The goal is a more modular, maintainable, and testable codebase. To set this up, start with an abstract interface that every repository has to follow.
 
-To implement a repository pattern, you can use an abstract interface
-repo/interface.py
+> [!note] Abstract and concrete classes
+> An **abstract class** can't be instantiated on its own. It can declare methods without an implementation, which its subclasses must provide.
+> A **concrete class** inherits an abstract class and implements every one of its abstract methods.
 
-**`schemas.py`**
+### Example 7-7: The abstract repository interface
+
 ```python
-from abc import ABC,abstractmethod
-from typing import Any, List,Dict,Optional
-from pydantic import BaseModel
+# repositories/interfaces.py
+from abc import ABC, abstractmethod
+from typing import Any
 
 class Repository(ABC):
     @abstractmethod
@@ -277,247 +421,259 @@ class Repository(ABC):
         pass
 
     @abstractmethod
-    async def get(self, id:int) -> Any:
+    async def get(self, uid: int) -> Any:
         pass
 
     @abstractmethod
-    async def create(self, record:Any) -> Any:
+    async def create(self, record: Any) -> Any:
         pass
 
     @abstractmethod
-    async def update(self, id:int, record:Any) -> Any:
+    async def update(self, uid: int, record: Any) -> Any:
         pass
 
     @abstractmethod
-    async def delete(self, id:int) -> None:
+    async def delete(self, uid: int) -> None:
         pass
 ```
 
-Define the abstract Repository interface with several CRUD-related abstract method signatures that subclasses must implement. If an abstract method is not implemented in a concrete subclass, a NotImplementedError will be raised.
+This lists the CRUD methods every repository must have. If a subclass forgets one, Python refuses to create an instance of it and raises a `TypeError`.
 
-Implementing the conversation repository using the abstract repository interface
-repo/conversations.py
+### Example 7-8: The conversation repository
 
-**`schemas.py`**
 ```python
+# repositories/conversations.py
 from entities import Conversation
-from repo.interfaces import Repository
+from repositories.interfaces import Repository
 from schemas import ConversationCreate, ConversationUpdate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 class ConversationRepository(Repository):
-    def __init__(self,session:AsyncSession):
-        self.db = session
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
 
-    async def list(self,skip:int=0, limit:int=100) -> list[Conversation]:
-        async with self.db.begin():
-            result = await self.db.execute(
-                select(Conversation).offset(skip).limit(limit)
+    async def list(self, skip: int, take: int) -> list[Conversation]:
+        async with self.session.begin():
+            result = await self.session.execute(
+                select(Conversation).offset(skip).limit(take)
             )
-            results = result.scalars().all()
-            return [r for r in results]
+        return [r for r in result.scalars().all()]
 
-    async def get(self, conversation_id:int) -> Conversation | None:
-        async with self.db.begin():
-            result = await self.db.execute(select(Conversation).where(Conversation.id == conversation_id))
-            return result.scalars().first()
-        
-    async def create(self, conversation:ConversationCreate) -> Conversation:
+    async def get(self, conversation_id: int) -> Conversation | None:
+        async with self.session.begin():
+            result = await self.session.execute(
+                select(Conversation).where(Conversation.id == conversation_id)
+            )
+        return result.scalars().first()
+
+    async def create(self, conversation: ConversationCreate) -> Conversation:
         new_conversation = Conversation(**conversation.model_dump())
-        async with self.db.begin():
-            self.db.add(new_conversation)
-            await self.db.commit()
-            await self.db.refresh(new_conversation)
+        async with self.session.begin():
+            self.session.add(new_conversation)
+            await self.session.commit()
+            await self.session.refresh(new_conversation)
         return new_conversation
-    
-    async def update(self,conversation_id:int, conversation:ConversationUpdate) -> Conversation | None:
-        conversation = await self.get(conversation_id)
 
+    async def update(
+        self, conversation_id: int, updated_conversation: ConversationUpdate
+    ) -> Conversation | None:
+        conversation = await self.get(conversation_id)
         if not conversation:
             return None
-
-        for k,v in conversation.model_dump().items():
-            setattr(conversation,k,v)
-
-        async with self.db.begin():
-            await self.db.commit()
-            await self.db.refresh(conversation)
-        
+        for key, value in updated_conversation.model_dump().items():
+            setattr(conversation, key, value)
+        async with self.session.begin():
+            await self.session.commit()
+            await self.session.refresh(conversation)
         return conversation
-    
-    async def delete(self,conversation_id:int) -> None:
+
+    async def delete(self, conversation_id: int) -> None:
         conversation = await self.get(conversation_id)
-
         if not conversation:
-            return None
-
-        async with self.db.begin():
-            await self.db.delete(conversation)
-            await self.db.commit()
-        
-        return None
+            return
+        async with self.session.begin():
+            await self.session.delete(conversation)
+            await self.session.commit()
 ```
 
-- You have now moved the database logic for conversations into the ConversationRepository . 
-- This means you can now import this class into your route controller functions and start using it right away.
-- Go back to your main.py file and refactor your route controllers to use the ConversationRepository 
-#### Refactoring the conversation CRUD endpoints to use the repository pattern
-routers/conversations.py
+- `ConversationRepository` inherits the interface and implements each method with the same signatures.
+- All the database logic for conversations now lives in this one class, so routes can just call it.
 
-**`main.py`**
+### Example 7-9: Routes refactored to use the repository
+
 ```python
+# routers/conversations.py
 from typing import Annotated
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
-from requests import session
+from fastapi import APIRouter, Depends, HTTPException, status
+from database import DBSessionDep
 from entities import Conversation
-from repo.conversations import ConversationRepository
-from database import db_session
-from schemas import ConversationCreate, ConversationOut,ConversationUpdate
-from entities import Conversation
+from repositories.conversations import ConversationRepository
+from schemas import ConversationCreate, ConversationOut, ConversationUpdate
 
-#Other controllers and depencies implementations
+router = APIRouter(prefix="/conversations")
 
-router = APIRouter(prefix = "/conversations")
-
-async def get_conversation(conversation_id:int,db: db_session) -> Conversation:
-    conversation = await ConversationRepository(db).get(conversation_id)
-
+async def get_conversation(
+    conversation_id: int, session: DBSessionDep
+) -> Conversation:
+    conversation = await ConversationRepository(session).get(conversation_id)
     if not conversation:
         raise HTTPException(
-            status_code = status.HTTP_404_NOT_FOUND,
-            detail = "Conversation not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Conversation not found",
         )
     return conversation
 
-get_conversation_dep = Annotated[Conversation, Depends(get_conversation)]
+GetConversationDep = Annotated[Conversation, Depends(get_conversation)]
 
 @router.get("")
 async def list_conversations_controller(
-    db: db_session, skip: int = 0, limit: int = 100) -> list[ConversationOut]:
-    conversations = await ConversationRepository(db).list(skip, limit)
+    session: DBSessionDep, skip: int = 0, take: int = 100
+) -> list[ConversationOut]:
+    conversations = await ConversationRepository(session).list(skip, take)
     return [ConversationOut.model_validate(c) for c in conversations]
 
-@router.get("/{id}")
-async def get_conversation_controller(conversation: get_conversation_dep) -> ConversationOut:
-    return ConversationOut.model_validate(conversation) 
+@router.get("/{conversation_id}")  # ⚠️ was "/{id}" (must match the dependency's parameter)
+async def get_conversation_controller(
+    conversation: GetConversationDep,
+) -> ConversationOut:
+    return ConversationOut.model_validate(conversation)
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_conversation_controller(
-    conversation: ConversationCreate, db: db_session) -> ConversationOut:
-    new_conversation = await ConversationRepository(db).create(
-        conversation
-    ) 
+    conversation: ConversationCreate, session: DBSessionDep
+) -> ConversationOut:
+    new_conversation = await ConversationRepository(session).create(conversation)
     return ConversationOut.model_validate(new_conversation)
 
-@router.put("/{id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/{conversation_id}", status_code=status.HTTP_202_ACCEPTED)  # ⚠️ was "/{id}"
 async def update_conversation_controller(
-    conversation: get_conversation_dep,updated_conversation: ConversationUpdate,
-    db: db_session) -> ConversationOut:
-    updated_conversation = await ConversationRepository(db).update(conversation.id, updated_conversation)
+    conversation: GetConversationDep,
+    updated_conversation: ConversationUpdate,
+    session: DBSessionDep,
+) -> ConversationOut:
+    updated_conversation = await ConversationRepository(session).update(
+        conversation.id, updated_conversation
+    )
     return ConversationOut.model_validate(updated_conversation)
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_conversation_controller(conversation: get_conversation_dep, db: db_session) -> None:
-    await ConversationRepository(db).delete(conversation.id)
+@router.delete("/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)  # ⚠️ was "/{id}"
+async def delete_conversation_controller(
+    conversation: GetConversationDep, session: DBSessionDep
+) -> None:
+    await ConversationRepository(session).delete(conversation.id)
 ```
 
-main.py
-
-**`main.py`**
 ```python
+# main.py
 from routers.conversations import router as conversations_router
 
 app.include_router(conversations_router)
 ```
 
-1. Place conversation CRUD routes on a separate API router and include on the FastAPI application for modular API design. 
-2. Refactor conversation CRUD routes to use the repository pattern for more readable controller implementation.
+1. The conversation routes now live on their own `APIRouter`, which you plug into the app with `include_router`. That keeps the API modular.
+2. Each route just calls the repository, so the controllers are much easier to read.
 
-Do you notice how cleaner your route controllers appear now that the database logic has been abstracted within the ConversationRepository class? 
-You can take this approach one step further and implement a service pattern as well. A service pattern is an extension of the repository pattern that encapsulates the business logic and operations in a higher layer. These higher-level operations often require more complex queries and a sequence of CRUD operations to be performed to implement the business logic
+### The service pattern
 
-As an example, you can implement a ConversationService to fetch messages related to a conversation or a specific user
-Since it extends a ConversationRepository , you can still access the lower-level data access CRUD methods such as list , get , create , update , and delete .
+> [!definition] Service
+> A layer above the repository that holds **business logic**. Its operations often need more complex queries or a sequence of CRUD steps.
 
-Once again you can go back to your controllers and replace references to the ConversationRepository with the ConversationService instead. Additionally, you can use the same service to add a new endpoint for fetching messages within a single conversation.
+For example, a `ConversationService` can fetch the messages in a conversation. Because it extends `ConversationRepository`, it still has `list`, `get`, `create`, `update`, and `delete`.
 
-#### Implementing the conversation services pattern
-services/conversations.py
+You can then swap `ConversationRepository` for `ConversationService` in your routes, and use it for a new endpoint that lists a conversation's messages.
 
-**`main.py`**
+### Example 7-10: The conversation service
+
 ```python
+# services/conversations.py
 from entities import Message
-from repo.conversations import ConversationRepository
+from repositories.conversations import ConversationRepository
 from sqlalchemy import select
 
-class ConversationService:
-    async def list_message(self,conversation_id:int) -> list[Message]:
-        result = await self.session.execute(select(Message).where(Message.conversation_id == conversation_id))
-        results = result.scalars().all()
-        return [r for r in results]
+class ConversationService(ConversationRepository):
+    async def list_messages(self, conversation_id: int) -> list[Message]:
+        result = await self.session.execute(
+            select(Message).where(Message.conversation_id == conversation_id)
+        )
+        return [m for m in result.scalars().all()]
 ```
 
-routers/conversations.py
-
-**`main.py`**
 ```python
-from typing import Annotated
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
-from requests import session
-from entities import Conversation,Message
-from repo.conversations import ConversationRepository
-from database import db_session
-from schemas import ConversationCreate, ConversationOut,ConversationUpdate
-from entities import Conversation
-from services.conversations import ConversationService
+# routers/conversations.py
+from database import DBSessionDep
+from fastapi import APIRouter
 from schemas import MessageOut
+from services.conversations import ConversationService
 
-#Other controllers and depencies implementations
-
-router = APIRouter(prefix = "/conversations")
+router = APIRouter(prefix="/conversations")
 
 @router.get("/{conversation_id}/messages")
-async def list_conversation_messages(conversation: get_conversation_dep,db:db_session) -> list[Message]:
-    messages = await ConversationService(db).list_message(conversation.id)
-    return messages
+async def list_conversation_messages_controller(
+    conversation: GetConversationDep,
+    session: DBSessionDep,
+) -> list[MessageOut]:  # ⚠️ book annotated list[Message]. FastAPI builds the response model
+    # from this annotation and can't use a SQLAlchemy class, so it fails at startup.
+    messages = await ConversationService(session).list_messages(conversation.id)
+    return [MessageOut.model_validate(m) for m in messages]
 ```
-Add a new endpoint to list messages of a conversation using the conversation ID.
 
->[!tip]
->Now that you’re more familiar with the repository and services pattern, you can try implementing CRUD endpoints for the messages table
+The new endpoint lists the messages of one conversation by its ID. (`MessageOut` is a Pydantic schema for messages, built the same way as `ConversationOut`.)
 
-When implementing repository and service patterns, maintaining a clean separation of concerns is vital for a scalable architecture. Here are the key points to keep in mind:
+> [!tip] Practice
+> Now try writing CRUD endpoints for the `messages` table using the same two patterns.
 
-* **Loose Coupling:** Avoid tightly coupling services to specific repository implementations. Use interfaces to ensure that your business logic remains independent of the underlying data access technology.
-* **Separation of Concerns:** * **Services:** Keep these focused on business logic and avoid overloading them with unrelated responsibilities.
-* **Repositories:** Limit these strictly to data access and manipulation. Do not place business logic within repository methods.
-* **Transaction & Exception Management:** Handle database transactions and exceptions carefully, particularly when a single service action involves multiple related database operations that must succeed or fail together.
-* **Performance Optimization:** Be mindful of query complexity. Minimize the use of excessive **JOINs** and optimize your queries to prevent performance bottlenecks.
-* **Standardization & Flexibility:** * Use **consistent naming conventions** for all methods and classes to improve maintainability.
-* Avoid **hard-coding configuration settings**; use environment variables or configuration files instead.
-* **Schema Management:** Establish a robust workflow for managing database schema changes, especially in collaborative environments where multiple developers are interacting with the same development and production databases.
+### Keeping the layers clean
+
+- **Loose coupling:** don't tie services to one specific repository implementation.
+- **Focused services:** keep them about business logic, and don't pile unrelated jobs onto them.
+- **Focused repositories:** data access only. No business logic.
+- **Transactions and errors:** handle them carefully, especially when one action runs several related database operations that must succeed or fail together.
+- **Query cost:** watch out for queries with many JOINs, and optimize where you can.
+- **Conventions:** name methods and classes consistently, and don't hard-code configuration.
+
+One more workflow piece is left: managing schema changes, especially when a team shares the same development and production databases.
 
 ---
-#### Managing DB Schemas changes
-Alembic allows you to version control your database schemas the same way that tools like Git can help you version control your code. They’re extremely useful when you’re working in a team with multiple application environments and need to keep track of changes or revert updates as needed
-```python
-alembic init alembic
+
+## Managing database schema changes
+
+Example 7-3 drops and recreates every table each time the server starts. That's fine while prototyping, but not once real users have data in there. You also need a way to roll back if something breaks.
+
+> [!definition] Database migration tool
+> A tool that version-controls your database schema the way Git version-controls your code. You can track every change, apply it, and revert it.
+
+**Alembic** is the migration tool from the SQLAlchemy developers. It's very useful in teams with several environments, where you need to track changes and undo them when needed.
+
+### Example 7-11: Initializing Alembic
+
+```bash
+pip install alembic
+alembic init alembic   # ⚠️ book printed `alembic init` with no argument; the target directory is required
+
+# If you only use an async driver such as asyncpg, start from the async template instead:
+# alembic init -t async alembic
 ```
 
-Alembic environment within your project root directory 
-project/ 
-	alembic.ini 
-	alembic/ 
-		env.py 
-		README 
-		script.py.mako 
-		versions/
-#### Connect the Alembic environment with your SQLAlchemy models
-With Alembic connected to your SQLAlchemy models, Alembic can now auto-generate your migration files by comparing the current schema of your database with your SQLAlchemy models
+### Example 7-12: The Alembic environment in your project
 
-**`env.py`**
+```text
+project/
+    alembic.ini
+    alembic/
+        env.py              <- where you set the target schema and the database connection
+        README
+        script.py.mako
+        versions/           <- migration files appear here
+```
+
+- `env.py` tells Alembic which models to compare against and how to connect.
+- Each file in `versions/` holds the steps to upgrade or downgrade the schema by one revision.
+
+### Example 7-13: Connecting Alembic to your SQLAlchemy models
+
 ```python
+# alembic/env.py (top of the generated file, edited)
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -531,126 +687,213 @@ settings = get_settings()
 db_url = settings.database_url
 context.config.set_main_option("sqlalchemy.url", db_url)
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+# The Alembic Config object, which gives access to the values in alembic.ini
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
+# Set up Python logging from the config file
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+# ⚠️ book had target_metadata = Base. Alembic needs the MetaData object.
 target_metadata = Base.metadata
+
+...  # rest of the generated env.py unchanged
 ```
 
-**`env.py`**
-```python
-$ alembic revision --autogenerate -m "Initial Migration"
+- `set_main_option("sqlalchemy.url", ...)` puts your app's connection string into Alembic's config, so it isn't hard-coded in `alembic.ini`.
+- `target_metadata = Base.metadata` gives Alembic your models' schema to compare against the real database.
+- The default template uses a regular (sync) engine. That works with the `postgresql+psycopg` URL, because psycopg 3 has both sync and async modes. With asyncpg, use the async template from Example 7-11.
+
+### Generating and running migrations
+
+With Alembic connected to your models, it can write migration files for you by comparing the models with the database:
+
+```bash
+alembic revision --autogenerate -m "Initial Migration"
 ```
 
-This command will compare the defined SQLAlchemy models against the existing database schema and automatically generate a SQL migration file under the alembic/versions directory.
+This creates a migration file under `alembic/versions/`. Open it and check it before you run it.
 
-Now that you’ve updated your first migration file, you’re ready to run it against the database:
+Then apply it:
 
-**`env.py`**
-```python
-$ alembic upgrade head
+```bash
+alembic upgrade head
 ```
 
-If your ever need to revert the operation, you can run alembic downgrade instead. What Alembic does under the hood is to generate the raw SQL needed to run or revert a migration and create an alembic_versions table in the database. It uses this table to keep track of migrations that have already been applied on your database so that rerunning the alembic upgrade head command won’t perform any duplicate migrations. 
-If in any case, your database schemas and your migration history drift away, you can always remove files from the versions directory and truncate the alembic_revision table. Then reinitialize Alembic to start with a fresh environment against an existing database.
+To undo the last migration:
 
->[!warning]
->After migrating a database with a migration file, make sure to commit to a Git repository. Avoid re-editing migration files after migrating a database as Alembic will skip existing migrations by cross-checking them with its versioning table. If a migration file has already been run, it won’t detect changes in its content. To update your database schema, create a new migration file instead.
-#### Storing Data when working with Real-Time Streams
-- You should now be in a position to implement your own CRUD endpoints to retrieve and mutate both user conversation and message records in your database
-- One question that remains unanswered is how to handle transactions within data streaming endpoints, such as an LLM streaming outputs to a client
-- You can’t stream data into a traditional relational database as ensuring ACID compliance with streaming transactions will prove challenging. Instead, you will want to perform your standard database operation as soon as your FastAPI server returns a response to the client. This challenge is exactly what a FastAPI’s background task can solve
+```bash
+alembic downgrade -1
+```
 
-Storing content of an LLM output stream
-main.py
+Under the hood, Alembic generates the SQL to apply or revert each migration. It also creates an `alembic_version` table in the database to track which migrations already ran, so running `alembic upgrade head` again won't repeat them.
 
-**`main.py`**
+If your schema and migration history ever drift apart, you can delete the files in `versions/`, clear the `alembic_version` table, and set Alembic up again against the existing database.
+
+> [!warning] Never edit a migration that already ran
+> Commit each migration file to Git once you've applied it. Alembic checks its version table and skips migrations it has already run, so it won't notice edits to an old file. To change the schema again, create a new migration.
+
+---
+
+## Storing data when working with real-time streams
+
+You can now build CRUD endpoints for both conversations and messages. One question is left: how do you save an LLM response that was **streamed** to the user?
+
+You can't stream data into a regular relational database, because keeping a streaming write ACID-compliant is hard.
+
+> [!definition] ACID
+> The four guarantees of a reliable database transaction: **A**tomic (all or nothing), **C**onsistent, **I**solated (transactions don't interfere), and **D**urable (saved data survives crashes).
+
+Instead, do a normal database write once the response has gone to the client. FastAPI's background tasks are made for exactly that.
+
+### Example 7-15: Storing the content of an LLM output stream
+
 ```python
-async def store_message(prompt_content:str, response_content:str,
-                        conversation_id:int, session:AsyncSession):
-    message = Message(
-        conversation_id = conversation_id,
-        prompt_content = prompt_content,
-        response_content = response_content
-    )
-    await MessageRepository(session).create(message)
+# main.py
+from itertools import tee
+from database import async_session
+from entities import Message
+from fastapi import BackgroundTasks
+from fastapi.responses import StreamingResponse
+from repositories.messages import MessageRepository
+
+# ⚠️ book passed the request's session into the background task. The FastAPI docs say
+# not to reuse resources from a yield dependency in a background task; open a new
+# session inside the task instead.
+async def store_message(
+    prompt_content: str, response_content: str, conversation_id: int
+) -> None:
+    async with async_session() as session:
+        message = Message(
+            conversation_id=conversation_id,
+            prompt_content=prompt_content,
+            response_content=response_content,
+        )
+        await MessageRepository(session).create(message)
 
 @app.get("/text/generate/stream")
-async def stream_llm(prompt:str,background_tasks: BackgroundTasks,
-                     db: db_session, conversation: Conversation = Depends(get_conversation)) -> StreamingResponse:
-    #llm.generate(prompt)
-    stream1,stream2 = tee(response_stream)
+async def stream_llm_controller(
+    prompt: str,
+    background_tasks: BackgroundTasks,
+    conversation: GetConversationDep,  # ⚠️ book: Conversation = Depends(get_conversation); same thing, Annotated style
+) -> StreamingResponse:
+    # Invoke LLM and obtain the response stream
+    ...
+    stream_1, stream_2 = tee(response_stream)
     background_tasks.add_task(
-        store_message,
-        prompt,
-        "".join(stream1),
-        conversation.id,
-        db
+        store_message, prompt, "".join(stream_1), conversation.id  # ⚠️ see warning below
     )
-    return StreamingResponse(stream2)
+    return StreamingResponse(stream_2)
 ```
 
-1. Create a function to store a message against a conversation.
-2. Check that the conversation record exists and fetch it within a dependency.
-3. Create two separate copies of the LLM stream, one for the StreamingResponse and another to process in a background task.
-4. Create a background task to store the message after the StreamingResponse is finished.
+1. `store_message` saves one prompt/response pair against a conversation.
+2. The `GetConversationDep` dependency checks that the conversation exists and loads it.
+3. `tee()` makes two copies of the LLM stream: one for the `StreamingResponse`, one for the background task.
+4. The background task saves the message after the streaming response finishes.
 
-It won’t matter whether you’re using an SSE or WebSocket endpoint. Once a request a response is fully streamed, invoke a background task passing in the full stream response content. Within the background task, you can then run a function to store the message after the request is sent, with the full LLM response content. Using the same approach, you can even generate a title for a conversation based on the content of the first message. To do this, you can invoke the LLM again with the content of the first message in the conversation, requesting for an appropriate title for the conversation. Once a conversation title is generated, you can create the conversation record in the database
+> [!warning] `"".join(stream_1)` runs right away
+> Arguments to `add_task` are evaluated when you call it, so `"".join(stream_1)` reads the whole LLM stream before the response even starts. The user waits for the full answer and loses the streaming effect. A fix is to wrap the stream in a generator that yields each chunk to the client, collects the chunks, and saves them once the stream ends.
 
-Using the LLM to generate conversation titles based on the initial user prompt
+The approach is the same whether you stream with SSE or WebSockets. Once the full response is streamed, a background task saves the message with the complete LLM output.
 
-**`crud.py`**
+### Example 7-16: Using the LLM to title a conversation
+
+You can use the same idea to name conversations. Send the first message to the LLM again and ask it for a short title. Then create the conversation record with that title.
+
 ```python
 from entities import Conversation
 from openai import AsyncClient
 from repositories.conversations import ConversationRepository
+from schemas import ConversationCreate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 async_client = AsyncClient(...)
 
 async def create_conversation(
-    initial_prompt: str, 
-    session: AsyncSession
+    initial_prompt: str,
+    model_type: str,  # ⚠️ added: the conversations table requires model_type
+    session: AsyncSession,
 ) -> Conversation:
-    # Request a title generation from the LLM
     completion = await async_client.chat.completions.create(
         messages=[
             {
                 "role": "system",
-                "content": "Suggest a title for the conversation based on the user prompt",
+                "content": "Suggest a title for the conversation "
+                           "based on the user prompt",
             },
             {
-                "role": "user", 
+                "role": "user",
                 "content": initial_prompt,
             },
         ],
-        model="gpt-3.5-turbo",
+        # ⚠️ book used "gpt-3.5-turbo". OpenAI deprecated it (shutdown Oct 23, 2026);
+        # the listed replacement is gpt-5.6-terra.
+        model="gpt-5.6-terra",
     )
-
-    # Extract the title from the response
     title = completion.choices[0].message.content
-
-    # Instantiate the Conversation entity
-    conversation = Conversation(
-        title=title,
-        # add other conversation properties ...
-    )
-
-    # Persist and return the new conversation
+    # ⚠️ book built a Conversation entity here, but ConversationRepository.create
+    # (Example 7-8) expects a ConversationCreate schema and calls model_dump() on it.
+    conversation = ConversationCreate(title=title, model_type=model_type)
     return await ConversationRepository(session).create(conversation)
 ```
 
-Using SQLAlchemy with Alembic is a tried and tested approach to working with relational databases in FastAPI, so you’re more likely to find a lot of resources on integrating these technologies. Both the SQLAlchemy ORM and Alembic allow you to interact with your database and control the changes to its schemas.
+- The system message asks for a title, and the user message is the first prompt.
+- `completion.choices[0].message.content` is the generated title.
+- The repository saves the new conversation and returns it.
+
+> [!note]
+> `AsyncClient` is still exported by the `openai` package as an alias of `AsyncOpenAI`, which is the name the docs use. The Chat Completions API is still supported, though OpenAI now leads with its Responses API.
+
+SQLAlchemy plus Alembic is a tried and tested way to use relational databases with FastAPI, so you'll find plenty of resources for it. The ORM handles talking to the database, and Alembic controls how its schema changes.
+
+---
+
+## Summary
+
+- An **ORM** maps tables to classes, so you work with Python objects instead of raw SQL.
+- **SQLAlchemy models** use `DeclarativeBase`, `Mapped`, and `mapped_column`. Optional columns are `Mapped[X | None]`.
+- The **engine** manages a connection pool. A **session dependency** with `yield` gives each request its own session.
+- **Pydantic schemas** with `from_attributes=True` keep your API shape separate from your tables.
+- A reusable **"get record or 404" dependency** keeps CRUD routes short.
+- The **repository** pattern holds data access. The **service** pattern holds business logic on top.
+- **Alembic** version-controls schema changes. Never edit a migration that already ran.
+- Save **streamed LLM output** with a background task after the response is sent.
+
+**Next chapter:** user management, authentication, and authorization, built on this database.
+
+---
+
+## Verification note
+
+Checked against these official docs on 2026-10-04:
+
+- SQLAlchemy asyncio: https://docs.sqlalchemy.org/en/21/orm/extensions/asyncio.html (and the 2.0 version)
+- SQLAlchemy column defaults: https://docs.sqlalchemy.org/en/21/core/defaults.html
+- SQLAlchemy Session API: https://docs.sqlalchemy.org/en/21/orm/session_api.html
+- SQLAlchemy 2.1 migration notes: https://docs.sqlalchemy.org/en/21/changelog/migration_21.html
+- SQLAlchemy PostgreSQL dialects (psycopg, asyncpg): https://docs.sqlalchemy.org/en/20/dialects/postgresql.html
+- psycopg 3 install: https://www.psycopg.org/psycopg3/docs/basic/install.html
+- FastAPI dependencies with yield: https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/
+- FastAPI advanced dependencies (exit-code timing, background tasks): https://fastapi.tiangolo.com/advanced/advanced-dependencies/
+- Alembic tutorial: https://alembic.sqlalchemy.org/en/latest/tutorial.html
+- Alembic cookbook, asyncio: https://alembic.sqlalchemy.org/en/latest/cookbook.html
+- openai-python README and source: https://github.com/openai/openai-python
+- OpenAI deprecations: https://developers.openai.com/api/docs/deprecations
+- Latest versions on PyPI: SQLAlchemy 2.1.3, FastAPI 0.142.2, Alembic 1.20.0, psycopg 3.3.6, Pydantic 2.13.5, openai 3.24.0
+
+Code changes (⚠️):
+
+- Timestamps: `default=datetime.now(UTC)` (evaluated once at import) → `server_default=func.now()` and `onupdate=func.now()`, as in the SQLAlchemy asyncio example.
+- Install: `psycopg3` → `"psycopg[binary]"`, and `sqlalchemy` → `"sqlalchemy[asyncio]"` (greenlet is an extra since 2.1).
+- Session factory: dropped `autocommit=False` (backwards-compat only in 2.x), added `expire_on_commit=False` (recommended for async).
+- Routes: `{id}` → `{conversation_id}` so the path matches the dependency's parameter.
+- Messages endpoint: return type `list[Message]` → `list[MessageOut]`.
+- Alembic: `alembic init` → `alembic init alembic` (directory required), plus the `-t async` option. `target_metadata = Base` → `Base.metadata`.
+- Background task: opens its own session instead of reusing the request's session. Dependency written in `Annotated` style.
+- Title example: `gpt-3.5-turbo` → `gpt-5.6-terra`. Passes a `ConversationCreate` instead of a `Conversation` entity, with a new `model_type` argument.
+- Not changed, only flagged: the eager `"".join(stream_1)` in Example 7-15, and the session commit that runs after the response in Example 7-4.
+
+Not run: none of this code was executed against a live Postgres database. `MessageOut` and `MessageRepository` aren't defined in the chapter.
 
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related

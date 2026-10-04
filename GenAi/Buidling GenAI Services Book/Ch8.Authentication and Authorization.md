@@ -17,46 +17,69 @@ hubs:
   - "[[Auth & Security]]"
   - "[[FastAPI]]"
 ---
-#### Authentication and Authorization
-While authentication is about verifying the identity, authorization focuses on verifying permissions of an identity to access or mutate resources.
-#### Authentication Methods
-- Basic
-	Requiring the use of credentials such as username and password to
-	verify identity.
-- JSON Web Tokens (JWT)
-	Requiring the use of access tokens to verify identity. You can think of
-	access tokens like cinema tickets that dictate whether you can access
-	the screens and which screen you’re visiting and where you’re sitting.
-- OAuth
-	Verifying an identity via an identity provider using the OAuth2
-	standard.
-- Key-based
-	Using a private and public key pair to authenticate an identity. Instead
-	of tokens, the authorization server issues a public key to the client
-	and stores a copy of a linked private key that it can use later for
-	verification
+## What this chapter covers
+
+- The difference between authentication and authorization.
+- Four ways to authenticate: basic, JWT, OAuth, and key-based.
+- Building basic auth and a full JWT system from scratch (hashing, tokens, login, logout).
+- Single sign-on with GitHub using OAuth2, and the attacks it has to defend against (CSRF, open redirect, phishing).
+- Authorization models: RBAC, ReBAC, ABAC, and hybrids, enforced with FastAPI dependencies.
+
+> **Note on the code below:** the book targets ~2024 libraries (passlib, python-jose). I updated the code to what the current FastAPI docs use (pwdlib, PyJWT) and fixed several printed snippets that wouldn't run. Every change is marked with a `# ⚠️` comment and listed in the Verification note at the end.
+
+---
+
+## Authentication vs authorization
+
+The two words get mixed up a lot, but they answer different questions.
+
+> [!definition] Authentication
+> Checking that a user (or service) is who they claim to be, using something like a password, fingerprint, or token.
+
+> [!definition] Authorization
+> Checking whether that verified identity is allowed to do a specific action on a specific resource.
+
+Think of airport passport control. Showing your passport is authentication. Having the right visa, which says how long you can stay and what you can do, is authorization.
+
+---
+
+## Authentication methods
+
+- **Basic**: the client sends a username and password to prove who it is.
+- **JSON Web Tokens (JWT)**: the client sends an access token. Think of it like a cinema ticket: it says whether you can get in, which screen, and where you sit.
+- **OAuth**: an outside identity provider (like GitHub or Google) verifies the user using the OAuth2 standard.
+- **Key-based**: a public/private key pair proves identity instead of a token. The server issues a public key to the client and keeps the linked private key to verify it later. The book doesn't go further into this one.
 
 ![[Pasted image 20260125173927.png]]
 
-| **Type**        | **Benefits**                                                                                                           | **Limitations**                                                                                               | **Use Cases**                                                                                   |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **Basic**       | Simplicity; Fast to implement; Easy to understand.                                                                     | Sends credentials in plain text (requires HTTPS); Hard to revoke without changing passwords.                  | Prototyping; Internal non-critical environments.                                                |
-| **Token** (JWT) | Scalability; Decoupling facilitates microservices; Self-contained (reduces DB lookups); Can be passed in HTTP headers. | Need to regenerate short-lived tokens; Client-side storage complexity; Revocation is difficult before expiry. | Single Page Apps (SPAs); Mobile apps; REST APIs requiring custom auth flows.                    |
-| **OAuth**       | Delegates authentication to external providers; Standardized (OAuth2); Access to external resources on user's behalf.  | Complex to implement; Variations in how different providers (Google, GitHub) implement the flow.              | Apps requiring data from external identity providers; Third-party integrations.                 |
-| **Key-based**   | Similar to SSH; Highly secure for machine-to-machine communication; No manual login required.                          | Managing/securing private keys is complex; Compromised keys are high risk; Harder to scale for human users.   | Enterprise apps using SSH; Small-scale internal apps; API access within automated environments. |
-|                 |                                                                                                                        |                                                                                                               |                                                                                                 |
-#### Basic Authentication
-In basic authentication, the client provides a username and password when making a request to access resources from the server. It is the simplest technique as it won’t require cookies, session identifiers, or any login forms to be implemented. Because of its simplicity, basic authentication is ideal for sandbox environments and when prototyping. However, avoid using it in production environments as it transmits usernames and passwords in plain text on every request, making it highly vulnerable to interception attacks.
+| Type | Benefits | Limitations | Use cases |
+|---|---|---|---|
+| **Basic** | Simple, fast to build, easy to understand. | Sends credentials in plain text (needs HTTPS); hard to revoke without changing passwords. | Prototypes; internal, non-critical environments. |
+| **Token (JWT)** | Scales well; decoupled, which suits microservices; self-contained (fewer DB lookups); travels in HTTP headers. | Short-lived tokens must be regenerated; client-side storage is tricky; hard to revoke before expiry. | Single-page apps, mobile apps, REST APIs with custom auth flows. |
+| **OAuth** | Hands authentication to outside providers; standard (OAuth2) and battle-tested; can access external resources on the user's behalf. | Complex to understand and build; each provider implements the flow a bit differently. | Apps that need data from identity providers (GitHub, Google, Microsoft); enterprise SSO. |
+| **Key-based** | Works like SSH; very secure for machine-to-machine; no manual login. | Keeping private keys safe is hard; a leaked key is high risk; scales poorly for human users. | Enterprise apps using SSH; small internal apps; automated API access. |
 
-To perform an authenticated request via basic authentication, you must add an **Authorization** header with a value of Basic for the server to successfully authenticate it. The value must be a **Base64 encoding** of the username and password joined by a single colon (i.e., **base64.encode(ali:secretpassword)** .
+---
 
-*Implementing basic authentication in FastAPI*
+## Basic authentication
 
-**`main.py`**
+With basic auth, the client sends a username and password with each request. You don't need cookies, sessions, or login forms, which makes it handy for sandboxes and prototypes.
+
+Avoid it in production. The credentials travel on **every** request, essentially in plain text, so anyone who intercepts traffic gets them.
+
+> [!definition] Base64
+> A reversible way to turn bytes into URL-safe text. It's an encoding, not encryption: anyone can decode it.
+
+To make a basic-auth request, add an `Authorization` header with the value `Basic <credentials>`, where `<credentials>` is the Base64 encoding of `username:password` (for example, `base64.encode("ali:secretpassword")`).
+
+### Example 8-1: basic authentication in FastAPI
+
 ```python
+# main.py
 import secrets
 from typing import Annotated
-from fastapi import Depends,FastAPI,HTTPException,status
+
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 app = FastAPI()
@@ -65,17 +88,21 @@ security = HTTPBasic()
 username_bytes = b"ali"
 password_bytes = b"secretpassword"
 
-def authenticate_user(credentials: Annotated[HTTPBasicCredentials,Depends(security)]) -> str:
-    is_correct_username = secrets.compare_digest(credentials.username.encode("UTF-8"),username_bytes)
-    is_correct_passsword = secrets.compare_digest(credentials.password.encode("UTF-8"),password_bytes)
-    
-    if not (is_correct_username and is_correct_passsword):
+def authenticate_user(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+) -> str:
+    is_correct_username = secrets.compare_digest(
+        credentials.username.encode("UTF-8"), username_bytes
+    )
+    is_correct_password = secrets.compare_digest(
+        credentials.password.encode("UTF-8"), password_bytes
+    )
+    if not (is_correct_username and is_correct_password):
         raise HTTPException(
-            status_code = status.HTTP_401_UNAUTHORIZED,
-            detail = "Incorrect username or password",
-            headers = {"WWW-Authenticate": "Basic"},
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
         )
-    
     return credentials.username
 
 AuthenticatedUserDep = Annotated[str, Depends(authenticate_user)]
@@ -85,110 +112,158 @@ async def get_current_user(username: AuthenticatedUserDep):
     return {"message": f"Current user is {username}"}
 ```
 
-1. FastAPI has implemented several HTTP security mechanisms including HTTP Ba sic that can leverage the FastAPI’s dependency injection system.
-2. Use the secrets built-in library to compare the provided username and password with the server’s values. Using secrets.compare_digest() ensures the duration of checking operations remain consistent no matter what the inputs are to avoid timing attacks.3 Note that secrets.compare_digest() can only accept byte or string inputs containing ASCII characters (i.e., English-only characters). To handle other characters, you will need to encode the inputs with UTF 8 to bytes first before performing the credential checks. 
-3. Return a standardized authorization HTTPException compliant with security standards that browsers understand so that they show the login prompt again to the user. The exception message must be generic to avoid leaking any sensitive information, such as the existence of a user account, to attackers. 
-4. Using the HTTPBasic with Depends() returns the HTTPBasicCredentials object that contains the provided username.
+- `HTTPBasic` is one of FastAPI's built-in security schemes. Used with `Depends()`, it gives you an `HTTPBasicCredentials` object holding the username and password.
+- `secrets.compare_digest()` takes the same time no matter how much of the input matches, which blocks timing attacks.
+- `compare_digest()` only accepts bytes or ASCII-only strings, so the inputs are UTF-8 encoded first to handle any character.
+- The 401 response with `WWW-Authenticate: Basic` is the standard format browsers understand, so they show the login prompt again.
+- Keep the error message generic. Saying "wrong password" would leak that the username exists.
 
-#### JSON Web Tokens (JWT) Authentication
-What is JWT?
-JWTs are a URL-safe and compact way of asserting claims between applications via tokens. 
+> [!definition] Timing attack
+> An attacker guesses secrets by measuring how long the server takes to check them. A check that stops at the first wrong character answers faster for bad guesses, which leaks information.
 
-These tokens consist of three parts
-Headers 
-	Specify the token type and signing algorithm in addition to the datetime and the issuing authority
-Payload 
-	Specify the body of the token representing the claims on the resource alongside additional metadata.
-Signature 
-	The function that creates the token will also sign it using the encoded payload, encoded headers, a secret, and the signing algorithm.
+Any endpoint that injects this dependency is now protected. In `/docs` you'll see a lock icon next to `/users/me`, and the browser asks for credentials when you call it.
 
-JWTs are secure, compact, and convenient since they can hold all the information needed to perform user authentication, avoiding the need for multiple database round trips. In addition, due to their compactness, you can transfer them across the network using the HTTP POST body, headers, or URL parameters.
+---
 
-#### Getting started with JWT authentication
-```python
-pip install passlib python-jose
+## JWT authentication
+
+JWT auth is the safer choice for public services. All the auth details live inside the token, so the server doesn't need sessions, the data can't be tampered with, and it works across domains.
+
+### What is a JWT?
+
+> [!definition] JWT (JSON Web Token)
+> A compact, URL-safe token that carries **claims** between applications. It has three parts separated by dots: header, payload, and signature.
+
+> [!definition] Claim
+> One piece of information inside the token's payload, like `sub` (subject: who the token is about), `exp` (expiry time), or `iss` (issuer: who created it).
+
+The three parts:
+
+| Part | What it holds |
+|---|---|
+| **Header** | The token type and signing algorithm (plus, per the book, the datetime and issuing authority). |
+| **Payload** | The claims, plus any extra metadata. |
+| **Signature** | Made by signing the encoded header + encoded payload with a secret and the algorithm. Change one byte of the payload and the signature no longer matches. |
+
+> [!warning] Signed is not encrypted
+> The header and payload are only Base64-encoded. Anyone holding the token can read them. Never put secrets in the payload.
+
+JWTs can hold everything needed to authenticate a user, which saves database round trips. They're small enough to send in a POST body, a header, or a URL parameter.
+
+### Getting started
+
+```bash
+pip install pyjwt "pwdlib[argon2]"
+# ⚠️ book: pip install passlib python-jose
+#    FastAPI's docs now use PyJWT for tokens and pwdlib (Argon2) for passwords.
+#    pwdlib's author says passlib has been inactive and has compatibility trouble with newer Python.
 ```
 
-With the dependencies installed, you will then need tables in the database to store the generated users and associated token data. For data persistence, let’s migrate the database to create the users and tokens tables
+You need two tables: `users` and `tokens`.
+
 ![[Pasted image 20260125180251.png]]
 
-you will spot that the tokens table has a one-to-many relationship with the users table. You can use the token records to track successful login attempts for each user and to revoke access if needed.
-#### Declare user SQLAlchemy ORM models
-entities.py
+The `tokens` table has a **one-to-many** relationship with `users`: one user, many tokens. Each token row records a successful login, so you can track logins and revoke access when needed.
 
-**`models.py`**
+### Example 8-2 and 8-4: SQLAlchemy models
+
 ```python
-from datetime import UTC,datetime
+# entities.py
 import uuid
-from sqlalchemy import ForeignKey,Index,String
+from datetime import UTC, datetime
+
+from sqlalchemy import ForeignKey, Index, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+def utc_now() -> datetime:
+    return datetime.now(UTC)
 
 class Base(DeclarativeBase):
     pass
 
-class Users(Base):
+class User(Base):  # ⚠️ my old note called this `Users`; the book and the rest of the code use `User`
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key = True, default = uuid.uuid4)
-    email: Mapped[str] = mapped_column(String(length = 255), unique = True)
-    username: Mapped[str] = mapped_column(String(length = 255), unique = True, index = True)
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    email: Mapped[str] = mapped_column(String(length=255), unique=True)
+    username: Mapped[str] = mapped_column(String(length=255), unique=True, index=True)
     hashed_password: Mapped[str] = mapped_column(String(length=255))
     role: Mapped[str] = mapped_column(default="USER")
-    is_active: Mapped[bool] = mapped_column(default = True)
-    created_at: Mapped[datetime] = mapped_column(default = datetime.now(UTC))
-    updated_at: Mapped[datetime] = mapped_column(default = datetime.now(UTC),
-                                                 onupdate = datetime.now(UTC))
+    is_active: Mapped[bool] = mapped_column(default=True)
+    # ⚠️ book: default=datetime.now(UTC). That runs ONCE at import time, so every row
+    #    would get the same timestamp. Pass the function itself so it runs per insert/update.
+    created_at: Mapped[datetime] = mapped_column(default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(default=utc_now, onupdate=utc_now)
 
-    __table_args__ = (Index("ix_users_email","email"),)
+    tokens = relationship("Token", back_populates="user", cascade="all, delete-orphan")
+
+    __table_args__ = (Index("ix_users_email", "email"),)
+
+class Token(Base):
+    __tablename__ = "tokens"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    # ⚠️ book: Mapped[int]. users.id is a UUID, so the foreign key must be a UUID too.
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    expires_at: Mapped[datetime] = mapped_column()
+    is_active: Mapped[bool] = mapped_column(default=True)
+    ip_address: Mapped[str | None] = mapped_column(String(length=255))
+    created_at: Mapped[datetime] = mapped_column(default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(default=utc_now, onupdate=utc_now)
+
+    user = relationship("User", back_populates="tokens")
+
+    __table_args__ = (
+        Index("ix_tokens_user_id", "user_id"),
+        Index("ix_tokens_ip_address", "ip_address"),
+    )
 ```
 
-You will be using the ORM models at the data access layer while the Pydantic schemas will validate incoming and outgoing authentication data at the endpoint layer.
+- **UUIDs** for IDs, so attackers can't guess the IDs of other users or tokens.
+- Only `hashed_password` is stored, never the raw password.
+- `is_active` lets you disable an account or revoke a token.
+- `role` (`USER`, `ADMIN`, ...) is what authorization checks will read later.
+- Timestamps help with monitoring and security audits.
+- The unique constraint + index on `email` blocks duplicate accounts and speeds up lookups. `user_id` and `ip_address` are indexed on `tokens` for the same reason.
+- `cascade="all, delete-orphan"` deletes a user's tokens when the user is deleted.
 
-Declare user Pydantic schemas with username and password field validators
-schemas.py
+> [!definition] ORM model vs Pydantic schema
+> The **ORM model** (SQLAlchemy) describes a database table and is used in the data-access layer. The **Pydantic schema** validates data coming in and going out at the endpoint layer.
 
-**`schemas.py`**
+### Example 8-3 and 8-4: Pydantic schemas
+
 ```python
+# schemas.py
 from datetime import datetime
 from typing import Annotated
-from pydantic import (UUID,AfterValidator,BaseModel,ConfigDict,Field,validate_call)
-import uuid
+
+# ⚠️ my old note imported `UUID` from pydantic, which doesn't exist; the book uses UUID4
+from pydantic import UUID4, AfterValidator, BaseModel, ConfigDict, Field, validate_call
 
 @validate_call
-def validate_username(value:str) -> str:
+def validate_username(value: str) -> str:
     if not value.isalnum():
         raise ValueError("Username must be alphanumeric")
     return value
 
 @validate_call
-def validate_password(value:str) -> str:
+def validate_password(value: str) -> str:
     validations = [
-        (
-            lambda x: any(char.isdigit() for char in x),
-            "Password must contain at least one digit"
-        ),
-        (
-            lambda x: any(char.isupper() for char in x),
-            "Password must contain at least one uppercase letter"
-        ),
-        (
-            lambda x: any(char.islower() for char in x),
-            "Password must contain at least one lowercase letter"
-        )
+        (lambda v: any(char.isdigit() for char in v), "Password must contain at least one digit"),
+        (lambda v: any(char.isupper() for char in v), "Password must contain at least one uppercase letter"),
+        (lambda v: any(char.islower() for char in v), "Password must contain at least one lowercase letter"),
     ]
-    
-    for condition , error_message in validations:
+    for condition, error_message in validations:
         if not condition(value):
             raise ValueError(error_message)
     return value
 
-ValidUsername = Annotated[str,Field(min_length=3, max_length = 20), 
-                          AfterValidator(validate_username)]
-ValidPassword = Annotated[str,Field(min_length=8, max_length=64),
-                          AfterValidator(validate_password)]
+ValidUsername = Annotated[str, Field(min_length=3, max_length=20), AfterValidator(validate_username)]
+ValidPassword = Annotated[str, Field(min_length=8, max_length=64), AfterValidator(validate_password)]
 
+# --- users ---
 class UserBase(BaseModel):
-    model_config = ConfigDict(from_attributes= True)
+    model_config = ConfigDict(from_attributes=True)
 
     username: ValidUsername
     is_active: bool = True
@@ -198,437 +273,373 @@ class UserCreate(UserBase):
     password: ValidPassword
 
 class UserInDB(UserBase):
-    hashed_password:str
+    hashed_password: str
 
 class UserOut(UserBase):
-    id: uuid.UUID
+    id: UUID4
     created_at: datetime
     updated_at: datetime
-```
 
-1. Validate both username and password to enforce higher security requirements.
-2. Allow Pydantic to read SQLAlchemy ORM model attributes instead of having to manually populate Pydantic schemas from SQLAlchemy models.
-3. Use inheritance to declare several Pydantic schemas based on a user base model.
-4. Create a separate schema that accepts the hashed_password field to be used only for creating new user records during the registration process. All other schemas must skip storing this field to eliminate the risk of password leakage.
-#### Declare token ORM models and Pydantic schemas
-entities.py
-
-**`models.py`**
-```python
-class Token(Base):
-    __tablename__ = "tokens"
-
-    id: Mapped[uuid.UUID] = mapped_column(primary_key = True, default = uuid.uuid4)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    expires_at: Mapped[datetime] = mapped_column()
-    is_active: Mapped[bool] = mapped_column(default = True)
-    ip_address: Mapped[str | None] = mapped_column(String(length = 255))
-    created_at: Mapped[datetime] = mapped_column(default = datetime.now(UTC))
-    updated_at: Mapped[datetime] = mapped_column(default = datetime.now(UTC),
-                                                 onupdate = datetime.now(UTC))
-    
-    user = relationship("Users",back_populates="tokens")
-
-    __table_args__ = (
-        Index("ix_tokens_user_id","user_id"),
-        Index("ix_tokens_ip_address","ip_address")
-    )
-```
-
-schemas.py
-
-**`models.py`**
-```python
+# --- tokens ---
 class TokenBase(BaseModel):
-    model_config = ConfigDict(from_attributes= True)
+    model_config = ConfigDict(from_attributes=True)
 
-    user_id:int
-    expires_at:datetime
-    is_active:bool = True
+    user_id: UUID4  # ⚠️ book: int. Must match the UUID primary key of users.
+    expires_at: datetime
+    is_active: bool = True
     ip_address: str | None = None
 
 class TokenCreate(TokenBase):
     pass
 
-class TokenOut(TokenBase):
+class TokenUpdate(BaseModel):  # ⚠️ used by the repository but never defined in the book; minimal version
+    is_active: bool | None = None
+
+class TokenOut(BaseModel):  # ⚠️ my old note inherited TokenBase, which would force user_id/expires_at into the login response
     access_token: str
     token_type: str = "Bearer"
 ```
 
-```python
-alembic revision --autogenerate -m "create users and tokens tables"
-```
+- Both username and password get validators for stronger security rules.
+- `from_attributes=True` lets Pydantic read straight from SQLAlchemy objects, so you don't copy fields by hand.
+- Inheritance builds several schemas from one `UserBase`.
+- `UserInDB` is the **only** schema with `hashed_password`. It's used just for creating users at registration. The others leave it out so the hash can't leak in a response.
 
-```python
+Then generate and run the migration:
+
+```bash
+alembic revision --autogenerate -m "create users and tokens tables"
 alembic upgrade head
 ```
 
-The architecture of the JWT authentication system you’re going to implement in your FastAPI GenAI service.
+### Architecture
+
+Here's the JWT system you'll build:
+
 ![[Pasted image 20260125233709.png]]
 
-#### Hashing and Salting
 ---
-## Phase 1: User Registration (Storage)
 
-When a user creates an account, the system doesn't just "lock" the password; it transforms it into a unique fingerprint that cannot be reversed.
+## Hashing and salting
 
-1. **Password Entry:** The user provides a plain-text password (e.g., `P@ssword123`).
-2. **Generating the Salt:** The system generates a **salt**—a random, unique string of characters.
-3. **Combining:** The salt is appended (or prepended) to the plain password.
-* *Example:* `P@ssword123` + `xyz789` (salt) = `P@ssword123xyz789`.
-	1. **Hashing:** This combined string is run through a cryptographic hashing algorithm (like Argon2 or bcrypt). This produces a fixed-length string of random-looking characters.
-	2. **Storage:** The system stores the **Salt + Hash** in the database. It does **not** store the plain-text password.
+Never store passwords as plain text. If the database leaks, the attacker gets every user's credentials.
 
----
-## Phase 2: User Login (Verification)
-Since hashes cannot be "decrypted," the system verifies a user by repeating the math and seeing if the results match.
+> [!definition] Hashing
+> A one-way function that turns a password into a fixed-length string. You can't turn the hash back into the password. That's what makes it different from encoding like Base64, which is reversible.
 
-1. **Credential Input:** The user enters their username and plain-text password.
-2. **Retrieval:** The system looks up the user in the database and retrieves the **stored salt** and the **stored hash**.
-3. **Re-Hashing:** The system takes the password the user just typed and combines it with the **retrieved salt**. It then runs this through the same hashing algorithm.
-4. **Comparison:**
-	* **If New Hash == Stored Hash:** The password is correct, and the user is logged in.
-	* **If New Hash != Stored Hash:** The password is incorrect, and access is denied.
----
-## Why this protects you
+Hashing alone isn't enough. Attackers have **rainbow tables**.
 
-| Threat | How Salting/Hashing Fixes It |
-| --- | --- |
-| **Database Leak** | If an attacker steals the database, they only see hashes. They cannot "reverse" them to find the actual passwords. |
-| **Rainbow Tables** | These are "cheat sheets" of pre-calculated hashes. Salting makes the input unique, rendering these pre-calculated tables useless. |
-| **Duplicate Passwords** | If two users use `Password123`, their salts will be different (e.g., `Salt_A` and `Salt_B`). This results in two completely different hashes in the database. |
+> [!definition] Rainbow table
+> A precomputed lookup table of hashes for common passwords. If your hashes are plain, an attacker can just look them up.
+
+> [!definition] Salt
+> A random value added to the password before hashing. Two users with the same password get different hashes, and precomputed tables become useless. Typical salts are 16 bytes (balanced) or 32 bytes (sensitive systems).
+
+### Registration (storing)
+
+1. The user sends a plain password, e.g. `P@ssword123`.
+2. The system generates a random **salt**, e.g. `xyz789`.
+3. Salt and password are combined: `P@ssword123xyz789`.
+4. The combination is run through a hashing algorithm (Argon2 or bcrypt), giving a fixed-length, random-looking string.
+5. The system stores **salt + hash** in the database. Modern libraries prefix the salt onto the stored hash string for you.
+
+### Login (verifying)
+
+Hashes can't be decrypted, so the system repeats the math and compares.
+
+1. The user enters their username and plain password.
+2. The system loads the stored salt and hash for that user.
+3. It hashes the typed password with the **stored** salt, using the same algorithm.
+4. Same hash: logged in. Different hash: access denied.
+
+### What this protects against
+
+| Threat | How salting and hashing help |
+|---|---|
+| **Database leak** | The attacker only sees hashes, which can't be reversed. |
+| **Rainbow tables** | The salt makes every input unique, so precomputed tables don't match. |
+| **Duplicate passwords** | Two users with `Password123` get different salts and therefore different hashes. |
+
 ![[Pasted image 20260125234635.png]]
 
----
-#### Implement a password service
-services/auth.py
+> [!warning] What salting doesn't stop
+> It doesn't protect against **password spraying** (trying a list of common passwords against many accounts) or **credential stuffing** (trying username/password pairs leaked from other sites). You need rate limits and lockouts for those.
 
-**`main.py`**
+### Example 8-6: password service
+
 ```python
-from fastapi.security import HTTPBearer
-from passlib.context import CryptContext
+# services/auth.py
+from pwdlib import PasswordHash  # ⚠️ book: from passlib.context import CryptContext
 
 class PasswordService:
-    secuirty = HTTPBearer()
-    pwd_context = CryptContext(schemes = ["bcrypt"])
+    # ⚠️ book: CryptContext(schemes=["bcrypt"]). FastAPI docs now use pwdlib's
+    #    recommended() setup, which is Argon2. pwdlib also supports bcrypt.
+    password_hash = PasswordHash.recommended()
+    # ⚠️ new, from the FastAPI docs: a dummy hash to verify against when the
+    #    username doesn't exist, so both cases take the same time (see Example 8-10).
+    dummy_hash = password_hash.hash("dummypassword")
 
-    async def verify_password(self,password:str,hashed_password:str) -> bool:
-        return self.pwd_context.verify(password,hashed_password)
-    
-    async def hash_password(self,password:str) -> str:
-        return self.pwd_context.hash(password)
+    async def verify_password(self, password: str, hashed_password: str) -> bool:
+        return self.password_hash.verify(password, hashed_password)
+
+    async def hash_password(self, password: str) -> str:
+        return self.password_hash.hash(password)
 ```
 
-1. Create an AuthService with a secret and password context managed by the bcrypt library that will handle all the user password hashing and verification.
-2. Use bcrypt’s cryptography algorithm and application secret to hash and verify passwords.
+- One shared hasher handles both hashing new passwords and checking login attempts.
+- The salt is generated and stored inside the hash string automatically. You never manage it yourself.
+- The book's version also had an unused `security = HTTPBearer()` attribute here. I moved the bearer scheme to Example 8-10, where it's actually used.
 
-The bcrypt cryptographic library provides the core functionality of the Password Ser vice for hashing and verifying passwords. Using this service, requests can now be authenticated. 
-If a request can’t be authenticated, you will also need to raise authorization -related exceptions
+> [!definition] Argon2
+> A modern password-hashing algorithm built to be slow and memory-hungry on purpose, so brute-forcing hashes on GPUs is expensive. It's what FastAPI's docs now recommend.
 
-exceptions.py
+### Example 8-7: auth exceptions
 
-**`main.py`**
 ```python
-from fastapi import HTTPException,status
+# exceptions.py
+from fastapi import HTTPException, status
 
 UnauthorizedException = HTTPException(
-    status_code= status.HTTP_401_UNAUTHORIZED,
-    detail = "Unauthorized access",
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Unauthorized access",
     headers={"WWW-Authenticate": "Bearer"},
 )
 
 AlreadyRegisteredException = HTTPException(
-    status_code= status.HTTP_400_BAD_REQUEST,
-    detail = "User with given credentials already registered",
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="User with given credentials already registered",
 )
 ```
 
-The two most common authorization HTTP exceptions you will raise are related to unauthorized access or bad requests due to using already used usernames.
+These are the two you'll raise most: unauthorized access, and a bad request when someone registers a username that's taken.
 
-- Once you have checked a user’s identity via their credentials, you will need to issue them an access token. 
-- These tokens should be short-lived to reduce the time-window that an attacker can use the token to access resources if the token is stolen. 
-- To reduce the size footprints of the tokens and protect against token forgery, the token service will sign (using a secret) and encode the token payloads with an encoding such as Base64. 
-- The payload will normally contain the user’s details such as their ID, role, issuance system, and expiry dates.
-- The token service can also decode the payload of received tokens and check their validity during the authentication process. 
-- Finally, the token service will also require database access to store and retrieve tokens to perform its functions. Therefore, it should inherit a TokenRepository
-#### Implement token repo
-repositories.py
+---
 
-**`main.py`**
+## Issuing tokens
+
+Once a user's credentials check out, you issue them an access token.
+
+> [!definition] Access token
+> A short-lived credential the client sends with each request to prove it's logged in. Short life means a stolen token is only useful for a little while.
+
+What the token service has to do:
+
+- **Sign** the payload with a secret and encode it (Base64), so tokens stay small and can't be forged.
+- Put the user's details in the payload: ID, role, issuer, expiry.
+- **Decode** incoming tokens and check they're valid.
+- Store and look up tokens in the database. That's why it inherits from a `TokenRepository`.
+
+### Example 8-8: token repository
+
 ```python
-from authentication.entities import Token
-from repo.interfaces import Repository
-from authentication.schemas import TokenCreate,TokenUpdate
-from sqlalchemy.ext.asyncio import AsyncSession
+# repositories.py
+import uuid
+
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from entities import Token
+from repositories.interfaces import Repository
+from schemas import TokenCreate, TokenUpdate
+
+# ⚠️ book wrapped every method in `async with session.begin():` AND called commit()
+#    (and refresh()) inside that block. session.begin() already commits when the block
+#    ends, so the extra calls fight it. I use the plain add/commit/refresh pattern from
+#    SQLAlchemy's asyncio docs instead. Configure the sessionmaker with
+#    expire_on_commit=False (also per those docs).
 class TokenRepository(Repository):
-    def __init__(self,session:AsyncSession):
-        self.db = session
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
 
-    async def list(self,skip:int=0,limit:int=100) -> list[Token]:
-        async with self.db.begin():
-            result = await self.db.execute(
-                select(Token).offset(skip).limit(limit)
-            )
-        results = result.scalars().all()
-        return [r for r in results]
-    
-    async def create(self,token:TokenCreate) -> Token:
-        new_token = Token(**token.model_dump())
+    async def list(self, skip: int = 0, take: int = 100) -> list[Token]:
+        result = await self.session.execute(select(Token).offset(skip).limit(take))
+        return list(result.scalars().all())
 
-        async with self.db.begin():
-            self.db.add(new_token)
-            await self.db.refresh(new_token)
-            await self.db.commit()
+    async def get(self, token_id: uuid.UUID) -> Token | None:
+        result = await self.session.execute(select(Token).where(Token.id == token_id))
+        return result.scalars().first()
+
+    async def create(self, token: TokenCreate) -> Token:
+        new_token = Token(**token.model_dump())  # ⚠️ book: token.dict(), deprecated in Pydantic v2
+        self.session.add(new_token)
+        await self.session.commit()
+        await self.session.refresh(new_token)
         return new_token
 
-    async def get(self,token_id:int) -> Token | None:
-        async with self.db.begin():
-            result = await self.db.execute(
-                select(Token).where(Token.id == token_id)
-            )
-        token = result.scalars().first()
-        return token
-    
-    async def update(self,token_id:int, token:TokenUpdate) -> Token | None:
-        async with self.db.begin():
-            result = await self.db.execute(
-                select(Token).where(Token.id == token_id)
-            )
-            existing_token = result.scalars().first()
-            if not existing_token:
-                return None
-            
-            for key, value in token.model_dump(exclude_unset=True).items():
-                setattr(existing_token, key, value)
-            
-            self.db.add(existing_token)
-            await self.db.commit()
-            await self.db.refresh(existing_token)
-        return existing_token
-    
-    async def delete(self,token_id:int) -> None:
+    async def update(self, token_id: uuid.UUID, updated_token: TokenUpdate) -> Token | None:
         token = await self.get(token_id)
+        if not token:
+            return None
+        for key, value in updated_token.model_dump(exclude_unset=True).items():  # ⚠️ was .dict()
+            setattr(token, key, value)
+        await self.session.commit()
+        await self.session.refresh(token)
+        return token
 
+    async def delete(self, token_id: uuid.UUID) -> None:
+        token = await self.get(token_id)
         if not token:
             return
-        
-        async with self.db.begin():
-            await self.db.delete(token)
-            await self.db.commit()
-            await self.db.refresh(token)
-            
-        return
+        await self.session.delete(token)
+        await self.session.commit()
 ```
 
-With the TokenRepository implemented, you can now develop the TokenService
-services/auth.py
+- A standard CRUD repository: list, get, create, update, delete.
+- `exclude_unset=True` only applies the fields the caller actually sent, so an update doesn't wipe other columns.
 
-**`crud.py`**
+### Example 8-9: token service
+
 ```python
-from fastapi.security import HTTPBearer
-from passlib.context import CryptContext
-from datetime import UTC,datetime,timedelta
+# services/auth.py (continued)
+import uuid
+from datetime import UTC, datetime, timedelta
+
+import jwt  # ⚠️ book: from jose import JWTError, jwt (python-jose). FastAPI docs now use PyJWT.
+
 from exceptions import UnauthorizedException
-from jose import JWTError,jwt
-import os
-from pydantic import UUID4
-from authentication.repositories import TokenRepository
-from authentication.schemas import TokenCreate,TokenUpdate
+from repositories import TokenRepository
+from schemas import TokenCreate, TokenUpdate
 
-class PasswordService:
-    secuirty = HTTPBearer()
-    pwd_context = CryptContext(schemes = ["bcrypt"])
-
-    async def verify_password(self,password:str,hashed_password:str) -> bool:
-        return self.pwd_context.verify(password,hashed_password)
-    
-    async def hash_password(self,password:str) -> str:
-        return self.pwd_context.hash(password)
-    
-class TokenService:
-    secret_key  = "your_secret_key"
+class TokenService(TokenRepository):
+    secret_key = "your_secret_key"  # load from an environment variable in real code
     algorithm = "HS256"
     expires_in_minutes = 60
 
-    async def create_access_token(self,data:dict,
-                                expires_delta:timedelta | None = None) -> str:
+    async def create_access_token(
+        self,
+        data: dict,
+        user_id: uuid.UUID,  # ⚠️ book only passed expires_at to TokenCreate, but it requires user_id
+        expires_delta: timedelta | None = None,
+    ) -> str:
         to_encode = data.copy()
-
         if expires_delta:
             expire = datetime.now(UTC) + expires_delta
         else:
             expire = datetime.now(UTC) + timedelta(minutes=self.expires_in_minutes)
-        
-        token_id = await self.create(TokenCreate(expires_at = expire))
+
+        token = await self.create(TokenCreate(user_id=user_id, expires_at=expire))
         to_encode.update(
             {
-                "exp":expire,
+                "exp": expire,
                 "iss": "your_service_name",
-                "sub": token_id
+                # ⚠️ book: "sub": token_id (the returned object). sub must be a string:
+                #    PyJWT 2.10+ validates it, and a UUID isn't JSON-serializable anyway.
+                "sub": str(token.id),
             }
         )
-        encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
-        return encoded_jwt
+        return jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
 
-    def decode(self,encoded_token:str) -> dict:
+    async def deactivate(self, token_id: str) -> None:
+        # ⚠️ book: self.update(TokenUpdate(id=token_id, is_active=False)), which doesn't
+        #    match update(token_id, data). My old note dropped this method, but logout() calls it.
+        await self.update(uuid.UUID(token_id), TokenUpdate(is_active=False))
+
+    def decode(self, encoded_token: str) -> dict:
         try:
-            return jwt.decode(encoded_token,self.secret_key,algorithms=[self.algorithm])
-        except JWTError:
+            return jwt.decode(encoded_token, self.secret_key, algorithms=[self.algorithm])
+        except jwt.InvalidTokenError:  # ⚠️ book: jose.JWTError. PyJWT's base error covers bad signature AND expiry.
             raise UnauthorizedException
 
-    async def validate(self,token_id:UUID4) -> bool:
-        return (token := await self.get(token_id)) is not None and token.is_active
+    async def validate(self, token_id: str) -> bool:
+        return (token := await self.get(uuid.UUID(token_id))) is not None and token.is_active
 ```
 
-1. Implement a TokenService for issuing and checking authentication tokens. Configurations are shared across all instances of the service.
-2. Generate access tokens based on data provided to the token service with expiry dates.
-3. Create a token record in the database and get a unique identifier.
-4. The access token must expire within an hour, so the exp calculated field will be used to check token validity.
-5. Encode the generated token into an encoded string using the base64 algorithm.
+- Settings like `secret_key` and `algorithm` are class attributes, shared by every instance.
+- Each new token gets a database row first. Its ID becomes the `sub` claim, so the token can be looked up and revoked later.
+- `exp` is set to one hour out. PyJWT accepts a `datetime` here and checks it automatically on decode, raising `ExpiredSignatureError` (a subclass of `InvalidTokenError`).
+- `datetime.now(UTC)` gives a timezone-aware time. Avoid the old `datetime.utcnow()`, which returns a naive datetime and is deprecated.
+- `validate()` checks that the token row exists and is still active. A logged-out token fails here even if its signature and expiry are fine.
 
-Now that you have a PasswordService and a TokenService , you can complete the core JWT authentication mechanism with a dedicated higher-level AuthService .
+> [!definition] Token revocation
+> Making a token unusable before it expires. Plain JWTs can't be revoked because they're self-contained. Storing a row per token (with `is_active`) is how this design gets revocation back.
 
-Implement an auth service to handle higher-level authentication logic
-services/auth.py
+### Example 8-10: the auth service
 
-**`crud.py`**
+With a `PasswordService` and a `TokenService`, the higher-level `AuthService` ties registration, login, current-user lookup, and logout together. My note also adds a `UserService` and a password-reset method that the book left as a stub.
+
 ```python
-from fastapi.security import HTTPBearer
-from passlib.context import CryptContext
-from datetime import UTC,datetime,timedelta
-from exceptions import UnauthorizedException,AlreadyRegisteredException
-from jose import JWTError,jwt
-import os
-from pydantic import UUID4
-from authentication.repositories import TokenRepository
-from authentication.schemas import TokenCreate,TokenUpdate
-from database import db_session
+# services/auth.py (continued)
+from typing import Annotated
+
+from fastapi import Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordRequestForm
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from authentication.entities import Users
-from typing import Annotated
-from fastapi.security import (HTTPAuthorizationCredentials, HTTPBearer,
-                              OAuth2PasswordRequestForm)
-from entities import User,UserCreate,UserInDB
-from authentication.entities import Token
 
-# Type aliases for dependency injection
-LoginFormDep = Annotated[OAuth2PasswordRequestForm, None]
-AuthHeaderDep = Annotated[HTTPAuthorizationCredentials, None]
+from entities import User
+from exceptions import AlreadyRegisteredException, UnauthorizedException
+from schemas import UserCreate, UserInDB
 
+security = HTTPBearer()
 
-class PasswordService:
-    secuirty = HTTPBearer()
-    pwd_context = CryptContext(schemes = ["bcrypt"])
+# ⚠️ my old note had `Annotated[..., None]`; the book uses Depends() / Depends(security)
+LoginFormDep = Annotated[OAuth2PasswordRequestForm, Depends()]
+AuthHeaderDep = Annotated[HTTPAuthorizationCredentials, Depends(security)]
 
-    async def verify_password(self,password:str,hashed_password:str) -> bool:
-        return self.pwd_context.verify(password,hashed_password)
-    
-    async def hash_password(self,password:str) -> str:
-        return self.pwd_context.hash(password)
-    
-class TokenService(TokenRepository):
-    secret_key  = "your_secret_key"
-    algorithm = "HS256"
-    expires_in_minutes = 60
-
-    async def create_access_token(self,data:dict,
-                                expires_delta:timedelta | None = None) -> str:
-        to_encode = data.copy()
-
-        if expires_delta:
-            expire = datetime.now(UTC) + expires_delta
-        else:
-            expire = datetime.now(UTC) + timedelta(minutes=self.expires_in_minutes)
-        
-        token_id = await self.create(TokenCreate(expires_at = expire))
-        to_encode.update(
-            {
-                "exp":expire,
-                "iss": "your_service_name",
-                "sub": token_id
-            }
-        )
-        encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
-        return encoded_jwt
-
-    def decode(self,encoded_token:str) -> dict:
-        try:
-            return jwt.decode(encoded_token,self.secret_key,algorithms=[self.algorithm])
-        except JWTError:
-            raise UnauthorizedException
-
-    async def validate(self,token_id:UUID4) -> bool:
-        return (token := await self.get(token_id)) is not None and token.is_active
-    
 class UserService:
-    """User service for managing user operations"""
-    def __init__(self, db: AsyncSession):
-        self.db = db
-    
-    async def get(self, username: str) -> Users | None:
-        """Get user by username"""
-        async with self.db.begin():
-            result = await self.db.execute(
-                select(Users).where(Users.username == username)
-            )
-            return result.scalars().first()
-    
-    async def get_user(self, username: str) -> Users | None:
+    """User lookups and writes (my addition; the book imports a UserService without showing it)."""
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def get(self, username: str) -> User | None:
+        result = await self.session.execute(select(User).where(User.username == username))
+        return result.scalars().first()
+
+    async def get_user(self, username: str) -> User | None:
         return await self.get(username)
-    
-    async def create(self, user: UserInDB) -> Users:
-        """Create a new user"""
-        new_user = Users(
+
+    async def create(self, user: UserInDB) -> User:
+        new_user = User(
             username=user.username,
             hashed_password=user.hashed_password,
-            email=getattr(user, 'email', f"{user.username}@example.com")
+            email=getattr(user, "email", f"{user.username}@example.com"),
         )
-        async with self.db.begin():
-            self.db.add(new_user)
-            await self.db.flush()
-            await self.db.refresh(new_user)
-            await self.db.commit()
+        self.session.add(new_user)  # ⚠️ dropped the begin()/commit-inside-begin pattern (see Example 8-8)
+        await self.session.commit()
+        await self.session.refresh(new_user)
         return new_user
-    
-    async def update_password(self, username: str, hashed_password: str) -> Users | None:
-        """Update user password"""
-        async with self.db.begin():
-            result = await self.db.execute(
-                update(Users)
-                .where(Users.username == username)
-                .values(hashed_password=hashed_password)
-                .returning(Users)
-            )
-            await self.db.commit()
-            return result.scalars().first()
+
+    async def update_password(self, username: str, hashed_password: str) -> User | None:
+        result = await self.session.execute(
+            update(User)
+            .where(User.username == username)
+            .values(hashed_password=hashed_password)
+            .returning(User)
+        )
+        await self.session.commit()
+        return result.scalars().first()
 
 class AuthService:
-    def __init__(self,db:db_session):
+    def __init__(self, session: AsyncSession):
         self.password_service = PasswordService()
-        self.token_service = TokenService(db)
-        self.user_service = UserService(db)
+        self.token_service = TokenService(session)
+        self.user_service = UserService(session)
 
-    async def register_user(self,user:UserCreate) -> User:
+    async def register_user(self, user: UserCreate) -> User:
         if await self.user_service.get(user.username):
             raise AlreadyRegisteredException
-        
         hashed_password = await self.password_service.hash_password(user.password)
         return await self.user_service.create(
-            UserInDB(username = user.username, hashed_password=hashed_password)
+            UserInDB(username=user.username, hashed_password=hashed_password)
         )
-    
-    async def authenticate_user(self,form_data:LoginFormDep) -> Token:
-        if not(user := await self.user_service.get_user(form_data.username)):
+
+    async def authenticate_user(self, form_data: LoginFormDep) -> str:
+        if not (user := await self.user_service.get_user(form_data.username)):
+            # ⚠️ new, from the FastAPI docs: still run a verify so a missing user
+            #    takes as long as a wrong password (no username enumeration by timing)
+            await self.password_service.verify_password(
+                form_data.password, self.password_service.dummy_hash
+            )
             raise UnauthorizedException
-        if not await self.password_service.verify_password(form_data.password,
-                                                           user.hashed_password):
+        if not await self.password_service.verify_password(form_data.password, user.hashed_password):
             raise UnauthorizedException
-        
-        return await self.token_service.create_access_token(user._asdict())
-    
+        # ⚠️ book: create_access_token(user._asdict()). ORM objects have no _asdict()
+        #    (that's on result Rows), and dumping every column would put the password hash in the token.
+        return await self.token_service.create_access_token(
+            {"username": user.username, "role": user.role}, user_id=user.id
+        )
+
     async def get_current_user(self, credentials: AuthHeaderDep) -> User:
         if credentials.scheme != "Bearer":
             raise UnauthorizedException
@@ -642,627 +653,573 @@ class AuthService:
         if not (user := await self.user_service.get(username)):
             raise UnauthorizedException
         return user
-    
+
     async def logout(self, credentials: AuthHeaderDep) -> None:
         payload = self.token_service.decode(credentials.credentials)
         await self.token_service.deactivate(payload.get("sub"))
-    
-    async def reset_password(self, username: str, new_password: str) -> Users:
-        """Reset user password"""
-        user = await self.user_service.get(username)
-        if not user:
+
+    async def reset_password(self, username: str, new_password: str) -> User:
+        if not await self.user_service.get(username):
             raise UnauthorizedException
-        
         hashed_password = await self.password_service.hash_password(new_password)
-        updated_user = await self.user_service.update_password(username, hashed_password)
-        
-        if not updated_user:
+        if not (updated_user := await self.user_service.update_password(username, hashed_password)):
             raise UnauthorizedException
-        
-        return updated_user 
+        return updated_user
 ```
 
-The core authentication logic of the application that verifies whether a user exists and their password credentials. Returns False if any checks fail.
-You can now use the AuthService to register and authenticate users using their credentials
+- `register_user` refuses taken usernames, hashes the password, and stores only the hash.
+- `authenticate_user` is the core login check: does the user exist, and does the password match? Any failure raises the same generic 401.
+- `get_current_user` runs on protected requests: check the `Bearer` scheme, decode and verify the JWT, confirm the token row is still active, then load the user.
+- `logout` decodes the token and flips its row to inactive, so it can't be reused.
 
-Implement authentication controllers to enable login and registration functionality
-routes/auth.py
+> [!definition] Bearer token
+> A token sent as `Authorization: Bearer <token>`. Whoever "bears" it gets access, so it must be kept secret like a password.
 
-**`main.py`**
+### Example 8-11: auth routes
+
+First, a small dependency module so both the auth router and the resource router can get the current user:
+
 ```python
+# dependencies/auth.py
 from typing import Annotated
-from fastapi import APIRouter, Depends, Body
-from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials
-from authentication.schemas import TokenOut, UserOut, UserCreate
-from authentication.services.auth import AuthService
-from database import get_db_session
+
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from database import get_db_session
+from entities import User
+from services.auth import AuthHeaderDep, AuthService
+
+async def get_auth_service(session: Annotated[AsyncSession, Depends(get_db_session)]) -> AuthService:
+    return AuthService(session)
+
+AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
+
+# ⚠️ book used Depends(AuthService.get_current_user) / Depends(auth_service.get_current_user)
+#    on an AuthService() built without a DB session. A plain function that pulls the
+#    service from a dependency gives FastAPI something it can actually inject.
+async def get_current_user(credentials: AuthHeaderDep, auth_service: AuthServiceDep) -> User:
+    return await auth_service.get_current_user(credentials)
+
+CurrentUserDep = Annotated[User, Depends(get_current_user)]
+```
+
+```python
+# routes/auth.py
+from typing import Annotated
+
+from fastapi import APIRouter, Body
+
+from dependencies.auth import AuthServiceDep
+from schemas import TokenOut, UserCreate, UserOut
+from services.auth import AuthHeaderDep, LoginFormDep
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-async def get_auth_service(db: AsyncSession = Depends(get_db_session)) -> AuthService:
-    return AuthService(db)
-
+# ⚠️ switched `x: T = Depends(...)` to Annotated dependencies, the style FastAPI's docs recommend
 @router.post("/register", response_model=UserOut)
-async def register_user(
-    new_user: UserCreate,
-    auth_service: AuthService = Depends(get_auth_service)
-) -> UserOut:
-    user = await auth_service.register_user(new_user)
-    return user
+async def register_user(new_user: UserCreate, auth_service: AuthServiceDep):
+    return await auth_service.register_user(new_user)
 
 @router.post("/token", response_model=TokenOut)
-async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    auth_service: AuthService = Depends(get_auth_service)
-) -> TokenOut:
+async def login_for_access_token(form_data: LoginFormDep, auth_service: AuthServiceDep) -> TokenOut:
     token = await auth_service.authenticate_user(form_data)
-    return TokenOut(
-        access_token=token,
-        token_type="bearer"
-    )
+    return TokenOut(access_token=token, token_type="bearer")
 
 @router.post("/logout")
 async def logout_access_token(
-    credentials: HTTPAuthorizationCredentials = Depends(),
-    auth_service: AuthService = Depends(get_auth_service)
+    credentials: AuthHeaderDep,  # ⚠️ was `HTTPAuthorizationCredentials = Depends()`, which reads query params, not the Authorization header
+    auth_service: AuthServiceDep,
 ) -> dict:
     await auth_service.logout(credentials)
     return {"message": "Logged out successfully"}
 
 @router.post("/reset-password")
 async def reset_password(
-    username: str = Body(..., embed=True),
-    new_password: str = Body(..., embed=True),
-    auth_service: AuthService = Depends(get_auth_service)
+    username: Annotated[str, Body(embed=True)],
+    new_password: Annotated[str, Body(embed=True)],
+    auth_service: AuthServiceDep,
 ) -> dict:
     await auth_service.reset_password(username, new_password)
-    return {
-        "message": "Password has been reset successfully."
-    }
+    return {"message": "Password has been reset successfully."}
 ```
 
-1. Create an instance of the AuthService and declare reusable annotated dependencies.
-2. Create a separate API router for authentication endpoints.
-3. Implement endpoints for registering users, user login (token
-issuance), user logout (token revocation), and password reset.
-4. Since the LogoutUserDep dependency won’t return anything, inject it within the dependency array of the router.
+- A separate `APIRouter` groups all auth endpoints under `/auth`.
+- The four endpoints: register, login (issue a token), logout (revoke it), and reset password.
+- `/token` takes an `OAuth2PasswordRequestForm`, so the client sends `username` and `password` as **form data**, not JSON.
 
-Once you have a dedicated authentication router, create a separate resource router to group all your resource endpoints within. With both routers, you can now add them to your FastAPI app
+> [!warning] This reset endpoint is unsafe as written
+> Anyone who knows a username can set a new password, no login or proof of identity needed. The book's version only returns "If an account exists, a password reset link will be sent to the provided email", so the real reset happens through an emailed link. Treat my version as a placeholder. A real reset should also revoke all the user's active tokens (see the flows below).
 
----
-# Authentication Architecture and Flows
+### Example 8-12: wire the routers into the app
 
-Implementing a JWT-based authentication system requires more than just a login button. It involves a lifecycle of core and secondary flows to ensure security, usability, and resilience.
-## 1. Core Authentication Flows
+The resource endpoints move into their own router, and the whole router is protected at once.
 
-These are the fundamental requirements for any identity management system.
-### User Registration
+```python
+# routes/resource.py
+from fastapi import APIRouter
 
-* **Process:** New users provide an email and a secure password.
-* **Validation:** Logic should check for password strength, email uniqueness, and confirmation matches.
-* **Security:** **Never** store raw passwords. Use hashing and salting (e.g., Argon2 or bcrypt) before saving to the database.
-### User Login
+router = APIRouter(prefix="/generate", tags=["Resource"])
 
-* **Process:** Upon providing correct credentials, the system generates a unique, temporary **Access Token (JWT)**.
-* **Authorization:** Resource routers must reject any request lacking a valid JWT.
-* **Verification:** Tokens are validated by checking their digital signature and ensuring they exist/are active in the database.
-### User Logout
+@router.get("/text")  # ⚠️ book: "/generate/text" on a router already prefixed with /generate
+def serve_language_model_controller():  # params from earlier chapters
+    ...
 
-* **Process:** Revokes the currently issued token.
-* **Security:** Invalidating the token in the database prevents attackers from using a stolen token after the legitimate user has ended their session.
+@router.get("/audio")  # ⚠️ same double-prefix fix
+def serve_text_to_audio_model_controller():  # params from earlier chapters
+    ...
 
----
-## 2. Secondary Production-Ready Flows
+# main.py
+from fastapi import Depends, FastAPI
 
-To move from a prototype to a production system, you must handle "edge case" security and lifecycle management.
+import routes
+from dependencies.auth import get_current_user
 
-### Identity & Security Management
+app = FastAPI(lifespan=lifespan)
+app.include_router(routes.auth.router)  # ⚠️ prefix and tags are already set on the router
+app.include_router(
+    routes.resource.router,
+    # ⚠️ book: dependencies=[AuthenticateUserDep]. The list needs Depends(...) objects,
+    #    not Annotated aliases.
+    dependencies=[Depends(get_current_user)],
+)
+```
 
-* **Verifying Identity:** Use email verification or CAPTCHAs to prevent spambots from bloating your database.
-* **Resetting Passwords:** Provide a secure flow for forgotten passwords. **Crucial:** When a password is reset, all existing active tokens for that user must be revoked immediately.
-* **Blocking Brute-Force:** Implement account lockouts or temporary cooling-off periods after multiple failed login attempts.
-* **Disabling/Deleting Accounts:** Support administrative "freezing" of accounts or permanent deletion of PII (Personally Identifiable Information) upon user request.
-### Advanced Token Handling
-
-* **Forcing Logout:** A global "log out of all devices" feature that revokes every token associated with a specific User ID.
-* **Refresh Tokens:** * **Access Tokens:** Short-lived (e.g., 15 minutes) to limit the attack window.
-* **Refresh Tokens:** Long-lived tokens used to request new access tokens without forcing the user to re-enter their password.
-### Multi-Factor Authentication (MFA/2FA)
-
-* **Layered Security:** Adds a second step (SMS, Email OTP, or Authenticator App) before the final JWT is issued. This mitigates the risk of compromised passwords.
+- The controller bodies (`...`) stand for the existing code from earlier chapters.
+- The router-level dependency means every `/generate/...` request now needs an `Authorization: Bearer <token>` header.
 
 ---
 
-## 3. Critical Security Considerations
+## Authentication flows
 
-> [!WARNING]
-> This list is not exhaustive. For a complete security posture, consult the **OWASP Top 10 Web Application Security Risks** and the **OWASP Authentication Cheat Sheet**.
+A usable JWT system is more than a login button.
 
-### Defensive Mechanisms
+### Core flows
 
-To defend against automated attacks, your system should incorporate:
+- **Registration**: new users send an email and a strong password. Check password strength, email uniqueness, and that they confirmed both. Never store the raw password.
+- **Login**: correct credentials get a unique, temporary JWT. Resource routers reject any request without a valid one. "Valid" means the signature checks out **and** the token is still active in the database.
+- **Logout**: revoke the current token so nobody can reuse it.
 
-* **Rate Limiting:** Restrict the number of requests from a single IP.
-* **Geo/IP Tracking:** Alert users or block access from suspicious or new locations.
-* **Account Lockouts:** Prevent "Credential Stuffing" or "Password Spraying" attacks.
+### Production flows
 
-### Alternatives to Custom Implementation
+- **Verifying identity**: email verification stops spambots from creating active accounts and eating server resources.
+- **Resetting passwords**: when a user resets, revoke **all** their active tokens.
+- **Forcing logout**: revoke every token a user has, on every device, so stolen tokens stop working.
+- **Disabling accounts**: admins or users can block future logins.
+- **Deleting accounts**: remove personally identifiable information (PII) on request, possibly keeping other data.
+- **Blocking repeated failed logins**: temporarily lock an account after several failures in a short time.
+- **Refresh tokens**: see below.
+- **2FA / MFA**: add a second step (SMS/email code, one-time password, authenticator app) before the token is issued, so a leaked password isn't enough.
 
-Building auth from scratch is high-risk. Consider industry-standard providers:
+> [!definition] Access token vs refresh token
+> The **access token** is short-lived (minutes) and sent with every request. The **refresh token** is long-lived and only used to get a new access token when the old one expires. Users stay logged in without retyping their password, and a stolen access token stops working soon.
 
-* **SaaS:** Okta, Auth0, Firebase Auth, Amazon Cognito.
-* **Self-Hosted:** KeyCloak.
+> [!definition] MFA (multi-factor authentication)
+> Requiring two or more kinds of proof, like a password plus a code from your phone. 2FA is the two-factor case.
 
-### When JWTs Aren't Enough (OAuth)
+### Security considerations
 
-If your application needs to access external resources (e.g., "Post on Twitter on the user's behalf"), you must implement **OAuth**. This protocol facilitates identity verification between your system and external providers securely.
+> [!warning]
+> This list isn't complete. Check the **OWASP Top 10 Web Application Security Risks** and the **OWASP Authentication Cheat Sheet** before rolling your own.
 
----
-#### Implementing OAuth Authentication
-
-OAuth is an open-standard authorization framework that enables **access delegation**. It allows applications to obtain limited access to user accounts on an HTTP service—such as Google, GitHub, or Facebook—without requiring the user to share their login credentials directly with the application.
-
-## The Role of Identity Providers (IDPs)
-
-Identity Providers are platforms (e.g., Google, Microsoft 365, Apple, LinkedIn) that manage identity information and provide authentication services. By integrating an IDP, your application:
-
-* **Offloads Security Risks:** You don't store passwords, reducing the risk of credential theft via brute-force or stuffing attacks.
-* **Streamlines UX:** Users can log in with accounts they already own and trust.
-* **Accesses External Resources:** Your app can gain permission to interact with a user's files, calendars, or social feeds.
-
----
-## The Authorization Code Flow: Step-by-Step
-
-The **Authorization Code Flow** is the most secure and common variant of OAuth 2.0 used in modern web and mobile applications.
-
-### 1. Initiation
-
-The user clicks the "Login with [Provider]" button in your application. This signals the start of the authentication handshake.
-
-### 2. Redirection to IDP
-
-Your application redirects the user’s browser to the Identity Provider’s authorization server. During this redirect, your app sends:
-
-* **Client ID:** A public identifier for your app.
-* **Scopes:** The specific permissions you are requesting (e.g., `read:user`, `calendar.events`).
-* **Redirect URI:** The specific URL in your app where the user should be sent after authentication.
-
-### 3. Authentication & Consent
-The user logs into the IDP (if not already logged in). The IDP then displays a **Consent Screen**, detailing exactly what data your application is requesting access to.
-### 4. User Approval
-The user reviews the permissions and chooses to grant or deny the request.
-### 5. Authorization Code Issuance
-If the user grants permission, the IDP redirects the user back to your application’s **Redirect URI**. Included in the URL is a temporary **Authorization Code** (Grant Code).
-
-> **Note:** The IDP will only send this code to a Redirect URI that you have pre-registered and "whitelisted" in their developer console to prevent hijacking.
-
-### 6. Token Exchange
-Your application receives the code and immediately sends it back to the IDP’s authorization server from your backend (server-to-server). In exchange for this code, the IDP issues:
-* **Access Token:** A short-lived credential used to access the user's data.
-* **Refresh Token:** A long-lived credential used to obtain new access tokens once the current one expires, without bothering the user to log in again.
-### 7. Resource Access
-Your application uses the **Access Token** to make requests to the Provider’s **Resource Server**. You can now fetch profile pictures, read emails, or perform other permitted actions on the user's behalf.
+- Add **rate limiting**, **geo/IP tracking**, and **account lockouts** against automated attacks.
+- Building auth from scratch is risky. Third-party providers ship these features already: **Okta/Auth0, Firebase Auth, Amazon Cognito** (hosted) or **KeyCloak** (self-hosted).
+- Credential-based JWT auth still stores password hashes, so password spraying and credential stuffing remain a risk.
+- If you need to access a user's resources on **other** services, you need **OAuth**.
 
 ---
-## Security Best Practices: The `state` Parameter
-During the initial redirect (Step 2), your application should generate and send a unique, random string called a **state parameter** (or CSRF token).
 
-* **The Attack:** In a Cross-Site Request Forgery (CSRF) attack, an attacker might try to inject their own authorization code into a victim's session.
-* **The Defense:** The IDP returns this exact `state` string in Step 5. Your application must verify that the returned `state` matches the one it originally sent. If they don't match, the request is forged and should be rejected.
+## OAuth authentication
 
----
-## Summary Comparison: Custom JWT vs. OAuth
+> [!definition] OAuth 2.0
+> An open standard for **access delegation**. A user lets your app have limited, time-boxed access to their account on another service, without giving your app their password.
 
-| Feature              | Custom JWT (Self-Managed)                   | OAuth 2.0 (External IDP)                        |
-| -------------------- | ------------------------------------------- | ----------------------------------------------- |
-| **Password Storage** | You must hash, salt, and secure passwords.  | No password storage required.                   |
-| **Complexity**       | High (must build registration, reset, MFA). | Moderate (must implement the OAuth handshake).  |
-| **Trust**            | Users must trust your specific security.    | Users trust established brands (Google, Apple). |
-| **Third-party Data** | No access to external resources.            | Can access calendars, files, and social data.   |
+> [!definition] Identity provider (IdP)
+> A platform that authenticates users for other apps and issues tokens asserting who they are. GitHub, Google, Microsoft 365, Apple, Meta, and LinkedIn are a few of hundreds.
+
+Using an IdP:
+
+- **Offloads security risk**: you don't store passwords, so brute-force and stuffing attacks against your DB go away.
+- **Smooths UX**: users log in with an account they already have and trust.
+- **Unlocks external resources**: calendars, files, social feeds, profile info.
+
+### The authorization code flow
+
+The most common OAuth2 flow for apps with a backend.
+
+> [!definition] Scope
+> A named permission your app asks for, like `user` or `read:user`. The user sees the list and approves it.
+
+> [!definition] Redirect URI
+> The URL in your app where the IdP sends the user back after login. It has to be pre-registered with the IdP, or the IdP refuses to send a code there.
+
+> [!definition] Authorization code (grant code)
+> A short-lived, one-time code the IdP gives your app after the user consents. Your backend swaps it for tokens.
+
+1. **Start**: the user clicks "Login with [Provider]".
+2. **Redirect to the IdP**: your app sends the user to the IdP's authorization server with your **client ID**, the **scopes** you want, and your **redirect URI**.
+3. **Login and consent**: the user logs into the IdP, which shows a consent screen listing the requested scopes.
+4. **Decision**: the user grants all, some, or none of the scopes.
+5. **Code issued**: if they consent, the IdP redirects back to your redirect URI with an **authorization code**.
+6. **Token exchange**: your backend sends the code (plus client ID and secret) to the IdP, server to server, and gets back a short-lived **access token** and often a longer-lived **refresh token**.
+7. **Resource access**: your app calls the provider's **resource server** with the access token, e.g. to read the user's profile.
+
+### The `state` parameter
+
+> [!definition] CSRF (cross-site request forgery)
+> An attack that tricks a logged-in user's browser into sending a request they didn't intend, riding on their existing session.
+
+In step 2, your app generates a random, unguessable string called **state** (a CSRF token), saves it, and sends it to the IdP. In step 5 the IdP sends the same value back. If the two don't match, a third party made the request: stop.
+
+### Custom JWT vs OAuth
+
+| Feature | Custom JWT (self-managed) | OAuth 2.0 (external IdP) |
+|---|---|---|
+| **Password storage** | You hash, salt, and protect passwords. | None. |
+| **Complexity** | High: registration, reset, MFA are all on you. | Moderate: you implement the handshake. |
+| **Trust** | Users must trust your security. | Users trust established brands. |
+| **Third-party data** | No access to external resources. | Can access calendars, files, social data. |
+
 ![[Pasted image 20260126015446.png]]
-#### OAuth Authentication with GitHub
-The first step to setting up the OAuth authentication is to create a set of client ID and secret credentials within GitHub so that their systems can identify your application.
 
-You can generate a client ID and secret from GitHub by visiting the developer settings under your GitHub profile and creating an OAuth application
+---
 
-With your new application client ID and secret, you can now redirect users to the GitHub authorization server from your application
+## OAuth with GitHub
 
-**`main.py`**
+First, register an **OAuth App** in GitHub (Settings > Developer settings) to get a client ID and client secret. These let GitHub identify your app.
+
+### Example 8-13: redirect to GitHub's login
+
 ```python
-from typing import Annotated
-from fastapi import APIRouter, Depends, Body
-from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials
-from authentication.schemas import TokenOut, UserOut, UserCreate
-from authentication.services.auth import AuthService
-from database import get_db_session
-from sqlalchemy.ext.asyncio import AsyncSession
+# routes/auth.py (continued)
 import secrets
+from urllib.parse import urlencode
+
+from fastapi import Request
 from fastapi.responses import RedirectResponse
-from fastapi import APIRouter,Request,status
-
-router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-async def get_auth_service(db: AsyncSession = Depends(get_db_session)) -> AuthService:
-    return AuthService(db)
-
-@router.post("/register", response_model=UserOut)
-async def register_user(
-    new_user: UserCreate,
-    auth_service: AuthService = Depends(get_auth_service)
-) -> UserOut:
-    user = await auth_service.register_user(new_user)
-    return user
-
-@router.post("/token", response_model=TokenOut)
-async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    auth_service: AuthService = Depends(get_auth_service)
-) -> TokenOut:
-    token = await auth_service.authenticate_user(form_data)
-    return TokenOut(
-        access_token=token,
-        token_type="bearer"
-    )
-
-@router.post("/logout")
-async def logout_access_token(
-    credentials: HTTPAuthorizationCredentials = Depends(),
-    auth_service: AuthService = Depends(get_auth_service)
-) -> dict:
-    await auth_service.logout(credentials)
-    return {"message": "Logged out successfully"}
-
-@router.post("/reset-password")
-async def reset_password(
-    username: str = Body(..., embed=True),
-    new_password: str = Body(..., embed=True),
-    auth_service: AuthService = Depends(get_auth_service)
-) -> dict:
-    await auth_service.reset_password(username, new_password)
-    return {
-        "message": "Password has been reset successfully."
-    }
 
 client_id = "your_client_id"
 client_secret = "your_client_secret"
 
-@router.get("/oauth/github/login",status_code = status.HTTP_301_REDIRECT)
-def oauth_github_login(request:Request) -> RedirectResponse:
+# ⚠️ book: status_code=status.HTTP_301_REDIRECT. That constant doesn't exist, and the
+#    returned RedirectResponse sets its own status (307) anyway, so I dropped it.
+@router.get("/oauth/github/login")
+def oauth_github_login(request: Request) -> RedirectResponse:
     state = secrets.token_urlsafe(16)
+    # ⚠️ book saved a SECOND random value (csrf_token) in the session instead of `state`,
+    #    so the state GitHub sends back could never match. Store the same value you send.
+    request.session["x-csrf-state-token"] = state
+
     redirect_uri = request.url_for("oauth_github_callback")
-
-    response = RedirectResponse(
-        url=f"https://github.com/login/oauth/authorize"
-        f"?client_id={client_id}"
-        f"&scope=user"
-        f"&state={state}"
-        f"&redirect_uri={redirect_uri}"
+    # ⚠️ book built the query string by hand; urlencode escapes the redirect_uri properly
+    params = urlencode(
+        {"client_id": client_id, "scope": "user", "state": state, "redirect_uri": str(redirect_uri)}
     )
-
-    csrf_token = secrets.token_urlsafe(16)
-    request.session["x-csrf-state-token"] = csrf_token
-    return response
+    return RedirectResponse(url=f"https://github.com/login/oauth/authorize?{params}")
 ```
 
-Redirect user to the GitHub authorization server to log into their account while supplying your application credentials, a requested scope, and a CSRF state value to prevent against CSRF attacks
+- `https://github.com/login/oauth/authorize` is GitHub's authorization endpoint. GitHub's docs list `state` as "strongly recommended".
+- `scope=user` asks for access to the user's profile, so that's what the consent screen shows.
+- `request.url_for(...)` builds the callback URL from the route's function name.
+- `request.session` only works once `SessionMiddleware` is added (Example 8-17).
 
-Adding a GitHub login button to the Streamlit client-side application
-client.py
+### Example 8-14: login button in Streamlit
 
-**`main.py`**
 ```python
-import requests 
-import streamlit as st 
+# client.py
+import requests
+import streamlit as st
 
-if st.button("Login with GitHub"): 
-	response = requests.get("http://localhost:8000/auth/oauth/github/login") 
-	if not response.ok: 
-		st.error("Failed to login with GitHub. Please try again later") 
-		response.raise_for_status()
+if st.button("Login with GitHub"):
+    response = requests.get("http://localhost:8000/auth/oauth/github/login")
+    if not response.ok:
+        st.error("Failed to login with GitHub. Please try again later")
+        response.raise_for_status()
 ```
 
-- You now have implemented the redirect flow that starts the OAuth authentication process with GitHub as the identity provider
-- When users log into their GitHub account, GitHub will show them a consent screen
-- If the user accepts the consent, GitHub will redirect the user back to your application with a grant code and a state. You should check whether the state matches the previously generated state.
-- Once you have the grant code, you can send this to the GitHub authorization to exchange it for an access token
+> [!warning] The browser has to follow the redirect
+> `requests.get` follows the redirect on the Streamlit **server**, so the user's browser never actually lands on GitHub's login page. In practice the button needs to open the backend's login URL in the user's browser.
 
-Exchanging grant code with an access token while protecting against CSRF attacks
-dependencies/auth.py
+What happens next:
 
-**`main.py`**
+- The user logs into GitHub and sees the consent screen.
+- If they accept, GitHub redirects back to your app with a **code** and the **state**. Check that the state matches.
+- Swap the code for an access token.
+
+### Example 8-15: exchange the code for an access token
+
 ```python
+# dependencies/auth.py (continued)
 from typing import Annotated
+
 import aiohttp
-from fastapi import Depends,HTTPException,status
+from fastapi import Depends, HTTPException
 from loguru import logger
 
 client_id = "your_client_id"
 client_secret = "your_client_secret"
 
-async def exchange_grant_with_access_token(code:str) -> str:
+async def exchange_grant_with_access_token(code: str) -> str:
     try:
-        body = {
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "code": code,
-        }
-
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-
+        body = {"client_id": client_id, "client_secret": client_secret, "code": code}
+        headers = {"Accept": "application/json", "Content-Type": "application/json"}
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                "https://github.com/login/oauth/access_token",
-                json = body, headers = headers
-            ) as response:
-                access_token_data = await response.json()
+                "https://github.com/login/oauth/access_token", json=body, headers=headers
+            ) as resp:
+                access_token_data = await resp.json()
     except Exception as e:
-        logger.warning(f"Error exchanging code for access token: {e}")
+        logger.warning(f"Failed to fetch the access token. Error: {e}")
+        raise HTTPException(status_code=503, detail="Failed to fetch access token")
 
-        raise HTTPException(
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail = "Failed to fetch access token"
-        )
-    
     if not access_token_data:
-        raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = "Invalid access token response"
-        )
-    
-    return access_token_data.get("access_token","")
+        raise HTTPException(status_code=503, detail="Failed to obtain access token")
 
-ExchangeCodeTokenDep = Annotated[str,Depends(exchange_grant_with_access_token)]
+    return access_token_data.get("access_token", "")
+
+ExchangeCodeTokenDep = Annotated[str, Depends(exchange_grant_with_access_token)]
 ```
 
-You can now add a new endpoint that accepts requests from the GitHub authorization server. This callback endpoint should have a CSRF protection to guard against third parties impersonating the authorization server. If the request from GitHub is forged, the state parameter provided and the one stored in the request session won’t match.
+- `code` arrives as a query parameter on the callback URL. FastAPI fills it in because it's a plain function argument.
+- `POST https://github.com/login/oauth/access_token` with client ID, secret, and code is GitHub's documented exchange. `Accept: application/json` makes GitHub reply in JSON instead of URL-encoded form.
+- Any network failure turns into a 503 with a generic message. The details go to the log.
 
-CROSS-SITE REQUEST FORGERY
-CSRF is a type of security vulnerability that allows an attacker to trick a user into performing actions on a web application where they are authenticated. This can lead to unauthorized actions being executed without the user’s consent. 
+### CSRF and open redirects in OAuth
 
-In CSRF, the attacker creates a malicious request that exploits the user’s authenticated session with a target website. These attacks can result in unauthorized transactions, data theft, or changes to user settings without their consent and knowledge. 
+The callback endpoint must check the state, so nobody can pretend to be GitHub's authorization server.
 
-In the context of OAuth2, an attacker can exploit vulnerabilities such as open redirect to intercept the initial authorization requests and modify them to redirect to their own malicious site after authentication. 
+- In OAuth2, an attacker can abuse an **open redirect** to intercept the initial authorization request and send the user to the attacker's site after login.
+- An attacker can also clone your frontend. If a user logs into GitHub through the fake site, the attacker can use a redirect URL pointing at their own server, grab the code, and swap it for a token.
 
-Attackers can also create a replica of your application frontend and trick users into logging into their accounts. If the user logs into their GitHub account via the phishing site, the attacker can provide a redirect URL pointing to their own servers to get an authorization grant code. They can then exchange the authorization code for an access token.
+> [!definition] Open redirect
+> A bug where your app redirects to any URL given in a parameter. Attackers use it to bounce users (and codes) to their own servers.
+
 ![[Pasted image 20260126021538.png]]
 
-Implement callback endpoint to get access token while protecting against CSRF attacks
-routes/auth.py
+Defenses:
 
-**`main.py`**
+- The **state** parameter ties the response to the session that started the flow.
+- **Pre-register** redirect URLs with the IdP and validate them strictly.
+- Teach users about phishing, and log and monitor for suspicious requests.
+
+### Example 8-16: the callback endpoint
+
 ```python
+# routes/auth.py (continued)
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
-from fastapi import APIRouter,Request,status
+
 from dependencies.auth import ExchangeCodeTokenDep
-from fastapi import Depends, HTTPException, Request
 
-def check_csrf_state(request:Request,state:str) -> None:
-    if state != request.session.get("x-csrf-token"):
-        raise HTTPException(detail = "Bad Reqeuets",status_code = status.HTTP_401_UNAUTHORIZED)
+def check_csrf_state(request: Request, state: str) -> None:
+    # ⚠️ book read "x-csrf-token", but Example 8-13 writes "x-csrf-state-token"
+    if state != request.session.get("x-csrf-state-token"):
+        raise HTTPException(detail="Bad request", status_code=status.HTTP_401_UNAUTHORIZED)
 
-@router.get("/oauth/github/callback",dependencies=[Depends(check_csrf_state)])
+@router.get("/oauth/github/callback", dependencies=[Depends(check_csrf_state)])
 async def oauth_github_callback(access_token: ExchangeCodeTokenDep) -> RedirectResponse:
-    response = RedirectResponse(url=f"http://localhost:8501")
-    response.set_cookie(key="access_token",value=access_token,httponly=True)
+    response = RedirectResponse(url="http://localhost:8501")
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,     # ⚠️ new: only send the cookie over HTTPS (Starlette's default is False)
+        samesite="lax",  # ⚠️ new: written out explicitly; "lax" is also Starlette's default
+    )
     return response
 ```
 
-you are using the request session for CSRF protection, but this won’t work without adding the Starlette’s SessionMiddlware first to maintain a secure user session that’s only mutable on the server side
+- `check_csrf_state` runs first as a router dependency. If the state is wrong, the code exchange never happens.
+- FastAPI resolves `ExchangeCodeTokenDep` before the handler runs, so `access_token` is already GitHub's token.
+- The token goes into an **HttpOnly** cookie, which JavaScript in the page can't read.
 
-Add a session middleware to manage session state for protecting against CSRF attacks
-main.py
+> [!definition] Cookie flags
+> - **HttpOnly**: page JavaScript can't read the cookie, which limits XSS theft.
+> - **Secure**: the browser only sends it over HTTPS.
+> - **SameSite**: controls whether it's sent on cross-site requests. `lax` sends it on top-level navigations but not on cross-site form posts or embedded requests.
 
-**`main.py`**
+> [!warning] Don't hand the user's GitHub token to the browser
+> The book warns that if this token is stolen, your app has exposed the user's GitHub account. Better: issue your **own** short-lived token tied to the GitHub token. Then a stolen token only works inside your app.
+
+### Example 8-17: session middleware
+
+The session used for the state check needs Starlette's `SessionMiddleware`. It keeps the session in a signed cookie that the client can't modify.
+
 ```python
-from fastapi import FastAPI 
+# main.py
+from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 
 ...
 
-app = FastAPI(lifespan = lifespan)
-app.add_middleware(SessionMiddleware,secret_key = "your_secret_key")
+app = FastAPI(lifespan=lifespan)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="your_secret_key",
+    # https_only=True,  # ⚠️ new: Starlette's docs say to turn this on in production (default False)
+)
 ```
 
-In this case, the requester is the GitHub authorization server sending you a grant code . Once you receive the grant code , you then exchange it with the GitHub authorization server for an access token
-Finally, you can use the access token you received from the authorization server to fetch user information such as their name, email, and profile image to register their identity in your application
+> [!warning]
+> Don't store or trust OAuth state in ordinary cookies you read yourself: third parties can read and change them. Never trust data from the client. Starlette's session cookie is **signed**, so it can't be changed, but it's still readable, so keep secrets out of it.
 
-Use access token to get user information from GitHub resource servers 
-routes/auth.py
+Here the "requester" being checked is GitHub's authorization server, which is sending you the code. Once the state matches, you swap the code for an access token.
 
-**`main.py`**
+> [!tip]
+> The open-source **authlib** package handles most of this OAuth plumbing for you.
+
+### Example 8-18: fetch the user's GitHub profile
+
+With the access token you can call GitHub's API for the user's name, email, and avatar, and register them in your app.
+
 ```python
-import secrets
-from fastapi.responses import RedirectResponse
-from fastapi import APIRouter,Request,status
-from dependencies.auth import ExchangeCodeTokenDep
-from fastapi import Depends, HTTPException, Request
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer 
+# routes/auth.py (continued)
+from typing import Annotated
+
+import aiohttp
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 security = HTTPBearer()
 HTTPBearerDep = Annotated[HTTPAuthorizationCredentials, Depends(security)]
 
-async def get_user_info(credentials:HTTPBearerDep) -> dict:
+async def get_user_info(credentials: HTTPBearerDep) -> dict:
     try:
         async with aiohttp.ClientSession() as session:
             headers = {"Authorization": f"Bearer {credentials.credentials}"}
-
             async with session.get("https://api.github.com/user", headers=headers) as resp:
                 return await resp.json()
-    except Exception:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Failed to obtain user info - Error: {e}")
+
 GetUserInfoDep = Annotated[dict, Depends(get_user_info)]
 
-@router.get("/oauth/github/callback")
-async def get_current_user(user_info: GetUserInfoDep) -> dict:
+# ⚠️ book reused "/oauth/github/callback", which clashes with Example 8-16's route
+@router.get("/oauth/github/user")
+async def get_current_user_controller(user_info: GetUserInfoDep) -> dict:
     return user_info
 ```
 
-Congratulations! You should now have a working authentication system that leverages OAuth2 to authenticate users.
-
-----
-#### OAuth2 Flow Types
-#### Understanding Authorization
-
-While **Authentication** verifies *who* an actor is, **Authorization** determines *what* that actor is allowed to do. It is the process of enforcing permissions and ensuring that the right people have access to the right resources.
-
-## The Authorization Function
-
-At its core, authorization acts like a mathematical function. It takes three specific inputs and produces a binary (Yes/No) output:
-
-* **Actor:** The user or service attempting the request.
-* **Action:** What they want to do (e.g., Read, Write, Delete, Execute).
-* **Resource:** The specific object being targeted (e.g., a Database record, a GenAI model, a file).
+- The client sends the GitHub token as a bearer token, and `HTTPBearer` pulls it out.
+- `GET https://api.github.com/user` with `Authorization: Bearer <token>` returns the profile, matching GitHub's docs.
 
 ---
-## Authorization Models
-As applications grow, hard-coding `if/else` statements becomes unmanageable. To handle complexity, developers use established **Authorization Models**.
 
-### 1. Role-Based Access Control (RBAC)
+## OAuth2 flow types
 
-Access is granted based on predefined roles. Permissions are assigned to roles, and roles are assigned to users.
+What you just built is the **authorization code flow**. IdP docs mention others, which can be confusing until you know when each one fits.
 
-* *Example:* An **Admin** role can access all GenAI models, while a **Viewer** role can only see logs.
+> [!definition] PKCE (proof key for code exchange, "pixie")
+> An add-on to the authorization code flow. You send a hashed secret (`code_challenge`) with the first request, then the unhashed `code_verifier` when exchanging the code. Someone who steals the code can't use it without the verifier.
 
-### 2. Relationship-Based Access Control (ReBAC)
+| Flow | How it works | Watch out for | Use it for |
+|---|---|---|---|
+| **Authorization code (+PKCE)** | Get a code via user login, swap it for a token. | Keep the provider's token on the server, never in the browser. Use PKCE when you can. | Web apps with a backend; mobile apps with PKCE (they can't hide a client secret). |
+| **Implicit** | Get an access token directly, no code. | Less secure: the token is exposed to the browser. | SPAs with no backend, prototypes, when the code flow isn't possible. |
+| **Client credentials** | Your app swaps its own client ID + secret for a token. | No user involved; you only reach **your own** resources. Store the credentials safely. | Machine-to-machine, server-to-server. |
+| **Resource owner password** | Swap the user's username + password for a token. | High risk: you handle the user's credentials directly. Avoid it. | Legacy systems only. |
+| **Device authorization** | Visit a URL on another device and enter a code. | Needs a second device with a browser. | Smart TVs, consoles, IoT. |
 
-Access is determined by the connections between entities. It focuses on "ownership" or "membership."
-
-* *Example:* If a user is part of **Team Alpha**, they can access the premium models purchased by that team.
-
-### 3. Attribute-Based Access Control (ABAC)
-
-The most granular model. It looks at specific characteristics (attributes) of the user, the resource, and even the environment (like time of day or IP address).
-
-* *Example:* A resource marked as `public` can be viewed by anyone, but a `premium` model can only be accessed by users with a `status: paid` attribute.
+> [!tip] PKCE on GitHub
+> GitHub's docs now list `code_challenge` (S256 only) and `code_verifier` as "strongly recommended" for OAuth apps, so it's worth adding to Examples 8-13 and 8-15.
 
 ---
-## Comparison of Authorization Methods
 
-| Type | Benefits | Limitations | Use Cases |
-| --- | --- | --- | --- |
-| **RBAC** | Simplifies management; Easy to audit. | Limited flexibility; "Role explosion" in complex systems. | Enterprise apps, Financial systems, Healthcare. |
-| **ReBAC** | Provides fine-grained control over shared resources. | Requires complex relationship data and evaluation. | Social networks, SaaS (teams/orgs), Project management. |
-| **ABAC** | Highly flexible; Supports dynamic/contextual rules. | High complexity; Harder to predict outcomes at scale. | Cloud services, IoT, Regulatory compliance. |
+## Authorization
+
+Authentication tells you **who** someone is. Authorization decides **what** they can do.
+
+An authorization system works like a function with three inputs and a yes/no output:
+
+- **Actor**: the user, or a service acting for the user.
+- **Action**: read, write, delete, execute, ...
+- **Resource**: the thing being targeted (a DB record, a GenAI model, a file).
+
+To decide, it uses authorization data: user attributes, relationships (team/group/org memberships), resource ownership, roles, and permissions.
+
+Then it **enforces** the decision:
+
+- **Allow**: the request continues.
+- **Deny**: return `403 Forbidden`, hide the UI, redirect, or lock the account.
+
+A few `if` statements work at first. As checks spread through the app, logic gets duplicated and tangled with business code. Authorization models give that logic a structure.
 
 ---
-## Enforcement
-Once the authorization function returns a decision, the system must enforce it:
-* **Allow:** The request proceeds to the resource.
-* **Deny:** The system returns a `403 Forbidden` response, hides the UI elements, or redirects the user to a "Request Access" page.
+
+## Authorization models
+
+> [!definition] RBAC (role-based access control)
+> Permissions are grouped into roles, and users get roles. Example: admins can use every GenAI model.
+
+> [!definition] ReBAC (relationship-based access control)
+> Access depends on relationships between entities: user-to-user (follower, friend) or user-to-resource (team, group, org). Example: members of a team can use the premium models that team bought.
+
+> [!definition] ABAC (attribute-based access control)
+> Access depends on attributes of the user, the resource, and the environment (time, IP, location). Example: a conversation marked `public` is visible to everyone; users with a `paid` attribute get premium models.
+
+RBAC is simplest but least flexible. ReBAC can extend or override RBAC rules, and ABAC is the most fine-grained and can override both.
+
+| Type | Benefits | Limitations | Use cases |
+|---|---|---|---|
+| **RBAC** | Simple to manage and audit. | Limited flexibility; "role explosion" in complex systems. | Enterprise apps, finance, healthcare. |
+| **ReBAC** | Fine-grained control over shared resources. | Needs relationship data from many sources; complex evaluation. | Social networks, collaborative SaaS, project tools. |
+| **ABAC** | Very flexible; dynamic, context-aware rules. | Needs attribute data from many sources; complex evaluation. | Cloud services, IoT, compliance, personalized UX. |
 
 ![[Pasted image 20260126182655.png]]
 
-#### Role Based Access Control
-## Role-Based Access Control (RBAC)
-
-Role-Based Access Control (RBAC) is a widely adopted model for implementing authorization. Its popularity stems from its **simplicity** and the intuitive way it maps user identities to application functionality.
-
 ---
-### Core Concepts
 
-The RBAC model operates on a hierarchy that connects users to the actions they are permitted to perform:
+## Role-based access control (RBAC)
 
-- **Permissions:** Specific actions a user can take on resources (e.g., "Use Paid LLM Model").
-- **Roles:** Groups of permissions that correspond to a user's job function or organizational status.
-- **Users:** Individuals assigned one or more roles to gain the necessary access.
-### Benefits of Using Roles
+Roles are popular because they're easy to grasp. They usually match who the user is and what they do, and sometimes map straight onto your org chart.
 
-- **Organizational Alignment:** Roles often mirror your organization’s actual hierarchy, making them easy to conceptualize.
-- **Reduced Decision Fatigue:** Instead of manually assigning dozens of individual permissions to every new user, administrators can assign a few **predefined roles**.
-- **Improved UX:** Preset permissions streamline the administrative process and ensure a consistent experience for the end user.
----
-### Common Implementation: User vs. Administrator
+- **Permission**: an action on a resource, like "use the paid LLM".
+- **Role**: a group of permissions.
+- **User**: gets one or more roles.
 
-Most commercial services start with two primary roles to distinguish between standard access and system management:
+Preset roles cut decision fatigue: instead of setting dozens of permissions per user, an admin picks a role.
 
-|**Feature**|**User (Member)**|**Administrator**|
+Most services start with two roles:
+
+| Feature | User (member) | Administrator |
 |---|---|---|
-|**Core Functionality**|Access to GenAI models, read/write own resources.|Full access to all resources and mutation rights.|
-|**User Management**|None.|Assign/remove roles, enable/disable accounts.|
-|**Data Privacy**|Cannot view other users' data.|Can view data across the entire platform.|
-|**Early Access**|Standard features only.|Access to beta features or restricted GenAI models.|
-dependencies/auth.py
+| **Core features** | Use GenAI models; read/write own resources. | Full access to every resource. |
+| **User management** | None. | Assign/remove roles; enable/disable accounts. |
+| **Data privacy** | Can't see other users' data. | Can see data across the platform. |
+| **Early access** | Standard features. | Beta features or restricted models. |
 
-**`main.py`**
+### Example 8-19: RBAC with a dependency
+
 ```python
-from typing import Annotated
-import aiohttp
-from fastapi import Depends,HTTPException,status
-from loguru import logger
+# dependencies/auth.py (continued)
+from fastapi import HTTPException, status
 
-client_id = "your_client_id"
-client_secret = "your_client_secret"
+from entities import User
 
-async def exchange_grant_with_access_token(code:str) -> str:
-    try:
-        body = {
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "code": code,
-        }
-
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://github.com/login/oauth/access_token",
-                json = body, headers = headers
-            ) as response:
-                access_token_data = await response.json()
-    except Exception as e:
-        logger.warning(f"Error exchanging code for access token: {e}")
-
-        raise HTTPException(
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail = "Failed to fetch access token"
-        )
-    
-    if not access_token_data:
-        raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = "Invalid access token response"
-        )
-    
-    return access_token_data.get("access_token","")
-
-ExchangeCodeTokenDep = Annotated[str,Depends(exchange_grant_with_access_token)]
-
-from authentication.entities import User
-from fastapi import Depends,HTTPException,status
-from authentication.services.auth import AuthService
-
-async def is_admin(user:User = Depends(AuthService.get_current_user)) -> User:
+# ⚠️ book: user: User = Depends(AuthService.get_current_user). That's an unbound method,
+#    so FastAPI would treat `self` as a request parameter. CurrentUserDep is defined above.
+async def is_admin(user: CurrentUserDep) -> User:
     if user.role != "ADMIN":
         raise HTTPException(
-            status_code = status.HTTP_403_FORBIDDEN,
-            detail = "Not allowed to perform this action"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not allowed to perform this action",
         )
     return user
 ```
 
-routers/resource.py
-
-**`main.py`**
 ```python
-from dependencies.auth import is_admin
+# routes/resource.py
 from fastapi import APIRouter, Depends
-from authentication.services.auth import AuthService
+
+from dependencies.auth import get_current_user, is_admin
 
 router = APIRouter(
-    dependencies=[Depends(AuthService.get_current_user)],
+    dependencies=[Depends(get_current_user)],  # ⚠️ was Depends(AuthService.get_current_user)
     prefix="/generate",
     tags=["Resource"],
 )
 
-@router.post("/image",dependencies=[Depends(is_admin)])
+@router.post("/image", dependencies=[Depends(is_admin)])
 async def generate_image():
     ...
     return {"message": "Image generated successfully."}
@@ -1273,330 +1230,285 @@ async def generate_text():
     return {"message": "Text generated successfully."}
 ```
 
-1. Implement the is_admin authorization dependency guard on top of the AuthService.get_current_user dependency. Mark the function as async since the child dependency is performing an async operation against the database.
-2. Use the authorization guard dependency to deny access to the image generation service for nonadmin authenticated users.
-3. Nonadmin authenticated users can still access other resource controllers since the router is secured by an authentication guard dependency.
+- `is_admin` builds on the current-user dependency. It's `async` because the child dependency hits the database.
+- `/image` is admin-only. Logged-in non-admins get a 403.
+- `/text` is open to any logged-in user, because the router itself only requires authentication.
+- With the same pattern you can pick different system prompts or fine-tuned model variants per role.
 
 ![[Pasted image 20260126183923.png]]
 
-Implementing complex RBAC authorization using abstract dependencies
+> [!warning] Don't let the model enforce permissions
+> Do authorization in your application code, not in the prompt. LLMs can be **prompt-injected** into ignoring their instructions and producing unauthorized output.
+
+### Example 8-20: more complex RBAC
+
+When new roles share a subset of another role's permissions (say, moderators and admins), you can use sub-dependencies or one **parameterized** dependency:
+
 ![[Pasted image 20260126185220.png]]
 
-dependencies/auth.py
-
-**`main.py`**
 ```python
-from typing import Annotated
-import aiohttp
-from fastapi import Depends,HTTPException,status
-from loguru import logger
+# dependencies/auth.py (continued)
+# ⚠️ book: has_role(user, roles) used as Depends(lambda user: has_role(user, [...])).
+#    FastAPI reads the lambda's signature, treats `user` as a query parameter, and never
+#    injects the logged-in user. FastAPI's docs parameterize a dependency with a callable
+#    class instance instead.
+class RoleChecker:
+    def __init__(self, roles: list[str]) -> None:
+        self.roles = roles
 
-client_id = "your_client_id"
-client_secret = "your_client_secret"
-
-async def exchange_grant_with_access_token(code:str) -> str:
-    try:
-        body = {
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "code": code,
-        }
-
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://github.com/login/oauth/access_token",
-                json = body, headers = headers
-            ) as response:
-                access_token_data = await response.json()
-    except Exception as e:
-        logger.warning(f"Error exchanging code for access token: {e}")
-
-        raise HTTPException(
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail = "Failed to fetch access token"
-        )
-    
-    if not access_token_data:
-        raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = "Invalid access token response"
-        )
-    
-    return access_token_data.get("access_token","")
-
-ExchangeCodeTokenDep = Annotated[str,Depends(exchange_grant_with_access_token)]
-
-from authentication.entities import User
-from fastapi import Depends,HTTPException,status
-from authentication.services.auth import AuthService
-
-async def is_admin(user:User = Depends(AuthService.get_current_user)) -> User:
-    if user.role != "ADMIN":
-        raise HTTPException(
-            status_code = status.HTTP_403_FORBIDDEN,
-            detail = "Not allowed to perform this action"
-        )
-    return user
-
-CurrentUserDep = Annotated[User,Depends(AuthService.get_current_user)]
-
-async def has_role(user:CurrentUserDep,roles:list[str]):
-    if user.role not in roles:
-        raise HTTPException(
-            status_code = status.HTTP_403_FORBIDDEN,
-            detail = "Not allowed to perform this action"
-        )
-    return user
+    async def __call__(self, user: CurrentUserDep) -> User:
+        if user.role not in self.roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not allowed to perform this action",
+            )
+        return user
 ```
 
-routes/resource.py
-
-**`main.py`**
 ```python
-from dependencies.auth import is_admin,has_role
-from fastapi import APIRouter, Depends
-from authentication.services.auth import AuthService
+# routes/resource.py
+from dependencies.auth import RoleChecker
 
-router = APIRouter(
-    dependencies=[Depends(AuthService.get_current_user)],
-    prefix="/generate",
-    tags=["Resource"],
-)
-
-@router.post("/image",dependencies=[Depends(is_admin)])
-async def generate_image():
-    ...
-    return {"message": "Image generated successfully."}
-
-@router.post("/text")
-async def generate_text():
-    ...
-    return {"message": "Text generated successfully."}
-
-@router.post("/image",dependencies=[Depends(lambda user: has_role(user, ["ADMIN","MODERATOR"]))])
+@router.post("/image", dependencies=[Depends(RoleChecker(["ADMIN", "MODERATOR"]))])
 async def generate_image():
     ...
     return {"message": "Image generated successfully for ADMIN or MODERATOR."}
 
-@router.post("/text",dependencies=[Depends(lambda user: has_role(user, ["EDITOR"]))])
+@router.post("/text", dependencies=[Depends(RoleChecker(["EDITOR"]))])
 async def generate_text():
     ...
     return {"message": "Text generated successfully for EDITOR."}
 ```
 
-##### Relationship Based Access Control
-**Relationship-Based Access Control (ReBAC)** serves as an extension of the traditional RBAC model. While RBAC focuses on what a user _is_, ReBAC focuses on the **relationships** between users and specific resources.
+- `RoleChecker([...])` is built once with the allowed roles. FastAPI calls its `__call__` per request and injects the current user into it.
+- One class covers every role combination, so you don't need a new function per role.
+
+**RBAC in short:** permissions attach to roles, not people, which keeps things easy to manage and audit. But many fine-grained roles lead to role explosion, and RBAC can't express team hierarchies or dynamic rules (time, preferences, privacy settings).
 
 ---
-### Key Characteristics
 
-- **Resource-Level Granularity:** Instead of global roles, permissions are defined at the resource level. You must define what a role can do for every specific resource type (e.g., conversations, teams, or documents).
-    
-- **Graph-Based Logic:** ReBAC is often visualized as a **graph**.
-    - **Nodes:** Represent resources or identities.
-    - **Edges:** Represent the relationships (permissions) between them.
-        
-- **Hierarchical Inheritance:** This model supports nested structures. Permissions can flow from a parent resource to its "children," significantly reducing manual overhead.
+## Relationship-based access control (ReBAC)
 
----
-### RBAC vs. ReBAC: A Practical Example
-To illustrate the difference, consider how a **Moderator** role might be treated in each system:
+ReBAC extends RBAC by focusing on **relationships** between users and resources. RBAC asks what a user *is*; ReBAC asks how the user relates to *this* resource.
 
-|**Feature**|**Role-Based (RBAC)**|**Relationship-Based (ReBAC)**|
+- **Resource-level roles**: instead of one global role, you define what each role can do on each resource type.
+- **A graph**: nodes are resources or identities, edges are relationships.
+- **Inheritance**: permissions flow from a parent to its children.
+
+| | RBAC | ReBAC |
 |---|---|---|
-|**Scope**|Broad access across the entire app.|Granular access per resource type.|
-|**Conversation Access**|Can moderate everything.|Can **Read** and **Delete** conversations.|
-|**Team Access**|Can moderate everything.|Restricted to **Read-Only** for team data.|
-|**Implementation**|"User is a Moderator."|"User has X relationship to Resource Y."|
+| **Scope** | Broad, app-wide. | Per resource type. |
+| **Moderator on conversations** | Can moderate everything. | Can **read** and **delete** conversations. |
+| **Moderator on teams** | Can moderate everything. | **Read-only** on team data. |
+| **How it's expressed** | "User is a moderator." | "User has relationship X to resource Y." |
 
----
-### The Power of Inheritance
+Inheritance saves a lot of work. Instead of sharing private LLM conversations one by one:
 
-ReBAC is particularly efficient for managing bulk permissions through grouping. Instead of sharing private LLM conversations individually, you can:
-
-1. **Group** conversations into a **Folder** or **Team**.
-2. Assign permissions to that parent entity.
-3. Allow the **children instances** (the conversations) to automatically inherit the parent's permissions.
-
-> **Note:** This "set once, apply to many" approach saves significant administrative time and prevents errors when managing complex data structures.
+1. Group them in a **folder** or **team**.
+2. Set permissions on the parent.
+3. The conversations inside inherit them.
 
 ![[Pasted image 20260126190927.png]]
 
->[!tip]
->If you decide to adopt the ReBAC model, I recommend visualy mapping out the relationships between resources and identities in your application. 
+> [!tip]
+> If you go with ReBAC, draw the relationships between resources and identities first: the policies, resources and their actions, resource-level roles, and how entities connect.
 
-A big problem that ReBAC solves by extending RBAC is the explosion of roles within the RBAC model by combining relationships with roles. It is ideal for managing permissions in complex hierarchical structures and allows for reverse queries, enabling efficient permission definitions using teams and groups. 
-
-However, ReBAC can be complex to implement and maintain, resource-intensive, difficult to audit, and not as fine-grained as ABAC for dynamic permissions based on attributes like time or location.
+ReBAC fixes RBAC's role explosion by combining roles with relationships. It handles hierarchies well and supports **reverse queries** ("who can see this?"), so permissions through teams and groups stay efficient. The cost: it's complex to build and maintain, resource-heavy, hard to audit, and less fine-grained than ABAC for rules based on time or location.
 
 ---
-#### Attribute Base Access Control
-**Attribute-Based Access Control (ABAC)** is a highly flexible authorization model that expands upon basic RBAC. It determines access by evaluating specific **attributes** (characteristics) of the user, the resource, and the environment against a set of rules.
 
----
-### How ABAC Works
+## Attribute-based access control (ABAC)
 
-Unlike roles, which are static, ABAC uses conditional logic to implement granular policies.
-- **User Attributes:** Role, department, subscription status (e.g., "Paid").
-- **Resource Attributes:** Sensitivity level, owner, file type, or content metadata (e.g., `has_pii=true`).
-- **Environmental Attributes:** Time of day, IP address, or geographic location.
----
-### Real-World Examples
+ABAC extends basic roles with rules that check **attributes**:
 
-- **Data Protection:** A policy can prevent users from uploading documents to a RAG (Retrieval-Augmented Generation) service if the document contains personally identifiable information (i.e., `upload.has_pii = true`).
+- **User**: role, department, subscription status (`paid`).
+- **Resource**: sensitivity, owner, file type, metadata (`has_pii=true`).
+- **Environment**: time of day, IP address, location.
 
-- **Monetization:** In SaaS applications like ChatGPT, access to premium GenAI models is granted only if the user's `account_type` attribute equals "Paid."
+Examples:
 
----
-### Advantages vs. Challenges
+- **Data protection**: block uploads to a RAG service when the document contains PII (`upload.has_pii = true`).
+- **Monetization**: like ChatGPT, only users whose account is `paid` get premium models.
 
-|**Pros**|**Cons**|
+> [!definition] PII (personally identifiable information)
+> Data that can identify a person, like a name, email, phone number, or ID number.
+
+| Pros | Cons |
 |---|---|
-|**Fine-Grained Control:** Virtually infinite freedom to create specific, complex policies.|**Complex Auditing:** It is difficult to determine exactly _who_ has access to a resource without evaluating attributes for every single user.|
-|**Dynamic Logic:** Can react to real-time data like user location or document content.|**Management Overhead:** Can become cumbersome in large applications with thousands of attributes and roles.|
-|**Scalability of Rules:** A single rule can apply to many users if they share the same attribute.|**Implementation Difficulty:** Harder to implement than RBAC, though generally less structurally complex than ReBAC.|
+| **Fine-grained**: almost unlimited freedom to write specific policies. | **Hard to audit**: to know who can access a resource, you have to evaluate the attributes of every user. |
+| **Dynamic**: reacts to live data like location or document content. | **Overhead**: gets cumbersome with thousands of attributes and roles. |
+| **Rules scale**: one rule covers everyone who shares an attribute. | **Implementation**: harder than RBAC, though less structurally complex than ReBAC. |
 
----
-### Comparison at a Glance
+The difference in one line each:
 
-- **RBAC:** "You can do this because you are a **Manager**."
-- **ABAC:** "You can do this because you are a **Manager** in the **HR Department** accessing **Internal Data** during **Business Hours**."
+- **RBAC**: "You can do this because you're a **manager**."
+- **ABAC**: "You can do this because you're a **manager** in **HR** accessing **internal data** during **business hours**."
 
 ![[Pasted image 20260126191253.png]]
 
 ---
-#### Hybrid Authorization Models 
-If you’ve worked with larger applications in the past, you will notice that they combine features of the RBAC, ReBAC, and ABAC authorization models. For instance, administrators may have access to any resource and user management/authentication features (RBAC), and users can share their private resources by setting visibility attribute to public (ABAC) and can add members to their team for collaborating on private resources. 
 
-A hybrid approach combining RBAC, ReBAC, and ABAC models may give you the strengths of all the authorization models: 
-- RBAC simplifies permission management by assigning roles to users, making it easy to manage and audit. 
-- ReBAC is perfect for managing hierarchical relationships and reverse queries, making it suitable for complex hierarchical structures. 
-- ABAC provides fine-grained control based on user and resource attributes, allowing for dynamic and context-aware permissions.
+## Hybrid authorization
+
+Large apps usually mix all three. Admins can reach any resource and manage users (RBAC). Users can make private resources public with a visibility attribute (ABAC) and add teammates to collaborate (ReBAC).
+
+- **RBAC** keeps permission management simple and auditable.
+- **ReBAC** handles hierarchies and reverse queries.
+- **ABAC** adds fine-grained, context-aware rules.
+
 ![[Pasted image 20260126192555.png]]
 
-Implementing the hybrid authorization model combining RBAC, ReBAC, and ABAC
-dependencies/auth.py
+### Example 8-21: a hybrid check
 
-**`main.py`**
 ```python
-
+# dependencies/auth.py (continued)
 from typing import Annotated
+
 from fastapi import Depends, HTTPException, status
 
-async def has_role(user:CurrentUserDep,roles:list[str]):
-    if user.role not in roles:
-        raise HTTPException(
-            status_code = status.HTTP_403_FORBIDDEN,
-            detail = "Not allowed to perform this action"
-        )
-    return user
+...  # import services and entities here (Team, Resource, TeamService, ResourceService)
 
-CurrentUserDep = Annotated[User, Depends(AuthService.get_current_user)]
-TeamMembershipRep = Annotated[Team, Depends(TeamService.get_current_team)]
-ResourceDep = Annotated[Resource, Depends(ResourceService.get_resource)] 
+# CurrentUserDep is defined earlier in this file
+# ⚠️ same unbound-method issue as Example 8-19: TeamService.get_current_team and
+#    ResourceService.get_resource are placeholders and need the same function wrapper
+TeamMembershipDep = Annotated[Team, Depends(TeamService.get_current_team)]
+ResourceDep = Annotated[Resource, Depends(ResourceService.get_resource)]
 
-def authorize(user: CurrentUserDep, resource: ResourceDep, team: TeamMembershipRep) -> bool: 
-    if user.role == "ADMIN": 
-        return True 
-    if user.id in team.members: 
-        return True 
-    if resource.is_public: 
-        return True 
-    raise HTTPException( 
-        status_code=status.HTTP_403_FORBIDDEN, 
-        detail="Access Denied") 
+def authorize(user: CurrentUserDep, resource: ResourceDep, team: TeamMembershipDep) -> bool:
+    if user.role == "ADMIN":    # RBAC
+        return True
+    if user.id in team.members:  # ReBAC
+        return True
+    if resource.is_public:      # ABAC
+        return True
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access Denied")
 ```
 
-routes/resource.py
-
-**`main.py`**
 ```python
+# routes/resource.py
+from fastapi import APIRouter, Depends
+
 from dependencies.auth import authorize
-from fastapi import APIRouter, Depends 
- 
-router = APIRouter( 
-    dependencies=[Depends(authorize)], prefix="/generate", tags=["Resource"]
-) 
- 
+
+router = APIRouter(dependencies=[Depends(authorize)], prefix="/generate", tags=["Resource"])
+
 @router.post("/image")
-async def generate_image(): ... 
- 
+async def generate_image(): ...
+
 @router.post("/text")
 async def generate_text(): ...
 ```
 
-As you define rules and permissions based on each authorization model, you also may decide to bypass rules if certain conditions are met. This can lead to complex logic and create a maintenance burden on your application code. 
+- Each `if` is one model: role, then relationship, then attribute. The first match allows the request.
+- One router-level dependency protects every endpoint in the router.
 
-Since implementing a hybrid model can be complex, you may consider developing a separate authorization service to eliminate the need for significant code changes with volatile permissions that change frequently. Using an external system for authorization decisions allows your application’s authorization logic to remain consistent
+Every bypass rule you add ("admins skip this", "public skips that") makes this logic harder to maintain.
+
+### Example 8-22: a separate authorization service
+
+If permissions change often, move decisions into their own service. Your app's code stays the same while the rules change.
+
 ![[Pasted image 20260126193059.png]]
 
-Using an authorization service with the GenAI service
-authorization_api.py
-
-**`schemas.py`**
 ```python
+# authorization_api.py (Authorization Service)
 from typing import Annotated, Literal
+
 from fastapi import Depends, FastAPI
-from pydantic import BaseModel 
+from pydantic import BaseModel
 
-... #import services and entities here
+...  # import services and entities here
 
-CurrentUserDep = Annotated[User, Depends(AuthService.get_current_user)]
 ActionRep = Annotated[Literal["READ", "CREATE", "UPDATE", "DELETE"], str]
-ResourceDep = Annotated[Resource, Depends(ResourceService.get_resource)] 
 
 class AuthorizationResponse(BaseModel):
-    allowed:bool 
+    allowed: bool
 
 app = FastAPI()
 
-@app.get("/authorize")
-def authorization_controller( 
+@app.get("/authorize")  # ⚠️ book printed `app.get(...)` without the @, so the route was never registered
+def authorization_controller(
     user: CurrentUserDep, resource: ResourceDep, action: ActionRep
-) -> AuthorizationResponse: 
-    if user.role == "ADMIN": 
-        return AuthorizationResponse(allowed=True) 
-    if action in user.permissions.get(resource.id, []): 
-        return AuthorizationResponse(allowed=True) 
-    ...  # Other permission checks 
-    return AuthorizationResponse(allowed=False) 
+) -> AuthorizationResponse:
+    if user.role == "ADMIN":
+        return AuthorizationResponse(allowed=True)
+    if action in user.permissions.get(resource.id, []):
+        return AuthorizationResponse(allowed=True)
+    ...  # other permission checks
+    return AuthorizationResponse(allowed=False)
 ```
 
- genai_api.py (GenAI Service) 
+```python
+# genai_api.py (GenAI Service)
+from fastapi import APIRouter, Depends, HTTPException, status  # ⚠️ book forgot to import Depends
+from pydantic import BaseModel
 
- **`schemas.py`**
- ```python
-from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel 
- 
-class AuthorizationData(BaseModel): 
-    user_id: int 
-    resource_id: int 
-    action: str 
- 
-authorization_client = ...  # Create authorization client 
- 
-async def enforce(data: AuthorizationData) -> bool: 
-    response = await authorization_client.decide(data) 
-    if response.allowed: 
-        return True 
-    raise HTTPException( 
-        status_code=status.HTTP_403_FORBIDDEN, detail="Access Denied" 
-    ) 
- 
-router = APIRouter( 
-    dependencies=[Depends(enforce)], prefix="/generate", tags=["Resource"]
-) 
- 
+class AuthorizationData(BaseModel):
+    user_id: int
+    resource_id: int
+    action: str
+
+authorization_client = ...  # create the authorization client
+
+async def enforce(data: AuthorizationData) -> bool:
+    response = await authorization_client.decide(data)
+    if response.allowed:
+        return True
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access Denied")
+
+router = APIRouter(dependencies=[Depends(enforce)], prefix="/generate", tags=["Resource"])
+
 @router.post("/text")
-async def generate_text_controller(): 
+async def generate_text_controller():
     ...
 ```
+
+- The authorization service answers one question: is this actor allowed this action on this resource?
+- The GenAI service just asks and enforces the answer with a 403.
+
+Building a full authorization service from scratch takes a lot of time. Providers like **Oso, Permify, and Okta/Auth0** do this for you.
+
+---
+
+## Summary
+
+- **Authentication** proves who someone is. **Authorization** decides what they can do.
+- Four authentication methods: **basic**, **token (JWT)**, **OAuth**, and **key-based**.
+- Built from scratch: basic auth, then JWT with **salted password hashes**, signed access tokens stored in the DB for **revocation**, login, and logout.
+- **OAuth2 with GitHub**: the authorization code flow, the **state** parameter against CSRF, and other flows (PKCE, implicit, client credentials, password, device).
+- Attacks to know: **credential stuffing, password spraying, CSRF, open redirect, phishing**.
+- Authorization models: **RBAC, ReBAC, ABAC**, hybrids, and a separate authorization service, all enforced with FastAPI dependencies.
+
+**Next chapter:** testing GenAI services: unit, integration, end-to-end, and regression tests, plus mocking, patching, and dealing with probabilistic models.
+
+---
+
+## Verification note
+
+Checked on 2026-10-04 against:
+
+- FastAPI, OAuth2 with password (and hashing), Bearer with JWT tokens: https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/ (uses `pyjwt` + `pwdlib[argon2]`, `PasswordHash.recommended()`, `DUMMY_HASH`, `jwt.exceptions.InvalidTokenError`, `datetime.now(timezone.utc)`, `Annotated[OAuth2PasswordRequestForm, Depends()]`)
+- FastAPI, HTTP Basic Auth: https://fastapi.tiangolo.com/advanced/security/http-basic-auth/ (Example 8-1 already matches)
+- FastAPI, Advanced Dependencies (callable class instances): https://fastapi.tiangolo.com/advanced/advanced-dependencies/
+- pwdlib README: https://github.com/frankie567/pwdlib
+- PyJWT API, usage, and changelog: https://pyjwt.readthedocs.io/en/stable/api.html, https://pyjwt.readthedocs.io/en/stable/usage.html, https://pyjwt.readthedocs.io/en/stable/changelog.html (`exp` accepts a datetime; `sub`/`jti` validation added in 2.10.0; `InvalidSubjectError`)
+- GitHub, Authorizing OAuth apps: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps (authorize/access_token URLs, `state`, PKCE, `Accept: application/json`, `Authorization: Bearer`)
+- SQLAlchemy 2.0 session transactions and asyncio: https://docs.sqlalchemy.org/en/20/orm/session_transaction.html, https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
+- Starlette middleware docs (SessionMiddleware options), read from the GitHub source of starlette.io
+
+Changes marked ⚠️ in the code:
+
+- **Install:** `passlib python-jose` → `pyjwt "pwdlib[argon2]"`.
+- **Password hashing:** `CryptContext(schemes=["bcrypt"])` → `PasswordHash.recommended()` (Argon2); added a dummy-hash verify for unknown usernames, per FastAPI docs.
+- **JWT:** `from jose import JWTError, jwt` → `import jwt`; `except JWTError` → `except jwt.InvalidTokenError`; `sub` is now `str(token.id)`.
+- **Models:** `default=datetime.now(UTC)` (evaluated once) → `default=utc_now` (a callable); `Token.user_id` `int` → `uuid.UUID`; restored `User.tokens` relationship; `Users` → `User`.
+- **Schemas:** fixed bad `UUID` import → `UUID4`; `TokenBase.user_id` → `UUID4`; added a minimal `TokenUpdate`; `TokenOut` inherits `BaseModel` again.
+- **Repositories/services:** removed `begin()` + `commit()`-inside-`begin()` mix; `.dict()` → `.model_dump()`; restored `deactivate()` with a matching `update()` call; `TokenCreate` now gets `user_id`; replaced `user._asdict()` with an explicit payload.
+- **Dependencies/routes:** `Annotated[..., None]` → real `Depends()`; `Depends(AuthService.get_current_user)` → a `get_current_user` function; logout uses the bearer header dependency; Annotated deps in routes; fixed double `/generate` prefixes and `dependencies=[Depends(...)]` in Example 8-12.
+- **OAuth:** removed nonexistent `HTTP_301_REDIRECT`; the stored session value is now the same `state` sent to GitHub, and the callback reads the same session key; `urlencode` for the authorize URL; `secure=True` + explicit `samesite="lax"` on the cookie; `https_only=True` suggested for `SessionMiddleware`; Example 8-18 moved to `/oauth/github/user` to avoid clashing with the callback route.
+- **Authorization:** `Depends(lambda user: has_role(...))` → `RoleChecker` callable class; added the missing `@` on `app.get` and the missing `Depends` import in Example 8-22.
+
+Not changed: `aiohttp` is still a maintained async client, so the GitHub calls keep using it (httpx's `AsyncClient` would work the same way). The Streamlit button is left as printed, with a warning about the redirect.
 
 %% related:start (auto-generated, regenerate with related_links.py) %%
 ## Related

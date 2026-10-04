@@ -9,8 +9,8 @@
 
 ## 0. Tonight's checklist
 
-- [ ] Reply to Ahmed's email to confirm the time (if you haven't).
-- [ ] Check your university timetable against **12:00–16:00 Cairo core hours**. Have a plan for any clash.
+- [x] Reply to Ahmed's email to confirm the time (if you haven't).
+- [x] Check your university timetable against **12:00–16:00 Cairo core hours**. Have a plan for any clash.
 - [ ] Read Al-Qa'qa''s post on sanadsquad.com: "x402 Agentic payment flow, end to end" (Sept 5, 2026).
 - [ ] Skim "Five Attacks on x402": https://arxiv.org/html/2605.11781v1
 - [ ] Build the small x402 demo (section 3) and push it to GitHub.
