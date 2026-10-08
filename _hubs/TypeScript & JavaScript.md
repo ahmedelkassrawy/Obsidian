@@ -12,7 +12,7 @@ tags:
 > Part of [[MOC - CS Fundamentals]]. Also try the tag `#topic/typescript-and-javascript`.
 
 ## Concepts
-- [[2.Behind the Scenes]] — Explains what the JavaScript language actually is: high level and garbage collected, interpreted or JIT compiled, multi-paradigm, and prototype-based object oriented.
+- [[2.Behind the Scenes PT1]] — Explains what the JavaScript language actually is: high level and garbage collected, interpreted or JIT compiled, multi-paradigm, and prototype-based object oriented.
 
 ## Course notes
 - [[1.Fundamentals]] — Course notes on JavaScript basics: values and variables, primitives vs objects, dynamic typing, let/const/var, and the operators.
