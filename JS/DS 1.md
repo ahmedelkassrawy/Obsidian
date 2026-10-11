@@ -271,4 +271,11 @@ console.log(newRestaurant)
 
 ```javascript
 const resaturantCopy = {...restaurant};
+restaurantCopy.name = "Reisisnt ROma";
+
+console.log(restaurantCopy.name);
+console.log(restaurant.name);
 ```
+
+----
+Rest Patterns and Parameters
