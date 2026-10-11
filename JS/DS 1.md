@@ -230,6 +230,45 @@ J o n a s
 multiple values seperated by a comma are usually only expected when we pass arguments into a function or building a new array
 
 on function's arguments
-```ja
+```javascript
+"use strict";
 
+const restaurant = {
+  name: "Classico Italiano",
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+  openingHours: {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+  },
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}`);
+  },
+}
+
+const ingredients = ["tomato", "basil", "mozzarella"];
+restaurant.orderPasta(...ingredients);
+```
+
+Objects spreading
+```javascript
+//Objects
+const newRestaurant = {
+	foundedIn = 1998,
+	...restaurant,
+	founder = "Guispise"
+}
+console.log(newRestaurant)
+```
+
+```javascript
+const resaturantCopy = {...restaurant};
 ```
