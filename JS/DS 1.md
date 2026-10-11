@@ -71,3 +71,103 @@ const restaurant = {
 const {name,categories} = restaurant;
 console.log(name,categories);
 ```
+
+if we want to rename them 
+```javascript
+"use strict";
+
+  
+
+const restaurant = {
+
+  name: "Classico Italiano",
+
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+
+}
+
+  
+
+const {
+
+  name: restaurantName,
+
+  location: restaurantLocation,
+
+  categories: restaurantCategories,
+
+} = restaurant;
+
+console.log(restaurantName, restaurantLocation, restaurantCategories);
+```
+
+if we want to have default values in case the destructing found out there is no values for such key instead of getting undefined
+```javascript
+"use strict";
+
+  
+
+const restaurant = {
+
+  name: "Classico Italiano",
+
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+
+}
+
+  
+
+const {
+
+  menu = [],
+
+  starterMenu: starters = []
+
+} = restaurant;
+
+console.log(menu, starters);
+```
+
+Overwritting the varibales 
+```javascript
+//mutating variables
+
+let a = 111;
+
+let b = 999;
+
+const obj = { a: 23, b: 7, c: 14 };
+
+({ a, b } = obj);
+
+console.log(a, b);
+
+```
+
+Nested objects
+```javascript
+//nested objects
+const {fri} = restaurant.openingHours;
+console.log(fri)
+```
+
+```javascript
+const {
+  fri: { open, close }
+} = restaurant.openingHours;
+
+console.log(open, close); 
+// Output: 11 23
+```
