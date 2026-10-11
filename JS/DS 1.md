@@ -279,3 +279,22 @@ console.log(restaurant.name);
 
 ----
 Rest Patterns and Parameters
+rest pattern looksexactly like the spread operator so it has the same syntax witht the three dots but it actually does the opposite of the spread operator
+
+remember we used the spread operator to make new arrays or the multiple arugements inside the functions and in both cases we used the spread operator to expand the array into individual elements now the rest pattern uses the same syntax to collect multiple element sand condense them into an array so that the opposite of the spread
+
+spread -> unpack the array 
+rest -> packs elements into an array
+
+spread we put the three dots on the right side of the asssigment operator
+
+rest -> we put the three dots on the left side of thew assignement opertator
+
+```javascript
+const [a,b,...others] = [1,2,3,4,5];
+console.log(a,b,others);
+```
+
+here a takes the first eleemnt and b takes the second elemebnt
+other takes the "rest" of the eleements thats why its aclled rest
+
