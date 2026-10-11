@@ -298,3 +298,11 @@ console.log(a,b,others);
 here a takes the first eleemnt and b takes the second elemebnt
 other takes the "rest" of the eleements thats why its aclled rest
 
+```javascript
+const [pizza, , risotto, ...otherFood] = 
+[
+  ...restaurant.mainMenu, 
+  ...restaurant.starterMenu
+];
+console.log(pizza, risotto, otherFood);
+```
