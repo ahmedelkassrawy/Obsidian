@@ -171,3 +171,37 @@ const {
 console.log(open, close); 
 // Output: 11 23
 ```
+
+---
+The spread operator( )
+bascically expand the array into all its elements, unpacking all the aray elements all at one
+
+```javascript
+const arr = [7,6,8];
+
+const newArr = [1,2,3,...arr];
+
+console.log(newArr);
+```
+
+for dict by expanding an array
+```javascript
+const newMenu = {...restaurant.mainMenu,`GNocci`};
+console.log(newMenu);
+```
+
+Diff between the spread operator and destrcutuing :
+- both extract elements from tthe arrays  , the spread operator takes them all elements from an array at once and does nto create a new variables
+- COnstartins -> becuas ehte spread opertore doesn not crewate new variabeles , it can only be used in places where you would otherwise ,write values seperated by commas 
+
+```javascript
+//copy array 
+const mainMenuCopy = [...restaurant.mainMenu]; //shallow copy
+
+//join 2 arrays
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+console.log(menu);
+```
+
+spread operator works on all iterables
+iterables are arrays , strings , maps , sets -- Anything except the object
