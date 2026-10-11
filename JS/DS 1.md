@@ -205,3 +205,31 @@ console.log(menu);
 
 spread operator works on all iterables
 iterables are arrays , strings , maps , sets -- Anything except the object
+```javascript
+const str = "Jonas";
+
+const leters = [...str, ' ', 'S'];
+
+console.log(leters);
+
+console.log("-------------------");
+
+console.log(...str);
+```
+
+```
+[
+  'J', 'o', 'n',
+  'a', 's', ' ',
+  'S'
+]
+-------------------
+J o n a s
+```
+
+multiple values seperated by a comma are usually only expected when we pass arguments into a function or building a new array
+
+on function's arguments
+```ja
+
+```
