@@ -28,5 +28,5 @@ Whats the workflow?
 			- > marketing post writer
 -> validator is the all python mighty where it validates the em dashes and all the things we want to remove 
 -> Reviewwer -> scores every piece against a rubic list of things we are looking for anf should provide a reason to reject
-->Vislaizer -> makes an image for each piece, or a written image spec if you have no image API.
+->Visluaizer -> makes an image for each piece, or a written image spec if you have no image API.
 
