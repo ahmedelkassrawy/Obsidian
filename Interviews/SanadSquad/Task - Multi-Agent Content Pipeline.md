@@ -10,3 +10,4 @@ Our sys will create content for that kind of firm
 - Marketing Content -> explain the firms value and encourage potential customers to use it as a services
 
 So its an Automated Content Workflow
+
