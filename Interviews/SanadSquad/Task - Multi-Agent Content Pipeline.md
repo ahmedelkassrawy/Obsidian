@@ -17,7 +17,7 @@ Is it an agent or a workflow?
 Orchestrator -> 
 
 Whats the workflow?
--> Plan -> Research -> Write -> Validator -> Review -> Visual -> Report
+-> Plan -> Research -> Write -> Validator -> Review -> Visual -> Export
 
 -> Plan comes from the user as slots
 -> if the slot is empty -> the llm should recommend a new topic and research about it
