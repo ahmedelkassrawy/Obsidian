@@ -59,3 +59,49 @@ Its the startup work that happens before the langgraph graph begins , split betw
 python run_week.py --set thread_2="oracle manipulation" --token-budget 300000
 ```
 
+**A. Read the flags.** Python’s `argparse` turns that text into an object: `args.set = ["thread_2=oracle manipulation"]`, `args.token_budget = 300000`.
+
+**B. Build the settings** (`Settings.load` in `config.py`). It starts from the defaults, layers `.env` on top, then environment variables, then your flags. **Pydantic** then checks every value. That check is where “max tweet chars must be at most 280” and “budget must be positive” actually live. A bad value stops the run here, before anything costs money.  
+_Learn it as:_ “Pydantic validation”, “configuration precedence”, “12-factor app config”.
+
+**C. Load the plan** (`load_plan`). This reads `plan.json`: 6 slots, where `thread_1` has focus `"reentrancy"` and the other five are empty. It checks that slot ids are unique and that each slot’s post-type folder exists.
+
+**D. Apply `--set`** (`parse_sets`). It splits `thread_2=oracle manipulation` at the `=`, then sets `thread_2.focus = "oracle manipulation"` and clears any topic id. The slot name must exist and the topic can’t be blank. Remember from section 6.1: this is only a **topic**, not evidence. Research still has to find real sources for it.
+
+**E. The preflight check** (`validate_inputs`). Before spending anything, it checks that every file the run will need exists and makes sense:
+
+- Slot ids are unique, even ignoring upper and lower case. On Windows, `Thread_1` and `thread_1` would be the same filename.
+- Names only use safe characters, and aren’t Windows-reserved words like `CON` or `NUL`. Names become file paths, so a name like `../../secrets` must never get through.
+- The brand colors are real colors, and the knowledge base loads.
+- Each post type’s rubric must include `unsupported_claim` as an automatic fail. The grounding rule is enforced at startup.
+- Each agent’s `agent.yaml` and `system.md` exist, writers have no search skills, and each model name is in a valid format.
+
+The idea is to **fail fast**: it’s much better to stop at second 1 with “missing file” than at minute 4, after paying for research.  
+_Learn it as:_ “fail-fast”, “preflight checks”, “input validation”, “path traversal”.
+
+**F. Estimate the worst case** (`estimate`). For every agent call the run _might_ make, it assumes the maximum (big input, maximum output, every retry) and prices it with `genai-prices`. It compares the total with your budget and warns if it’s over. With `--estimate`, it prints this and exits.  
+One honest warning: as we saw in the code review, this estimate is currently **about 45 times too high** (11.2M tokens against 250k), so the warning fires on every run. It’s on the fix list.
+
+**G. Create the run folder.** For example `output/20261015T091500-a1b2c3d4`: UTC time plus 8 random characters, so two runs never collide. If the folder exists, the run refuses.
+
+**H. Lock the folder** (`RunLock`). It takes an operating-system file lock, so if you accidentally start the same resume twice, the second one is refused.  
+_Learn it as:_ “file locking”, “mutual exclusion”.
+
+**I. Take a snapshot** (`snapshot`). It copies **every input file this run uses** into `run_dir/snapshot/`: brand voice, knowledge base, post types, agent prompts and skills. It also saves the plan _with your `--set` already applied_, and the final settings. Why: if you edit `brand-voice.md` tomorrow and then resume today’s run, the resumed run still uses today’s rules. One run, one set of rules.  
+_Learn it as:_ “reproducibility”, “immutable inputs”.
+
+**J. Record the run’s identity** (`run_identity.json`). It holds:
+
+- a random **thread id**, which is the name LangGraph files this run’s saved progress under;
+- a **SHA-256 fingerprint** of every snapshot file. On resume, the fingerprints are recomputed. If anyone changed a snapshot file, resume refuses.
+
+_Learn it as:_ “UUID”, “cryptographic hash / SHA-256”, “tamper detection”.
+
+**K. Start the bookkeeping files.** These are `runtime-settings.json`, `external-usage.json` (search and image call counts) and an empty `usage.jsonl` (one line per model call, added later). They’re written with `atomic_json`: write to a temporary file, then rename it into place. A crash mid-write can never leave a half-written JSON file.  
+_Learn it as:_ “atomic file write”, “write-then-rename”.
+
+**L. Hand over to the graph.** Each of the 6 slots becomes a starting `SlotState`, and LangGraph begins at its first real node, `focused_research`. That’s where Plan ends.
+
+### The short version
+
+Plan = **read the flags, build the settings, load the plan, apply `--set`, check everything, estimate the cost, create the folder, lock it, snapshot it, fingerprint it, start the bookkeeping, hand over to the graph**. Not a single LLM call happens in the Plan step. That’s deliberate: it’s pure code, so it’s free, fast and predictable.
