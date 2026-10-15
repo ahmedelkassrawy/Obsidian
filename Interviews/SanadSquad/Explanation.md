@@ -25,6 +25,120 @@ Budget ledger
 
 ---
 
+## Code map
+
+Where to read each topic in the real code. Repo: `D:\me\SanadSquad-day3`, branch `feat/day3-delivery`, commit `9188c3a`.
+
+> [!warning] Line numbers drift
+> Line numbers are from commit `9188c3a`. After new commits they'll move, so search by the function name (Ctrl+F) rather than trusting the number.
+
+### The repo at a glance
+
+```text
+SanadSquad-day3/
+├── run_week.py, run_piece.py     # entry points: just call cli.main
+├── content_pipeline/             # all the Python
+│   ├── cli.py                    # flags -> settings -> plan -> estimate -> run
+│   ├── config.py                 # Settings, loading plan / types / agents / prompts
+│   ├── pipeline.py               # the LangGraph graph and every node
+│   ├── agents.py                 # ResearchAgent, TopicSelector, Writer, Reviewer, VisualAgent
+│   ├── research.py               # KnowledgeBase (BM25), assign_topics, WebSearch, page fetch
+│   ├── tools.py                  # search_kb / web_search wrapped as tools
+│   ├── validation.py             # the validator: fixes, numbering, checks
+│   ├── model_client.py           # every LLM call: retries, usage, cost
+│   ├── durability.py             # atomic writes, RunLock, snapshot hashes, resume checks
+│   ├── models.py                 # core data shapes: SourceRecord, ResearchPack, Draft...
+│   └── contracts.py              # request/record shapes: SlotState, WriteRequest, DraftAudit...
+├── inputs/                       # brand-voice.md, kb.json, plan.json
+├── post_types/<type>/            # type.yaml, writer.md, rubric.md, research.md (+ angles.yaml)
+├── agents/<agent>/               # agent.yaml (model, limits, skills) + system.md
+├── skills/                       # brand_rules, search_kb, web_search (.py + .md)
+└── config/                       # repair.md, visual.yaml
+```
+
+### Reading order per topic
+
+**CLI and flags**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/cli.py` | `parser` (l.12) | Every flag defined |
+| `content_pipeline/cli.py` | `main` (l.42) | The whole startup in order; resume locking rule |
+| `content_pipeline/config.py` | `Settings`, `Settings.load` (l.12, l.24) | Defaults, `.env`, env vars, flags, the 280 cap |
+| `.env.example` | — | Every setting and key name |
+
+**Plan**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/config.py` | `load_plan` (l.93) | Reading `plan.json`, unique ids |
+| `content_pipeline/pipeline.py` | `parse_sets` (l.83) | How `--set` is applied |
+| `content_pipeline/pipeline.py` | `safe_name` (l.73), `validate_inputs` (l.99) | The preflight checks |
+| `content_pipeline/pipeline.py` | `estimate` (l.171) | The worst-case cost (the 45x issue) |
+| `content_pipeline/pipeline.py` | `snapshot` (l.272), `_initialize_new_run` (l.1444), `run_pipeline` (l.1540) | Run folder, snapshot, identity, bookkeeping |
+| `content_pipeline/durability.py` | `atomic_json` (l.21), `snapshot_hashes` (l.28), `RunLock` (l.36), `resume_inputs` (l.84) | Atomic write, fingerprints, lock, resume checks |
+| `content_pipeline/contracts.py` | `SlotState` (l.157), `RunIdentity` (l.318) | The card and the run's identity |
+| `inputs/plan.json` | — | The 6 slots |
+
+**Research**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `focused` (l.739), `research_slot` (l.690) | Node 1: parallel focused research |
+| `content_pipeline/pipeline.py` | `select` (l.805), `_propose_topics` (l.748) | Node 2: topic selection |
+| `content_pipeline/agents.py` | `ResearchAgent.__call__` (l.171) | Shortcuts and the search loop |
+| `content_pipeline/agents.py` | `TopicSelector` (l.292) | The single batch topic call |
+| `content_pipeline/research.py` | `KnowledgeBase` (l.17), `.search` (l.48), `.source` (l.54) | BM25 and evidence cards |
+| `content_pipeline/research.py` | `assign_topics` (l.66) | Code checking and filling topic picks |
+| `content_pipeline/research.py` | `public_url` (l.153), `fetch_page` (l.179), `WebSearch.search` (l.250) | URL safety, page download, Tavily → ddgs |
+| `content_pipeline/tools.py` | `research_tools` (l.7), `configured_web_search` (l.26) | Tools wiring, Tavily key |
+| `content_pipeline/contracts.py` | `ResearchAction` (l.52), `ResearchTurn` (l.61), `TopicChoiceRequest` (l.67) | The forms the LLM fills |
+| `content_pipeline/models.py` | `SourceRecord` (l.55), `ResearchPack` (l.75) | Evidence card and pack |
+| `agents/research/` | `loop.md`, `topics.md`, `agent.yaml` | The research instructions |
+| `post_types/*/research.md`, `angles.yaml` | — | Research hints and marketing angles |
+| `inputs/kb.json` | e.g. KB-18 | Entries and their `aliases` |
+
+**Writer**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `write` (l.873) | Building `WriteRequest`, caching the writer, failures |
+| `content_pipeline/agents.py` | `Agent.invoke` (l.142), `Writer` (l.315), `identity` (l.27) | System + user message, identity check |
+| `content_pipeline/config.py` | `load_prompt` (l.136), `load_agent` (l.108) | Gluing the 4 prompt files; "writers can't search" |
+| `content_pipeline/model_client.py` | `ModelClient.call` (l.552) | The actual call: repair attempt, retries, usage |
+| `content_pipeline/contracts.py` | `WriteRequest` (l.80) | What the writer receives |
+| `content_pipeline/models.py` | `Tweet` (l.94), `Draft` (l.99) | What the writer returns |
+| `agents/thread_writer/`, `agents/marketing_writer/` | `agent.yaml`, `system.md` | Model, limits, role |
+| `post_types/*/writer.md`, `type.yaml` | — | How to write each type; units, numbering |
+| `config/repair.md` | — | The repair prompt for malformed output |
+
+**Validator**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `validation` (l.907) | Running the validator, saving the audit, feedback |
+| `content_pipeline/validation.py` | `validate` (l.142) | Fix, number, check: the whole thing |
+| `content_pipeline/validation.py` | `fix_banned_characters` (l.69) | Context-aware em dash replacement |
+| `content_pipeline/validation.py` | `check_brand` (l.95), `check_leaked_source_ids` (l.119), `check_citations` (l.128) | The individual checks |
+| `content_pipeline/validation.py` | `length_feedback` (l.201) | "Shorten by at least N" measurements |
+| `content_pipeline/contracts.py` | `DraftAudit` (l.139), `.approved()` | The audit and its built-in guard |
+| `content_pipeline/models.py` | `ValidationResult` (l.105), `BrandRules` (l.213) | Result shape, brand rule fields |
+| `skills/brand_rules.py` + `.md` | — | The shared skill (calls `check_brand`) |
+| `inputs/brand-voice.md` | front matter | Banned words and characters, allowed links, `safe_fixes` |
+
+**The graph itself** (for later)
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `graph` (l.1371) | Every node and edge |
+| `content_pipeline/pipeline.py` | `WeekState` (l.378), `LaneState` (l.388), `merge_slots` (l.373) | The state LangGraph carries |
+| `content_pipeline/pipeline.py` | `_route_after_write` (l.429), `_route_after_review` (l.439) | The conditional edges |
+
+> [!tip] How to read it
+> Start with the `pipeline.py` node for a station (the "what happens"), then the agent or helper it calls (the "how"), then the `.md` and `.yaml` files (the "instructions"). Three files per station is usually enough.
+
+---
+
 ## 1. The big picture
 
 The system writes one week of X posts (3 technical threads, 3 marketing posts) for a smart contract audit firm. Each post moves down a line of stations:
