@@ -105,3 +105,67 @@ _Learn it as:_ “atomic file write”, “write-then-rename”.
 ### The short version
 
 Plan = **read the flags, build the settings, load the plan, apply `--set`, check everything, estimate the cost, create the folder, lock it, snapshot it, fingerprint it, start the bookkeeping, hand over to the graph**. Not a single LLM call happens in the Plan step. That’s deliberate: it’s pure code, so it’s free, fast and predictable.
+
+### Why a resumed run keeps the old rules
+
+Your instinct makes sense. The key is that **resume doesn’t mean “run again”. It means “finish a run that stopped halfway.”**
+
+Picture this. You start the week’s run on Monday. Three posts get written, checked against the rules, approved and saved. Then your API quota runs out and the run stops.
+
+On Tuesday you edit `brand-voice.md` and ban the word “crucial”. Then you resume.
+
+**If resume used the new rules:**
+
+- `thread_1`, `thread_2` and `marketing_1` were approved on Monday. One of them says “crucial”, and it’s already approved and saved.
+- The other three posts are checked against Tuesday’s rules.
+- Your final `posts.csv` now mixes posts checked by two different rulebooks. One contains a banned word, and the run’s own records say it passed. Nobody reading the output can tell which rules applied to which post.
+
+It’s like a teacher who changes the answer key after grading half the exams. Each grade looks fine on its own, but the class results mean nothing together.
+
+**What you do when you’ve changed the rules:** start a **new run**. A new run snapshots the new rules and applies them to all 6 posts. Resume is only for **recovering from an accident**: quota ran out, laptop slept, network died. It’s not for editing.
+
+There’s a technical reason too. Every saved step remembers a fingerprint of exactly what it was given (the `input_sha256` you’ll see in the code). If the rules changed underneath it, the saved steps would no longer match, and the code would refuse, or worse, quietly mix the two.
+
+A different design could say “on resume, re-check the finished posts against the new rules”. That’s possible, but it’s more complicated, and it isn’t really resuming anymore. It’s a new run that reuses some old drafts.
+
+### K. The bookkeeping files, in simple words
+
+Think of the run as a trip, and these files as the trip’s notebooks:
+
+|File|What it’s like|What goes in it|
+|---|---|---|
+|`runtime-settings.json`|The trip’s rules card|The settings this run is using right now: models, budgets. If you raise the budget on resume, the new number is written here.|
+|`usage.jsonl`|A stack of receipts|**One line per AI call**: which step, which model, how many tokens, how much it cost. Starts empty. The summary adds these up at the end.|
+|`external-usage.json`|A counter for everything that isn’t AI|How many web searches, page downloads and images. Not priced in dollars, just counted.|
+
+**What “atomic write” means.** Writing a file isn’t instant. The computer writes it piece by piece. If the power cuts halfway, you can be left with a broken file like:
+
+{"run_token_budget": 3000
+
+Next time the program reads it, it crashes, because that’s not valid JSON.
+
+Atomic write avoids this with a simple trick:
+
+1. Write the whole new content to a **separate temporary file** (`ledger.json.tmp`).
+2. When it’s completely finished, **swap** it into place with one rename.
+
+A rename is a single step for the operating system: it either happened or it didn’t. So at any moment the real file is either the complete old version or the complete new version, never half of each. It’s like writing a letter on scratch paper and only swapping it in once you’re done, instead of erasing and rewriting the original in place.
+
+---
+Research 
+First real station after Plan
+First place an LLM is called
+
+In the Langgraph its two Langgraph nodes in a row
+`focus_research` then `topic selection`
+
+Here’s our running example (`plan.json` plus `--set thread_2="oracle manipulation"`):
+
+|Slot|Focus|Handled by|
+|---|---|---|
+|thread_1|“reentrancy”|node 1, focused research|
+|thread_2|“oracle manipulation”|node 1, focused research|
+|thread_3|empty|node 2, topic selection|
+|marketing_1–3|empty|node 2, topic selection|
+
+### Node 1: focused research
