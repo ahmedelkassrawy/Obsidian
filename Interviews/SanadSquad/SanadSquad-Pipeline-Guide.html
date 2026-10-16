@@ -1,0 +1,701 @@
+<title>SanadSquad Pipeline Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section index; stations as a numbered run line, machinery and cheat sheet below */
+:root{
+  --bg:#f6f7fa; --surface:#ffffff; --fg:#14213d; --muted:#56607a; --line:#dde1ea;
+  --accent:#b86a00; --accent-bg:#fff3dc; --navy:#14213d; --amber:#fca311;
+  --code-bg:#eef1f6; --ok:#1d7a4d; --ok-bg:#e3f4ea; --warn:#9a5b00; --warn-bg:#fdf0d8; --bad:#a3302a; --bad-bg:#fbe6e4;
+  --llm:#6b3fb5; --llm-bg:#efe8fb;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1220; --surface:#131b2e; --fg:#e6eaf3; --muted:#9aa4bb; --line:#26304a;
+  --accent:#fcb13c; --accent-bg:#2b2210; --code-bg:#0f1729;
+  --ok:#5fd39a; --ok-bg:#12291f; --warn:#f2b44f; --warn-bg:#2a2010; --bad:#f08a82; --bad-bg:#2c1513;
+  --llm:#b79af0; --llm-bg:#221a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1220; --surface:#131b2e; --fg:#e6eaf3; --muted:#9aa4bb; --line:#26304a;
+  --accent:#fcb13c; --accent-bg:#2b2210; --code-bg:#0f1729;
+  --ok:#5fd39a; --ok-bg:#12291f; --warn:#f2b44f; --warn-bg:#2a2010; --bad:#f08a82; --bad-bg:#2c1513;
+  --llm:#b79af0; --llm-bg:#221a37; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:28px;font-size:14px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 0;border-left:2px solid transparent;padding-left:10px}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--fg);border-left-color:var(--amber);outline:none}
+nav.toc .grp{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px 12px}
+main{min-width:0}
+header.hero{padding:40px 0 24px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(32px,5vw,48px);line-height:1.08;margin:10px 0 12px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:700;font-size:28px;line-height:1.2;margin:56px 0 8px;text-wrap:balance;scroll-margin-top:16px}
+h3{font-family:var(--f-display);font-weight:500;font-size:20px;margin:28px 0 8px}
+p{max-width:68ch;margin:0 0 12px}
+.lede{font-size:18px;color:var(--muted);max-width:62ch}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre{font-family:var(--f-mono);font-size:13px;line-height:1.55;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:10px 0 16px}
+pre.mermaid{background:var(--surface);text-align:center}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--surface)}
+.tag{font-family:var(--f-mono);font-size:11px;font-weight:500;border-radius:4px;padding:2px 7px;letter-spacing:.03em;white-space:nowrap}
+.t-code{background:var(--ok-bg);color:var(--ok)}
+.t-llm{background:var(--llm-bg);color:var(--llm)}
+.t-mix{background:var(--accent-bg);color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin:8px 0 0}
+.station{border-top:1px solid var(--line);padding:26px 0 8px;display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;scroll-margin-top:16px}
+.station .num{font-family:var(--f-display);font-weight:700;font-size:30px;color:var(--amber);line-height:1}
+.station h2{margin:0 0 6px;font-size:24px}
+.job{font-size:17px;margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.box ul,.box ol{margin:0;padding-left:20px}
+.box li{margin:3px 0}
+.why{border-left:3px solid var(--amber);border-radius:0;padding:8px 14px;background:var(--accent-bg);margin:12px 0;max-width:72ch}
+.gap{border-left:3px solid var(--bad);border-radius:0;padding:8px 14px;background:var(--bad-bg);margin:12px 0;max-width:72ch;font-size:15px}
+.gap b{color:var(--bad)}
+.tbl{overflow-x:auto;margin:10px 0 16px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td code{white-space:nowrap}
+.concepts{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.concepts span{font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--surface)}
+.qa{border-top:1px solid var(--line);padding:16px 0}
+.qa .q{font-family:var(--f-display);font-weight:500;font-size:18px;margin:0 0 6px}
+.qa .a{margin:0 0 6px;max-width:72ch}
+.qa .push{font-size:14.5px;color:var(--muted);max-width:72ch;margin:0}
+.qa .push b{color:var(--fg);font-weight:600}
+.cat{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin:34px 0 0}
+.states{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.states span{font-family:var(--f-mono);font-size:12px;padding:3px 9px;border-radius:5px}
+.s-ok{background:var(--ok-bg);color:var(--ok)}.s-bad{background:var(--bad-bg);color:var(--bad)}.s-warn{background:var(--warn-bg);color:var(--warn)}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}nav.toc{display:none}.grid2{grid-template-columns:minmax(0,1fr)}.station{grid-template-columns:minmax(0,1fr)}.station .num{font-size:22px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <div class="grp">Overview</div>
+  <a href="#overview">The whole run</a>
+  <a href="#principles">Design rules</a>
+  <div class="grp">Stations</div>
+  <a href="#plan">1 Plan</a>
+  <a href="#research">2 Research</a>
+  <a href="#writer">3 Writer</a>
+  <a href="#validator">4 Validator</a>
+  <a href="#reviewer">5 Reviewer</a>
+  <a href="#visual">6 Visual + collect</a>
+  <a href="#export">7 Export</a>
+  <a href="#advisor">8 Advisor</a>
+  <a href="#summary">9 Summary</a>
+  <div class="grp">Machinery</div>
+  <a href="#langgraph">LangGraph</a>
+  <a href="#client">Model client</a>
+  <a href="#budget">Budget + resume</a>
+  <div class="grp">Reference</div>
+  <a href="#files">File map</a>
+  <a href="#cli">CLI flags</a>
+  <a href="#cheat">Interview cheat sheet</a>
+  <a href="#gaps">Known gaps</a>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">SanadSquad · AI engineering task</div>
+  <h1>How the content pipeline works, station by station</h1>
+  <p class="lede">One week of X posts for a smart contract audit firm: 3 technical threads and 3 marketing posts, researched, written, checked, reviewed, illustrated and exported to <code>posts.csv</code>. This guide follows one run from the command line to the summary, names the file behind every step, and ends with interview answers.</p>
+  <div class="meta">
+    <span class="chip">repo: D:\me\SanadSquad-day3</span>
+    <span class="chip">branch: feat/day3-delivery</span>
+    <span class="chip">checked at b59c24b</span>
+    <span class="chip">Python 3.13 · LangGraph · Pydantic</span>
+  </div>
+</header>
+
+<h2 id="overview">The whole run</h2>
+<p>A fixed workflow: code decides the order of steps, and LLMs do the judgment inside some of them. Only research has a small loop where the model picks its next move.</p>
+<pre class="mermaid">
+flowchart TD
+  CLI["CLI: run_week.py / run_piece.py"] --> PLAN["1 Plan · code"]
+  PLAN --> FR["2a Focused research · parallel"]
+  FR --> TS["2b Topic selection · 1 batch call"]
+  TS -->|"Send x6"| W
+  subgraph LANE["Lane, one per post, all in parallel"]
+    W["3 Writer · LLM"] --> V["4 Validator · code"]
+    V -->|"clean"| R["5 Reviewer · LLM"]
+    V -->|"violations"| RT{"retry left?"}
+    R -->|"rejected"| RT
+    RT -->|"yes, with feedback"| W
+    RT -->|"no"| DROP["dropped_quality"]
+    R -->|"accepted"| VIS["6 Visual · LLM + Pillow"]
+    VIS --> COL["collect"]
+    DROP --> COL
+  end
+  COL --> EXP["7 Export · code"]
+  EXP --> ADV["8 Advisor · LLM, suggest only"]
+  ADV --> SUM["9 Summary · code, last"]
+</pre>
+<div class="legend"><span><span class="tag t-code">CODE</span> deterministic, free</span><span><span class="tag t-llm">LLM</span> model call</span><span><span class="tag t-mix">MIXED</span> both</span></div>
+
+<div class="tbl"><table>
+<thead><tr><th>Station</th><th>Who</th><th>Job in one line</th><th>Writes</th></tr></thead>
+<tbody>
+<tr><td>1 Plan</td><td><span class="tag t-code">CODE</span></td><td>Read flags and plan, check everything, snapshot and fingerprint the run</td><td><code>snapshot/</code>, <code>run_identity.json</code></td></tr>
+<tr><td>2 Research</td><td><span class="tag t-mix">MIXED</span></td><td>Turn each topic into evidence cards; pick topics for empty slots</td><td><code>research_log.json</code>, <code>plan.resolved.json</code></td></tr>
+<tr><td>3 Writer</td><td><span class="tag t-llm">LLM</span></td><td>Draft the post from the pack only, citing sources per tweet</td><td><code>drafts.json</code></td></tr>
+<tr><td>4 Validator</td><td><span class="tag t-code">CODE</span></td><td>Safe fixes, numbering, hard-rule checks</td><td><code>drafts.json</code></td></tr>
+<tr><td>5 Reviewer</td><td><span class="tag t-llm">LLM</span></td><td>Score against the rubric; code decides pass or fail</td><td><code>review_report.json</code></td></tr>
+<tr><td>6 Visual</td><td><span class="tag t-mix">MIXED</span></td><td>LLM describes the card, code draws it</td><td><code>images/</code>, <code>visuals.json</code></td></tr>
+<tr><td>7 Export</td><td><span class="tag t-code">CODE</span></td><td>Write the brief's CSV and a JSON copy</td><td><code>posts.csv</code>, <code>posts.json</code></td></tr>
+<tr><td>8 Advisor</td><td><span class="tag t-llm">LLM</span></td><td>Suggest instruction edits as a diff, never apply them</td><td><code>advice.md</code>, <code>advice.patch</code></td></tr>
+<tr><td>9 Summary</td><td><span class="tag t-code">CODE</span></td><td>Shipped, dropped and why, tokens, cost</td><td><code>run_summary.json</code></td></tr>
+</tbody></table></div>
+
+<h2 id="principles">The design rules behind every choice</h2>
+<div class="grid2">
+  <div class="box"><h4>Rules in code, judgment in the model</h4><p>Anything code can check exactly (banned words, length, citation ids, routing, budget) is code. Models only do what needs judgment: research decisions, writing, scoring, choosing image text.</p></div>
+  <div class="box"><h4>Instructions are files</h4><p>Prompts, rubrics, brand rules and post types live in <code>.md</code> and <code>.yaml</code> files. A new post type is a new folder, with no orchestrator change.</p></div>
+  <div class="box"><h4>Nothing unsupported ships</h4><p>Every claim cites a source id; code checks the id exists; the reviewer checks the text is supported; a broken review fails closed.</p></div>
+  <div class="box"><h4>One failure never stops the run</h4><p>Each post ends in exactly one state: <code>shipped</code>, <code>dropped_quality</code>, <code>failed_research</code>, <code>failed_api</code>, <code>failed_budget</code> or <code>failed_output</code>. The other lanes keep going.</p></div>
+</div>
+
+<!-- STATIONS -->
+<section class="station" id="plan"><div class="num">01</div><div>
+<h2>Plan</h2>
+<p class="job"><span class="tag t-code">CODE</span> Startup work before the graph begins. Zero LLM calls.</p>
+<pre>python run_week.py --set thread_2="oracle manipulation" --token-budget 300000</pre>
+<div class="grid2">
+  <div class="box"><h4>Steps</h4><ol>
+    <li>Read flags with <code>argparse</code></li>
+    <li>Build settings: default &lt; <code>.env</code> &lt; env var &lt; flag, checked by Pydantic</li>
+    <li>Load <code>plan.json</code> (6 slots) and apply <code>--set</code></li>
+    <li>Preflight: safe names, files exist, rubric hard-fails unsupported claims, writers can't search</li>
+    <li>Estimate the worst case and warn (<code>--estimate</code> stops here)</li>
+    <li>Create the run folder and lock it</li>
+    <li>Snapshot every input; SHA-256 each file into <code>run_identity.json</code></li>
+    <li>Start bookkeeping files with atomic writes</li>
+    <li>Hand 6 blank cards (<code>SlotState</code>) to the graph</li>
+  </ol></div>
+  <div class="box"><h4>The card each post carries</h4>
+<pre style="margin:0">slot:     thread_2, tech-thread
+attempt:  0
+pack:     ← research
+draft:    ← writer
+audit:    ← validator
+review:   ← reviewer
+image:    ← visual
+outcome:  shipped / dropped / failed_*
+reasons:  why it failed
+feedback: what to fix on retry</pre></div>
+</div>
+<div class="why"><b>Why a snapshot:</b> resume means "finish a run that stopped", so it reads the snapshot, not your live files. Changing rules halfway would mix two rulebooks in one CSV. Changed the rules? Start a new run.</div>
+<div class="gap"><b>Known issue:</b> the worst-case estimate is about 45x too high (11.2M tokens against a 250k budget), so its warning fires on every run.</div>
+<div class="concepts"><span>fail fast</span><span>configuration precedence</span><span>Pydantic validation</span><span>path traversal</span><span>SHA-256 fingerprint</span><span>atomic write</span><span>file locking</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>cli.py</code></td><td><code>parser</code>, <code>main</code></td><td>Every flag; the startup order</td></tr>
+<tr><td><code>config.py</code></td><td><code>Settings.load</code>, <code>load_plan</code></td><td>Layered settings, the 280 cap, reading the plan</td></tr>
+<tr><td><code>pipeline.py</code></td><td><code>parse_sets</code>, <code>validate_inputs</code>, <code>estimate</code>, <code>snapshot</code></td><td><code>--set</code>, preflight, estimate, snapshot</td></tr>
+<tr><td><code>durability.py</code></td><td><code>atomic_json</code>, <code>snapshot_hashes</code>, <code>RunLock</code></td><td>Atomic writes, fingerprints, lock</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="research"><div class="num">02</div><div>
+<h2>Research</h2>
+<p class="job"><span class="tag t-mix">MIXED</span> Two graph nodes. The only place the model picks its own next step.</p>
+<div class="grid2">
+  <div class="box"><h4>Node 1 · focused_research</h4><p>Slots with a topic (<code>thread_1</code> "reentrancy", <code>thread_2</code> "oracle manipulation") run in parallel.</p><ol>
+    <li><span class="tag t-code">CODE</span> BM25 search of the knowledge base, top 5</li>
+    <li><span class="tag t-llm">LLM</span> up to 5 turns: <code>finish</code>, <code>search_kb</code> or <code>web_search</code></li>
+    <li><span class="tag t-code">CODE</span> runs each search, max 4</li>
+    <li><span class="tag t-code">CODE</span> checks every cited source was found with status ok</li>
+  </ol></div>
+  <div class="box"><h4>Node 2 · topic_selection</h4><p>Empty slots get topics.</p><ol>
+    <li><span class="tag t-llm">LLM</span> one batch call proposes a topic per slot, excluding taken topics and the last 4 runs</li>
+    <li><span class="tag t-code">CODE</span> <code>assign_topics</code> validates and fills any gap itself</li>
+    <li><span class="tag t-code">CODE</span> shortcut: picked from the list, so the evidence card is ready. No search, no LLM</li>
+  </ol></div>
+</div>
+<pre class="mermaid">
+flowchart LR
+  F["focus text from a human"] --> K["code: BM25 top 5"]
+  K --> L{"LLM: covered?"}
+  L -->|"yes"| P["pack: KB card"]
+  L -->|"no"| WS["code: Tavily, else ddgs + page fetch"]
+  WS --> L
+  E["empty slot"] --> T["LLM batch pick + code check"]
+  T --> S["shortcut pack, no search"]
+</pre>
+<div class="why"><b>Why focused slots search but empty slots don't:</b> an empty slot's topic was picked from the knowledge base's own list, so its card exists. A focused slot is free text, and nobody knows yet whether the knowledge base covers it.</div>
+<div class="why"><b>Why aliases matter:</b> BM25 matches words, not meaning. "rigging the exchange rate" shares no words with KB-18 "Price oracle manipulation", so without aliases KB-18 never reaches the top 5 and the model goes to the web.</div>
+<p><b>Evidence card (SourceRecord):</b> <code>source_id</code> (<code>KB-18</code>, <code>STAT-01</code>, <code>WEB-3f9a…</code>), kind, title, url, <code>evidence_text</code> (max 12,000 chars), status <code>ok</code> or <code>fetch_failed</code>. Web URLs are checked to be public addresses only (SSRF protection), and pages are cleaned with trafilatura.</p>
+<div class="concepts"><span>BM25 / lexical search</span><span>ReAct agent loop</span><span>structured output</span><span>prompt injection</span><span>SSRF</span><span>graceful degradation</span><span>race condition</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>focused</code>, <code>research_slot</code>, <code>select</code></td><td>The two nodes</td></tr>
+<tr><td><code>agents.py</code></td><td><code>ResearchAgent</code>, <code>TopicSelector</code></td><td>Shortcuts, the search loop, the batch pick</td></tr>
+<tr><td><code>research.py</code></td><td><code>KnowledgeBase</code>, <code>assign_topics</code>, <code>WebSearch</code>, <code>fetch_page</code></td><td>BM25, topic checks, Tavily/ddgs, safe page fetch</td></tr>
+<tr><td><code>agents/research/</code></td><td><code>loop.md</code>, <code>topics.md</code></td><td>The research instructions</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="writer"><div class="num">03</div><div>
+<h2>Writer</h2>
+<p class="job"><span class="tag t-llm">LLM</span> Drafts the post from its research pack, and nothing else.</p>
+<div class="grid2">
+  <div class="box"><h4>System prompt, glued from 4 files</h4><ol>
+    <li><code>agents/thread_writer/system.md</code> · role</li>
+    <li><code>post_types/tech-thread/writer.md</code> · how to write this type</li>
+    <li><code>skills/brand_rules.md</code> · shared brand skill</li>
+    <li><code>inputs/brand-voice.md</code> · tone, rules, stats</li>
+  </ol><p style="margin-top:8px">User message: the <code>WriteRequest</code> as JSON (pack, post type, feedback, previous draft).</p></div>
+  <div class="box"><h4>Returns a Draft</h4>
+<pre style="margin:0">tweets:
+  - text: "Your lending protocol trusts
+           a price. Who decides it?"
+    source_ids: ["KB-18"]
+  - text: "..."
+    source_ids: ["WEB-3f9a1c"]</pre></div>
+</div>
+<ul>
+  <li><b>No search tool,</b> and <code>load_agent</code> refuses a writer that lists one.</li>
+  <li><b>No numbering:</b> code adds <code>1/7</code> later. Budget 280 minus prefix minus about 30.</li>
+  <li><b>Never more specific than the evidence:</b> "again" must not become "twice".</li>
+  <li><b>Marketing writer budgets in words</b> (max 37), because models see tokens, not letters.</li>
+  <li><b>Retry:</b> attempt 2 gets the feedback and its own rejected draft, and must fix that draft.</li>
+</ul>
+<div class="concepts"><span>system vs user prompt</span><span>prompt composition</span><span>structured output</span><span>grounded citations</span><span>hallucination</span><span>tokenization</span><span>self-refine</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>write</code></td><td>Building the request, failure routing</td></tr>
+<tr><td><code>agents.py</code></td><td><code>Agent.invoke</code>, <code>Writer</code>, <code>identity</code></td><td>Messages, identity check</td></tr>
+<tr><td><code>config.py</code></td><td><code>load_prompt</code>, <code>load_agent</code></td><td>Gluing prompt files; writers can't search</td></tr>
+<tr><td><code>post_types/*/</code></td><td><code>writer.md</code>, <code>type.yaml</code></td><td>Style guide; units 5–10, numbering</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="validator"><div class="num">04</div><div>
+<h2>Validator</h2>
+<p class="job"><span class="tag t-code">CODE</span> Free, instant, same answer every time. Fix, then number, then check.</p>
+<div class="grid2">
+  <div class="box"><h4>1 · Safe fixes (logged, original kept)</h4><ul>
+    <li><code>banned_characters</code>: em dash → ", " or a space; URLs untouched</li>
+    <li><code>whitespace</code>: collapse spaces</li>
+    <li><code>curly_quotes</code>: curly → straight</li>
+    <li><code>trailing_hashtags</code>: only a block at the very end</li>
+  </ul></div>
+  <div class="box"><h4>3 · Checks (any one rejects)</h4><ul>
+    <li>Cited ids exist in this pack with status ok</li>
+    <li>Tweet count within <code>units</code></li>
+    <li>No source id leaked into the text</li>
+    <li>Banned phrases (whole words, any case), banned characters, hashtags, link domain allow-list</li>
+    <li>X weighted length ≤ limit (links count 23)</li>
+  </ul></div>
+</div>
+<p><b>2 · Numbering</b> is added before the checks, so the 280 limit includes "3/7 " and the approved text is exactly the exported text.</p>
+<pre>"5/7 This fix is guaranteed. Details at KB-18 https://evil.io/oracle"
+  → tweet_5:leaked_source_id:KB-18
+  → tweet_5:banned_phrase:guaranteed
+  → tweet_5:link_domain:evil.io
+  accepted: false → reviewer skipped → back to the writer</pre>
+<p>On a length failure the writer also gets measurements: <code>weighted_length:312/280:shorten_by_at_least:32</code>. The reviewer can only read the draft through <code>audit.approved()</code>, which raises if it wasn't accepted.</p>
+<div class="gap"><b>Doc drift:</b> DESIGN.md §6.11 says replacing an em dash isn't safe. The code later made it a context-aware safe fix (plan step S9).</div>
+<div class="concepts"><span>deterministic guardrails</span><span>regex lookaround</span><span>allow-list vs deny-list</span><span>twitter-text weighted length</span><span>text normalization</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>validation.py</code></td><td><code>validate</code>, <code>fix_banned_characters</code>, <code>check_brand</code>, <code>check_citations</code>, <code>length_feedback</code></td><td>The whole validator</td></tr>
+<tr><td><code>pipeline.py</code></td><td><code>validation</code></td><td>Saving the audit, feedback, routing</td></tr>
+<tr><td><code>inputs/brand-voice.md</code></td><td>front matter</td><td>Banned lists, allowed links, safe_fixes</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="reviewer"><div class="num">05</div><div>
+<h2>Reviewer</h2>
+<p class="job"><span class="tag t-llm">LLM</span> The model judges; code decides. It never says "approved".</p>
+<div class="grid2">
+  <div class="box"><h4>Rubric (1–5 each, with a reason)</h4><ul>
+    <li><code>hook</code>, <code>technical_accuracy</code>, <code>grounding</code></li>
+    <li><code>voice</code>, <code>clarity</code>, <code>cta</code></li>
+  </ul><h4 style="margin-top:12px">Hard-fail flags</h4><ul>
+    <li><code>unsupported_claim</code>: any clause not in the evidence</li>
+    <li><code>off_brand</code>: banned wording, hype, leaked ids, unlabelled demo claim</li>
+  </ul></div>
+  <div class="box"><h4>Code's decision</h4>
+<pre style="margin:0">average  = sum(scores) / 6
+accepted = average ≥ 3.5
+           AND no hard-fail flag
+
+4,5,2,4,4,3 → 3.67, but unsupported_claim
+            → REJECTED
+all 3s      → 3.0 → REJECTED</pre></div>
+</div>
+<ul>
+  <li>Checks <b>every</b> claim, including uncited ones; background knowledge doesn't count as evidence.</li>
+  <li>The answer form is built from the rubric at runtime (<code>review_wire_schema</code>), so adding a criterion needs no code.</li>
+  <li>Broken form → one repair → still broken → <code>failed_output</code>. <b>A broken review never approves.</b></li>
+  <li>Only reasons below 3.5 and hard-fail reasons go back to the writer.</li>
+  <li>Retry node: attempt 1 rejected → writer again; attempt 2 rejected → <code>dropped_quality</code>.</li>
+  <li><code>reasoning_effort: medium</code>, the only agent that pays for thinking.</li>
+</ul>
+<div class="gap"><b>Weak spot:</b> writer and reviewer use the same model, and LLM judges tend to favor their own style. A different model family is a one-line change in <code>agents/reviewer/agent.yaml</code>.</div>
+<div class="concepts"><span>LLM-as-a-judge</span><span>rubric evaluation</span><span>fail closed</span><span>dynamic schema</span><span>self-preference bias</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>review</code>, <code>retry</code></td><td>Request, saving, routing, the drop rule</td></tr>
+<tr><td><code>agents.py</code></td><td><code>Reviewer</code>, <code>review_contract_errors</code>, <code>score_review</code></td><td>Form checks and the decision</td></tr>
+<tr><td><code>review_wire.py</code></td><td><code>review_wire_schema</code></td><td>Form built from the rubric</td></tr>
+<tr><td><code>post_types/*/rubric.md</code></td><td>front matter + prose</td><td>Criteria, meanings, hard-fail flags</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="visual"><div class="num">06</div><div>
+<h2>Visual + collect</h2>
+<p class="job"><span class="tag t-mix">MIXED</span> Only accepted posts. The LLM chooses the words, code draws the pixels.</p>
+<pre class="mermaid">
+flowchart LR
+  A["code: severity from kb.json"] --> B["LLM: ImageSpec"]
+  B --> C{"code: overlay_errors"}
+  C -->|"ok"| D["Pillow card 1200x675"]
+  C -->|"problem"| F["code: fallback_spec"]
+  F --> D
+  D -->|"draw failed"| J["ship the spec JSON"]
+  D --> S["outcome: shipped"]
+  J --> S
+</pre>
+<div class="tbl"><table>
+<thead><tr><th>Image-text check</th><th>Fails when</th></tr></thead>
+<tbody>
+<tr><td>Grounded</td><td>Overlay isn't an exact excerpt of a tweet, evidence or source title</td></tr>
+<tr><td>No new numbers</td><td>A number appears that isn't in the tweets or evidence</td></tr>
+<tr><td>Brand</td><td>Banned word, character, hashtag or link</td></tr>
+<tr><td>Palette</td><td>Colors aren't exactly the brand palette</td></tr>
+<tr><td>Severity</td><td>Doesn't match the source, or set when the type says never</td></tr>
+</tbody></table></div>
+<p><b>collect</b> ends every lane: it refuses a card without an outcome, records shipped posts in <code>final.json</code>, and hands the card back for the fan-in.</p>
+<div class="gap"><b>Gaps:</b> Cloudflare FLUX was cut, but <code>config/visual.yaml</code> still lists it and nothing reads that list. If no fallback candidate passes, <code>fallback_spec</code> raises and escapes the lane.</div>
+<div class="concepts"><span>separating content from rendering</span><span>Pillow ImageDraw</span><span>alt text</span><span>fan-in</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>visual</code>, <code>_visual_spec</code>, <code>_render_visual</code>, <code>collect</code></td><td>The flow and the lane's end</td></tr>
+<tr><td><code>images.py</code></td><td><code>overlay_errors</code>, <code>fallback_spec</code>, <code>render_card</code></td><td>Checks, code-built spec, the card</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="export"><div class="num">07</div><div>
+<h2>Export</h2>
+<p class="job"><span class="tag t-code">CODE</span> Runs once after all lanes join. Writes the brief's two files.</p>
+<pre>Post Text,Image
+"1/7 Your lending protocol trusts a price. Who decides that price?
+2/7 ...",images/slot-thread_2.png</pre>
+<ul>
+  <li>Plan order, not finish order, so the same plan gives the same CSV order.</li>
+  <li>Shipped posts only; tweets taken from <code>audit.approved()</code>, byte-for-byte what was reviewed.</li>
+  <li>Image paths must stay inside the run folder; they're relative, so the folder can move.</li>
+  <li>Python's <code>csv</code> module quotes multi-line cells. Zero shipped still writes the header.</li>
+  <li><code>Trail</code> (same file) writes every record file: one lock per file, no duplicate record ids, atomic writes.</li>
+</ul>
+<div class="concepts"><span>CSV quoting (RFC 4180)</span><span>deterministic ordering</span><span>idempotent writes</span><span>path traversal</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>export</code></td><td>Plan order, shipped only</td></tr>
+<tr><td><code>trail.py</code></td><td><code>export_posts</code>, <code>Trail</code></td><td>CSV + JSON; safe concurrent records</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="advisor"><div class="num">08</div><div>
+<h2>Advisor</h2>
+<p class="job"><span class="tag t-llm">LLM</span> Looks back at the run and suggests instruction edits. A human applies them, or doesn't.</p>
+<div class="grid2">
+  <div class="box"><h4>Reads</h4><ul>
+    <li>Evidence: research log, drafts, review report, final</li>
+    <li>Editable files only: <code>brand-voice.md</code>, each type's <code>writer.md</code> and <code>rubric.md</code>, with fingerprints</li>
+  </ul></div>
+  <div class="box"><h4>Code rejects any edit that</h4><ul>
+    <li>targets another file, or a changed file (fingerprint)</li>
+    <li>has a <code>before</code> that isn't unique</li>
+    <li>touches YAML front matter (machine rules)</li>
+    <li>adds or changes a line with digits</li>
+    <li>makes a patch over 16,000 chars</li>
+  </ul></div>
+</div>
+<p>Output: <code>advice.md</code> (up to 10 recommendations) and <code>advice.patch</code> (a unified diff), always written. Apply with <code>git apply output/&lt;run&gt;/advice.patch</code>. Failure is recorded and never touches the posts.</p>
+<div class="why"><b>Why suggest-only:</b> a system that rewrites its own prompts can drift or loosen its own rubric. Code limits what the advisor can change; the human reading the diff judges whether it should.</div>
+<div class="concepts"><span>human-in-the-loop</span><span>unified diff</span><span>optimistic concurrency</span><span>prompt drift</span></div>
+<div class="tbl"><table><tbody>
+<tr><td><code>advisor.py</code></td><td><code>instruction_files</code>, <code>advice_patch</code>, <code>Advisor</code></td><td>Editable files, every safety check</td></tr>
+<tr><td><code>pipeline.py</code></td><td><code>advise</code>, <code>_record_advice</code></td><td>Evidence, failure handling</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="station" id="summary"><div class="num">09</div><div>
+<h2>Summary</h2>
+<p class="job"><span class="tag t-code">CODE</span> The last node, after the advisor, so every token is counted.</p>
+<pre>slots:          per slot → outcome, attempts, topic, reasons
+shipped:        5
+confirmed_tokens / uncertain_tokens
+confirmed_cost_usd / uncertain_cost_usd
+unpriced:       any model without a known price?
+external_usage: searches, Tavily credits, page fetches, cards
+cost_scope:     "LLM USD only; search/image calls counted but not priced"
+advisor:        completed | failed | not_enabled</pre>
+<div class="gap"><b>Gap:</b> <code>run.log</code> is hard-coded to two lines. One line per node would be a cheap observability win.</div>
+<div class="tbl"><table><tbody>
+<tr><td><code>pipeline.py</code></td><td><code>finalize</code>, <code>_build_summary</code></td><td>Building the report</td></tr>
+<tr><td><code>contracts.py</code></td><td><code>RunSummary</code>, <code>TerminalSlot</code>, <code>ExternalUsage</code></td><td>Every field</td></tr>
+</tbody></table></div>
+</div></section>
+
+<!-- MACHINERY -->
+<h2 id="langgraph">LangGraph: the machine that moves the cards</h2>
+<p>A node is a step, an edge says what comes next, and the state is the data travelling along. Each node returns only what it changed.</p>
+<div class="grid2">
+  <div class="box"><h4>Week graph</h4><pre style="margin:0">START → focused_research
+      → topic_selection
+      → lane ×6   (Send)
+      → export → advisor → summary → END</pre></div>
+  <div class="box"><h4>Lane graph (a subgraph)</h4><pre style="margin:0">START → write → validate → review
+      → retry → visual → collect → END</pre></div>
+</div>
+<div class="tbl"><table>
+<thead><tr><th>Idea</th><th>In this code</th></tr></thead>
+<tbody>
+<tr><td>Conditional edges</td><td><code>_route_after_write</code>, <code>_route_after_review</code>: a few lines of code act as the router, not an LLM</td></tr>
+<tr><td>Send (fan-out)</td><td>After topic selection, six <code>Send("lane", card)</code> run the lanes in parallel</td></tr>
+<tr><td>Reducer (fan-in)</td><td><code>slots: Annotated[dict, merge_slots]</code> merges six lanes without overwriting</td></tr>
+<tr><td>Subgraph</td><td>The compiled lane graph is one node in the week graph</td></tr>
+<tr><td>Checkpointer</td><td><code>AsyncSqliteSaver</code> → <code>checkpoint.sqlite</code>, keyed by the run's thread id</td></tr>
+<tr><td>Safety</td><td><code>recursion_limit</code> stops runaway loops; <code>interrupt_after</code> lets tests simulate crashes</td></tr>
+</tbody></table></div>
+
+<h2 id="client">Model client: how every LLM call works</h2>
+<p>Every agent calls <code>ModelClient.call</code>, so retries, repair, cost and budget behave the same everywhere.</p>
+<pre class="mermaid">
+sequenceDiagram
+  participant A as Agent
+  participant C as ModelClient
+  participant L as Ledger
+  participant P as Provider
+  A->>C: call(schema, messages)
+  C->>C: id thread_2/writer/1/1, estimate worst case
+  C->>L: reserve(tokens, cost)
+  L-->>C: ok, or BudgetExhausted
+  C->>L: dispatch
+  C->>P: send (structured output, include_raw)
+  alt no answer
+    C->>L: uncertain
+    C->>C: 402/403 stop · timeout/429/5xx retry ×3 · else failed_api
+  else answer
+    C->>L: settle(real tokens, real cost)
+    C->>C: cut off? retry at 1.5x · bad form? one repair
+    C-->>A: parsed answer
+  end
+  C->>C: one receipt line in usage.jsonl per attempt
+</pre>
+<div class="tbl"><table>
+<thead><tr><th>Situation</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td>402 / 403</td><td><code>failed_budget</code>, no retry</td></tr>
+<tr><td>Timeout, connection, 408, 429, 5xx</td><td>Up to 3 retries: 1s, 2s, 4s; 429 respects <code>Retry-After</code> (max 60s)</td></tr>
+<tr><td>Cut off (<code>length</code>)</td><td>One retry at 1.5x the output limit, then <code>failed_output</code></td></tr>
+<tr><td>Doesn't fit the form, or the agent's check rejects it</td><td>One repair with error locations only, then <code>failed_output</code></td></tr>
+<tr><td>Cost</td><td>Provider's own (OpenRouter <code>cost</code> + <code>upstream_inference_cost</code>), else <code>genai-prices</code>; unknown model refused unless <code>--allow-unpriced</code></td></tr>
+</tbody></table></div>
+
+<h2 id="budget">Budget and resume</h2>
+<h3>The ledger: money is set aside before it's spent</h3>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> reserved: reserve (fits budget)
+  reserved --> dispatched: sent
+  dispatched --> confirmed: answer, settle real numbers
+  dispatched --> uncertain: no answer, may be billed
+  reserved --> released: crash before sending
+  dispatched --> uncertain: crash after sending
+</pre>
+<p>Reserve rule: add every entry that isn't <code>released</code>, including calls in flight. If this call's worst case crosses the token or dollar budget, refuse it: that slot becomes <code>failed_budget</code>, the others continue. A lock makes the six lanes take turns.</p>
+<div class="gap"><b>A guard, not a perfect cap:</b> input is estimated (chars / 3.5 + 15%), so a call can overshoot slightly, recorded as <code>overshoot_tokens</code>.</div>
+<h3>Resume</h3>
+<pre>python run_week.py --resume output/20261016T091500-a1b2c3d4 --token-budget 400000</pre>
+<ol>
+  <li>Read-only preflight: snapshot fingerprints match, ledger and records valid, checkpoint exists, budgets only rise.</li>
+  <li>Lock the folder. Already finished? Return the saved summary.</li>
+  <li>Reopen the ledger: <code>reserved</code> → released, <code>dispatched</code> → uncertain (kept on the bill).</li>
+  <li><code>graph.ainvoke(None, config)</code> continues from the checkpoint.</li>
+  <li>Research, review, visual and advisor reuse saved records whose <code>input_sha256</code> matches, so re-runs are free.</li>
+  <li>The budget is lifetime: five resumes don't get five budgets.</li>
+</ol>
+<div class="gap"><b>Can't promise:</b> a call billed just before a crash, whose result wasn't saved, is made again. It's documented and kept as an uncertain charge.</div>
+
+<!-- REFERENCE -->
+<h2 id="files">File map</h2>
+<pre>SanadSquad-day3/
+├── run_week.py, run_piece.py   entry points → cli.main
+├── content_pipeline/
+│   ├── cli.py            flags → settings → plan → estimate → run
+│   ├── config.py         Settings; loading plan, types, agents, prompts
+│   ├── pipeline.py       the LangGraph graph and every node
+│   ├── agents.py         ResearchAgent, TopicSelector, Writer, Reviewer, VisualAgent
+│   ├── research.py       KnowledgeBase (BM25), assign_topics, WebSearch, fetch_page
+│   ├── tools.py          search_kb / web_search as tools
+│   ├── validation.py     fixes, numbering, checks
+│   ├── review_wire.py    reviewer form built from the rubric
+│   ├── images.py         overlay checks, fallback spec, Pillow card
+│   ├── advisor.py        editable files, edit checks, diff
+│   ├── trail.py          record files, posts.csv / posts.json
+│   ├── model_client.py   every LLM call: reserve, retry, repair, cost
+│   ├── ledger.py         budget reservations
+│   ├── durability.py     atomic writes, lock, fingerprints, resume checks
+│   ├── models.py         SourceRecord, ResearchPack, Draft, Review, ImageSpec…
+│   └── contracts.py      SlotState, requests, records, RunSummary
+├── inputs/               brand-voice.md, kb.json (20 entries), plan.json
+├── post_types/<type>/    type.yaml, writer.md, rubric.md, research.md (+ angles.yaml)
+├── agents/<agent>/       agent.yaml (model, limits, skills) + system.md
+├── skills/               brand_rules, search_kb, web_search (.py + .md)
+└── config/               repair.md, visual.yaml</pre>
+<h3>What a run folder contains</h3>
+<div class="tbl"><table>
+<thead><tr><th>File</th><th>Written by</th><th>Holds</th></tr></thead>
+<tbody>
+<tr><td><code>snapshot/</code>, <code>run_identity.json</code></td><td>Plan</td><td>Frozen inputs, thread id, fingerprints</td></tr>
+<tr><td><code>plan.resolved.json</code></td><td>Research</td><td>Final topic per slot, warnings</td></tr>
+<tr><td><code>research_log.json</code></td><td>Research</td><td>Every search and evidence card</td></tr>
+<tr><td><code>drafts.json</code></td><td>Writer, validator</td><td>Drafts, fixes, violations</td></tr>
+<tr><td><code>review_report.json</code></td><td>Reviewer</td><td>Scores, reasons, decisions</td></tr>
+<tr><td><code>visuals.json</code>, <code>images/</code></td><td>Visual</td><td>Specs and cards</td></tr>
+<tr><td><code>final.json</code></td><td>collect</td><td>Shipped pieces</td></tr>
+<tr><td><code>posts.csv</code>, <code>posts.json</code></td><td>Export</td><td>The deliverable</td></tr>
+<tr><td><code>advice.md</code>, <code>advice.patch</code></td><td>Advisor</td><td>Suggestions and diff</td></tr>
+<tr><td><code>ledger.json</code>, <code>usage.jsonl</code>, <code>external-usage.json</code></td><td>Model client, research, visual</td><td>Budget, one receipt per call, non-LLM counts</td></tr>
+<tr><td><code>checkpoint.sqlite</code>, <code>state.json</code></td><td>LangGraph</td><td>Save points for resume</td></tr>
+<tr><td><code>run_summary.json</code></td><td>Summary</td><td>The final report</td></tr>
+</tbody></table></div>
+
+<h2 id="cli">CLI flags</h2>
+<div class="tbl"><table>
+<thead><tr><th>Flag</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>--plan</code> / <code>--set slot="topic"</code></td><td>Plan file; override one slot's topic (repeatable)</td></tr>
+<tr><td><code>--type</code> / <code>--topic</code></td><td><code>run_piece.py</code>: one post, one-slot plan in memory</td></tr>
+<tr><td><code>--output</code> / <code>--resume</code></td><td>Run folder (refuses existing); continue an interrupted run</td></tr>
+<tr><td><code>--default-model</code> / <code>--model-override</code></td><td>Model for agents without their own; force one model for all</td></tr>
+<tr><td><code>--reasoning-effort-override</code></td><td>Force thinking level for every agent</td></tr>
+<tr><td><code>--token-budget</code> / <code>--cost-budget</code></td><td>Run caps; on resume they can only rise</td></tr>
+<tr><td><code>--allow-unpriced</code></td><td>Allow a model with no known price (token cap still applies)</td></tr>
+<tr><td><code>--max-tweet-chars</code></td><td>Lower the 280 limit only</td></tr>
+<tr><td><code>--max-concurrency</code></td><td>Limit parallel model calls</td></tr>
+<tr><td><code>--estimate</code> / <code>--no-advisor</code></td><td>Dry run that prints worst-case cost; skip the advisor</td></tr>
+</tbody></table></div>
+<p>Precedence: flag &gt; environment variable &gt; <code>.env</code> &gt; default. Tweets per thread live in <code>type.yaml</code> (<code>units</code>), not in flags.</p>
+
+<!-- CHEAT SHEET -->
+<h2 id="cheat">Interview cheat sheet</h2>
+<p>Each answer has a short version to say first, and a follow-up if they push.</p>
+
+<div class="cat">Architecture</div>
+<div class="qa"><p class="q">Why a workflow and not a fully autonomous agent?</p>
+<p class="a">The steps never change: research, write, check, review, illustrate, export. Code fixing the order makes runs predictable, cheaper and testable, and one failure can't confuse the control flow.</p>
+<p class="push"><b>If they push:</b> agency is used where it helps. Research is a bounded agent loop: the model chooses between knowledge-base search, web search and finishing, but code makes the first search, runs the tools, caps it at 4 searches and 5 turns, and verifies every cited source.</p></div>
+
+<div class="qa"><p class="q">Why these agents and not more or fewer?</p>
+<p class="a">Each owns one kind of judgment: finding evidence, writing, judging, choosing image text, suggesting improvements. Anything code can do exactly (validation, export, summary, routing) isn't an agent.</p>
+<p class="push"><b>If they push:</b> a separate fact-checker would duplicate the reviewer's job, which the brief penalizes. Two writers exist because threads and marketing posts have different rules, but they're the same class configured by files.</p></div>
+
+<div class="qa"><p class="q">Why LangGraph?</p>
+<p class="a">The pipeline is a small state machine. LangGraph gives typed state, parallel lanes with <code>Send</code>, visible conditional edges for retry-or-drop, and a checkpointer for resume.</p>
+<p class="push"><b>If they push:</b> it's used for orchestration only. Agents are plain Python classes testable without the graph; graph nodes are thin glue. That keeps "no agent doing another agent's job" visible in code.</p></div>
+
+<div class="qa"><p class="q">How do agents hand off work?</p>
+<p class="a">Through typed Pydantic contracts: ResearchPack → Draft → ValidationResult → Review → ImageSpec. Each agent gets one input object and returns one output object, and never sees the week state.</p>
+<p class="push"><b>If they push:</b> each slot carries a <code>SlotState</code> card where every station fills only its own field. Identity checks (slot id and attempt) stop a result landing on the wrong card.</p></div>
+
+<div class="cat">Grounding and quality</div>
+<div class="qa"><p class="q">How do you stop hallucinated claims?</p>
+<p class="a">Three layers. The writer only sees its research pack and must cite source ids per tweet. Code checks every cited id exists with usable evidence. The reviewer checks every factual clause, cited or not, against the evidence text, and any unsupported claim is a hard fail.</p>
+<p class="push"><b>If they push:</b> background knowledge doesn't count as support, words like "most" or "prevents" need evidence, and the writer is told never to be more specific than the evidence. A <code>--set</code> topic is not evidence.</p></div>
+
+<div class="qa"><p class="q">What does "rules in code, judgment in the model" mean here?</p>
+<p class="a">Banned characters, hashtags, links, length, tweet count and citation ids are checked by the validator, never by an LLM. The reviewer gives scores; code computes the pass decision.</p>
+<p class="push"><b>If they push:</b> the validator runs before the reviewer, so we never pay an LLM to judge a post that already broke a rule. Numbering is added by code before validation, so the checked text is the exported text.</p></div>
+
+<div class="qa"><p class="q">How does the reviewer decide?</p>
+<p class="a">It scores six rubric criteria from 1 to 5 with reasons and sets two hard-fail flags. Code accepts only if the average is at least 3.5 and no flag is true.</p>
+<p class="push"><b>If they push:</b> the answer form is generated from the rubric file, so criteria are configurable. A malformed review gets one repair and then fails closed. A broken review never approves.</p></div>
+
+<div class="qa"><p class="q">What's the retry policy?</p>
+<p class="a">One content retry per post, as the brief says. A rejection by the validator or the reviewer sends feedback and the rejected draft back to the writer; a second rejection drops the post with its reasons.</p>
+<p class="push"><b>If they push:</b> API failures and cut-off answers are separate: up to 3 transient retries with backoff, one retry at 1.5x output for truncation, one repair for malformed output. None of those spend the content retry.</p></div>
+
+<div class="qa"><p class="q">Would you post the output as-is?</p>
+<p class="a">That's what the gates aim for: brand rules enforced in code, every claim grounded, a rubric pass bar, and images that only reuse grounded text.</p>
+<p class="push"><b>If they push:</b> the honest risk is the reviewer sharing the writer's model. I'd switch it to a different model family and add a small eval set with planted unsupported claims.</p></div>
+
+<div class="cat">Reliability and cost</div>
+<div class="qa"><p class="q">What happens if the API dies mid-run?</p>
+<p class="a">That call retries up to 3 times with backoff. If it still fails, only that post fails with <code>failed_api</code>; the other lanes continue, and export and summary always run.</p>
+<p class="push"><b>If they push:</b> the run can be resumed. The checkpointer saved finished steps, saved records make re-run steps free, and calls sent but never answered stay on the bill as uncertain charges.</p></div>
+
+<div class="qa"><p class="q">How do you control cost?</p>
+<p class="a">A ledger reserves each call's worst case before sending it. If the run's token or dollar budget would be crossed, the call is refused and that post fails with <code>failed_budget</code>.</p>
+<p class="push"><b>If they push:</b> it's a pre-call guard, not a perfect cap, since input tokens are estimated. Real tokens come from the provider's usage data, cost from the provider or <code>genai-prices</code>, and the summary reports confirmed and uncertain spend separately.</p></div>
+
+<div class="qa"><p class="q">How do you measure tokens across providers?</p>
+<p class="a">LangChain's normalized <code>usage_metadata</code>, read from the raw response even with structured output. Missing counts are estimated and flagged.</p>
+<p class="push"><b>If they push:</b> each attempt writes a receipt to <code>usage.jsonl</code> with cached and reasoning tokens, cost source, overshoot versus the reservation, finish reason and failure kind.</p></div>
+
+<div class="qa"><p class="q">Why can't resume guarantee exactly-once billing?</p>
+<p class="a">If a call is billed but the process dies before saving its result, there's no record to reuse, so resume calls again. The design documents this rather than overclaiming.</p>
+<p class="push"><b>If they push:</b> the ledger marks a call "dispatched" before sending; after a crash those become uncertain charges kept in the budget, so spend never disappears.</p></div>
+
+<div class="cat">Extensibility</div>
+<div class="qa"><p class="q">How do you add a post type?</p>
+<p class="a">Add a folder under <code>post_types/</code> with <code>type.yaml</code>, <code>writer.md</code>, <code>rubric.md</code> and <code>research.md</code>, and an agent folder if it needs its own writer. The orchestrator never names a post type.</p>
+<p class="push"><b>If they push:</b> <code>type.yaml</code> sets the writer, rubric, tweet range, numbering, topic source, pass bar, hard-fail flags and visual template. A type needing a new stage would need code.</p></div>
+
+<div class="qa"><p class="q">How would you grow to 15 slots?</p>
+<p class="a">The graph doesn't change: more slots means more <code>Send</code> lanes. Raise the budget and use <code>--max-concurrency</code> for provider rate limits.</p>
+<p class="push"><b>If they push:</b> with a bigger knowledge base, swap BM25 for embeddings inside <code>search_kb</code>, a one-file change. Topic de-duplication already runs in one place.</p></div>
+
+<div class="qa"><p class="q">How would you add a second platform?</p>
+<p class="a">Make the platform an explicit capability: character limit, thread support and export format per platform, with exporters as adapters like the image backends.</p>
+<p class="push"><b>If they push:</b> today 280 is locked in three places on purpose, so a config typo can't produce posts X won't accept. Removing that lock is a deliberate design change, not a setting.</p></div>
+
+<div class="qa"><p class="q">Why can't the advisor edit files itself?</p>
+<p class="a">A system rewriting its own prompts can drift or loosen its own rubric. It writes a diff a human reviews and applies with <code>git apply</code>.</p>
+<p class="push"><b>If they push:</b> code blocks edits outside five allowed files, edits to machine-rule front matter, lines with digits, stale files (fingerprint check) and large patches.</p></div>
+
+<div class="cat">Observability and security</div>
+<div class="qa"><p class="q">How do you debug a bad post?</p>
+<p class="a">Every run has its own folder: the research log shows sources, drafts show fixes and violations, the review report shows scores and reasons, and usage shows every call.</p>
+<p class="push"><b>If they push:</b> records have stable ids like <code>thread_2/reviewer/2/1</code>, so you can follow one post through every station.</p></div>
+
+<div class="qa"><p class="q">What security risks did you consider?</p>
+<p class="a">Prompt injection from web pages (evidence is treated as data), SSRF (only public URLs are fetched, redirects re-checked), path traversal (safe names, image paths kept inside the run folder), and secrets (keys only from <code>.env</code>, error output redacts details).</p></div>
+
+<div class="cat">Your own judgment</div>
+<div class="qa"><p class="q">What would you do next?</p>
+<p class="a">Produce the committed live sample run, split reviewer and writer models, add per-node logging to <code>run.log</code>, fix the cost estimate, catch the visual fallback error, and either build Cloudflare or remove it from <code>visual.yaml</code>.</p></div>
+
+<div class="qa"><p class="q">What was the hardest trade-off?</p>
+<p class="a">How much to trust the model. Every place a model acts, code bounds it: research is capped and verified, the reviewer can't approve, image text must be an exact excerpt, and the advisor can only suggest.</p></div>
+
+<h2 id="gaps">Known gaps to mention before they find them</h2>
+<div class="tbl"><table>
+<thead><tr><th>Gap</th><th>Why it matters</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>No committed sample run in <code>output/</code></td><td>The brief requires one</td><td>Run live once quota allows</td></tr>
+<tr><td>Worst-case estimate ~45x too high</td><td>Startup warning fires every run</td><td>Base it on real per-agent limits</td></tr>
+<tr><td><code>run.log</code> is two hard-coded lines</td><td>Observability is graded</td><td>One line per node</td></tr>
+<tr><td>Reviewer uses the writer's model</td><td>Self-preference bias</td><td>Different model family</td></tr>
+<tr><td>Visual fallback can raise uncaught</td><td>Breaks "failures stay in the lane"</td><td>Catch and ship the spec, or fail the slot</td></tr>
+<tr><td>Cloudflare listed but not built</td><td>Config claims more than code does</td><td>Remove from <code>visual.yaml</code> or build the adapter</td></tr>
+<tr><td>DESIGN.md §6.11 vs code on em dashes</td><td>Doc drift</td><td>Update the doc</td></tr>
+<tr><td>Errors print only the exception type</td><td>Hard to diagnose a typo or missing key</td><td>Print the code's own error messages</td></tr>
+</tbody></table></div>
+
+<footer>Built from DESIGN.md and the code in <code>D:\me\SanadSquad-day3</code> at commit b59c24b. Tweet texts, feedback wording and WEB ids are illustrative; file names, functions, KB entries, limits and routing come from the actual code.</footer>
+</main>
+</div>
