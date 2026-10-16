@@ -9,18 +9,19 @@ Related: [[Task - Multi-Agent Content Pipeline]] · [[Sanad-Squad-Interview-Prep
 ## Where we are
 
 ```text
-Big picture      done
-CLI + Plan       done
-Research         done
-Writer           done
-Validator        done
-Reviewer         next
-Retry / drop
-Visual
-Export
-Advisor + Summary
-LangGraph itself (nodes, edges, state, checkpointer)
-Budget ledger
+Big picture          done
+CLI + Plan           done
+Research             done
+Writer               done
+Validator            done
+Reviewer + retry     done
+Visual + collect     done
+Export               done
+Advisor              done
+Summary              done
+LangGraph itself     done
+Model client         done
+Budget + resume      done
 ```
 
 ---
@@ -126,7 +127,71 @@ SanadSquad-day3/
 | `skills/brand_rules.py` + `.md` | — | The shared skill (calls `check_brand`) |
 | `inputs/brand-voice.md` | front matter | Banned words and characters, allowed links, `safe_fixes` |
 
-**The graph itself** (for later)
+> [!note] Newer commit
+> The rows below this point were checked against commit `b59c24b` (PR #7 merged). Line numbers are given only where they were verified there.
+
+**Reviewer + retry**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `review` (l.951), `_route_after_review`, `retry` (l.1001) | Building the request, saving, routing, the drop rule |
+| `content_pipeline/agents.py` | `Reviewer` (l.332), `review_contract_errors` (l.82), `score_review` (l.41) | Form checks, the average + hard-fail decision |
+| `content_pipeline/review_wire.py` | `review_wire_schema`, `canonical_review` | The form built from the rubric |
+| `content_pipeline/contracts.py` | `ReviewRequest`, `ReviewAssessment`, `Rubric` | Input and the raw form |
+| `content_pipeline/models.py` | `Review` | The decided result; "hard fail can't approve" |
+| `agents/reviewer/`, `post_types/*/rubric.md`, `type.yaml` (`review:`) | — | Instructions, criteria, `pass_avg`, hard-fail flags |
+
+**Visual + collect**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `visual` (l.1107), `_visual_spec` (l.1047), `_render_visual` (l.1069) | Severity lookup, LLM spec, fallback, drawing |
+| `content_pipeline/pipeline.py` | `_validate_saved_visual` (l.1015), `collect` (l.1156) | Resume tamper checks, the lane's end |
+| `content_pipeline/images.py` | `overlay_errors` (l.8), `fallback_spec` (l.54), `render_card` (l.127) | Image-text checks, code-built spec, Pillow card |
+| `content_pipeline/agents.py` | `VisualAgent` (l.362) | The single LLM call |
+| `agents/visual/`, `config/visual.yaml` | — | Instructions; the backend list nothing reads |
+
+**Export**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `export` (l.1178) | Plan order, shipped only, `ExportPost` |
+| `content_pipeline/trail.py` | `export_posts` (l.31), `Trail` (l.7) | Path checks, CSV + JSON; lock, no duplicates, atomic write |
+| `content_pipeline/contracts.py` | `ExportPost`, `FinalPiece`, `Trace` | Record shapes |
+
+**Advisor**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `advise`, `_record_advice` | Evidence gathering, failure handling, always writing the files |
+| `content_pipeline/advisor.py` | `instruction_files`, `advice_patch`, `Advisor`, `InvalidAdvice` | Editable files, every safety check, the diff |
+| `content_pipeline/contracts.py` | `AdvisorRequest`, `AdvisorOutput`, `InstructionEdit`, `AdvisorRecord` | Forms and limits |
+| `agents/advisor/` | — | Instructions |
+
+**Summary**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/pipeline.py` | `finalize`, `_build_summary`, `_terminal_slots` | Building and writing `run_summary.json` |
+| `content_pipeline/contracts.py` | `RunSummary`, `TerminalSlot`, `ExternalUsage` | Every field in the report |
+
+**Model client**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/model_client.py` | `ModelClient.call` | One call end to end: reserve, send, retry, settle, repair |
+| `content_pipeline/model_client.py` | `_retry_delay`, `_failure_for_exception`, `Prices.quote`, `LangChainTransport.prepare` | Backoff, error kinds, pricing, provider setup |
+| `config/repair.md` | — | The repair prompt |
+
+**Budget + resume**
+
+| Read | Where | What you'll see |
+|---|---|---|
+| `content_pipeline/ledger.py` | `Ledger` (short file) | Reserve, dispatch, settle, uncertain, crash recovery |
+| `content_pipeline/durability.py` | `resume_inputs`, `RunLock` | Read-only preflight, folder lock |
+| `content_pipeline/pipeline.py` | `run_pipeline`, `_prepare_run_inputs`, `_completed_checkpoint`, `_execute_pipeline`, `saved_record` | The resume path, reuse of saved steps |
+
+**The graph itself**
 
 | Read | Where | What you'll see |
 |---|---|---|
@@ -809,6 +874,379 @@ And one that fails:
 | Cleaning text | "text normalization", "Unicode normalization" |
 | X length rules | "twitter-text weighted length" |
 | Security lists | "allow-list vs deny-list" |
+
+---
+
+## 7. The reviewer
+
+The second LLM in each lane. It only sees drafts that already **passed the validator**, so it never pays to judge a post with a banned word. Its job is **judgment**: is this good, and is every claim backed by the evidence?
+
+> [!abstract] The model judges, code decides
+> The reviewer's instructions say: "Code computes approval; you do not approve by boolean." The LLM only gives scores, reasons and true/false flags. Code does the maths and makes the decision.
+
+### What it receives: `ReviewRequest`
+
+```text
+ReviewRequest
+  slot_id, attempt
+  draft:     audit.approved()   <- the fixed, numbered text: exactly what will be published
+  research:  the same ResearchPack the writer had
+  post_type: pass_avg 3.5, hard_fail list
+  rubric:    the criteria from rubric.md
+```
+
+`audit.approved()` raises an error if the validator didn't accept the draft, so an unvalidated draft physically can't reach the reviewer.
+
+### The prompt
+
+Same file-gluing as the writer: `agents/reviewer/system.md` + `post_types/<type>/rubric.md` + `skills/brand_rules.md` + `inputs/brand-voice.md`. The model is `anthropic:claude-sonnet-5-5` with `reasoning_effort: medium`, the only agent that pays for thinking, because judging claims is the hardest job.
+
+Key instructions:
+
+- **Check every claim, including uncited ones.** A valid citation isn't blanket support for the whole tweet.
+- **Background knowledge doesn't count.** True in real life but not in the evidence means unsupported.
+- **"Most", "often", "prevents", "rigorous" need evidence too.** A fictional audit count supports only that count.
+- **Judge only the published text.** The `source_ids` field is bookkeeping, but an id leaking into the text still fails.
+
+### The rubric
+
+| Criterion | 5 means | 1 means |
+|---|---|---|
+| `hook` | First tweet names a specific vulnerability via a question or contrast | Vague or clickbait |
+| `technical_accuracy` | Mechanism, conditions, mitigation match the evidence exactly | Wrong or misleading |
+| `grounding` | Every factual clause traces to cited evidence | Any fact invented |
+| `voice` | Calm, precise engineering voice | Hype, banned wording |
+| `clarity` | One point per tweet, builds hook → mechanism → example → mitigation → check | Confusing order |
+| `cta` | Ends with a concrete check the reader can apply | No closing, or an unsupported one |
+
+Two **hard-fail flags**, either of which rejects the post regardless of scores:
+
+| Flag | True when |
+|---|---|
+| `unsupported_claim` | Any clause isn't supported, or drops a condition the evidence attaches |
+| `off_brand` | Banned wording, hype, promising complete protection, leaked metadata, or a fictional claim without a "demo" label |
+
+### The form, built from the rubric
+
+`review_wire_schema` builds the answer form **on the fly** from the rubric: exactly those criteria as score fields, each forced between 1 and 5, plus reasons and flags. Add a criterion to `rubric.md` and the form grows automatically.
+
+> [!definition] Dynamic schema
+> A data shape built at runtime from config (here with Pydantic's `create_model`) instead of written by hand in code.
+
+### Code checks, then decides
+
+First, is the form complete (`review_contract_errors`)? Every criterion scored 1–5 with a reason, every true flag with its own reason, matching `slot_id` and `attempt`. If not, one repair attempt.
+
+> [!warning] Fails closed
+> If the reviewer's answer is still broken after the repair, the card finishes as `failed_output`. A broken review **never** counts as approval (`DESIGN.md` §6.10).
+
+Then the decision (`score_review`):
+
+```text
+average  = sum(scores) / number of criteria
+accepted = average >= pass_avg (3.5)  AND  no hard-fail flag is true
+```
+
+```text
+scores 4,5,2,4,4,3  -> average 3.67 (passes)  but unsupported_claim = true  -> REJECTED
+scores all 3        -> average 3.0 (below 3.5), no hard fail             -> REJECTED
+```
+
+The writer only gets the useful reasons back: reasons for criteria **below 3.5**, plus every hard-fail reason. The `Review` object itself refuses to exist with a hard fail *and* `accepted = true`.
+
+### Retry or drop
+
+```text
+review: error/broken -> failed_output (finished)
+        accepted     -> visual
+        rejected     -> retry node:  attempt 1 -> back to writer with reasons
+                                     attempt 2 -> dropped_quality
+```
+
+Whichever station rejected it, validator or reviewer, a post gets **one** second chance in total. Reviews are saved in `review_report.json` with an `input_sha256`, so `--resume` reuses them.
+
+> [!warning] Known weak spot: self-preference
+> Writer and reviewer use the same model. LLM judges tend to rate their own style higher. A different model family for the reviewer is a one-line change in `agents/reviewer/agent.yaml`.
+
+---
+
+## 8. Visual and collect
+
+Only **accepted** posts get an image (the brief's "images only for accepted pieces").
+
+> [!abstract] The LLM chooses, code draws
+> The visual agent writes a description (`ImageSpec`). Code draws the PNG. Image models garble text, and every word on the image must be as grounded as the tweets.
+
+### What it receives
+
+`VisualRequest`: the approved draft, the pack, the post type, and a **severity looked up by code** from `kb.json` (KB-18 is `high`). Marketing posts have `severity_badge: never`, so no badge. The LLM can't invent "CRITICAL".
+
+### Step 1: the LLM writes an `ImageSpec`
+
+```json
+{
+  "concept": "A lending protocol trusting a manipulable price",
+  "scene": "Dark card, bold headline, severity badge",
+  "palette": ["#14213d", "#fca311", "#ffffff"],
+  "overlay_text": "Who decides that price?",
+  "alt_text": "Card reading 'Who decides that price?' with a HIGH severity badge",
+  "severity": "high"
+}
+```
+
+`overlay_text` must be an **exact excerpt** of the tweets or a source. `alt_text` is for screen readers.
+
+### Step 2: code checks the image text (`overlay_errors`)
+
+| Check | Violation |
+|---|---|
+| Brand rules (banned words, characters, hashtags, links) | e.g. `banned_phrase:guaranteed` |
+| Exact substring of a tweet, source evidence or source title | `ungrounded_overlay` |
+| Every number appears in the tweets or evidence | `new_overlay_number` |
+| Colors exactly the brand palette | `brand_palette` |
+| Severity matches the source (or none when `never`) | `source_severity` |
+
+### Step 3: fallback
+
+If the LLM fails or its spec fails a check, **code builds one** (`fallback_spec`), trying the topic name, then source titles, then tweets, keeping the first that passes. Recorded as `visual_fallback`.
+
+> [!warning] Known gap
+> If no candidate passes, `fallback_spec` raises an uncaught error that escapes the lane. Very unlikely, but it breaks "failures stay in the lane".
+
+### Step 4: draw the card (`render_card`)
+
+Pillow draws a **1200 × 675 PNG**: background `palette[0]`, text `palette[-1]` (font shrinks from 54 until it fits), and a severity badge in `palette[1]`. Code verifies the PNG and its size. If drawing fails, the spec JSON ships as the image (`backend: spec_json`). The card becomes `outcome: shipped`, logged to `visuals.json`.
+
+### Collect
+
+The last node of every lane. It refuses a card without an outcome, writes a `FinalPiece` to `final.json` for shipped cards, and hands the card back. When all six lanes reach `collect`, the graph moves to Export (fan-in).
+
+> [!warning] Cloudflare isn't built
+> `config/visual.yaml` lists `[cloudflare_flux, pillow_card]`, but nothing reads that list and there's no Cloudflare adapter. `concept` and `scene` are unused by the Pillow card. That's consistent with the cut order, but the docs must say so.
+
+---
+
+## 9. Export
+
+Runs **once** after the fan-in. Pure code.
+
+1. **Plan order, shipped only.** It walks the slots in `plan.json` order, not finish order, so the same plan always gives the same CSV order. Each shipped card becomes an `ExportPost` with the tweets from `audit.approved()`: byte-for-byte what was reviewed.
+2. **Image paths checked.** Every path must be inside the run folder: no drive letters, no `..` (path traversal).
+3. **`posts.csv`.** The brief's two columns, `Post Text, Image`, one row per piece. A thread's tweets go in one cell, one per line, already numbered. Python's `csv` module quotes cells with newlines and commas. Image paths are relative, so the folder can be moved. **Zero shipped still writes the header.**
+4. **`posts.json`.** The same posts with tweets as a list, for programs and tests.
+
+```text
+Post Text,Image
+"1/7 Your lending protocol trusts a price. Who decides that price?
+2/7 ...",images/slot-thread_2.png
+```
+
+### The trail writer (`Trail`, same file)
+
+Writes every record file (`research_log.json`, `drafts.json`, `review_report.json`, `visuals.json`, `final.json`, `advisor.json`):
+
+- **one lock per file**, so parallel lanes don't lose records;
+- **no duplicates**: an existing `record_id` is skipped, so a replayed step doesn't write twice (idempotent writes);
+- **atomic write**: temp file, then rename.
+
+---
+
+## 10. The advisor
+
+The last LLM call, after Export. It looks back at the run and **suggests** how to improve the instructions.
+
+> [!abstract] It suggests, a human decides
+> It can't change posts or files. It writes `advice.md` (recommendations) and `advice.patch` (a diff). You apply it yourself with `git apply`, if you agree. If it edited files itself, the system could drift or quietly loosen its own rubric.
+
+### What it reads
+
+- **Evidence**: `research_log.json`, `drafts.json`, `review_report.json`, `final.json`.
+- **Instructions it may suggest changes to** (`instruction_files`): `inputs/brand-voice.md` and each post type's `writer.md` and `rubric.md`, each with a SHA-256 fingerprint. Not `type.yaml`, `agent.yaml`, agent prompts, `kb.json` or code.
+
+### What it returns
+
+At most **10 recommendations** (each under 600 characters) and at most **8 edits**, each a find-and-replace: `path`, `source_sha256`, `before`, `after`.
+
+### Code checks every edit (`advice_patch`)
+
+| Check | Why |
+|---|---|
+| `path` is an allowed file | Can't touch code, configs, KB, limits |
+| `source_sha256` matches | The edit was written against this exact file version |
+| `before` appears exactly once | No ambiguous replacements |
+| No edits to YAML front matter | That's where machine rules live |
+| No added or changed lines with digits | Can't change limits in prose or invent stats |
+| Patch under 16,000 characters | Small enough to review |
+
+Any failure rejects the whole advice (`InvalidAdvice` gives `failed_output`). Valid edits become a **unified diff**.
+
+> [!definition] Optimistic concurrency
+> Checking that the thing you're about to change is still the version you read (here, by fingerprint). If it changed, refuse instead of editing blindly.
+
+### Failure never touches the posts
+
+The posts are already exported. Statuses: `completed`, `failed` (with a reason), or `not_enabled` (`--no-advisor`). `advice.md` and `advice.patch` are always written. Saved in `advisor.json` for resume.
+
+> [!warning] What code can't enforce
+> "Never weaken grounding" is only partly enforceable. Changing "check every claim" to "check the main claims" passes every code check. The human reading the diff is the final guard.
+
+---
+
+## 11. Summary
+
+The **last node**. It runs after the advisor so every token counts. It writes `run_summary.json` and the CLI prints it.
+
+```text
+RunSummary
+  run_id
+  slots:  per slot -> outcome, attempts, topic_id, reasons
+  shipped
+  confirmed_tokens / uncertain_tokens
+  confirmed_cost_usd / uncertain_cost_usd
+  unpriced             true if any model had no known price
+  external_usage       searches, Tavily credits, fetches, Pillow cards
+  cost_scope           "LLM USD only; search/image calls counted but not priced..."
+  advisor, advisor_reason
+```
+
+That covers the brief's "shipped, dropped and why, tokens, cost". Confirmed and uncertain are reported separately, so it never claims more certainty than it has.
+
+> [!warning] Known gap
+> `run.log` is hard-coded to two lines. One line per node would be a cheap observability win.
+
+---
+
+## 12. LangGraph itself
+
+LangGraph is the machine that moves the cards between stations.
+
+> [!definition] Graph
+> A **node** is a step (a function). An **edge** says which step comes next. The **state** is the data travelling along the edges. Each node returns only what it changed, and LangGraph merges it back.
+
+### Two graphs, one inside the other
+
+```text
+WEEK GRAPH (WeekState)               LANE GRAPH (LaneState, one per slot)
+START                                START
+  -> focused_research                  -> write
+  -> topic_selection                   -> validate
+  -> lane (x6, via Send)   ------->    -> review
+  -> export                            -> retry
+  -> advisor                           -> visual
+  -> summary                           -> collect
+  -> END                               -> END
+```
+
+The lane graph is compiled and added to the week graph as one node: a **subgraph**.
+
+### Conditional edges: the router
+
+```text
+after write:     outcome? -> collect    draft? -> validate    else -> retry
+after validate:  accepted? -> review    else -> retry
+after review:    outcome? -> collect    accepted? -> visual   else -> retry
+after retry:     outcome (dropped)? -> collect    else -> write
+```
+
+A few lines of code, not an LLM.
+
+### Send: the fan-out
+
+After `topic_selection`, one conditional edge returns six `Send("lane", card)` objects. LangGraph runs all six lanes in parallel, each with its own card, and moves to `export` when all finish.
+
+### Reducers: merging six lanes back
+
+`slots: Annotated[dict, merge_slots]` declares a **reducer**: `{**old, **new}`. Each lane returns `{"slots": {"thread_2": card}}` and the reducer slots each card into place without overwriting the others.
+
+### The checkpointer
+
+`AsyncSqliteSaver` writes the state to `checkpoint.sqlite` as steps complete, filed under the run's **thread id**. That's what `--resume` reads. `recursion_limit` stops runaway loops, and `interrupt_after` deliberately stops the graph after a node, which the tests use to simulate crashes.
+
+---
+
+## 13. The model client
+
+Every agent calls the model through **one** function, `ModelClient.call`, so retries, repair, cost and budget work the same everywhere.
+
+1. **Stable call id**: `thread_2/writer/1/1` (slot / node / attempt / call number). The number continues from the ledger, so retries and resumes never reuse an id.
+2. **Estimate and reserve**: input ≈ characters / 3.5 + 15%, reserve = input + `max_output_tokens`, priced with `genai-prices`. The ledger must accept it first. An unknown price stops here as `unpriced_model` unless `--allow-unpriced`.
+3. **Dispatch and send** through LangChain (structured output, `include_raw=True`). With `--max-concurrency`, a limiter makes it wait for a free slot.
+4. **No answer came back**: mark it **uncertain** (it may have been billed), then:
+
+| Error | What happens |
+|---|---|
+| 402 / 403 | `failed_budget`, no retry |
+| Timeout, connection, 408, 429, 5xx | Up to 3 retries: 1s, 2s, 4s; for 429 longer, respecting `Retry-After` (max 60s) |
+| Anything else | `failed_api` |
+
+5. **An answer came back**: real token counts from `usage_metadata`; cost from the provider (OpenRouter `cost` + `upstream_inference_cost`) or `genai-prices`; estimated and flagged if counts are missing. Then **settle** the ledger.
+6. **How did it end?**
+
+| Outcome | What happens |
+|---|---|
+| Cut off (`length`) | One retry at 1.5x the output limit; again gives `failed_output` |
+| `error` finish | Like a transient error, up to 3 retries |
+| Doesn't fit the form, or fails the agent's check | One repair with error locations and types only; again gives `failed_output` |
+| Valid | Return the parsed answer |
+
+7. **One receipt per attempt** in `usage.jsonl`: tokens, cached and reasoning tokens, cost and source, estimated flag, overshoot, HTTP status, finish reason, failure kind.
+
+> [!definition] Exponential backoff
+> Waiting longer after each failed retry (1s, 2s, 4s…) so you don't hammer a struggling service.
+
+---
+
+## 14. Budget and resume
+
+### The ledger
+
+`ledger.json` keeps one entry per call id:
+
+```text
+reserved    money set aside, not sent yet
+dispatched  sent, waiting
+confirmed   answer came back, real numbers recorded
+uncertain   sent, no answer: might have been billed
+released    set aside but never sent: given back
+```
+
+**The rule (`reserve`)**: add up every entry that isn't `released`, including calls still in flight. If adding this call's worst case would cross `RUN_TOKEN_BUDGET` or `RUN_COST_BUDGET_USD`, refuse it (`BudgetExhausted`, so the slot gets `failed_budget`). An `asyncio.Lock` makes the six lanes take turns.
+
+> [!warning] A guard, not a perfect cap
+> Input is estimated, so a call can slightly overshoot (recorded as `overshoot_tokens`). An unpriced model counts only against the token cap.
+
+### Resume
+
+```bash
+python run_week.py --resume output/20261016T091500-a1b2c3d4 --token-budget 400000
+```
+
+1. **Read-only preflight** (`resume_inputs`): snapshot fingerprints match; ledger, usage (no duplicate ids), external usage and every record file are valid; the checkpoint exists; budgets only go up.
+2. **Lock the folder.**
+3. **Already finished?** Return the saved summary.
+4. **Reopen the ledger with crash recovery**: `reserved` (never sent) becomes `released`; `dispatched` (sent, never heard back) becomes **`uncertain`** and stays on the bill.
+5. **Continue the graph**: `graph.ainvoke(None, config)`, with no new input, from the checkpoint.
+6. **Re-run steps don't pay again**: research, review, visual and advisor first look for a saved record with a matching `input_sha256` and reuse it.
+7. **Budget is lifetime**: the ledger lives in the run folder, so five resumes don't get five budgets.
+
+> [!warning] What resume can't promise
+> If a call is billed but the process dies before its result is saved, resume makes it again. It's documented, and the ledger keeps the lost call as an uncertain charge.
+
+> [!abstract] The whole run in one breath
+> Plan (code) → Research (2 nodes) → Send × 6 lanes (write → validate → review → retry → visual → collect) → reducer merges → export → advisor → summary. Every LLM call goes through `ModelClient.call`, the ledger reserves before sending, the checkpointer saves progress, and `--resume` continues with saved records making re-runs free.
+
+### Learn more
+
+| Concept | Search for |
+|---|---|
+| Model as grader | "LLM-as-a-judge", "rubric-based evaluation", "self-preference bias" |
+| Never trusting broken output | "fail closed vs fail open" |
+| Images | "Pillow ImageDraw", "alt text accessibility" |
+| CSV and paths | "CSV quoting RFC 4180", "path traversal" |
+| Human approval | "human-in-the-loop", "unified diff", "git apply" |
+| LangGraph | "StateGraph", "conditional edges", "Send API", "reducers", "checkpointers" |
+| Calls | "exponential backoff", "Retry-After", "token usage accounting" |
+| Budget and resume | "reservation pattern", "durable execution", "at-least-once vs exactly-once" |
 
 ---
 
