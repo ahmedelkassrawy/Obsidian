@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>SanadSquad Pipeline Guide</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -41,7 +42,7 @@ p{max-width:68ch;margin:0 0 12px}
 code,.mono{font-family:var(--f-mono);font-size:.88em}
 code{background:var(--code-bg);padding:1px 5px;border-radius:4px}
 pre{font-family:var(--f-mono);font-size:13px;line-height:1.55;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:10px 0 16px}
-pre.mermaid{background:var(--surface);text-align:center}
+pre.diagram{background:var(--surface);text-align:center}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .chip{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--surface)}
 .tag{font-family:var(--f-mono);font-size:11px;font-weight:500;border-radius:4px;padding:2px 7px;letter-spacing:.03em;white-space:nowrap}
@@ -125,7 +126,7 @@ html{scroll-behavior:smooth}
 
 <h2 id="overview">The whole run</h2>
 <p>A fixed workflow: code decides the order of steps, and LLMs do the judgment inside some of them. Only research has a small loop where the model picks its next move.</p>
-<pre class="mermaid">
+<pre class="diagram">
 flowchart TD
   CLI["CLI: run_week.py / run_piece.py"] --> PLAN["1 Plan · code"]
   PLAN --> FR["2a Focused research · parallel"]
@@ -226,7 +227,7 @@ feedback: what to fix on retry</pre></div>
     <li><span class="tag t-code">CODE</span> shortcut: picked from the list, so the evidence card is ready. No search, no LLM</li>
   </ol></div>
 </div>
-<pre class="mermaid">
+<pre class="diagram">
 flowchart LR
   F["focus text from a human"] --> K["code: BM25 top 5"]
   K --> L{"LLM: covered?"}
@@ -357,7 +358,7 @@ all 3s      → 3.0 → REJECTED</pre></div>
 <section class="station" id="visual"><div class="num">06</div><div>
 <h2>Visual + collect</h2>
 <p class="job"><span class="tag t-mix">MIXED</span> Only accepted posts. The LLM chooses the words, code draws the pixels.</p>
-<pre class="mermaid">
+<pre class="diagram">
 flowchart LR
   A["code: severity from kb.json"] --> B["LLM: ImageSpec"]
   B --> C{"code: overlay_errors"}
@@ -473,7 +474,7 @@ advisor:        completed | failed | not_enabled</pre>
 
 <h2 id="client">Model client: how every LLM call works</h2>
 <p>Every agent calls <code>ModelClient.call</code>, so retries, repair, cost and budget behave the same everywhere.</p>
-<pre class="mermaid">
+<pre class="diagram">
 sequenceDiagram
   participant A as Agent
   participant C as ModelClient
@@ -507,7 +508,7 @@ sequenceDiagram
 
 <h2 id="budget">Budget and resume</h2>
 <h3>The ledger: money is set aside before it's spent</h3>
-<pre class="mermaid">
+<pre class="diagram">
 stateDiagram-v2
   [*] --> reserved: reserve (fits budget)
   reserved --> dispatched: sent
@@ -699,3 +700,30 @@ stateDiagram-v2
 <footer>Built from DESIGN.md and the code in <code>D:\me\SanadSquad-day3</code> at commit b59c24b. Tweet texts, feedback wording and WEB ids are illustrative; file names, functions, KB entries, limits and routing come from the actual code.</footer>
 </main>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+(function () {
+  var root = document.documentElement.getAttribute('data-theme');
+  var dark = root ? root === 'dark' : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (!window.mermaid) {
+    document.querySelectorAll('pre.diagram').forEach(function (el) {
+      var note = document.createElement('p');
+      note.style.cssText = 'font-size:13px;color:var(--muted);margin:-8px 0 16px';
+      note.textContent = 'Diagram needs an internet connection to draw. The text above is its source.';
+      el.after(note);
+    });
+    return;
+  }
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'strict',
+    theme: dark ? 'dark' : 'neutral',
+    fontFamily: '"Instrument Sans", "Segoe UI", system-ui, sans-serif',
+    flowchart: { htmlLabels: true, curve: 'basis' }
+  });
+  var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  ready.then(function () {
+    return mermaid.run({ querySelector: 'pre.diagram' });
+  }).catch(function () {});
+})();
+</script>
