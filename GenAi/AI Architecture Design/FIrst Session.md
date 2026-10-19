@@ -18,4 +18,12 @@ KPIS/Objectives
 - Feedback loop
 Non Functional Uses Cases
 - Latency,real time, near real time,batch
-- Scalability (number of uses cases peak campaigns)
+- Scalability (number of uses cases peak campaigns
+
+Do not start from technology start from buisness
+
+Architecture Frameworks (TOGAF)
+- Buisness Archticture (Buisness , organization , people)
+- Application Architecture -> Services
+- Data Architecture -> Data Information
+- Technology Architecture -> Hardware, software, network
