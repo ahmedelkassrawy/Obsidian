@@ -43,7 +43,16 @@ C4 Framework
     - **Audience:** Developers (usually optional or rarely maintained manually because code changes too fast)
 
 Architecture & agile 
-- Project Level
-- Epic Level
-- Story Level
-- Research LEvel
+- Architecture: How to design a system, decide which components it needs, and define how they work together.
+    
+- Agile: How to break the work into small pieces, build them step by step, test the results, and improve the system over time.
+
+You start with the big goal, divide it into major features, break those features into small tasks, and research anything you don't yet know how to build.
+
+![[Pasted image 20261019232515.png]]
+
+The Project Level
+What are we building and why?
+A project is the compelete product or system we want to deliver
+It defines the goal, the users, the main requirements, and the boundaries of the work.
+
