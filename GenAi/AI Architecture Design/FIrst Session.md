@@ -280,3 +280,179 @@ You do not need to finalize every architectural decision at the beginning. Estab
 | Agile: Project/Epic/Story | Easy                | Plan and deliver features                     |
 | C4                        | Easy                | Understand and document software architecture |
 The C4 model is deliberately lightweight. Its official guidance says Context and Container diagrams are enough for many software teams; you do not need all four levels for every project.
+
+- Agile tells you what to build next.
+    
+- C4 tells you how the software fits together.
+    
+- Research tells you what you need to find out before committing to a decision.
+
+he C4 model is a simple way to visualize and explain software architecture. It helps you move from the big picture of a system to the internal details of its code.
+
+The name C4 comes from four levels:
+
+1. Context — Who uses your system, and what does it connect to?
+    
+2. Containers — What are the main applications, services, and data stores?
+    
+3. Components — What are the main building blocks inside an application?
+    
+4. Code — How is a specific component implemented in code?
+
+You don't have to draw all four levels for every project; the first two are often enough to explain a system clearly
+
+![[Pasted image 20261020004712.png]]
+
+Think of it like using a map:
+
+- Context: the whole city and its connections to neighboring cities.
+    
+- Containers: the main districts and facilities.
+    
+- Components: the important buildings inside one district.
+    
+- Code: the rooms and internal details of one building.
+
+## 1. C1 — System Context: See the whole system
+
+Question: Who uses the system, and what does it depend on?
+
+At this level, your entire AI application is represented as one box. You don't show its internal implementation yet.
+
+For our RAG application, the diagram might look like this:
+![[Pasted image 20261020004805.png]]
+
+This is a simplified illustration. In a proper C4 diagram, label the connections to the external systems explicitly, such as "sends prompts to" or "sends email notifications through."
+
+Notice what's missing:
+
+- No FastAPI endpoints.
+    
+- No PostgreSQL tables.
+    
+- No embedding functions.
+    
+- No internal services.
+    
+
+That's intentional. You want someone to understand the purpose and boundaries of your system without needing to understand its code. This is the goal of a C4 Context diagram.
+
+When should you draw it? At the beginning of a project, when explaining the system to a teammate, or when deciding which external services the product needs.
+
+## 2. C2 — Container Diagram: See the main building blocks
+
+Question: What applications and data stores make up the system, and how do they communicate?
+
+In C4, a container means a separately runnable or deployable application or a data store. It does not necessarily mean a Docker container.
+
+Now we open the AI Document Assistant box and reveal its internals.
+
+![[Pasted image 20261020005013.png]]
+
+he connections matter just as much as the boxes. For example:
+
+- The frontend sends requests to the backend API over HTTPS.
+    
+- The API stores uploaded PDFs in object storage.
+    
+- The API submits processing jobs to the queue.
+    
+- The worker reads jobs, extracts text, creates embeddings, and saves the results.
+    
+- The API retrieves relevant chunks and calls the LLM when a user asks a question.
+    
+
+The diagram is illustrative, not a final architecture specification. A real design should show the actual connections and technologies you intend to use.
+
+### Why is C2 particularly important for AI engineers?
+
+Because many AI application problems are not model problems.
+
+For example:
+
+- A request times out while a large PDF is processing.
+    
+- Two workers process the same document.
+    
+- A user retrieves another user's document chunks.
+    
+- The embedding API is unavailable.
+    
+- The queue fills up with failed jobs.
+    
+
+A C2 diagram helps you identify where these problems could occur and which parts of the system need reliability, security, or performance controls.
+
+When should you draw it? Whenever you're starting a substantial application, adding a background worker, introducing a database or queue, or deciding whether a new service is necessary.
+
+## 3. C3 — Component Diagram: See inside one application
+
+Question: What are the main responsibilities inside a particular container, and how do they work together?
+
+Now zoom into just the Backend API from C2.
+
+You don't need to show the frontend, worker internals, or every database table. Focus on the internal structure of this one application.
+
+![[Pasted image 20261020005317.png]]
+
+Here you can see the responsibilities inside the API:
+
+- API routes receive requests and call the appropriate services.
+    
+- Authentication verifies who the user is and whether they can access a resource.
+    
+- Document service manages document-related operations.
+    
+- Retrieval service finds the most relevant chunks for a question.
+    
+- Answer service builds the LLM request and returns the generated answer.
+    
+
+For example, when a user asks, "What does my document say about neural networks?", the route calls the answer service, which uses the retrieval service to fetch relevant chunks before sending the question and context to the LLM.
+
+### What counts as a component?
+
+A component is a meaningful building block inside an application. It could be a module, service, or group of related classes.
+
+In Python, your implementation might look like this:
+
+```
+app/
+├── api/
+│   ├── documents.py
+│   └── chat.py
+├── services/
+│   ├── document_service.py
+│   ├── retrieval_service.py
+│   └── answer_service.py
+├── security/
+│   └── auth.py
+└── main.py
+```
+
+These files are an example of how the components might be implemented, not a requirement imposed by C4.
+
+Important: Don't automatically turn every Python file or function into a component. That would make the diagram noisy. Show the major responsibilities and their relationships.
+
+When should you draw C3? When a container becomes complicated, when you're reviewing a design, or when developers need to understand how a particular application is organized.
+
+## 4. C4 — Code Diagram: See the implementation details
+
+Question: How is a particular component implemented?
+
+At this level, you move from components into details such as classes, interfaces, functions, and their relationships.
+
+Let's zoom into the Retrieval Service.
+
+Imagine it contains these classes:
+![[Pasted image 20261020005342.png]]
+
+possible Python implementation could be:
+
+```
+class RetrievalService:    def __init__(self, embedder, vector_repository):        self.embedder = embedder        self.vector_repository = vector_repository    async def retrieve(self, question, tenant_id, limit=5):        vector = await self.embedder.embed(question)        return await self.vector_repository.search(            vector=vector,            tenant_id=tenant_id,            limit=limit,        )
+```
+
+This example shows the implementation, while a C4 Code diagram would show the relevant types and relationships visually.
+
+Notice the `tenant_id` parameter. In a multi-tenant system, the repository must enforce that filtering correctly; merely passing the parameter doesn't guarantee isolation.
