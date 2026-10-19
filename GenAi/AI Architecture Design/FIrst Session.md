@@ -456,3 +456,21 @@ class RetrievalService:    def __init__(self, embedder, vector_repository):     
 This example shows the implementation, while a C4 Code diagram would show the relevant types and relationships visually.
 
 Notice the `tenant_id` parameter. In a multi-tenant system, the repository must enforce that filtering correctly; merely passing the parameter doesn't guarantee isolation.
+
+USing these as An Arcticture Start 
+**
+
+1. Problem statement/pain points.
+    
+2. Goals/non-goals, Solution Assumptions.
+    
+3. As-is Architecture, Explore the Enterprise Architecture.
+    
+4. Architecture principles, key decisions and trade-offs.
+    
+5. Assessment.
+    
+6. Priorities.
+    
+
+**
