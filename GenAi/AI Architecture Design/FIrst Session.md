@@ -56,3 +56,227 @@ What are we building and why?
 A project is the compelete product or system we want to deliver
 It defines the goal, the users, the main requirements, and the boundaries of the work.
 
+### Example: AI document assistant
+
+Imagine you want to build an application where users upload PDFs and ask questions about their contents.
+
+At the Project Level, you define:
+
+- Goal: Build an AI assistant that answers questions using uploaded documents.
+    
+- Users: Students, researchers, or company employees.
+    
+- Main features: Document upload, question answering, source citations, user authentication.
+    
+- Architecture: Frontend, backend API, database, file storage, retrieval system, and an LLM (large language model).
+    
+- Constraints: Budget, response speed, security, and accuracy.
+    
+- Success criteria: Answers should be relevant, cite the correct sources, and keep each user's documents private.
+
+![[Pasted image 20261019235015.png]]
+
+## 3. Epic Level — Major system capabilities
+
+Main question: What major capabilities must we build to achieve the project goal?
+
+An epic is a large body of work that delivers one meaningful capability. It usually contains several smaller stories.
+
+For our AI document assistant, the epics could be:
+![[Pasted image 20261019235038.png]]
+
+### What do you produce at this level?
+
+Each epic should have:
+
+- A clear objective.
+    
+- A defined scope.
+    
+- A way to measure success.
+    
+- A list of stories needed to deliver it.
+    
+- Dependencies on other epics, if any.
+    
+
+For example, the question-answering epic depends on having document content and a retrieval mechanism available.
+
+As an AI Engineer: Think in terms of capabilities, not just code files. "Build the embedding function" is an implementation task. "Allow users to retrieve relevant document passages" describes a capability.
+
+## 4. Story Level — Small, deliverable pieces of work
+
+Main question: What specific behavior should the system deliver?
+
+A story is a small, testable piece of functionality that contributes to an epic. In Agile, stories are often written from the user's perspective, but technical stories are also common.
+
+Let's break down the Document ingestion epic.
+
+Story 1: Upload a PDF
+
+As a user, I want to upload a PDF so that I can ask questions about its content.
+
+Acceptance criteria:
+
+- Accept supported PDF files.
+    
+- Reject files that exceed the size limit.
+    
+- Return a clear error for invalid files.
+    
+
+Story 2: Extract document text
+
+As a system, I need to extract text from uploaded PDFs so that the content can be searched.
+
+Acceptance criteria:
+
+- Extract text from supported PDFs.
+    
+- Detect empty or unreadable documents.
+    
+- Report extraction failures without crashing the service.
+    
+
+Story 3: Split text into chunks
+
+As a retrieval system, I need document text divided into suitable chunks so that relevant passages can be retrieved.
+
+Acceptance criteria:
+
+- Split long text into manageable chunks.
+    
+- Preserve document and page metadata where available.
+    
+- Handle short documents and empty text correctly.
+    
+
+### How do you know when a story is finished?
+
+You define acceptance criteria before implementation. These are specific conditions that must be met for the story to count as complete.
+
+A story can also be broken into engineering tasks:
+
+|Story|Example implementation tasks|
+|---|---|
+|Upload a PDF|Create API endpoint, validate file type, store file, write tests|
+|Extract text|Select parser, implement extraction, handle errors, test scanned PDFs|
+|Split text|Choose chunking strategy, implement chunker, preserve metadata, test edge cases|
+
+A story is not necessarily the same as a single task. One story may require several tasks and multiple code changes.
+
+As an AI Engineer: Make your stories small enough to implement and verify. For AI features, include measurable quality checks where possible. "Improve retrieval" is vague; "retrieve a relevant passage for at least 8 of 10 defined test questions" is more testable, assuming that threshold suits your project.
+
+## 5. Research Level — Investigating unknowns
+
+Main question: What do we need to learn or verify before choosing an approach?
+
+Research is especially important in AI engineering because the best technical choice often depends on data quality, model behavior, evaluation results, latency, and cost.
+
+A research item is often called a spike in Agile. A spike is a time-boxed investigation designed to reduce uncertainty.
+
+For example, before building retrieval, you might not know which embedding model performs best on your documents.
+
+Research spike
+
+## Choose an embedding model
+
+Question: Which embedding model retrieves the most relevant passages for our document collection at an acceptable cost?
+
+### Research plan
+
+1. Prepare a representative set of documents and test questions.
+    
+2. Choose two or three candidate embedding models.
+    
+3. Generate embeddings and retrieve the top five passages for each question.
+    
+4. Measure retrieval quality, latency, and cost.
+    
+5. Compare the results and document the recommendation.
+    
+
+### Expected output
+
+A short report containing:
+
+- What was tested.
+    
+- What the measurements showed.
+    
+- The limitations of the experiment.
+    
+- Which model you recommend and why.
+    
+- What still needs testing.
+    
+
+### Research versus implementation
+
+|Research|Implementation|
+|---|---|
+|Determine which chunk size works best.|Implement the chosen chunking strategy.|
+|Compare vector databases.|Configure and integrate the selected database.|
+|Test whether an LLM can return reliable citations.|Build citation formatting and validation.|
+|Investigate whether scanned PDFs need OCR.|Add an OCR pipeline if the evidence supports it.|
+
+OCR means optical character recognition: converting text in images or scanned pages into machine-readable text.
+
+Important: Research is not a mandatory stage that must happen only after Stories. It can happen before a project starts, while defining an epic, or during implementation when a technical question arises. Its output should help the team make a decision, not produce an endless investigation.
+
+## 6. How the four concepts work together
+
+Let's follow one feature from the original idea to a working implementation.
+
+PROJECT
+
+Build an AI document assistant
+
+Users should be able to ask questions about their documents.
+
+EPIC
+
+Build document retrieval
+
+The system must find document passages relevant to a user's question.
+
+RESEARCH
+
+Compare embedding models
+
+Test candidates against a representative set of questions and choose one using measured quality, latency, and cost.
+
+STORY
+
+Retrieve the top five relevant chunks
+
+Implement the retrieval behavior using the selected model and verify it with test questions.
+
+ENGINEERING TASKS
+
+Write code and tests
+
+Create embeddings, query the vector database, return ranked chunks, and handle errors.
+
+Notice the difference: the project describes the goal, the epic describes the capability, research reduces uncertainty, and the story describes a deliverable behavior.
+
+## 7. Where does Architecture fit?
+
+Architecture is not a separate Agile level. It is the set of design decisions made across the project.
+
+|Level|Architecture work|
+|---|---|
+|Project|Define the major components and how data flows between them.|
+|Epic|Design how a major capability works and how it connects to other components.|
+|Story|Decide implementation details, interfaces, error handling, and tests.|
+|Research|Test uncertain design choices before committing to them.|
+
+For example, at the project level you may decide to use a vector database. At the epic level, you define how retrieval works. At the story level, you define the API contract and retrieval behavior. Research helps you determine whether your chosen database and embedding model actually meet the requirements.
+
+You do not need to finalize every architectural decision at the beginning. Establish the important boundaries early, then refine decisions as you learn more.
+
+| Approach                  | Difficulty to start | Best use                                      |
+| ------------------------- | ------------------- | --------------------------------------------- |
+| Agile: Project/Epic/Story | Easy                | Plan and deliver features                     |
+| C4                        | Easy                | Understand and document software architecture |
+The C4 model is deliberately lightweight. Its official guidance says Context and Container diagrams are enough for many software teams; you do not need all four levels for every project.
