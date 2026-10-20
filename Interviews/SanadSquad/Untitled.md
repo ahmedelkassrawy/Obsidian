@@ -175,3 +175,74 @@ topic selection is handling all the remaining slots without an expliciti focus t
 - **Angle Source Assignment (`_choose_angle_sources`)**: For post types utilizing marketing angles (`pick_one: true`), assigns candidate KB sources to ensure no two slots cover the same subject in the same week.
 
 - **Execution**: Dispatches `research_slot` [pipeline.py · SanadSquad/content_pipeline](D:/me/SanadSquad/content_pipeline/pipeline.py) across all assigned empty slots and writes the snapshot to `plan.resolved.json`.
+
+Node 1 focus_research thread 1, thread 2 in parallel 
+Only the 2 focused slots run here , toegther via async.gather 
+Each does a free KB search with its focus text , then the research loop asks model what to do next . Both models answered finish on turn 1 so each slot cost 1 LLM call
+1 KB Search + 1 LLM turn 
+
+Plan phase we enter with a plan.json that gets outputed as ResolvedSlot(Contract) 
+
+class ResolvedSlot(Contract):          # models.py:48
+    slot_id: str
+    type: str
+    focus: str | None = None
+    topic_id: str | None = None        # filled during research
+    angle_source: str | None = None    # only for pick-one angles
+    
+After the Plan preflight phase we get the SlotState for eeach slot
+
+after the focused research -> What goes in is the ResearchTurn where we do the first kb search and get the top 5 and then enter the model an the model filters 
+and decides the relevant , code doesnt filter anything it just checks the model answer aftwards
+
+One correcrion the whole slot state never goes into the turn , the researchslot builds a small research Request with the slot and some post type hints 
+
+Research agent then wraps the reqeust in Researchturn together with the evidence it has collected 
+
+The model does the narrowing. It reads all 5 records and decides only KB-01 is relevant. Code doesn't filter anything there; it just checks the model's answer afterwards.
+
+One correction to your picture first: the whole `SlotState` never goes into the turn. `research_slot` builds a smaller `ResearchRequest` with just the `slot` (`ResolvedSlot`) and the post type's `hints`. `ResearchAgent` then wraps that request in a `ResearchTurn` together with the evidence it has collected.
+
+**1. Seed search (code, no LLM).** It calls `search_kb("reentrancy")`. The KB search ranks by keywords and always returns its top 5, whether they're relevant or not:
+
+```
+KB-01  Reentrancy
+KB-20  Business logic errors
+KB-02  Integer overflow and underflow
+KB-03  Unchecked call return value
+KB-04  Unprotected Ether withdrawal
+```
+
+Only the first one is actually about reentrancy. The other four just made the top 5.
+
+**2. The LLM call** (`Agent.invoke`, [agents.py · L122](D:\me\agents.py:122)) sends two messages:
+
+- **system:** the research agent's prompt plus [loop.md](D:\me\agents\research\loop.md)
+- **user:** the `ResearchTurn` as JSON (request, the 5 evidence records with full text, `searches_remaining: 3`)
+
+The reply is forced into the `ResearchAction` shape (`with_structured_output(..., method="json_schema")` in [model_client.py · L517](D:\me\model_client.py:517)). That means the model can only answer with fields like `action`, `source_ids` and `topic_id`, not free text.
+
+**3. Why it answers with just one id:** `loop.md` tells it to:
+
+- check whether any KB record _explains_ the focus ("a matching keyword alone is not enough");
+- if one does, "finish with that record and set topic_id to its KB id";
+- if none do, `web_search`.
+
+So the model read the 5, saw that KB-01's text explains reentrancy and the others are different bugs, and returned:
+
+```
+{"action": "finish", "source_ids": ["KB-01"], "topic_id": "KB-01"}
+```
+
+That's the 53 output tokens. If it had picked `search_kb` or `web_search` instead, the loop would have run the search, added the results to `evidence`, and asked again on turn 2. The limit is 5 turns and 4 searches.
+
+**4. Code checks the answer** (`agents.py:218-247`) and fails the slot if any check fails:
+
+- every cited id must be in `evidence` with status `ok`, so the model can't invent a source;
+- `topic_id` must be one of the cited ids;
+- `focus_matches("reentrancy", KB-01)` checks that the entry's title or aliases actually match the focus, so the model can't quietly swap in a nearby topic.
+
+**5. The pack keeps only what was cited.** `ResearchPack.sources` is built from `source_ids`, so the writer only ever sees KB-01. The other four aren't in the pack, but they're still in `research_log.json` under the `research_search/1/1` record, so you can always see what the model was offered and what it turned down.
+
+node 2 topic selection -> One batch LLM call , then assign topics
+4 empty slots get topics . one model call proposes a topic for each , then assign_topics keep only the valid proposals and fills the rest itself
