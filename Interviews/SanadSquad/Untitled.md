@@ -155,3 +155,7 @@ For example, with KB ids A to F, where A and B were used last week and the model
 So there are no web searches and no research-loop LLM turns. That's why the estimate's 5 research calls per slot are an overcount for these slots: they really cost 0.
 
 One small mismatch: `topics.md` still says "the research step finds the evidence afterwards", which isn't true anymore for these slots because of the shortcut. It doesn't change any behavior, but it's out of date.
+
+Why aliasses because BM25 matches words and not meaning so the alieases makes them reach better 
+
+**Evidence card (SourceRecord):** `source_id` (`KB-18`, `STAT-01`, `WEB-3f9a…`), kind, title, url, `evidence_text` (max 12,000 chars), status `ok` or `fetch_failed`.
