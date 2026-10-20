@@ -159,3 +159,19 @@ One small mismatch: `topics.md` still says "the research step finds the evidence
 Why aliasses because BM25 matches words and not meaning so the alieases makes them reach better 
 
 **Evidence card (SourceRecord):** `source_id` (`KB-18`, `STAT-01`, `WEB-3f9a…`), kind, title, url, `evidence_text` (max 12,000 chars), status `ok` or `fetch_failed`.
+
+So node 1 is the focused research where we get the name of the topics inside the plan 
+if the second node where the empty slots have no focus (empty topcics) so the llm has to choose one
+
+topic selection is handling all the remaining slots without an expliciti focus through  a hybrid LLM and python pipeline
+1. Proposal -> Invokes TopicsSeelctor via a signle batch request from TopicChoiceReuqest, the model then is given candidate topics from topic pool and instrcuted to avoid collisons with a focused topics or topics from the last 4 runs , if the llm call failes it logs that `topic_selection_failed:code_fallback` and proceeds.
+
+2. Determinsitics Validation 
+- Rejects proposals that collide with curr wek topics or appear int he 4 run history 
+- Fill empty slots with the highest ranked free topic from the kb saearch tool
+- If histoical entries must be recycled it pulls the oldest used topic and warns "history exhausted"
+- if no topic remain the slot is marked with outcome `SlotOutcome.failed_research` and reason `topic_pool_exhausted`.
+
+- **Angle Source Assignment (`_choose_angle_sources`)**: For post types utilizing marketing angles (`pick_one: true`), assigns candidate KB sources to ensure no two slots cover the same subject in the same week.
+
+- **Execution**: Dispatches `research_slot` [pipeline.py · SanadSquad/content_pipeline](D:/me/SanadSquad/content_pipeline/pipeline.py) across all assigned empty slots and writes the snapshot to `plan.resolved.json`.
