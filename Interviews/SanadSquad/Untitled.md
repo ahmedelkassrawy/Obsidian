@@ -1,211 +1,362 @@
-Component Classification
- •  Agents: Advisor, Reviewer, Writer
- •  Mixed: Research, Visual
- •  Code: Plan, Validator, Export, Summary
-Plan Execution Flow
- •  CLI & Flags: Inspects CLI arguments and flags, parsed via argparse.
- •  Settings Validation: Uses the parsed values to build the configuration settings and validates them using pydantic.
- •  Load Plan: Loads plan.json (contains 6 slots).
- •  Preflight Checks: Runs a set of validation checks before the content plan starts. It confirms that inputs and settings are valid so the run fails early instead of failing midway through execution.
-Preflight Validation & Setup Steps
- •  Validate Inputs:
-   •  Ensure slots in plan.json are not empty.
-   •  Verify the Brand configuration has 3 colors.
-   •  Confirm kb.json loads properly.
-   •  Agent Verification: For each agent, check that system.md, each skill.md, and .py files exist.
- •  Output Directory: Create the run output folder.
- •  Run Lock: Acquire a non-blocking OS lock so that two processes cannot own the same run simultaneously.
-   > Why: A run writes many files. If two processes resumed the same run at once, both would spend tokens and money while overwriting each other's output.
-   > 
- •  Cost/Token Estimation: Estimate worst-case numbers by passing the --estimate flag.
+---
+tags: [interview, sanadsquad, langgraph, multi-agent, pipeline]
+---
 
-## The bookkeeping files
+> [!abstract] What this note is
+> A simple guide to the SanadSquad pipeline, written to help me explain it in the interview.
+>
+> It follows one run from start to end:
+> **plan → research → write and review → image → collect**
+>
+> All code paths are inside `D:\me\SanadSquad`.
+> The examples come from a real run saved in `output/sample-week`.
 
-These files record the run's state rather than its content:
+## 0. The big picture
 
-|File|Holds|
+The pipeline takes a weekly plan with **6 slots** and turns each slot into a finished post with an image.
+
+Some parts are AI agents. Some parts are normal code. Some parts are both.
+
+| Kind | Parts |
 |---|---|
-|`run_identity.json`|Thread ID, run ID, and a hash of every snapshot file; resume checks the snapshot against this|
-|`runtime-settings.json`|Current settings, including budgets; resume compares against it so budgets can only go up|
-|`external-usage.json`|Usage from outside the model calls (search, image backends), starting at zero|
-|`usage.jsonl`|One line per model call, starting empty|
+| **AI agent** (the model decides) | Writer, Reviewer, Advisor |
+| **Mixed** (the model decides, code checks) | Research, Visual |
+| **Code only** | Plan, Validator, Export, Summary |
 
-`ledger.json` and `state.json` are written the same way later in the run.
-
-## What "atomic write" means
-
-The helper is `atomic_json` in [durability.py](D:\me\content_pipeline\durability.py):
-
+```text
+plan.json
+   │
+   ▼
+PLAN PHASE (code only)
+   │
+   ▼
+Node 1: focused_research
+   │
+   ▼
+Node 2: topic_selection
+   │
+   ▼
+6 lanes, one per slot, at the same time
+   write → validate → review → visual → collect
+   │
+   ▼
+export → advisor → summary
 ```
+
+> [!tip] The main idea
+> **The AI makes the choices. The code checks them.**
+>
+> Every AI answer has a fixed shape, and code checks it before it is used.
+>
+> - Research must point to real evidence.
+> - Topic picks must come from the allowed list.
+> - Image text must be copied from the post or the evidence.
+
+---
+
+## 1. Plan phase
+
+No AI is used here. It is all normal code.
+
+### 1.1 The steps
+
+1. **Read the command.** `argparse` reads the flags you typed.
+
+2. **Build the settings.** The flags become a `Settings` object. Pydantic checks it.
+
+3. **Load the plan.** It reads `inputs/plan.json`, which has 6 slots.
+
+4. **Preflight checks.** It checks that everything is valid **before** spending money. If something is wrong, the run stops early.
+
+5. **Make the run folder.**
+
+6. **Take the run lock.** (See 1.3)
+
+7. **Take a snapshot.** It copies all inputs and instructions into `snapshot/`.
+
+8. **Estimate the cost.** (See 1.5)
+
+9. **Create the starting state.** Each slot gets an empty `SlotState`.
+
+### 1.2 What preflight checks
+
+The code is `validate_inputs` in `pipeline.py:121`.
+
+**The plan**
+
+- The plan is not empty.
+
+- Slot ids are unique. `Thread_1` and `thread_1` count as the same.
+
+**The brand and the knowledge base**
+
+- The brand has **at least 3 colors**, and each one is a real color.
+
+- `kb.json` loads without errors.
+
+**Each slot**
+
+- Its post type exists.
+
+- If it uses angles, `angles.yaml` loads.
+
+- Its rubric must fail any post with an `unsupported_claim`.
+
+**Each agent** (writer, research, reviewer, visual, and advisor if it is on)
+
+- `agents/<name>/system.md` exists.
+
+- For each skill, both `skills/<skill>.md` and `skills/<skill>.py` exist.
+
+### 1.3 The run lock
+
+> [!definition] Run lock
+> A lock on the file `run.lock`.
+>
+> Only **one** program can own a run at a time.
+>
+> If another program already has it, the second one stops right away. It does not wait.
+
+> [!question] Is this like a lock in SQL?
+> Same idea: only one owner at a time.
+>
+> But it is much simpler. It locks the whole run folder, not single rows. And it never waits.
+
+**Why we need it**
+
+A run writes many files.
+
+If two programs worked on the same run at once, both would spend money, and they would overwrite each other's files.
+
+### 1.4 Bookkeeping files and safe writes
+
+These files save the **state** of the run, not the posts.
+
+| File | What it saves |
+|---|---|
+| `run_identity.json` | The run's id and a fingerprint of every snapshot file. A resume uses it to check nothing changed. |
+| `runtime-settings.json` | The settings, including budgets. On resume, budgets can only go up. |
+| `external-usage.json` | Use of outside services (search, images). Starts at zero. |
+| `usage.jsonl` | One line for each AI call. Starts empty. |
+
+`ledger.json` and `state.json` are saved the same way later.
+
+> [!definition] Atomic write (safe write)
+> A way of saving a file so it is **never half-written**.
+>
+> Anyone who reads it sees either the full old version or the full new version.
+
+How it works (`atomic_json` in `durability.py`):
+
+```python
+# durability.py
 def atomic_json(path, value):
     temp = path.with_suffix(path.suffix + ".tmp")
     temp.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
     temp.replace(path)
 ```
 
-1. It writes the full JSON to `run_identity.json.tmp`.
-2. It renames the temp file over the real file with `Path.replace`, which calls `os.replace`.
+1. Write everything into a temporary file first, for example `run_identity.json.tmp`.
 
-On the same filesystem, that rename happens as a single step. Anyone reading `run_identity.json` sees either the complete old version or the complete new version, never a mix.
+2. Then swap the temporary file into the real file's place. The swap happens in one single step.
 
-## Why it matters here
+> [!warning] Why this matters
+> Imagine the program crashes while writing a file the normal way.
+>
+> The file would be cut in half, like `{"thread_id": "ab`.
+>
+> Next time, the run could not read it and could not continue, even though money was already spent.
+>
+> With a safe write, the worst case is a leftover `.tmp` file. The real file is still fine.
 
-If the process were killed halfway through a plain `write_text`, the file would be cut off, for example `{"thread_id": "ab`. On the next resume, the read-only preflight would fail to parse `run_identity.json` or `ledger.json`, and the run could not be recovered, even though tokens and money had already been spent. With atomic writes, a crash leaves at worst a stray `.tmp` file, and the real file still holds its last good version.
+### 1.5 The cost estimate
 
-The estimate is a deliberately pessimistic upper bound on tokens and dollars, worked out from the config alone. It makes no model calls and creates no clients. The code is `estimate()` at [pipeline.py · L178](D:\me\content_pipeline\pipeline.py:178), and the CLI wiring is in `content_pipeline/cli.py:107-125`.
+> [!definition] Estimate
+> A guess at the **highest possible** cost of the run, in tokens and dollars.
+>
+> It only reads the settings. It does not call any AI.
+>
+> Code: `estimate()` in `pipeline.py:178`.
 
-## Step by step
+**How it is calculated**
 
-**1. Validate first.** It runs the same `validate_inputs` preflight, so a broken config fails here too.
+**Step 1 — Check the inputs.** It runs the same preflight checks first.
 
-**2. List every agent the run will use** (`_estimate_agent_names`):
+**Step 2 — List the agents the run will use.**
 
-- one `research` for the batch topic-selection call;
-- for each slot: `research`, that slot's writer, `reviewer`, `visual`;
-- one `advisor`, if enabled.
+- 1 research call to pick topics for the week.
 
-**3. Count calls per agent** (`_estimated_agent_calls`):
+- For each slot: research, writer, reviewer, visual.
 
-|Agent|Base calls|
+- 1 advisor, if it is on.
+
+**Step 3 — Count the calls for each agent.**
+
+| Agent | Calls |
 |---|---|
-|research|5|
-|writer, reviewer|`MAX_CONTENT_ATTEMPTS` = 2|
-|visual, advisor|1|
+| research | 5 |
+| writer | 2 |
+| reviewer | 2 |
+| visual | 1 |
+| advisor | 1 |
 
-**4. Reserve tokens for each agent** using three constants (`pipeline.py:64-66`):
+**Step 4 — Reserve tokens.**
 
+```text
+output   = max_output_tokens × 1.5
+reserved = (16,000 + output) × calls × 8
 ```
-output   = max_output_tokens × 1.5              # ESTIMATED_OUTPUT_MULTIPLIER
-reserved = (16,000 + output) × calls × 8        # ESTIMATED_INPUT_TOKENS, ESTIMATED_CALL_ALLOWANCE
-```
 
-- **16,000** is a flat guess at input tokens per call. Prompts aren't actually measured.
-- **× 1.5** pads the agent's `max_output_tokens` from its `agent.yaml`.
-- **× 8** is a blanket allowance for search turns, parsing/truncation repairs and transient retries.
+- **16,000** is a fixed guess at how big each input is. Real prompts are not measured.
 
-**5. Price each agent:**
+- **× 1.5** adds extra room to the output limit from `agent.yaml`.
 
-- It finds the agent's model with `resolve_model`: `--model-override`, then the agent's `model:`, then `default_model`.
-- `Prices.quote` prices one call of 16,000 input + `output` tokens. It uses [prices.yaml](D:\me\config\prices.yaml) if the model is listed there, otherwise the `genai-prices` library. `update=False` means it doesn't download fresh price data.
-- That price is multiplied by `calls × 8`.
-- If a model has no price, that agent adds an `unpriced_model:<agent>` warning and the total cost becomes `null`.
+- **× 8** adds room for searches, fixes and retries.
 
-**6. Compare with the budgets:** if tokens exceed `run_token_budget` or cost exceeds `run_cost_budget_usd`, it adds `worst_case_exceeds_budget`.
+**Step 5 — Turn tokens into dollars.**
 
-## What happens next
+- Prices come from `config/prices.yaml` or the `genai-prices` library.
 
-- **With `--estimate`:** it prints the `Estimate` JSON to stdout and exits with code 0. No run folder is created and no model is called.
-- **Without it:** it prints the same JSON to stderr as `startup_budget_warning: …` and the run continues. This happens on every run, not only when a budget is exceeded. The estimate never blocks a run; the real limits are enforced during the run by the `Ledger`.
-- **When resuming:** the estimate is computed from the saved snapshot after the run lock is taken (`warn_resume`). With `--resume --estimate`, it's computed read-only and the run isn't started.
+- If a model has no price, it adds a warning, and the total cost becomes `null`.
 
-## Worked example with the current config
+**Step 6 — Compare with the budget.**
 
-Research, reviewer, visual and advisor have `max_output_tokens: 3000`, so output is 4,500 and each call reserves 20,500 tokens. Writers have 6,000, so output is 9,000 and each call reserves 25,000.
+- If the worst case is over budget, it adds the warning `worst_case_exceeds_budget`.
 
-|Agent|Calculation|Tokens|
+**What happens after**
+
+- **With `--estimate`:** it prints the result and stops. Nothing runs.
+
+- **Without it:** it prints a warning and keeps going. The estimate **never** stops a run.
+
+- **Real limits** are checked during the run by the `Ledger`.
+
+**Example with the current settings**
+
+| Agent | Math | Tokens |
 |---|---|---|
-|research|20,500 × 5 × 8|820,000|
-|writer|25,000 × 2 × 8|400,000|
-|reviewer|20,500 × 2 × 8|328,000|
-|visual|20,500 × 1 × 8|164,000|
-|advisor|20,500 × 1 × 8|164,000|
+| research | 20,500 × 5 × 8 | 820,000 |
+| writer | 25,000 × 2 × 8 | 400,000 |
+| reviewer | 20,500 × 2 × 8 | 328,000 |
+| visual | 20,500 × 1 × 8 | 164,000 |
+| advisor | 20,500 × 1 × 8 | 164,000 |
 
-Per slot that's 1,712,000 tokens. With the 6 slots in [plan.json](D:\me\inputs\plan.json), plus the batch research call and the advisor:
+- One slot = **1,712,000** tokens.
 
-**6 × 1,712,000 + 820,000 + 164,000 ≈ 11.26M tokens.**
+- Whole run (6 slots + topic call + advisor) ≈ **11.26 million** tokens.
 
-The default `run_token_budget` is 250,000 ([config.py · L17](D:\me\content_pipeline\config.py:17)), so with default settings **`worst_case_exceeds_budget` will always appear**. That's expected: the estimate is a worst-case ceiling, not a forecast. Real runs usually use a small fraction of it.
+- The default budget is only **250,000**, so the warning **always** shows.
 
-## Caveats
+- That is fine. It is a ceiling, not a real prediction.
 
-- The 16k input figure and the ×8 allowance are fixed guesses. Actual prompt size, KB size and search results aren't measured.
-- The ×8 already includes "two content attempts", but writer and reviewer are also counted at 2 calls. So those two agents are probably counted twice over.
-- Prompt-cache discounts aren't included, so cost is overstated for models that use caching.
+> [!warning] Weak spots in the estimate
+> - The 16,000 and the × 8 are fixed guesses.
+>
+> - Writer and reviewer are probably counted twice: the × 8 already covers a second try.
+>
+> - Cache discounts are ignored, so the cost looks higher than it is.
+>
+> - Most slots really need **0** research calls (see 2.5), not 5.
 
-### Research
-each slot is researched by looking first time at BM25 search and getting top 5
-and then the 5 turns finish , search_kb or web search
-runs each search max 4 and checks every cited sources was found with status ok 
+---
 
-Node 2 is we have to select a topic for an empty slots and get topics
-llm is on batch call for getting the topics per slot and excluding taken topics and last 4 runs , assign_topics valudiates and fills any gap itself
+## 2. Research phase
 
-Node 2 fills every slot that the plan left open. The model suggests a topic for each slot, then code checks those suggestions and has the final say. Once a slot has a topic, research for it is free, because the evidence comes straight from your own KB or brand file. Everything is in `D:\me\SanadSquad`, which is now on `main`.
+### 2.1 The data that moves between steps
 
-**Which slots count as empty.** A slot is empty when it has no `focus` in `inputs/plan.json`. If a slot does have a focus, you chose its subject, so it skips this node and goes through full research (search plus LLM) later.
+> [!definition] Contract
+> A fixed data shape (a Pydantic model) that one step hands to the next.
+>
+> Agents never share a chat. They only pass these objects.
 
-**1. LLM: one batch call** (`_propose_topics`, `pipeline.py:705`). This is a single call to the `research` agent with slot id `_batch`. That single call is why the cost estimate adds one extra research agent. The request contains two things:
-- `choices`: for each empty slot, the list of ids that slot may use. That's every KB entry id, or the angle ids if the post type draws from angles (`topic_pool`, `post_types.py:154`).
-- `exclude`: topics already taken this week by focused slots, plus every topic used in the last 4 runs. `history()` (`pipeline.py:271`) finds the 4 most recently modified run folders that have a `run_summary.json` and reads their `topic_id`s (`HISTORY_RUN_LIMIT = 4`).
+| Contract | In simple words |
+|---|---|
+| `ResolvedSlot` | One line of the plan: id, type, focus, topic |
+| `SlotState` | Everything we know about one slot as it moves through the pipeline |
+| `ResearchRequest` | The slot + some hints about the post type |
+| `ResearchTurn` | The request + the evidence found so far + searches left |
+| `ResearchAction` | The AI's answer: search the KB, search the web, or finish |
+| `ResearchPack` | The final evidence for one slot |
+| `SourceRecord` | One piece of evidence (see below) |
 
-The prompt in `agents/research/topics.md` tells the model to pick one id per slot from that slot's own list, skip excluded ids, give each slot a different topic, and never invent ids. If the call fails for any reason, the run continues. It logs `topic_selection_failed:code_fallback` and step 2 does all the picking.
-
-**2. CODE: `assign_topics` checks and fills gaps** (`research.py:20`). The model's suggestions are only advice, and this function enforces the rules:
-- It records the focused slots' topics first and warns `explicit_duplicate` if two of them collide.
-- It keeps a suggestion only if it's in that slot's list, not used yet this week, and not in the last 4 runs. Otherwise it drops it silently.
-- For any slot still without a topic, it takes the top id from a list ranked by keyword relevance (`kb.search` against the post type's hints) that is neither used nor recent.
-- If everything left was used recently, it lets recent topics back in, oldest first, and warns `history_exhausted`. If nothing is left at all, that slot is marked `failed_research` with `topic_pool_exhausted` and the other slots continue.
-
-For example, with KB ids A to F, where A and B were used last week and the model suggests B for slot 1 and D for slot 2: slot 1's B gets rejected and slot 1 gets the best-ranked free id (say C), while slot 2 keeps D.
-
-**3. CODE: the shortcut** (`assigned_pack`, `post_types.py:199`, called first thing in `ResearchAgent.__call__`, `agents.py:151`). Every slot still goes through `research_slot`. But a slot whose topic came from step 2 (has a topic, no focus) gets its `ResearchPack` built directly:
-- **KB topic:** the pack is that one KB entry, used as the source.
-- **Angle topic:** the pack is the brand's approved stats (filtered by the angle's `stat_ids`) plus the angle's KB sources. A "pick-one" angle gets just one source, chosen by `_choose_angle_sources` so no other slot covers it this week.
-
-So there are no web searches and no research-loop LLM turns. That's why the estimate's 5 research calls per slot are an overcount for these slots: they really cost 0.
-
-One small mismatch: `topics.md` still says "the research step finds the evidence afterwards", which isn't true anymore for these slots because of the shortcut. It doesn't change any behavior, but it's out of date.
-
-Why aliasses because BM25 matches words and not meaning so the alieases makes them reach better 
-
-**Evidence card (SourceRecord):** `source_id` (`KB-18`, `STAT-01`, `WEB-3f9a…`), kind, title, url, `evidence_text` (max 12,000 chars), status `ok` or `fetch_failed`.
-
-So node 1 is the focused research where we get the name of the topics inside the plan 
-if the second node where the empty slots have no focus (empty topcics) so the llm has to choose one
-
-topic selection is handling all the remaining slots without an expliciti focus through  a hybrid LLM and python pipeline
-1. Proposal -> Invokes TopicsSeelctor via a signle batch request from TopicChoiceReuqest, the model then is given candidate topics from topic pool and instrcuted to avoid collisons with a focused topics or topics from the last 4 runs , if the llm call failes it logs that `topic_selection_failed:code_fallback` and proceeds.
-
-2. Determinsitics Validation 
-- Rejects proposals that collide with curr wek topics or appear int he 4 run history 
-- Fill empty slots with the highest ranked free topic from the kb saearch tool
-- If histoical entries must be recycled it pulls the oldest used topic and warns "history exhausted"
-- if no topic remain the slot is marked with outcome `SlotOutcome.failed_research` and reason `topic_pool_exhausted`.
-
-- **Angle Source Assignment (`_choose_angle_sources`)**: For post types utilizing marketing angles (`pick_one: true`), assigns candidate KB sources to ensure no two slots cover the same subject in the same week.
-
-- **Execution**: Dispatches `research_slot` [pipeline.py · SanadSquad/content_pipeline](D:/me/SanadSquad/content_pipeline/pipeline.py) across all assigned empty slots and writes the snapshot to `plan.resolved.json`.
-
-Node 1 focus_research thread 1, thread 2 in parallel 
-Only the 2 focused slots run here , toegther via async.gather 
-Each does a free KB search with its focus text , then the research loop asks model what to do next . Both models answered finish on turn 1 so each slot cost 1 LLM call
-1 KB Search + 1 LLM turn 
-
-Plan phase we enter with a plan.json that gets outputed as ResolvedSlot(Contract) 
-
-class ResolvedSlot(Contract):          # models.py:48
+```python
+# models.py:48
+class ResolvedSlot(Contract):
     slot_id: str
     type: str
     focus: str | None = None
     topic_id: str | None = None        # filled during research
     angle_source: str | None = None    # only for pick-one angles
-    
-After the Plan preflight phase we get the SlotState for eeach slot
-
-after the focused research -> What goes in is the ResearchTurn where we do the first kb search and get the top 5 and then enter the model an the model filters 
-and decides the relevant , code doesnt filter anything it just checks the model answer aftwards
-
-One correcrion the whole slot state never goes into the turn , the researchslot builds a small research Request with the slot and some post type hints 
-
-Research agent then wraps the reqeust in Researchturn together with the evidence it has collected 
-
-The model does the narrowing. It reads all 5 records and decides only KB-01 is relevant. Code doesn't filter anything there; it just checks the model's answer afterwards.
-
-One correction to your picture first: the whole `SlotState` never goes into the turn. `research_slot` builds a smaller `ResearchRequest` with just the `slot` (`ResolvedSlot`) and the post type's `hints`. `ResearchAgent` then wraps that request in a `ResearchTurn` together with the evidence it has collected.
-
-**1. Seed search (code, no LLM).** It calls `search_kb("reentrancy")`. The KB search ranks by keywords and always returns its top 5, whether they're relevant or not:
-
 ```
+
+> [!definition] Evidence card (`SourceRecord`)
+> One piece of evidence.
+>
+> - **id:** starts with `KB-`, `STAT-` or `WEB-`
+> - **kind:** `kb`, `stat` or `web`
+> - **title, url, text:** web text is cut at 12,000 characters
+> - **status:** `ok`, `snippet_only` or `fetch_failed`
+>
+> Only `ok` evidence can be used in a post.
+
+A `ResearchPack` is only valid if:
+
+- no evidence id appears twice, and
+
+- at least one piece of evidence is `ok`.
+
+### 2.2 Two kinds of slots
+
+| Slot | Has a focus? | Who picks the topic | Cost |
+|---|---|---|---|
+| **Focused** | Yes, you wrote it in the plan | The research loop | KB search + AI turns (+ web if needed) |
+| **Empty** | No | Node 2 picks from a list | **Free** — no search, no AI |
+
+### 2.3 Node 1: focused research
+
+Only **focused** slots run here. They all run at the same time.
+
+**Step 1 — First search (code, no AI)**
+
+It searches the KB using the focus words.
+
+The search (BM25) matches **words**. It always returns the top 5, even if some are not relevant.
+
+**Step 2 — The loop (AI)**
+
+- Up to **5 turns**.
+
+- Up to **4 searches** in total.
+
+- Each turn, the AI answers with one of:
+  - `search_kb` — search the KB again
+  - `web_search` — search the web
+  - `finish` — "I'm done, use these sources"
+
+**Step 3 — Code checks the answer**
+
+- Every source the AI picked must really exist and be `ok`. The AI can't invent a source.
+
+- The topic must be one of those sources.
+
+- The topic's title must really match the focus (`focus_matches`). The AI can't switch to a similar topic.
+
+**Step 4 — Keep only what was picked**
+
+- The pack only has the sources the AI chose.
+
+- The others are still saved in `research_log.json`, so you can see them.
+
+> [!note] The AI does not see everything
+> The full `SlotState` is **not** sent to the AI.
+>
+> Code builds a small `ResearchRequest` (slot + hints), then wraps it in a `ResearchTurn` with the evidence.
+
+**Example: `thread_1`, focus "reentrancy"**
+
+The first search returned 5 entries:
+
+```text
 KB-01  Reentrancy
 KB-20  Business logic errors
 KB-02  Integer overflow and underflow
@@ -213,36 +364,393 @@ KB-03  Unchecked call return value
 KB-04  Unprotected Ether withdrawal
 ```
 
-Only the first one is actually about reentrancy. The other four just made the top 5.
+Only KB-01 is really about reentrancy.
 
-**2. The LLM call** (`Agent.invoke`, [agents.py · L122](D:\me\agents.py:122)) sends two messages:
+The AI got two messages:
 
-- **system:** the research agent's prompt plus [loop.md](D:\me\agents\research\loop.md)
-- **user:** the `ResearchTurn` as JSON (request, the 5 evidence records with full text, `searches_remaining: 3`)
+- **system:** the research prompt + `loop.md`
+- **user:** the `ResearchTurn` as JSON
 
-The reply is forced into the `ResearchAction` shape (`with_structured_output(..., method="json_schema")` in [model_client.py · L517](D:\me\model_client.py:517)). That means the model can only answer with fields like `action`, `source_ids` and `topic_id`, not free text.
+`loop.md` says: *"a matching word is not enough — the text must explain the focus."*
 
-**3. Why it answers with just one id:** `loop.md` tells it to:
+The AI answered:
 
-- check whether any KB record _explains_ the focus ("a matching keyword alone is not enough");
-- if one does, "finish with that record and set topic_id to its KB id";
-- if none do, `web_search`.
-
-So the model read the 5, saw that KB-01's text explains reentrancy and the others are different bugs, and returned:
-
-```
+```json
 {"action": "finish", "source_ids": ["KB-01"], "topic_id": "KB-01"}
 ```
 
-That's the 53 output tokens. If it had picked `search_kb` or `web_search` instead, the loop would have run the search, added the results to `evidence`, and asked again on turn 2. The limit is 5 turns and 4 searches.
+- **Who picked 1 out of 5?** The AI. Code only checked it.
 
-**4. Code checks the answer** (`agents.py:218-247`) and fails the slot if any check fails:
+- **Cost:** 1 KB search + 1 AI turn.
 
-- every cited id must be in `evidence` with status `ok`, so the model can't invent a source;
-- `topic_id` must be one of the cited ids;
-- `focus_matches("reentrancy", KB-01)` checks that the entry's title or aliases actually match the focus, so the model can't quietly swap in a nearby topic.
+> [!question] Why do KB entries have aliases?
+> The search matches **words**, not meaning.
+>
+> Aliases are other names for the same bug. They help the search find the right entry, and they help `focus_matches` check the topic.
 
-**5. The pack keeps only what was cited.** `ResearchPack.sources` is built from `source_ids`, so the writer only ever sees KB-01. The other four aren't in the pack, but they're still in `research_log.json` under the `research_search/1/1` record, so you can always see what the model was offered and what it turned down.
+### 2.4 Node 2: topic selection
 
-node 2 topic selection -> One batch LLM call , then assign topics
-4 empty slots get topics . one model call proposes a topic for each , then assign_topics keep only the valid proposals and fills the rest itself
+This node gives a topic to every **empty** slot.
+
+```text
+1. AI    one call suggests a topic for each empty slot
+2. CODE  assign_topics checks the suggestions and fills any gaps
+3. CODE  picks a source for "pick-one" angles
+4. CODE  builds the evidence pack for free (the shortcut)
+5.       saves plan.resolved.json and sends each slot to its lane
+```
+
+**Step 1 — One AI call for all slots**
+
+It sends:
+
+- `choices` — the allowed topics for each slot. That's 20 KB ids for tech threads, or 3 angles for marketing posts.
+
+- `exclude` — topics already used this week, and topics from the last 4 runs.
+
+If this call fails, the run goes on and code picks everything.
+
+**Step 2 — Code has the final say** (`assign_topics`)
+
+- It keeps a suggestion **only if** the topic is allowed, not used this week, and not used in the last 4 runs.
+
+- Bad suggestions are thrown away quietly.
+
+- Empty gaps get the best free topic from a ranked list.
+
+- If every topic was used recently, it reuses the oldest one and warns `history_exhausted`.
+
+- If there is nothing left at all, only that slot fails. The others continue.
+
+> [!example] Small example
+> KB has topics A to F. A and B were used last week.
+>
+> The AI suggests **B** for slot 1 and **D** for slot 2.
+>
+> - B is rejected → slot 1 gets the best free topic, maybe **C**.
+> - D is fine → slot 2 keeps **D**.
+
+> [!definition] History
+> The topics used in the **last 4 runs**, read from the 4 newest run folders.
+
+**Step 3 — Pick-one angles**
+
+Some marketing angles (like `ANGLE-education`) use one KB entry per week.
+
+Code picks the first one that no other slot is using.
+
+### 2.5 The shortcut (assigned pack)
+
+> [!definition] Assigned pack
+> If a slot has a topic but **no** focus, code builds its evidence pack directly from your files.
+>
+> No search. No AI.
+>
+> Code: `assigned_pack` in `post_types.py:199`.
+
+| Topic type | What goes in the pack |
+|---|---|
+| **KB topic** | That one KB entry (description + root cause) |
+| **Angle** | The brand's approved stats for that angle |
+| **Pick-one angle** | The chosen KB entry + its stats |
+
+> [!tip] Why this is good
+> Most slots never search at all.
+>
+> Only slots with a focus do real research.
+>
+> Slots you didn't plan stay inside safe, checked material: your KB and your brand stats.
+
+### 2.6 The real run (`output/sample-week`)
+
+| Slot | Node | Topic | Evidence | Cost |
+|---|---|---|---|---|
+| thread_1 | 1 | KB-01 | KB-01 | 1 search + 1 AI turn |
+| thread_2 | 1 | KB-18 | KB-18 | 1 search + 1 AI turn |
+| thread_3 | 2 | KB-07 | KB-07 | free |
+| marketing_1 | 2 | ANGLE-service | STAT-04, STAT-05 | free |
+| marketing_2 | 2 | ANGLE-credibility | STAT-01, STAT-05 | free |
+| marketing_3 | 2 | ANGLE-education | KB-04 | free |
+
+- **AI calls in research:** only **3** (2 loop turns + 1 topic call). The estimate planned for 31.
+
+- **Cost:** about 10,400 tokens, or $0.022.
+
+- **Warnings:** `history_exhausted` × 3. There are only 3 angles, and all were used in the last 4 runs.
+
+- **Why KB-04 for marketing_3?** Its first choice, KB-01, was already taken by thread_1.
+
+---
+
+## 3. The lane: write → check → review → image → collect
+
+After node 2, each slot goes into its own **lane**. All 6 lanes run at the same time.
+
+```text
+Already failed? ───────────────────────────► collect
+write → validate → review → visual ────────► collect
+           │          │
+           │          └ rejected → retry → write again (or give up → collect)
+           └ broke a rule → retry → write again
+```
+
+### 3.1 Visual (making the image)
+
+**Step 1 — Gather what's needed:** the approved post, the evidence, the post type, and the severity from the KB.
+
+**Step 2 — Reuse it** if this image was already made in an earlier try (resume).
+
+**Step 3 — The AI writes a plan for the image**, not the image itself.
+
+The plan has: idea, scene, colors, the text on the image, alt text and severity.
+
+**Step 4 — Code checks the plan**
+
+- The text on the image must be **copied word for word** from the post or the evidence.
+
+- It can't contain new numbers.
+
+- The colors must be the brand colors.
+
+**Step 5 — One fix.** If the check fails, the AI gets one more try with the errors.
+
+If it still fails, code makes a simple card using the topic name or a title.
+
+**Step 6 — Draw the image**
+
+1. First try Cloudflare Flux (an AI background), with the text drawn on top.
+
+2. If that fails → a simple local card (Pillow).
+
+3. If that fails too → save just the plan as a JSON file.
+
+**Step 7 — Mark the slot as shipped** and save the record in `visuals.json`.
+
+> [!example] In the sample run
+> - 6 image plans, no fixes needed.
+> - Every Flux call was blocked (HTTP 429, too many requests). So all 6 images are simple local cards.
+> - marketing_1's image text, *"its severity, its root cause and a recommended fix"*, is copied exactly from STAT-04.
+
+### 3.2 Collect (the end of every lane)
+
+Every lane ends here, whether the slot shipped or failed.
+
+- If the slot has no final result, it raises an error. A slot can't leave unfinished.
+
+- If the slot shipped, it saves a `FinalPiece` to `final.json`.
+
+- It sends the slot back so the week can join all 6 lanes together.
+
+> [!warning] Things to watch
+> - A slot can ship **without a real image** (the JSON fallback).
+>
+> - Marketing posts never get a severity badge.
+>
+> - Flux failures don't show in `run.log`. Look in `visuals.json` or `external-usage.json`.
+
+---
+
+## 4. How the agents work
+
+### 4.1 Agents don't talk to each other
+
+> [!important] Key point
+> Each agent is **one AI call**: a fixed shape goes in, a fixed shape comes out.
+>
+> There is no shared chat. LangGraph passes the slot from step to step, and code checks each handoff.
+
+| Agent | Job | Model |
+|---|---|---|
+| research | Find evidence, pick topics | Sonnet 5.5 |
+| thread_writer / marketing_writer | Write the post | Sonnet 5.5 |
+| reviewer | Score the post | **Opus 5.5** |
+| visual | Plan the image | Sonnet 5.5 |
+| advisor | Suggest better instructions | Sonnet 5.5 |
+
+### 4.2 How an agent is built
+
+Each agent is a folder with two files:
+
+- `system.md` — the agent's instructions
+- `agent.yaml` — its settings
+
+```yaml
+# agents/thread_writer/agent.yaml
+model: anthropic:claude-sonnet-5-5   # which AI model
+max_output_tokens: 6000              # max answer length
+reasoning_effort: low                # how hard it thinks
+skills: [brand_rules]                # extra instructions added to the prompt
+```
+
+The full prompt is built in this order:
+
+1. The agent's `system.md`
+2. The post type's writing guide or rubric
+3. Each skill's `.md` file
+4. The brand voice file
+
+> [!definition] Skill
+> Just a markdown file added to the prompt.
+>
+> Only research's two skills (search KB, search web) are real tools, and **code** runs them, not the AI.
+
+### 4.3 How an agent is called
+
+Every agent uses the same function, `Agent.invoke`:
+
+```python
+messages = [
+    {"role": "system", "content": self.prompt + instructions},
+    {"role": "user", "content": payload.model_dump_json()},
+]
+return await self.client.call(schema, messages, slot_id, node, attempt, max_output_tokens)
+```
+
+- **System message** = the agent's prompt.
+
+- **User message** = the request as JSON.
+
+- **The answer** must match a fixed shape (`schema`).
+
+### 4.4 The tools we use
+
+| Tool | What it does for us |
+|---|---|
+| **LangChain** | Talks to any AI provider. Forces the answer into our shape. |
+| **ModelClient** (our code) | Checks the budget **before** each call. Retries on errors. Gives more room if the answer was cut off. Asks again if the JSON was broken. Logs every call. |
+| **LangGraph** | Runs the steps in order, runs the 6 lanes at once, and saves progress so a run can resume. |
+| **Pydantic** | Defines every data shape between steps. |
+
+> [!note] The AI asks, code does
+> Research never runs a search itself.
+>
+> It answers "I want to search the web for X". Code runs the search, counts it, logs it, and gives the result back on the next turn.
+
+### 4.5 Why YAML files for agents
+
+- **Easy to change.** Switching a model is a one-line edit, with no code change. That's how the reviewer uses Opus and the rest use Sonnet.
+
+- **Checked when loaded.** A typo fails right away. Writers are **not allowed** to have search skills.
+
+- **Same every time.** The files are copied into the snapshot, so a resumed run uses the exact same settings.
+
+- **Cheap estimates.** The cost estimate reads them without calling any AI.
+
+---
+
+## 5. Design questions for the interview
+
+### Q1. What if the AI suggests a brand new topic?
+
+**It can't get through.** There are 3 safety layers:
+
+1. The AI is only shown allowed topic ids, and told not to invent any.
+
+2. Its answer can only be an id, not a description.
+
+3. Code keeps an answer **only if** it is in the allowed list.
+
+**New topics come from `focus`.** A focused slot can search the web and use a new source.
+
+This is on purpose:
+
+- Slots you didn't plan stay safe.
+- Slots you did plan can go wider.
+
+**Downside:** less variety (only 20 KB topics + 3 angles).
+
+### Q2. Why let an AI choose from a list? Why not pick randomly?
+
+> [!warning] The weak spot I found
+> The topic AI only sees **ids** like `KB-07`, with no titles or descriptions.
+>
+> So it is choosing blind. The code backup actually knows more: it ranks topics by how well they match.
+>
+> Used topics are already blocked twice, so random picking would only change the **order**.
+
+| Option | Idea | Good | Bad |
+|---|---|---|---|
+| **1. Code only** | Remove the AI call. Code picks. | One less call. Same result every time. | Removes a feature. |
+| **2. Smarter AI** ✅ | Show the AI titles and summaries | It can make real choices, like avoiding overlap | A bit more code and tokens |
+| **3. Random** | Pick any free topic | Very simple | Ignores how good the topic is |
+
+### Q3. Isn't option 2 more complicated?
+
+Not really.
+
+- Only 4 files change.
+- Code still makes the final decision, so a bad pick is still caught.
+
+### Decision: option 2, plus these improvements
+
+1. **Only show allowed topics** to the AI.
+
+2. **Show titles and summaries**, plus this week's topics that are already taken.
+
+3. **Log rejected picks** so we can see them.
+
+4. **Add a one-line reason** for each pick.
+
+5. **Fix the old line in `topics.md`.**
+
+6. **Write it up** in `ARCHITECTURE.md` with the other options I considered.
+
+> [!tip] Why this is good for the interview
+> An AI choosing from ids it can't read looks pointless.
+>
+> Option 2 fixes that, and it matches the rest of the design: **the AI chooses, code checks**.
+>
+> Writing down the other options shows I thought it through.
+
+**Known limit (written down, not fixed yet)**
+
+- If the run crashes in node 2 and resumes, the topic AI is called again.
+
+- If it gives a different answer, that slot **fails** instead of quietly swapping topics.
+
+- Later fix: save the AI's answer and reuse it.
+
+> [!note] Status
+> The work was given to a separate thread.
+>
+> Sonnet 5.5 writes the code, and Opus 5.5 reviews it.
+>
+> Branch: `feat/topic-selection-catalog`. It opens a PR and waits for my approval before merging.
+
+---
+
+## 6. Things that can surprise you
+
+- **The AI's topic suggestions are never saved.** Only the final choice is.
+
+- **`exclude` is only a hint** to the AI. Code enforces its own rules.
+
+- **History reads every folder in `output/`**, including example folders. A fresh copy of the repo may show warnings it didn't cause.
+
+- **Topic AI failures all look the same.** Budget, login and format errors all become one `code_fallback` warning.
+
+- **Only 3 marketing angles**, so `history_exhausted` shows up almost every time.
+
+- **If an angle had no stat list**, it would get all 5 stats, but only 2 are allowed. Nothing stops this early.
+
+- **A missing id** gives a confusing error message.
+
+---
+
+## 7. Where things live
+
+| What | File |
+|---|---|
+| The main flow, nodes, preflight, estimate | `content_pipeline/pipeline.py` |
+| Topic checking | `content_pipeline/research.py` |
+| Agents and the research loop | `content_pipeline/agents.py` |
+| Topic lists, shortcut packs | `content_pipeline/post_types.py` |
+| AI calls and retries | `content_pipeline/model_client.py` |
+| Agent settings, prompt building | `content_pipeline/config.py` |
+| Data shapes | `content_pipeline/contracts.py`, `content_pipeline/models.py` |
+| Safe writes, run lock | `content_pipeline/durability.py` |
+| Resume | `content_pipeline/stage_replay.py` |
+| Images | `content_pipeline/images.py`, `content_pipeline/image_backends.py` |
+| Agent prompts and settings | `agents/<name>/` |
+| Post types | `post_types/<type>/` |
+| Example run | `output/sample-week/` |
