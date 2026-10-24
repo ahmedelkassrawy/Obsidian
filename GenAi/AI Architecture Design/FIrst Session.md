@@ -429,3 +429,41 @@ This code is the implementation. A C4 Code diagram would show the same types and
 Views split the system into separate drawings so
 each audience can understand its part. Perspectives are quality concerns that cut across every
 view.
+
+Writing the architecture description Slides 19–24
+This chapter is the practical core of the session: what goes into the architecture document,
+section by section. Each section below is filled in for the Marketing Automation project as a
+worked example.
+8.1 Introduction and facts Slide 20
+Section Worked example
+1. Problem statement / pain
+points
+
+Every visitor sees the same homepage. Campaigns are built manually in
+spreadsheets and take 5 days. Discounts are sent to customers who would have
+bought anyway.
+
+2. Goals / non-goals,
+assumptions
+
+Goals: personalized homepage, NBA for cart abandonment, agent-assisted
+campaigns. Non-goals: pricing optimization, call-centre integration. Assumptions:
+the CDP can stream events with <2 s lag (spike pending); customers have
+consented to marketing for ~60% of the base.
+
+3. As-is architecture Monolithic e-commerce site, a CRM, a CDP collecting clickstream, a nightly ETL to
+the warehouse, and a third-party SMS tool. Also explore the enterprise architecture:
+what shared platforms (IAM, Kafka, observability) already exist that you must reuse?
+
+4. Principles, key decisions,
+trade-offs
+
+"Consent is checked once, centrally." "No LLM in the synchronous user path." "Buy
+before build for commodity capabilities." Each key decision links to an ADR.
+5. Assessment Gap analysis of as-is vs to-be: no online feature store, no event streaming from the
+
+site, no model registry, no consent API.
+
+6. Priorities P1 events + feature store + homepage recs → P2 NBA → P3 campaign agent with
+
+human approval.
