@@ -423,3 +423,9 @@ This code is the implementation. A C4 Code diagram would show the same types and
 4. Architecture principles, key decisions, and trade-offs
 5. Assessment
 6. Priorities
+
+
+
+Views split the system into separate drawings so
+each audience can understand its part. Perspectives are quality concerns that cut across every
+view.
