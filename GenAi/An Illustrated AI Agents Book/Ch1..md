@@ -68,3 +68,10 @@ An Agentic System With all these components, a reasoning LLM augmented with memo
 	the way it behaves inside a system. 
 	
 This covers common use cases, degree of autonomy, ethical considerations, and how these agents and systems can be evaluated
+
+Autonomy
+The freedom where LLM can choose betwen the tools,decide to update the intial plan or add aditional steps or stop 
+
+a system is more “agentic” the more the LLM has full control over its actions.
+
+However, we believe that as long as the agent exhibits goal-directed behavior and makes decisions, we can call it an agent.
