@@ -75,3 +75,43 @@ The freedom where LLM can choose betwen the tools,decide to update the intial pl
 a system is more “agentic” the more the LLM has full control over its actions.
 
 However, we believe that as long as the agent exhibits goal-directed behavior and makes decisions, we can call it an agent.
+
+Autonomy exists on a spectrum, and partial autonomy in orchestrated workflows can still qualify as agency if the agent acts with some degree of independence.
+
+HITL 
+Guardrails -> It’s essential to be careful with the level of autonomy we grant agents
+Misinformation
+
+LLMs are already hard to evaluate, usually using benchmarks and scored text outputs, and agents raise the bar further.
+
+outcome evaluation and trajectory evaluation
+- Reliability asks whether an agent succeeds every time, not just once, since its outputs are stochastic
+- Safety asks whether it avoids harm, whether the risk comes from a malicious user, from manipulated data the agent reads, or from its own mistakes on an ordinary task
+
+Taken together, this is why evaluating an agent is much more than evaluating a model: you are evaluating an entire system.
+
+Multi-Agent Collaboration When systems grow larger and tasks are more specialized, we start looking toward multi-agent collaborations.
+
+In practice, the supervisor agent tends to have the most capable LLM because the supervisor is in charge of advanced behavior such as planning, decomposing, and assigning tasks
+
+The MultiModal Agent
+The digital world is not composed of a single modality, so interaction with it should not be done only through text
+
+We can consider an agent to be multimodal if the LLM it uses is capable of processing and/or generating different modalities. This also points us toward the two most important components of what makes an LLM multimodal— their capabilities for the following: Understand multiple modalities Generate multiple modalities
+
+multimodal understanding in LLMs through two important components: 
+- an encoder for converting modalities into numeric information 
+- a connector to connect those representations to the LLM
+
+For an LLM to generate output in a modality other than text requires a vastly different process than simply understanding multiple modalities
+
+the other side of the process is where a generator is used to generate modalities other than text
+
+Coding Agents
+they back and forth , can run program in a dedicated enviroement
+
+The harness of the TinyAgent that you’re going to build is mostly codebased and will have a terminal implementation. We focus on the educational nature of this harness and decided that the best way to learn is to build an agent from scratch
+
+We’re not going to use packages that abstract away the complexities but instead dive deep into them. The TinyAgent will be built with minimal dependencies and we’ll explain everything you implement along the way. To do so, we make use of a highly modular and educational structure that focuses on understanding the vital components of an agent
+
+![[Pasted image 20261024181229.png]]
