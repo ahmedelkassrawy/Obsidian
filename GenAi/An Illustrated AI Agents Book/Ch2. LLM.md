@@ -141,3 +141,179 @@ we use the term action to describe a tool call because in Chapter 6 we will expl
 To reach its final answer, an agent might need various steps and use different actions. This sequence of steps is called the agent’s trajectory
 
 We likewise track this information as it allows for easily debugging this sequence of steps to identify where and why an agent might have failed
+
+```python
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+from pydantic import BaseModel
+
+class TinyAgent:
+    """A minimal , modular and educational agent framework"""
+    def __init__(self):
+        self.llm = None
+        self.memory = None
+        self.tools = None
+        self.planner = None
+
+    def run(self,task:str):
+        """Run agent on a task"""
+        return self._step(task)
+
+    def _step(self,task:str):
+        """Perform a single step"""
+        #### IMplemeneted 
+        return f"Recieved: {task}"
+
+    def _execute_action(self,action:str):
+        """Execute an action"""
+        #### Implemented
+        return f"Executed: {action}"
+
+
+class Response(BaseModel):
+    content: str = ""
+    reasoning: str = ""
+    tool_call:dict | None = None
+    metadata:dict | None = None
+
+class LLM:
+    def __init__(self,model:str,
+                api_key:str,
+                base_url:str=None,
+                think:bool = False):
+        self.model = model
+        self.api_key = api_key
+        self.base_url = base_url
+        self.think = think
+
+    def generate(self,messages:list[dict],
+                tools:list | None = None) -> Response:
+        #build request body
+        body = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": 256,
+        }
+
+        if tools:
+            body["tools"] = tools
+        if not self.think:
+            body["reasoning_effort"] = "none"
+
+        request = urllib.request.Request(
+            f"{self.base_url.rstrip('/')}/chat/completions",
+            data = json.dumps(body).encode("utf-8"),
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + self.api_key,
+            }
+        )
+
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(request, timeout=60) as response:
+                    data = json.loads(response.read())
+                break
+            except urllib.error.HTTPError as error:
+                if error.code not in {429, 502, 503, 504} or attempt == 2:
+                    details = error.read().decode("utf-8", errors="replace")
+                    raise RuntimeError(
+                        f"OpenRouter request failed with HTTP {error.code}: {details}"
+                    ) from error
+                time.sleep(2 ** attempt)
+            except urllib.error.URLError as error:
+                if attempt == 2:
+                    raise RuntimeError(
+                        f"OpenRouter request could not be completed: {error.reason}"
+                    ) from error
+                time.sleep(2 ** attempt)
+
+
+        message = data["choices"][0]["message"]
+        tool_calls = message.get("tool_calls", None)
+
+        if tool_calls:
+            tool_call = tool_calls[0]
+        else:
+            tool_call = None
+
+        metadata = {
+            "model": data["model"],
+            "prompt_tokens": data["usage"]["prompt_tokens"],
+            "completion_tokens": data["usage"]["completion_tokens"],
+        }
+
+        return Response(
+            content = message.get("content") or "",
+            reasoning = message.get("reasoning") or "",
+            tool_call = tool_call,
+            metadata = metadata
+        )
+
+class Step(BaseModel):
+    """single step in trajectory"""
+    thought:str = ""
+    action:dict | None = None
+    observation:str | None = None
+    answer:str | None = None
+    metadata:dict | None = None
+
+class Trajectory:
+    """Manages execution runs, each containing a query and its sequence of steps."""
+
+    def __init__(self):
+        self.runs: list[dict] = []
+
+    def initialize(self, query: str):
+        """Starts a new run session with the given query and an empty step list."""
+        self.runs.append(
+            {
+                "query": query,
+                "steps": []
+            }
+        )
+
+    def add(self, response: Response, observation: str | None = None):
+        """Records a step from the model response, capturing intermediate actions or the final answer."""
+        if not self.runs:
+            raise RuntimeError("Cannot add a step before calling initialize().")
+
+        # Base fields present in every step (reasoning and metadata)
+        step = Step(
+            thought=response.get("reasoning", ""),
+            metadata=response.get("metadata", None),
+        )
+
+        # If an observation is present, record the tool action and its result (intermediate step).
+        # Otherwise, treat it as the final step containing the completed answer.
+        if observation is not None:
+            step.action = response.get("tool_call", None)
+            step.observation = observation
+        else:
+            step.answer = response.get("content", "")
+
+        # Append the constructed step to the current active run
+        self.runs[-1]["steps"].append(step)
+
+llm = LLM(model = "google/gemma-4-31b-it:free",
+    api_key= os.environ["OPENROUTER_API_KEY"],
+    base_url="https://openrouter.ai/api/v1",
+    think = False
+)
+
+response = llm.generate(
+    messages = [
+        {
+            "role": "user",
+            "content": "Hello, how are you? can you tell me what model you are?"
+        }
+    ],
+    tools = None
+)
+print(response)
+
+
+```
