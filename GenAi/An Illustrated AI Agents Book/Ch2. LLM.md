@@ -314,6 +314,57 @@ response = llm.generate(
     tools = None
 )
 print(response)
+```
 
+Invoking as agent
+```python
+llm = LLM(model = "nvidia/nemotron-3-ultra-550b-a55b:free",
+    api_key= os.environ["OPENROUTER_API_KEY"],
+    base_url="https://openrouter.ai/api/v1",
+    think = False
+)
+
+agent = TinyAgent(llm=llm)
+response = agent.run("What is the capital of France?")
+# print(response)
+print(agent.trajecotry.runs)
+```
+
+```text
+[
+    {
+        'query': 'What is 2 + 2?',
+        'steps': [
+            Step(thought='',
+                action=None,
+                observation=None,
+                answer='2 + 2 is 4.',
+                metadata={
+                    'model': 'gemma4:e4b', 'prompt_tokens': 17, 
+                    'completion_tokens': 9
+                }
+            )
+        ]
+    }
+]       
 
 ```
+
+What we built?
+```text
+TinyAgent/ 
+├── agent.py ← Updated (Integrated the `LLM` into your `TinyAgent`) 
+├── llm.py ← New (An LLM wrapper for local or cloud models) 
+└── trajectory.py ← New (Step and Trajectory tracking)
+```
+
+### Training a LLM
+Two major phases of training 
+- Pre Training 
+- Post Training
+
+Pretraing -> where they get their name from , because they are trained on a Language processing task called `Language Modeling`
+
+![[Pasted image 20261026180006.png]]
+
+Pretraining : Language Modeling
