@@ -423,3 +423,15 @@ The model’s response is then scored on two verifiable dimensions: format (did 
 
 ![[Screenshot 2026-10-27 142408.png]]
 
+Two kinds of rewards:
+- format reward -> scoring whether the model uses the correct format for the output and assigning reward of 0.3 if correct or 0 if incorrect
+- accuracy reward -> compares the final result to the actual result and assigns a reward of 0.7 if correct and 0 if incorrect
+
+Group Relative Policy Optimizations (GRPO) algo has another key ingredient beyond reward assignement
+
+Rather than scoring a single response , at each training step GRPO generates a group of response for the same prompt using a temp setting that ensure diversity among them
+
+We generate five answers from the model, assign a reward to each one, and use those scores to update the model.
+
+![[Pasted image 20261027145447.png]]
+
