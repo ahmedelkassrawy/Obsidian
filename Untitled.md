@@ -48,3 +48,47 @@ Asking for a specific item in the website or shop
 -> The response from db then returned to the AI to be better explainable to the user 
 
 Unkown or low confidence intent -> human suport or escalation
+
+
+C1: 
+Users
+- End customer -> submits a support problem and recieves response
+- Human Reviewer -> accept/reject the escalated tickets
+- Tenant Adminstrator -> configure the tenant and provides company policies
+
+External Dependencies
+- Billing system
+- COmpany Policies
+- LLM provider
+
+```text
+                     Tenant Administrator
+                      policies/configuration
+                              │
+                              ▼
+End Customer ────────► [ ResolveFlow ] ◄──────► LLM Provider
+ support request          │       │
+ response/status          │       └───────────► Tenant Billing System
+                          │                    transactions/refunds
+                          ▼
+                  Human Support Reviewer
+                  evidence and approval
+
+```
+
+for the C2:
+```text
+                   ResolveFlow boundary
+┌────────────────────────────────────────────────┐
+│                                                │
+│  ResolveFlow Backend  ◄────► PostgreSQL        │
+│  FastAPI + LangGraph          + pgvector       │
+│                                                │
+└────────────────────────────────────────────────┘
+          │             │              │
+          ▼             ▼              ▼
+      LLM API      Embedding API   Billing API
+
+```
+
+
