@@ -133,4 +133,49 @@ Policy evidence
 - summary: "Confirmed duplicate charges are eligible for refund"
 ```
 
+Evidence -> is what resolveflow saw when it made the recommendation
 
+ProposedAction
+```text
+ProposedAction
+- action_id
+- tenant_id
+- ticket_id
+- target_id
+- action_type: enum
+- evidence_ids: list
+- amount: optional
+- currency: optional
+- reason
+- risk_level
+- created_at
+```
+
+amount and currency must come together
+evidence_ids: list -> the list of evidence ids from:
+- Transaction evidence
+- Policy evidence
+target_id -> the specific transaction that is balemed to be duplicated
+```text
+action_type: REFUND
+target_id: tx-2
+```
+
+Both transaction IDs appear in the evidence, but only `tx-2` is the target of the refund.
+
+```text
+tx-1 → original valid charge
+tx-2 → duplicate charge
+```
+
+Evidence IDs → Why should we perform the action?
+Target ID    → What exactly will the action affect?
+
+its generic for now but for future actions , the target differ
+
+```text
+REFUND          → target_id is a transaction ID
+CANCEL_ORDER    → target_id is an order ID
+CREATE_RETURN   → target_id is an order item ID
+CANCEL_SUBSCRIPTION → target_id is a subscription ID
+```
