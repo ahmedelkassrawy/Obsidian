@@ -11,11 +11,29 @@ FAQ / Billing Question
 -> prepare evidence
 
 Duplicate Charge
--> ask billing system for transactions
--> workflow determinstic checks for duplicate
--> we check the refund policy (at the fact that there is a duplicate)
--> propose refund
--> reques the human approval 
+-> request this tenant/customer's transaction from billing
+-> determinstic check for a duplicate
+
+-> if no duplciate:
+	AI recieves that no duplciate was found and explain that to user
+	 end workflow
+
+-> if duplicate exists:
+	retrieve the tenant's refund policy
+	 evidence based on the transaction + policy
+
+-> if policy missing 
+	escalate to human
+
+-> if evidence support a refund 
+	propose refund
+	 request human approval
+-> if rejected 
+	we inform the customer
+-> if approved:
+	the refund goes through the billing system 
+	save the transaction 
+	inform the customer
 
 Customer asking for a return of item
 -> ask billing system for the date of the transaction
