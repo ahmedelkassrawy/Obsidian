@@ -435,3 +435,67 @@ We generate five answers from the model, assign a reward to each one, and use th
 
 ![[Pasted image 20261027145447.png]]
 
+Transformer Arch
+A Transformer decoder has three major components: 
+- a tokenizer
+- a stack of Transformer blocks
+- a language modeling head (LM head).
+
+The tokenizer = the piece of software responsible for breaking the text input into tokens.
+
+A tokenizer has a set number of tokens in its vocabulary, say 50,000.
+
+ model has an equal number of vector embeddings—one per token in our vocabulary
+
+These embeddings vectors are numeric representations of each token and they are what the model uses to calculate language and how it processes its inputs
+
+
+![[Pasted image 20261027150825.png]]
+
+![[Pasted image 20261027151009.png]]
+
+- That vector is passed to the LM head to interpret.
+- It makes a simple calculation, which results in a probability score for each token in its vocabulary. 
+- That score is informed by everything the model learned in its training phases, and tokens with high probabilities are the ones most likely to appear as a completion in response to the input tokens.
+
+Processing through the Transformer blocks A neural network processes inputs and produces an output in a forward pass. This means that the calculation flows sequentially through the various layers. This is exactly what happens with the Transformer blocks. First the first block starts processing, then it passes its results of processing to the next block, and so on. The 103 final block passes its result to the LM head, and we proceed to decoding as we saw in the previous section
+
+The number of tracks that a model supports is commonly known as its context size. So, a model that has a context length of 100,000 can have only that number of tokens flowing through it simultaneously, which generally limits its input and output capacity to text of that size.
+
+For agent developers, context length is a key property for selecting the best model to build an agent around. It sets a limit on how much information we can pack in the input of the model. This limitation gives rise to a whole discipline of context engineering that we’ll revisit repeatedly in this book. This is the discipline of choosing the most relevant information for the model to fit within this architectural limitation of the Transformer model. Another key concept for agent developers is to realize that after that first pass where all the input tokens are processed, it’s common to cache the results so that in the next forward pass, we process the information along only the one track associated with the new token we’re generating. This is referred to as promptcaching, prefixcaching, or more technically, kvcaching
+
+Inside the transformer block
+the first block does a bit of processing on these input vectors and hands off the results of its processing (as the same number and size of vectors) to the next Transformer block. This goes on block by block until the last block in the stack
+
+There are two major components inside a Transformer block:
+- a self attention layer 
+- a feed-forward neural network layer
+
+![[Pasted image 20261027152027.png]]
+
+The Transformer block: the feed-forward neural network
+This layer does the heavy lifting in predicting the next token because the training process shapes its ability to predict the patterns encoded in the training dataset.
+
+If we train a feed-forward neural network on vast amounts of web data, when we give it the words “The Shawshank,” it would be able to predict that the next word would be “Redemption,” because the 1994 film with that name is the most common occurrence of this sequence of tokens.
+
+there has been a trend away from having a single large network, and replacing it with a large number of smaller, more specialized networks. This architecture is called a mixture-of experts (MoE)
+
+a basic MoE feed-forward layer that contains four sublayers; each is called an expert. These are preceded by a router that looks at the input token and decides which expert (or set of experts) is best suited to process this particular token
+
+![[Pasted image 20261027152316.png]]
+
+The Transformer block: an overview of self-attention 
+- Language encodes a lot of information in the order of words in a sequence and the context that a word is used in. 
+- A word such as bank can mean a financial institution or can mean a riverbank. 
+- We would only know which is meant by looking at the context where the word is used. 
+- The self-attention layer allows the Transformer to make these distinctions
+
+Self-attention enriches the information encoded in the input vector with information from the most relevant previous tokens in the sequence.
+
+![[Pasted image 20261027152601.png]]
+
+Self-attention does this by taking two steps:
+- first, it scores the relevance of the previous tokens and then proceeds to a step of combining the relevant information into the token we’re processing
+
+---- 
+### Part 2: Deep Dive into LLM
