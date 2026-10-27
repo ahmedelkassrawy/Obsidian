@@ -368,3 +368,58 @@ Pretraing -> where they get their name from , because they are trained on a Lang
 ![[Pasted image 20261026180006.png]]
 
 Pretraining : Language Modeling
+Language Modelling is the task of presenting a model with a seq of words -> and asking it to predict the next word that is most likely to appear
+
+This phase requires vast amount and it takes a major part of the computing done during the training process
+
+Pretraining data is drawn from curated mixtures of sources including web text, books, and code, each filtered to satisfy quality criteria.
+
+we can take one span of that text and present it to the model. We hide the last token, give the model all the previous tokens, and ask it to predict the next word in the sequence.
+
+At the start, the model under training would almost always guess incorrectly, which is part of the process. Now that we have its wrong prediction and the correct word, we plug them both in our loss calculation and update the weights of the model so that next time it has a better chance of making the right prediction. This is done billions of times and in the end results in a base model.
+
+Post Training :SFT
+Base models have strong latent capabilities, including reasoning, summarization, translation, and code generation, that often require heavy prompt engineering to unlock.
+
+The first step of posttraining is called supervised fine-tuning (SFT). It is also sometimes referred to as instruction-tuning because it’s where a model is trained to follow instructions we give it in prompts.
+
+SFT training example is composed of a prompt and a completion that shows how we want the model to behave if it sees such a prompt.
+
+The update rule is almost identical to that of pretraining
+
+The key difference:
+While prompt tokens are included in the input context, they are excluded from the loss computation -> so the model is trained on only the response tokens
+
+The SFT training phase is essential, yet not enough to produce a cutting-edge model. It teaches the model to follow instructions, but it cannot fully capture human preferences about what makes a response genuinely helpful, accurate, or well-reasoned
+
+The RL step is what pushes the model to be fully captured human preferences that make it helpful
+
+Post Training: Reinforcement Learning
+- In SFT , we show the model what the desired output looks like
+
+RL is a different training methodology , we use methods that evaluate quality of a model generated response and update the model weights based on quality score , called `reward`
+
+Reinforcement Learning from Human Feedback (RLHF), which relies on preference scores collected from humans or specialized models called reward models,
+
+![[Pasted image 20261027141403.png]]
+
+The RLHF training objective is to update the model to increase the likelihood of generating output like the preferred response and decrease the likelihood of generating output like the rejected response. 
+
+This can be used to polish model behaviors such as response length, type of language the model uses, safe type of completions to generate or to avoid, and many other types of behaviors
+
+![[Pasted image 20261027141600.png]]
+
+Reinforcement Learning with Verifiable Rewards (RLVR).
+- it updates the model based on a reward score
+- The difference here is that the rewards can be obtained from automated ways of verifying the outputs
+- for example, if it follows a certain format, or the final answer it results in is equal to the correct answer (that we knew beforehand, in the case of math problems, for example).
+
+In an RLVR training step, we take one of the problems and pass it to the model with instructions about the format that we want. 
+
+Once the model generates its output, we can automatically verify whether it followed the requested format and if it arrived at the correct solution of the problem.
+
+The model’s response is then scored on two verifiable dimensions: format (did it use the correct tags?) and accuracy (was the answer right?). The combined reward signal is used to update the model weights.
+
+
+![[Screenshot 2026-10-27 142408.png]]
+
