@@ -92,3 +92,45 @@ for the C2:
 ```
 
 
+Ticket
+- ticket_id
+- tenant_id
+- customer_id
+- initial_message
+- status
+- reported_transaction_id: optional
+- created_at
+- updated_at
+
+Evidence
+- evidence id
+- tenant id
+- ticket id
+- evidence type
+- source sytem 
+- source id
+- summary 
+- collected at
+
+no cutosmer id becuase we already have the ticket id which points to the customer
+evidence type : Transaction - policy evidence
+source type -> either billing system - policy store
+source id -> the id from the source we used
+summary: preserves the evidence we got
+
+example: 
+```text
+Transaction evidence
+- evidence_type: TRANSACTION
+- source_system: BILLING
+- source_id: tx-2
+- summary: "tx-1 and tx-2 charged $100 for order-1 within two minutes"
+
+Policy evidence
+- evidence_type: REFUND_POLICY
+- source_system: POLICY_STORE
+- source_id: chunk-42
+- summary: "Confirmed duplicate charges are eligible for refund"
+```
+
+
