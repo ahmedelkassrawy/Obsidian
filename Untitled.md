@@ -179,3 +179,14 @@ CANCEL_ORDER    → target_id is an order ID
 CREATE_RETURN   → target_id is an order item ID
 CANCEL_SUBSCRIPTION → target_id is a subscription ID
 ```
+
+ApprovalDecision
+```text
+- decision_id
+- action_id
+- reviewer_id
+- decision: enum
+- comment: Optional
+- decided_at
+```
+
