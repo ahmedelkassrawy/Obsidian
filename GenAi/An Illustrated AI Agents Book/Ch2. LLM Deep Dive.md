@@ -74,3 +74,97 @@ Note that at this step, the Q, K, and V representations are split across multipl
 MLA is essentially Multi-head Attention but with a compressed KV cache containing the previously mentioned Latent KV representation.
 
 This compression reduces the KV cache quite a bit and allows for much faster inference. It’s also more efficient than previous methods, such as Grouped-Query Attention.
+
+Note that Grouped-Query Attention and Multi Query Attention share K and V across query heads to reduce the memory necessary for the KV cache but tend to be less accurate.
+
+![[Pasted image 20261028190004.png]]
+
+----
+DeepSeek Sparse Attention
+instantiated under MLA and is an additional module to more efficiently select the tokens to attend to
+
+It has two main components
+- a lightning indexer 
+- a Top-K Selector.
+
+The lightning indexer determines how relevant each preceding token is to the current query.
+- For that, it uses the Q/K values that both have RoPE applied to them
+- Likewise, it takes in a scalar weight parameter w that helps the lightning indexer make better decisions about which tokens to select for the full attention mechanism.
+- The output of the lightning indexer is scores fed to the Top-K Selector, which in turn retrieves only the KV entries that correspond to the Top-K index scores
+As a result, the attention output is computed through the query token and a subset of KV entries.
+
+![[Pasted image 20261028190333.png]]
+
+Together, the Lightning Indexer and Top-K Selector reduce the number of tokens to attend to K
+
+drastically reduces the computation necessary for the attention computations
+
+Note that since MLA is used, there is already a significant memory benefit due to the compression of the KVcache. In their construction of MLA, instead of using MHA as the core attention mechanism, MQA was used. The authors mentioned optimizing for computational efficiency, which is true for MQA, considering it uses fewer keys and values than MHA
+
+Mixture of Experts
+MoE is a technique that is becoming more mainstream to create more efficient LLMs. MoE uses several submodels or “experts” to improve the quality and efficiency of LLMs.
+
+main components of an MoE:
+- Experts -> each feed forward neural network in an LLM is replaced by a set of "experts"
+- Router or gate network -> determines which tokens are sent to which experts
+
+Let’s first explore experts.
+Remember that a typical Transformer based LLM uses self-attention followed by a feed-forward neural network = we call this a dense model because everything is activated
+
+![[Pasted image 20261028190719.png]]
+
+In a dense Transformer block, the feed-forward neural network (FFNN) is active for every single token passing through
+
+A sparse model, in contrast, may deploy several feed-forward neural networks instead.
+
+These are typically smaller than a regular network, but together they tend to be bigger. Each feed-forward neural network in a sparse model is typically referred to as an “expert” because, during training, each “expert” learns different information and may specialize in the processing of certain tokens
+
+For instance, one expert might be used for processing numbers, whereas another processes verbs. It’s still a bit unclear what these experts actually learn, but there has been some research suggesting that they specialize in fine-grained information such as 142 verbs versus numbers rather than each learning an entirely different domain
+
+Note that in this example, all experts are used, which does not allow for any efficiency gains. To choose a subset of experts during inference, we make use of the router (also called a gate network)
+
+This is a small feed-forward neural network that is trained to choose an expert for a given token. The router, together with the experts, makes up the MoE layer
+
+The router is arguably the most important component because the experts are nothing more than just small feed-forward neural networks. So, how exactly does the router then choose which expert to use for each token?
+
+![[Pasted image 20261028192633.png]]
+
+![[Pasted image 20261028192644.png]]
+
+The router, as a neural network, will have its own weight matrix, which is used to multiply the input token embeddings
+
+Applying a softmax on the output will result in a probability distribution per expert. This probability distribution provides the likelihood that an expert will be chosen given an input token.
+
+![[Pasted image 20261028192740.png]]
+
+
+Note that any number of experts can be selected, but generally a fixed number are selected for training and inference. When selecting multiple experts, there is a need to balance how much each expert is trained. If the same set of experts is always chosen during training and inference, then all other experts are undertrained.
+
+To balance the distribution of training among experts, the router will have to dynamically balance which expert to choose and when. This is referred to as load balancing.
+
+To prevent one expert from dominating the training time, there are two main techniques that are often employed in one way or another:
+- namely expert capacity 
+- auxiliary loss
+
+Expert capacity gives each expert in the MoE layer a limit to how many tokens it can process.
+- Instead of having a single expert do all the work, the tokens are somewhat more equally distributed.
+- For instance, by the time an expert has reached capacity, each subsequent token routed to it will be sent to the next-highest scoring expert
+
+![[Pasted image 20261028192952.png]]
+
+In contrast, instead of limiting the experts, the router can also be adjusted to account for this probability imbalance. A straightforward technique is to add Gaussian noise just before the router produces 149 its probabilities. By introducing noise, the distributions will slightly change, and by (slight) chance, sometimes choose different experts to use
+
+A more advanced technique to balance how the router selects experts is called auxiliary loss
+
+These are loss functions that can be added to the router to reward it for equally distributing the experts during training or punish it when the same expert is chosen.
+
+The main benefit of MoE is its computational requirements. Although using MoE does not make the resulting model smaller, it runs much faster because only a few experts are activated at a given time.
+
+all parameters that a MoE model has need to be loaded into memory and are called sparse parameters. The active parameters, in contrast, are those that are activated only during inference
+
+![[Pasted image 20261028193141.png]]
+
+In Deepseek R1 
+Note that there is also a shared expert bypassing the router. This expert is always chosen, which often helps the model divert all general knowledge to that expert and more specialized knowledge to all others
+
+![[Pasted image 20261028193227.png]]
