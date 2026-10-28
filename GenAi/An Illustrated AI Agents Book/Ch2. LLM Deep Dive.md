@@ -62,6 +62,111 @@ The query (Q) vectors don't need to be cached, because old queries aren't used a
 > [!warning] The memory trade-off
 > A KV cache makes inference much faster, but caching every K and V value takes significantly more memory.
 
+## Multi-head Attention (MHA), from A to Z
+
+> [!info] Added notes, not from the book
+> This section is an explainer added on top of the chapter. Paper names, years, and model details are from memory and weren't re-checked against sources.
+
+MHA runs several small attention calculations side by side. Each one learns to look for a different kind of relationship between tokens. It was introduced in the 2017 Transformer paper, *Attention Is All You Need*.
+
+### The problem before it
+
+Before 2017, language models were mostly **RNNs** (recurrent neural networks, including LSTMs). They read a sentence one word at a time and carried a running memory forward. That caused two problems:
+
+- **Slow.** Word 50 can't be processed until word 49 is done, so the work can't be spread across a GPU's cores.
+- **Forgetful.** Everything has to squeeze through one running memory, so the start of a long sentence fades by the end.
+
+In 2014–2015, Bahdanau and then Luong added **attention** on top of RNNs. When producing each output word, the model could look back at every input word and weight the useful ones. That fixed much of the forgetting, but the RNN underneath was still slow.
+
+### The first fix: attention alone
+
+The 2017 paper dropped the RNN and kept only attention: the self-attention above, where every token makes a Q, K, and V and you compute softmax(QKᵀ / √dₖ) · V.
+
+Every token can look at every other token directly, and all positions are processed at once. That solves both problems: the work runs in parallel, and there's no memory bottleneck.
+
+### Why one head wasn't enough
+
+A single attention calculation gives each token **one** set of weights, which means one blended average of the other tokens. But language has several relationships at once.
+
+Take "The animal didn't cross the street because **it** was tired." To understand *it*, the model wants to know:
+
+- what *it* refers to (animal),
+- which verb goes with it (was),
+- what's nearby in position.
+
+One softmax has to squash all of that into one average, so the signals blur together.
+
+### How MHA fixed it
+
+Instead of one big attention, run **h small ones in parallel**, each with its own learned projection matrices:
+
+```text
+input x (512 dims)
+   │
+   ├─ head 1: W_Q1, W_K1, W_V1 → 64-dim Q,K,V → attention → 64-dim output
+   ├─ head 2: W_Q2, W_K2, W_V2 → 64-dim Q,K,V → attention → 64-dim output
+   ├─ ...
+   └─ head 8: W_Q8, W_K8, W_V8 → 64-dim Q,K,V → attention → 64-dim output
+                                                     │
+                       concat (8 × 64 = 512) → W_O → output (512 dims)
+```
+
+1. **Each head has its own Q, K, and V.** So one head can track "which noun does this pronoun mean" while another tracks "the previous word."
+2. **The heads are smaller.** The original split 512 dimensions into 8 heads of 64, so total compute is about the same as one full-size head.
+3. **The output matrix W_O mixes them back together**, so the next layer gets one vector that combines every head's findings.
+
+Nobody tells a head what to specialize in; it falls out of training. Researchers have found heads that follow grammar, resolve pronouns, look at the previous token, and copy earlier patterns ("induction heads").
+
+> [!note] Three places MHA shows up
+> - **Self-attention** (encoder): every word looks at every other word.
+> - **Masked self-attention** (decoder): each word looks only at earlier words. This is the GPT style.
+> - **Cross-attention**: the decoder looks at the encoder's output, as in translation.
+
+### Pros and cons
+
+**Pros**
+
+- **Parallel.** The whole sequence is processed at once during training, which made huge models practical.
+- **Direct long-range links.** Word 1 and word 1,000 are one step apart.
+- **Several relationships at once**, at about the cost of one head.
+- **General.** It works on text, images, audio, and proteins with almost no changes.
+
+**Cons**
+
+- **Cost grows with the square of the sequence length.** Every token scores every other token, so twice the context means four times the attention work.
+- **Big KV cache.** Every head in every layer caches its own K and V for every token.
+- **Redundant heads.** Studies in 2019 (Michel et al., Voita et al.) found many heads can be pruned with little loss.
+
+> [!example] How big the KV cache gets
+> A Llama-2-7B-sized model: 32 layers × 32 heads × 128 dims per head × 2 (K and V) × 2 bytes (16-bit) ≈ **0.5 MB per token**. A 4,096-token conversation needs about **2 GB** of cache. Generation ends up limited by memory speed, not compute.
+
+### What came next
+
+Each step down this line attacks the KV-cache cost:
+
+| Version | Idea | Cache vs MHA | Used in |
+| --- | --- | --- | --- |
+| **MQA** (Shazeer, 2019) | All query heads share **one** K and V | ÷ number of heads | PaLM, Falcon |
+| **GQA** (Ainslie et al., 2023) | Query heads share K/V **in groups** | ÷ group size | Llama 2 70B, Llama 3, Mistral |
+| **MLA** (DeepSeek-V2, 2024) | Compress K/V into a small **latent** vector and cache that | smaller still, quality close to MHA | DeepSeek V2/V3/R1 |
+
+MQA saves the most memory but loses some quality. GQA is the middle ground most open models chose. MLA is covered below.
+
+A separate line of work makes attention cheaper without changing what it computes. **FlashAttention** gives the exact same result while touching GPU memory far less. **Sparse attention** (sliding windows, DSA below) has each token look at only some of the others.
+
+### Where MHA was used
+
+From about 2017 to 2022 it was the default almost everywhere:
+
+- **Translation:** the original Transformer.
+- **Understanding text:** BERT (12 heads in the base model), RoBERTa, T5.
+- **Generating text:** GPT-2, GPT-3 (96 heads per layer), Llama 1.
+- **Images:** Vision Transformer (ViT), CLIP.
+- **Speech:** Whisper.
+- **Science:** AlphaFold 2 uses attention variants for protein structure.
+
+Today it's still standard in encoders and smaller models. Large chat models have mostly moved to GQA or MLA, because at long context the KV cache is what costs money.
+
 ## More efficient self-attention
 
 DeepSeek recently introduced two attention mechanisms that greatly improved the efficiency of attention:
@@ -226,3 +331,78 @@ MoE's main benefit is lower compute. It doesn't make the model smaller, but it r
 DeepSeek R1 also has a **shared expert** that bypasses the router and is always chosen. This often lets the model route general knowledge to the shared expert and specialized knowledge to the others.
 
 ![[Pasted image 20261028193227.png]]
+
+## MoE, dense vs. sparse, explained
+
+> [!info] Added notes, not from the book
+> This section is an explainer added on top of the chapter. Model figures are from memory and weren't re-checked against sources.
+
+In one line: a **dense** model runs all its weights on every token. A **sparse** (MoE) model owns many more weights but runs only a small slice of them per token. You get a big model's knowledge for close to a small model's compute.
+
+### Why MoE targets the FFNN
+
+Each Transformer block has two main parts. Attention mixes information *between* tokens. The FFNN then processes each token *on its own*, and it's often described as where much of the model's stored knowledge lives.
+
+The FFNN also holds most of the parameters (roughly two-thirds in a typical model). That's why MoE replaces the FFNN and leaves attention alone.
+
+### Dense: one doctor sees everyone
+
+```text
+token → attention → [ one big FFNN ] → next block
+                     (all weights used, every token)
+```
+
+Think of a clinic with one general doctor who sees every patient. To make the doctor know more, you make them bigger, and every visit costs more. In a dense model, **more knowledge = more compute per token**. GPT-3, Llama 1–3, and BERT are dense.
+
+### Sparse: a receptionist and specialists
+
+```text
+                            ┌─ expert 1
+                            ├─ expert 2  ◄── chosen (0.6)
+token → attention → router ─┼─ expert 3
+                            ├─ expert 4
+                            ├─ expert 5  ◄── chosen (0.3)
+                            └─ ... expert 8
+output = 0.6 × expert2(token) + 0.3 × expert5(token)
+```
+
+Now the clinic has 8 specialists and a receptionist (the router), and each patient sees only 2 of them. The clinic knows a lot, but each visit costs about two doctors' time. "Sparse" just means most of the model is switched off for any given token.
+
+> [!tip] Routing happens per token, per layer
+> In one sentence, "The" might go to experts 2 and 5 in layer 1, then experts 7 and 1 in layer 2. That's why experts don't become clean "math" or "biology" specialists. They pick up finer patterns like punctuation, numbers, or certain verbs.
+
+### Total vs. active parameters
+
+The book calls all the weights "sparse parameters." Most papers and model cards call them **total parameters**.
+
+- **Total parameters:** every expert. All must sit in GPU memory, because any token might need any expert.
+- **Active parameters:** what one token actually uses. This sets the compute cost.
+
+> [!example] Mixtral 8x7B
+> 8 experts, top-2 routing. About **47B total** parameters but only about **13B active** per token. (Not 56B, because the experts share attention and embeddings.) It runs about as fast as a 13B dense model while knowing closer to what a 47B model knows.
+
+### Pros and cons
+
+**Pros**
+
+- Much more knowledge for the same compute per token.
+- Reaches a given quality with less training compute than a dense model.
+- Fast inference for its size.
+
+**Cons**
+
+- **Memory doesn't shrink.** All experts must be loaded. MoE saves compute, not memory.
+- **Harder to train.** Load balancing, routing instability, and extra loss terms need tuning.
+- **Harder to serve.** Experts are spread across GPUs, and moving tokens between them adds overhead.
+- **Fine-tuning can be tricky**, and small batches use the hardware less efficiently.
+
+### Real models
+
+| Model | Type | Total | Active per token |
+| --- | --- | --- | --- |
+| Llama 3 70B | Dense | 70B | 70B |
+| Switch Transformer (Google, 2021) | MoE, top-1 | up to 1.6T | a small fraction |
+| Mixtral 8x7B (2023) | MoE, 8 experts, top-2 | ~47B | ~13B |
+| DeepSeek-V3 / R1 | MoE, 256 routed + 1 shared, top-8 | 671B | ~37B |
+
+The idea dates to 1991. Shazeer's 2017 paper (*Outrageously Large Neural Networks*) brought it into modern deep learning with noisy top-k routing. It went mainstream once Mixtral and DeepSeek showed open MoE models could match much bigger dense ones.
