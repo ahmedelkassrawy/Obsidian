@@ -66,3 +66,16 @@ Performance of models can be improved with things other than compute, data, and 
 
 ![[Pasted image 20261102234848.png]]
 
+testtime compute turned out to be a prime candidate to continue scaling LLMs. Although scaling laws for testtime compute are relatively unexplored, there are several interesting sources comparing scaling traintime compute with testtime compute
+
+First, a post by OpenAI detailed that increasing testtime compute might affect performance the same as increasing traintime compute. 
+- They defined the traintime compute as more reinforcement learning (RL)
+- the testtime compute as more time spent thinking
+
+Likewise, for the best performance, both forms of compute should be increased together
+
+That made the paradigm shift that happend in 2024/25 all point that the signifcant beneift of scaling testtime compute, instead of focusing purely on traintime compute (pre-training and fine tuning), these reasoning models intead balance training with inference''
+
+more test-time compute -> less train-time compute needed
+
+Testtime compute doesn’t necessarily mean scaling-only thinking; it refers to scaling time and compute spent on inference. Instead of thinking longer, we could also generate many different answers and vote on the best one. By creating more answers, we could likewise scale time to run inference, and stabilize and improve on the output.
