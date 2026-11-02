@@ -55,3 +55,14 @@ Why has there been a paradigm shift from scaling traintime compute to testtime c
 Scaling Laws
 the relationshhs between the model scale and performance follow the scalling lows and power laws 
 power laws say that each doubling of soemthing gives smaller gain than the previous doubling
+
+Jared Kaplan found that a model’s performance improves predictably as you increase compute, dataset size, and parameters, but with diminishing returns. It follows the same powerlaw form just described.
+
+For a fixed compute budget, the best strategy was to keep increasing the model size and train on as much data as possible without overfitting.
+
+they showed that models were often undertrained and that for a fixed compute budget, it’s better to use a smaller model and train it on much more data
+
+Performance of models can be improved with things other than compute, data, and model sizes
+
+![[Pasted image 20261102234848.png]]
+
