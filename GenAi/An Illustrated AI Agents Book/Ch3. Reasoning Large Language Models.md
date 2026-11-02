@@ -15,3 +15,43 @@ AI agents need reasoning to devise a plan, decide on the actions they take, and 
 we uncover the history of reasoning LLMs through an important paradigm shift from training to inference and explore various methods for creating reasoning LLMs.
 
 ### The paradigm shift from TrainTime Compute to TestTime Compute
+we changed our focus from scaling traintime compute to testtime compute
+
+To improve the performance of LLMs during pre-training, developers used to focus on three main factors:
+- Inc model size (num of params)
+- Inc dataset size (num of tokens)
+- Inc compute (num of floating point operations per second --- FLOPS)
+
+This combination of factors called -> traintime compute
+basic principle is that more pre training resources lead to a better , more powerful model
+
+- You can see how both data and compute can also be increased to improve its performance. 
+- When you fine-tune a model, you can often decide how many of its parameters you would like to update. 
+- In a way, even during post-training, you can increase the “model size.
+
+TrainTime compute means a focus on inc pre-training and post-training resources and little attention is spent on inference, especially non reasoning LLMs
+
+![[Pasted image 20261102232037.png]]
+
+- In contrast, testtime compute focuses more on scaling inference instead of pre-training and post-training. 
+- Scaling inference generally applies to reasoning LLMs and allows them to “think longer” during inference.
+
+![[Pasted image 20261102232234.png]]
+
+- The underlying idea is that the more tokens you generate, the better the resulting performance will be. 
+- However, you cannot just produce many random tokens to get a better output. 
+- Instead, tokens need to be generated that, for instance, contain additional relationships and new thoughts about the original problem.
+
+![[Pasted image 20261102232939.png]]
+
+To sum up
+- traintime compute focuses on scaling resources (e.g., data and compute) spent during pre-training and post-training,
+- while testtime compute focuses on scaling resources (e.g., compute) spent during inference
+
+![[Pasted image 20261102233025.png]]
+
+Why has there been a paradigm shift from scaling traintime compute to testtime compute?
+
+Scaling Laws
+the relationshhs between the model scale and performance follow the scalling lows and power laws 
+power laws say that each doubling of soemthing gives smaller gain than the previous doubling
