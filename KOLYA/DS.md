@@ -59,3 +59,18 @@ tightly coupled -> crossbar and omega switching
 
 shared memory examples -> ENCORE,balance
 interconnection - >Cluster , grid , cloud
+
+tightly coupled are used to solve -> parrallel systems
+loosely coupled -> distbiuted systems
+
+Lec 3
+parallel computing -> simulataneosuly to solve one problem
+Parallel computing examples -> bits and instructions level
+parallel computing execution -> its broken down into subtasks processed ndependently and combined at result
+what stopped single prcoess clock frequency scaling and shift towardds multicore parallel -> power consumption and heat generation
+Concurrent computing -> overlapping time periods 
+Concurrent computing examples -> OS and DBMS
+Parallel computing -> multi cores
+concurrent systems DBMS and OS requirements are- >resource sharing
+parallelism without concurrency -> bits level
+concurrency without parralelism -> multi tasking (time sharing on a single cpu)
