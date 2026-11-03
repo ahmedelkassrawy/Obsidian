@@ -94,3 +94,20 @@ Four concurrency anomalies must sync prevent -> lost update , dirty read , unrep
 Unrepeatble read -> reading the same thing after reading it before and they are not the same because transaction modified it
 Lost update -> 2 tx read concurtrently and modify the same data causing one tx to override the other
 Dirty Read -> transaction reads data that has been modified by another concurrent transaction that has not yet committed.
+Incorrect Summary -> reads values while another tx is updating those values
+Heterogeneity -> diversity if hardware compnents that need to work together
+Fault tolerance -> the system ability to handle errors and continue when individual compnents fail
+
+fault masking -> hides the error to continue execution
+graceful failure -> limits functionality without data loss
+replication -> data consistency problems
+Single system image = Distributed System
+physical limitation for not increasing single processor execution speed -> power consumption , heat genrated , speed of light
+Parallel Algo -> simultanousely and across multipprocessors
+Speedup = Sn = Ts/Tp -> Ts is single serial execution time , Tp is N-processor parallel execution time
+Effieciency = Sn/N
+Ideal Sn = 1 and efificenty = 100%
+measuring speedup using execution time of parallel algo on 1 processor is misleading -> parallel algo contain extra communication overhead
+Amdahl Law -> max system speedup even when improving the resources 
+max speed up = 1 / F + (1 - F / P) -> where F is the sequential fraction and P as the number of processors
+communciation overhead degrade parallel algo -> when data trasnfer cant be overlapped , leaving processor idle during messaging
