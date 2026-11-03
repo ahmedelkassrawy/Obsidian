@@ -74,3 +74,23 @@ Parallel computing -> multi cores
 concurrent systems DBMS and OS requirements are- >resource sharing
 parallelism without concurrency -> bits level
 concurrency without parralelism -> multi tasking (time sharing on a single cpu)
+Parallel -> for single problem
+Concurrent -> unrelated tasks
+
+Centralized System -> system where 1 or more client nodes connect directly to single central server
+Only vertical scaling is allowed
+main components of the centralized system -> node,server,communication link
+centralized system -> always suffer from DDOS and network bottleneck -> because of high traffic spikes and central server has only finite num open ports
+
+Decentralized System -> system where every node takes indepenedent decision and then aggregate all these decisions
+decentralized system -> lack a global clock -> because every node runs its own independent local clock
+when central node fails in decentralized system ? -> only specific part fails not all system
+
+core problems by network in Distbiuted system -> message loss and network overloading
+resource manager module -> software module that manages the shared resources
+local autonomy -> allow each processor to manage own local resources
+
+Four concurrency anomalies must sync prevent -> lost update , dirty read , unrepetable read, incorrect summary
+Unrepeatble read -> reading the same thing after reading it before and they are not the same because transaction modified it
+Lost update -> 2 tx read concurtrently and modify the same data causing one tx to override the other
+Dirty Read -> transaction reads data that has been modified by another concurrent transaction that has not yet committed.
