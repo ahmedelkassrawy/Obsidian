@@ -74,3 +74,19 @@ the clear map button is wrongly placed and overlapped on the line splitting betw
 also the configuations icons and the above tools are not the same icons designed , also when hovering on it unexpectedly not like the other tools it doesnt say that this is for feedback and this for settings like it did to the other tools when hovering on it
 
 when the Selesious agent is working on the answer , it didnt tell me it was working on the answer until i closed the agent which is wrong 
+
+The explanation of the Async Workflows expalantion and diagram should be better than this ai slop diagram
+
+The complicate clients also should add the icons instead of writing them like that and also since its an mcp that means you can add the popular and keep them updated as tools get updated 
+
+The jump to tool card that is whenever you go inside the mcp docs when looking at the "Available Tools" page is aweful and shouldnt be like that i think it should be a sidebar of contents not like this
+
+The whole API docs should be AI readable and also the client setup should be updated to the new workdlwide setup where you add just a prompt for making sure that the user gets the best experience of client setup nobody want to write these configuration inside the claude code or codex tool
+
+Also the mcp tools list is so tiny and not that good w should have more tools that cover alot of what dashboard is covering 
+
+usage and access for the mcp also the mcp should have that as a tool to know where it is
+
+also there should be webhooks where the mcp can wait for a result done and then alert the user whenever the results or generation is back , which is the neew mcp update globally 
+
+also how does the normal user who uses the dashboard know that there is a mcp for using with their ai subscription cause that says alot about the workflow 
