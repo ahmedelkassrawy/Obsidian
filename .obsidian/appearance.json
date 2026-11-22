@@ -7,5 +7,6 @@
   "textFontFamily": "thmanyah serif text",
   "interfaceFontFamily": "",
   "monospaceFontFamily": "",
-  "theme": "obsidian"
+  "theme": "obsidian",
+  "showRibbon": true
 }
