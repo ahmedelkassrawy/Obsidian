@@ -216,3 +216,5 @@ section: z
 **Why this matters:** Zod `.describe(...)` strings become the JSON Schema sent to the LLM. One concrete example (`"0", "1", "2"`) prevents ~80% of bad calls before your handler even runs.
 
 Step 2: Rewrite the Handler 
+Step 3: Turn It Into a Reusable Helper for _All_ Your Tools
+Step 4: How to Unit-Test a Self-Healing Tool (Zero LLM Calls Needed!)
