@@ -1,106 +1,120 @@
-Where a tool's response when a bad or imperfect input -> **gives the LLM everything it needs to recover on its very next step — automatically, silently, and without bothering the user.**
-
-LLM calling a tool  problems:
-- Every extra round trip is expesive and slow 
-- Dead-end errors make the models panic or leak plumbing 
-
-So a tool error is not a crash report — it is a steering prompt for the model's next turn.
-
 ---
-### The Librarian Analogy
+tags: [genai, ai-engineering, bannerabia, tools, error-handling]
+---
 
-Imagine your AI assistant walks up to a librarian (your **tool**) to look up a page in Smash City’s brand binder.
+## The big idea
 
-- **AI:** _"Can I get the **Wing Hashtags** section?"_
+A **self-healing tool** is a tool that, when the AI sends it a wrong or slightly-off request, answers with everything the AI needs to fix it on the very next try. The fix happens automatically and quietly, and the user never gets bothered.
 
-Now look at two ways the librarian can answer:
+> [!definition] Tool
+> An action the AI is allowed to ask for, like "get this brand's guidelines" or "save this draft". The AI only asks. Your code actually does it and sends back an answer.
 
-**1. The Stubborn Librarian (Dead-end tool — what your code does today)**
+Why this matters when an AI uses tools:
 
-> _"That doesn’t exist. Go ask me for the Table of Contents first."_
+- **Every extra back-and-forth is slow and costs money.**
+- **Errors that lead nowhere confuse the AI.** It either gets stuck, or it tells the user about the internal error, which makes no sense to them.
 
-Now the AI is stuck. It either has to:
-
-- Make an **extra trip** to ask for the Table of Contents, read it, then make a **third trip** to ask for Chapter 2 — **or**
-- Give up and walk back to your social media manager saying: _"Hey, the system told me 'Wing Hashtags' doesn't exist..."_ (which is literally what happened — your SMM replied: **`"cant understand what u want"`**).
-
-**2. The Helpful Librarian (Self-healing tool — the fix)**
-
-> _"I file chapters by number, not by name. Here’s the Table of Contents right now:_
-> 
-> - `0` — Intro
-> - `1` — Brand Voice
-> - `2` — Wing Hashtags
-> - `3` — Locations
-> 
-> _Just tell me which number you want."_
-
-The AI immediately says _"Give me `2`!"_, grabs the hashtags, and writes the caption. **Your SMM never even knows a mistake happened.**
+So when a tool says "that didn't work", that message shouldn't be a crash report. It should tell the AI what to do next.
 
 ---
 
-### Why This Exact Mismatch Happened in Bannerabia
+## The librarian example
 
-When Bannerabia stores a brand’s guidelines in sections ([sections.ts · L16](/Users/shutterabiamedia/bannerabia-dev/src/guidelines/sections.ts:16)), it chops the document up and numbers every heading:
+Imagine the AI walks up to a librarian (the tool) to look something up in Smash City's brand binder.
 
-```
-What's written in the doc     What Bannerabia actually uses as the ID
-─────────────────────────     ───────────────────────────────────────
+**AI:** *"Can I get the **Wing Hashtags** section?"*
+
+The librarian can answer in two ways.
+
+### 1. The stubborn librarian (what the tool did before)
+
+> *"That doesn't exist. Go ask me for the Table of Contents first."*
+
+Now the AI is stuck. It has two options, and both are bad:
+
+- Make an **extra trip** to get the Table of Contents, read it, then make a **third trip** to ask for chapter 2.
+- Give up and go back to the social media manager (SMM) saying: *"Hey, the system told me 'Wing Hashtags' doesn't exist..."*
+
+The second one is exactly what happened. The SMM replied: **"cant understand what u want"**.
+
+### 2. The helpful librarian (the fix)
+
+> *"I file chapters by number, not by name. Here's the Table of Contents:*
+>
+> - `0`: Intro
+> - `1`: Brand Voice
+> - `2`: Wing Hashtags
+> - `3`: Locations
+>
+> *Just tell me which number you want."*
+
+The AI says *"Give me `2`!"*, gets the hashtags, and writes the caption. **The SMM never even knows a mistake happened.**
+
+---
+
+## Why this mix-up happened in Bannerabia
+
+Bannerabia stores each brand's guidelines in sections (see `src/guidelines/sections.ts`, line 16). It splits the document at every heading and gives each part a number:
+
+```text
+What's written in the doc     What Bannerabia uses as the ID
+─────────────────────────     ──────────────────────────────
 # Intro                   ──► "0"
 # Brand Voice             ──► "1"
 # Wing Hashtags           ──► "2"
 # Locations               ──► "3"
 ```
 
-Humans and AIs think in **names** (`"wing_hashtags"`). Your tool only accepts **numbers** (`"2"`).
+People and AIs think in **names** (`"wing_hashtags"`). The tool only accepted **numbers** (`"2"`).
 
-And here is the crazy part in get_brand_guidelines.ts:44-57 [get_brand_guidelines.ts · L44](/Users/shutterabiamedia/bannerabia-dev/src/tools/get_brand_guidelines.ts:44):
+The frustrating part is in `src/tools/get_brand_guidelines.ts`, lines 44–57:
 
-1. On line 44, your server **already loaded Smash City’s entire guidelines from the database into memory.**
-2. On line 56, it checks if `"wing_hashtags"` equals `"0"`, `"1"`, `"2"`, or `"3"`. It doesn’t.
-3. On line 57, even though the Table of Contents is **already sitting right there in memory**, your tool throws it away and snaps back:
-    
-    > `"Unknown section. Read section=index first."`
-    
+1. On line 44, the server **already loaded all of Smash City's guidelines from the database.**
+2. On line 56, it checks whether `"wing_hashtags"` matches `"0"`, `"1"`, `"2"` or `"3"`. It doesn't.
+3. On line 57, even though the Table of Contents is **already loaded and ready**, the tool ignores it and replies:
 
----
-
-### Why Every Wasted Trip Hurts in AI Engineering
-
-In normal software, making one extra function call takes 1 millisecond and costs nothing.
-
-In an AI app, **every extra tool call forces another full LLM turn** — meaning your server has to send the entire chat + rules (~89,000 tokens) to the AI model all over again, wait several more seconds, and pay again.
-
-Compare the two flows side by side:
-
-||Today (Dead-End Error)|Fixed (Self-Healing Tool)|
-|---|---|---|
-|**Trip 1**|AI asks for `"wing_hashtags"` → Tool says _"Unknown section. Read index first."_|AI asks for `"wing_hashtags"` → Tool says _"Use a number. Here’s the list: `0: Intro`, `1: Voice`, `2: Wing Hashtags`."_|
-|**Trip 2**|AI has to ask for `"index"` just to see the list _(or panics & tells the user)_|AI immediately asks for `"2"` → **Gets the hashtags and writes the post!**|
-|**Trip 3**|AI finally asks for `"2"` → Gets the hashtags|_(Not needed!)_|
-|**User sees**|Either slower + more expensive, or a confusing error message|**Nothing went wrong — just a finished caption.**|
+> `"Unknown section. Read section=index first."`
 
 ---
-### Before: Dead-End Tool Design (What Actually Happened)
 
-```
-Step 1: Model calls get_brand_guidelines(brand="smash-city", section="wing_hashtags")
-Tool  → ERROR: "Unknown section. Read section=index first."   ◄── Dead end! Gives 0 valid IDs.
+## Why every wasted trip hurts
 
-Now one of two bad things happens:
-  Path A (Wasteful):
-    Step 2: Model calls get_brand_guidelines(section="index")  ◄── Extra round-trip + ~89K tokens
-    Step 3: Model calls get_brand_guidelines(section="2")      ◄── Finally gets the section
-  Path B (Broken UX — what happened with Smash City):
-    Model stops and tells the SMM: "I asked for a section name the system doesn't have..."
+In normal software, one extra function call takes about a millisecond and costs nothing.
+
+In an AI app, **every extra tool call means another full round with the AI.** The server has to send the whole chat plus all the rules again (around 89,000 tokens), wait several more seconds, and pay again.
+
+> [!definition] Token
+> The unit AI providers count and charge by. Roughly a piece of a word. 89,000 tokens is roughly the length of a short novel, sent again on every trip.
+
+Here are the two versions side by side:
+
+| | Before (dead-end error) | After (self-healing tool) |
+| --- | --- | --- |
+| **Trip 1** | AI asks for `"wing_hashtags"`. Tool says *"Unknown section. Read index first."* | AI asks for `"wing_hashtags"`. Tool says *"Use a number. Here's the list: `0: Intro`, `1: Voice`, `2: Wing Hashtags`."* |
+| **Trip 2** | AI has to ask for `"index"` just to see the list (or gives up and tells the user) | AI asks for `"2"` and **gets the hashtags and writes the post** |
+| **Trip 3** | AI finally asks for `"2"` and gets the hashtags | Not needed |
+| **What the user sees** | A slower, more expensive reply, or a confusing error | **Just a finished caption** |
+
+### Before: the dead-end tool (what actually happened)
+
+```text
+Step 1: AI calls get_brand_guidelines(brand="smash-city", section="wing_hashtags")
+Tool  → ERROR: "Unknown section. Read section=index first."   ◄── Dead end. Gives no valid IDs.
+
+Then one of two bad things happens:
+  Path A (wasteful):
+    Step 2: AI calls get_brand_guidelines(section="index")  ◄── Extra trip + ~89K tokens
+    Step 3: AI calls get_brand_guidelines(section="2")      ◄── Finally gets the section
+  Path B (confusing for the user, what happened with Smash City):
+    AI stops and tells the SMM: "I asked for a section name the system doesn't have..."
     SMM replies: "cant understand what u want"
 ```
 
-### After: Self-Healing Tool Design
+### After: the self-healing tool
 
-```
-Step 1: Model calls get_brand_guidelines(brand="smash-city", section="wing_hashtags")
-Tool  → Does NOT match any ID, so it returns the valid index RIGHT INSIDE the response:
+```text
+Step 1: AI calls get_brand_guidelines(brand="smash-city", section="wing_hashtags")
+Tool  → No match, so it sends the list of valid sections inside the reply:
         {
           "error": "unknown_section",
           "requested": "wing_hashtags",
@@ -108,102 +122,126 @@ Tool  → Does NOT match any ID, so it returns the valid index RIGHT INSIDE the 
           "hint": "Retry with one of the numeric section ids above (e.g. section=\"2\"), or omit section for full text."
         }
 
-Step 2: Model immediately sees "2: Wing Hashtags", calls get_brand_guidelines(section="2")
-        → Gets the exact rules → drafts the caption.
-        The user NEVER even knows a mistake happened!
+Step 2: AI sees "2: Wing Hashtags" and calls get_brand_guidelines(section="2")
+        → Gets the exact rules → writes the caption.
+        The user never knows a mistake happened.
 ```
 
-One tiny change turns a user-facing crash (or 3-step waste) into an invisible, reliable 2-step recovery.
+One small change turns a confusing error (or three wasted steps) into a quiet, reliable two-step recovery.
 
 ---
-### The 5 Patterns of self healing tool design 
 
-## **Pattern** 1: Actionable Errors (Attach the Recovery Data)
-Never return a bare "Invalid X" or "Not found" when you safely know the valid choices
+## The 5 patterns of self-healing tools
 
-Pack 3 things into every recoverable error:
-1. **What failed** (`requested: "wing_hashtags"`)
-2. **What IS valid** (`available_sections: ...`, valid platform names, valid date format, valid enum values)
-3. **The exact next action** (`"Retry with section='2'"`)
+### Pattern 1: Helpful errors (include how to fix it)
 
-_Other examples:_
+Never reply with just "Invalid X" or "Not found" when you already know what the valid choices are.
 
-- Model passes `platform: "ig"` instead of `"instagram"` → return `valid_platforms: ["facebook", "instagram", "bluesky"]`.
+Every error the AI can recover from should include three things:
 
-- Model passes `timezone: "Central"` → return `"Expected IANA timezone like 'America/Chicago' (this brand's timezone is 'America/Chicago')."`
-## Pattern 2. Mistake-Proof the schema first
+1. **What went wrong** (`requested: "wing_hashtags"`)
+2. **What's allowed** (`available_sections: ...`, valid platform names, the right date format, the allowed values)
+3. **Exactly what to do next** (`"Retry with section='2'"`)
 
-The best self-healing is **preventing the error before the tool is even called**:
+More examples:
 
-- Look at z.string().optional() is a wide-open text box, so the model guesses slug names like `"wing_hashtags"`.
-- Wherever valid values are fixed (platforms, post types, chart types), enforce them with **JSON Schema `enum`s** and explicit examples in `.describe(...)` (`"Numeric section id like '0', '1', '2' from the index — NOT a slug name"`).
-- And if the data is small (like ≤12 KB brand guidelines), **inline it** so the tool call doesn't need to happen at all.
+- The AI sends `platform: "ig"` instead of `"instagram"`. Reply with `valid_platforms: ["facebook", "instagram", "bluesky"]`.
+- The AI sends `timezone: "Central"`. Reply with *"Expected a timezone like 'America/Chicago' (this brand's timezone is 'America/Chicago')."*
 
-### Pattern 3: Safe Deterministic Normalization (Auto Fix harmless things)
-When an input has zero ambiguity , just normalize it in code:
-- Trimming whitespace (`" 2 "` → `"2"`)
-- Coercing harmless type slips (JSON number `2` → `"2"`)
-- Lowercasing known enums (`"Facebook"` → `"facebook"`)
-- Stripping stray `#` prefixes if your database stores hashtags without `#`
+### Pattern 2: Stop the mistake before it happens
 
-Key Test:
-Could two reasonable people disagree on what the model meant?
-if no -> normalize
-if yes -> do not guess and use Pattern 1 instead
+The best fix is making the mistake hard to make in the first place.
 
-### Pattern 4: State-Refresh on Stale Context
-When an agent holds stale state (an old `revision`, an expired pagination cursor, or an outdated draft version)  -> a self-healing tool returns the **fresh state right away** (e.g., `current_revision` and/or page 0) instead of forcing an extra empty probe call.
+> [!definition] Schema
+> The description of what a tool accepts: which inputs, what type each one is, and what they mean. The AI reads it to decide what to send.
 
-### Pattern 5: Never Leak Plumbing
-Pair self-healing tools with a **boundary rule** in the system prompt:
+- A plain `z.string().optional()` input is like an empty text box with no hints, so the AI guesses names like `"wing_hashtags"`.
+- When there's a fixed list of valid values (platforms, post types, chart types), lock the input to that list (a JSON Schema `enum`), and give clear examples in `.describe(...)`. For example: *"Numeric section id like '0', '1', '2' from the index, NOT a name."*
+- If the data is small (brand guidelines of 12 KB or less, for example), **put it straight into the prompt** so the tool doesn't need to be called at all.
 
-- Internal tool recoveries stay _inside_ the agent loop.
-- If a tool still fails after retrying (e.g. Meta's API is genuinely down), translate it into calm, plain human language (_"Instagram isn't responding right now — want me to try again in a minute?"_) — never raw codes, schema field names, or `"Unknown section"` mechanics.
+> [!definition] Enum
+> A fixed list of allowed values. If the input isn't on the list, it's rejected, so the AI can't make up new ones.
+
+### Pattern 3: Quietly fix harmless slips in code
+
+When there's zero doubt about what the AI meant, just fix it in code:
+
+- Trim extra spaces (`" 2 "` → `"2"`)
+- Fix harmless type mix-ups (the number `2` → the text `"2"`)
+- Lowercase known values (`"Facebook"` → `"facebook"`)
+- Remove a stray `#` if the database stores hashtags without it
+
+> [!tip] The test
+> Could two reasonable people disagree about what the AI meant?
+> - **No** → fix it automatically.
+> - **Yes** → don't guess. Use Pattern 1 and send back the valid options.
+
+### Pattern 4: Send fresh data when the AI is out of date
+
+Sometimes the AI is working from old information: an old version number of a draft, a page link that expired, an outdated draft. A self-healing tool sends back the **current information right away** (for example, the latest version number or the first page), so the AI doesn't need an extra call just to find out what's current.
+
+### Pattern 5: Never show the user the internal details
+
+Combine self-healing tools with a clear rule in the system prompt:
+
+- Fixing tool mistakes stays **inside** the AI's own back-and-forth. The user doesn't see it.
+- If a tool still fails after retrying (for example, Meta's servers are actually down), explain it in calm, plain language: *"Instagram isn't responding right now. Want me to try again in a minute?"* Never show raw error codes, field names, or messages like `"Unknown section"`.
 
 ---
-### 4. Subtle Senior Decision: 
-**Takeaway:** Let deterministic code supply **facts and valid options**; 
-let the LLM make **semantic choices**.
 
-****### Security Can't Self Heal 
-Watch out for Prompt Injection 
+## Who decides what
 
-## **Quick** Checklist When Building Any AI Tool
-Before shipping a new tool (MCP or in-app agent), ask these 6 questions:
+> [!abstract] The rule
+> Let plain code supply the **facts and the valid options**. Let the AI make the **choices that need understanding**, like which section fits what the user asked for.
 
-1. **Can the schema prevent the mistake?** (Use `enum`s, clear formats, and concrete examples in parameter descriptions.)
-2. **Is the mistake a harmless formatting quirk?** (If unambiguous, normalize it deterministically.)
-3. **If validation fails, does the error include the valid options and next step?** (So the model recovers in 1 step instead of 2+ or giving up.)
-4. **Does the error leak any cross-tenant or unauthorized data?** (If yes, strip it — fail closed.)
-5. **Does the tool mutate real-world state?** (If yes, never silently guess — clarify or stage for human approval.)
-6. **Is there a retry/step cap?** (So a confused model can't loop forever.)
+## Security can't self-heal
 
-----
-4 step blueprint every self healing tool follows
-Structure it in this exact order
+Watch out for **prompt injection**: someone hiding instructions inside normal-looking text, hoping the AI will follow them. Security checks must never be "helpfully" worked around.
 
-1. SECURITY GATE   ──► Auth & tenant check FIRST. 
-	Fail closed. 
-	NEVER self-heal past this.
-2. NORMALIZE       ──► Fix harmless, unambiguous format quirks (spaces, casing, empty string).
-3. VALIDATE + CURE ──► If input still misses, return a structured JSON object with:
-      (what failed) + (the valid options) + (how to retry).
-4. HAPPY PATH      ──► Return the requested data cleanly.
+---
 
-Step 1: Fix the Schema First (Prevent Mistakes Before They Happen)
+## Quick checklist before shipping any AI tool
+
+Before releasing a new tool (an MCP tool or one inside the app), ask these 6 questions:
+
+1. **Can the schema stop the mistake?** Use fixed value lists, clear formats, and real examples in the input descriptions.
+2. **Is the mistake just a harmless formatting slip?** If there's no doubt what was meant, fix it automatically in code.
+3. **When the input is wrong, does the error list the valid options and the next step?** Then the AI recovers in one step instead of two or more, or giving up.
+4. **Could the error show data from another client, or data this user isn't allowed to see?** If so, remove it, and refuse by default.
+5. **Does the tool change something in the real world** (publish, delete, send)? If so, never guess. Ask the user, or prepare it for human approval.
+6. **Is there a limit on retries?** So a confused AI can't keep looping forever.
+
+---
+
+## The 4-step order every self-healing tool follows
+
+Build every tool in exactly this order:
+
+```text
+1. SECURITY CHECK  ──► Check who the user is and which brand/workspace they can touch. FIRST.
+                       If anything is wrong, refuse. NEVER self-heal past this step.
+2. CLEAN UP        ──► Fix harmless, obvious slips (spaces, capital letters, empty text).
+3. CHECK + GUIDE   ──► If the input is still wrong, send back a clear reply with:
+                       (what went wrong) + (the valid options) + (how to retry).
+4. NORMAL ANSWER   ──► Send back the requested data.
+```
+
+### Step 1: Fix the schema first
+
+The old description was vague, so the AI guessed `"wing_hashtags"`:
 
 ```typescript
-// ❌ BEFORE — vague description; invites the model to guess "wing_hashtags"
+// ❌ BEFORE: vague description; invites the AI to guess "wing_hashtags"
 section: z
   .string()
   .optional()
   .describe("Section id from index, or index/core. Omit for full rendered text, paged."),
 ```
 
-Make the description **show concrete examples** and explicitly warn against the common mistake:
+The new description shows real examples and warns against the common mistake:
 
 ```typescript
-// ✅ AFTER — tells the model the exact shape of valid IDs
+// ✅ AFTER: tells the AI exactly what valid IDs look like
 section: z
   .string()
   .optional()
@@ -213,8 +251,17 @@ section: z
   ),
 ```
 
-**Why this matters:** Zod `.describe(...)` strings become the JSON Schema sent to the LLM. One concrete example (`"0", "1", "2"`) prevents ~80% of bad calls before your handler even runs.
+> [!note] Why this matters
+> The text inside Zod's `.describe(...)` is sent to the AI as part of the tool's description. One clear example (`"0", "1", "2"`) prevents about 80% of bad calls before the tool's code even runs.
 
-Step 2: Rewrite the Handler 
-Step 3: Turn It Into a Reusable Helper for _All_ Your Tools
-Step 4: How to Unit-Test a Self-Healing Tool (Zero LLM Calls Needed!)
+### Step 2: Rewrite the handler
+
+*(Not written yet.)*
+
+### Step 3: Turn it into a reusable helper for all tools
+
+*(Not written yet.)*
+
+### Step 4: Test a self-healing tool without calling the AI
+
+*(Not written yet.)*
