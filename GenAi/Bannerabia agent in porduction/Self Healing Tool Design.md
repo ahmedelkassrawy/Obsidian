@@ -118,5 +118,64 @@ One tiny change turns a user-facing crash (or 3-step waste) into an invisible, r
 ---
 ### The 5 Patterns of self healing tool design 
 
-Pattern 1: Actionable Errors (Attach the Recovery Data)
+## **Pattern** 1: Actionable Errors (Attach the Recovery Data)
 Never return a bare "Invalid X" or "Not found" when you safely know the valid choices
+
+Pack 3 things into every recoverable error:
+1. **What failed** (`requested: "wing_hashtags"`)
+2. **What IS valid** (`available_sections: ...`, valid platform names, valid date format, valid enum values)
+3. **The exact next action** (`"Retry with section='2'"`)
+
+_Other examples:_
+
+- Model passes `platform: "ig"` instead of `"instagram"` → return `valid_platforms: ["facebook", "instagram", "bluesky"]`.
+
+- Model passes `timezone: "Central"` → return `"Expected IANA timezone like 'America/Chicago' (this brand's timezone is 'America/Chicago')."`
+## Pattern 2. Mistake-Proof the schema first
+
+The best self-healing is **preventing the error before the tool is even called**:
+
+- Look at z.string().optional() is a wide-open text box, so the model guesses slug names like `"wing_hashtags"`.
+- Wherever valid values are fixed (platforms, post types, chart types), enforce them with **JSON Schema `enum`s** and explicit examples in `.describe(...)` (`"Numeric section id like '0', '1', '2' from the index — NOT a slug name"`).
+- And if the data is small (like ≤12 KB brand guidelines), **inline it** so the tool call doesn't need to happen at all.
+
+### Pattern 3: Safe Deterministic Normalization (Auto Fix harmless things)
+When an input has zero ambiguity , just normalize it in code:
+- Trimming whitespace (`" 2 "` → `"2"`)
+- Coercing harmless type slips (JSON number `2` → `"2"`)
+- Lowercasing known enums (`"Facebook"` → `"facebook"`)
+- Stripping stray `#` prefixes if your database stores hashtags without `#`
+
+Key Test:
+Could two reasonable people disagree on what the model meant?
+if no -> normalize
+if yes -> do not guess and use Pattern 1 instead
+
+### Pattern 4: State-Refresh on Stale Context
+When an agent holds stale state (an old `revision`, an expired pagination cursor, or an outdated draft version)  -> a self-healing tool returns the **fresh state right away** (e.g., `current_revision` and/or page 0) instead of forcing an extra empty probe call.
+
+### Pattern 5: Never Leak Plumbing
+Pair self-healing tools with a **boundary rule** in the system prompt:
+
+- Internal tool recoveries stay _inside_ the agent loop.
+- If a tool still fails after retrying (e.g. Meta's API is genuinely down), translate it into calm, plain human language (_"Instagram isn't responding right now — want me to try again in a minute?"_) — never raw codes, schema field names, or `"Unknown section"` mechanics.
+
+---
+### 4. Subtle Senior Decision: 
+**Takeaway:** Let deterministic code supply **facts and valid options**; 
+let the LLM make **semantic choices**.
+
+****### Security Can't Self Heal 
+Watch out for Prompt Injection 
+
+## **Quick** Checklist When Building Any AI Tool
+Before shipping a new tool (MCP or in-app agent), ask these 6 questions:
+
+1. **Can the schema prevent the mistake?** (Use `enum`s, clear formats, and concrete examples in parameter descriptions.)
+2. **Is the mistake a harmless formatting quirk?** (If unambiguous, normalize it deterministically.)
+3. **If validation fails, does the error include the valid options and next step?** (So the model recovers in 1 step instead of 2+ or giving up.)
+4. **Does the error leak any cross-tenant or unauthorized data?** (If yes, strip it — fail closed.)
+5. **Does the tool mutate real-world state?** (If yes, never silently guess — clarify or stage for human approval.)
+6. **Is there a retry/step cap?** (So a confused model can't loop forever.)
+
+----
