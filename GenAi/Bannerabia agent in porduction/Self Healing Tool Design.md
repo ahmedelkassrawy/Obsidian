@@ -179,3 +179,40 @@ Before shipping a new tool (MCP or in-app agent), ask these 6 questions:
 6. **Is there a retry/step cap?** (So a confused model can't loop forever.)
 
 ----
+4 step blueprint every self healing tool follows
+Structure it in this exact order
+
+1. SECURITY GATE   ──► Auth & tenant check FIRST. 
+	Fail closed. 
+	NEVER self-heal past this.
+2. NORMALIZE       ──► Fix harmless, unambiguous format quirks (spaces, casing, empty string).
+3. VALIDATE + CURE ──► If input still misses, return a structured JSON object with:
+      (what failed) + (the valid options) + (how to retry).
+4. HAPPY PATH      ──► Return the requested data cleanly.
+
+Step 1: Fix the Schema First (Prevent Mistakes Before They Happen)
+
+```typescript
+// ❌ BEFORE — vague description; invites the model to guess "wing_hashtags"
+section: z
+  .string()
+  .optional()
+  .describe("Section id from index, or index/core. Omit for full rendered text, paged."),
+```
+
+Make the description **show concrete examples** and explicitly warn against the common mistake:
+
+```typescript
+// ✅ AFTER — tells the model the exact shape of valid IDs
+section: z
+  .string()
+  .optional()
+  .describe(
+    'Numeric section id from the index (for example "0", "1", "2"), or "index" / "core". ' +
+    'Do not guess heading slugs like "wing_hashtags". Omit to read the full guidelines.',
+  ),
+```
+
+**Why this matters:** Zod `.describe(...)` strings become the JSON Schema sent to the LLM. One concrete example (`"0", "1", "2"`) prevents ~80% of bad calls before your handler even runs.
+
+Step 2: Rewrite the Handler 
